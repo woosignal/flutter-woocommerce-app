@@ -1,0 +1,83 @@
+//  Label StoreMAX
+//
+//  Created by Anthony Gordon.
+//  Copyright © 2019 WooSignal. All rights reserved.
+//
+
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+import 'package:flutter/material.dart';
+import 'package:label_storemax/labelconfig.dart';
+import 'package:label_storemax/widgets/woosignal_ui.dart';
+import 'package:label_storemax/helpers/tools.dart';
+
+class HomeMenuPage extends StatefulWidget {
+  HomeMenuPage();
+
+  @override
+  _HomeMenuPageState createState() => _HomeMenuPageState();
+}
+
+class _HomeMenuPageState extends State<HomeMenuPage> {
+  _HomeMenuPageState();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        title: Text(trans(context, "Menu"),
+            style: Theme.of(context).primaryTextTheme.subhead),
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        minimum: safeAreaDefault(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.network(app_logo_url, height: 100),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  wsMenuItem(context,
+                      title: trans(context, "Cart"),
+                      leading: Icon(Icons.shopping_cart),
+                      action: _actionCart),
+                  wsMenuItem(context,
+                      title: trans(context, "About Us"),
+                      leading: Icon(Icons.account_balance),
+                      action: _actionAboutUs),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _actionCart() {
+    Navigator.pushNamed(context, "/cart");
+  }
+
+  void _actionAboutUs() {
+    Navigator.pushNamed(context, "/about");
+  }
+}
