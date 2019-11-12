@@ -14,8 +14,6 @@ Label StoreMax is a WooCommerce Flutter App template, built exclusively for onli
 1. Supports the latest WooCommerce (3.0+)
 2. [Documentation available](https://woosignal.com/docs/app/ios/label-storemax)
 
-![alt text](https://woosignal.com/images/label_storemax_demo.gif "Flutter WooCommerce App")
-
 ## Some featured integrated
 
 1. Stripe
