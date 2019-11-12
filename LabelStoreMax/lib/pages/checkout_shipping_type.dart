@@ -96,15 +96,17 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
 
       if (_shipping.methods.freeShipping != null) {
         _shipping.methods.freeShipping.forEach((freeShipping) {
-          Map<String, dynamic> tmpShippingOption = {};
-          tmpShippingOption = {
-            "id": freeShipping.id,
-            "method_id": "free_shipping",
-            "title": freeShipping.title,
-            "cost": freeShipping.cost,
-            "object": freeShipping
-          };
-          _wsShippingOptions.add(tmpShippingOption);
+          if (_isNumeric(freeShipping.cost)) {
+            Map<String, dynamic> tmpShippingOption = {};
+            tmpShippingOption = {
+              "id": freeShipping.id,
+              "method_id": "free_shipping",
+              "title": freeShipping.title,
+              "cost": freeShipping.cost,
+              "object": freeShipping
+            };
+            _wsShippingOptions.add(tmpShippingOption);
+          }
         });
       }
     }
@@ -116,6 +118,13 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  bool _isNumeric(String str) {
+    if(str == null) {
+      return false;
+    }
+    return double.tryParse(str) != null;
   }
 
   Future<String> _getShippingPrice(int index) async {
