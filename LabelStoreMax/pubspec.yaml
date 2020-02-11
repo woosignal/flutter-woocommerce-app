@@ -27,7 +27,7 @@ dependencies:
   woosignal_stripe: ^0.0.2
   connectivity: ^0.4.4
   shared_preferences: ^0.5.3+4
-  cached_network_image: ^1.1.1
+  cached_network_image: ^2.0.0
   page_transition: ^1.1.4
   package_info: ^0.4.0+6
   flutter_money_formatter: ^0.8.2
