@@ -3,7 +3,7 @@
 </p>
 	
 # Woocommerce App: Label StoreMax
-### Label StoreMax - v1.0
+### Label StoreMax - v1.0.1
 
 ![alt text](https://woosignal.com/images/woosignal_labelstoremax_main_banner_flutter.png "WooCommerce app WooSignal Flutter logo")
 
