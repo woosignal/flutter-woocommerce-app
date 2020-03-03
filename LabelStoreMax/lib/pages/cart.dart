@@ -146,6 +146,7 @@ class _CartPageState extends State<CartPage> {
         title: Text(trans(context, "Shopping Cart"),
             style: Theme.of(context).appBarTheme.textTheme.title),
         textTheme: Theme.of(context).textTheme,
+        elevation: 1,
         actions: <Widget>[
           InkWell(
             highlightColor: Colors.transparent,
