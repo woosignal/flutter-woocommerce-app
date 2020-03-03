@@ -390,7 +390,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                           isManagedStock: _product.manageStock,
                           stockQuantity: _product.stockQuantity,
                           shippingIsTaxable: _product.shippingTaxable,
-                          imageSrc: _product.images.first.src,
+                          imageSrc: _product.images.length == 0 ? "" : _product.images.first.src,
                           total: _product.price);
 
                       if (_product.type != "simple") {
