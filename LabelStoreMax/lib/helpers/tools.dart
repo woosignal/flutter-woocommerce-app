@@ -704,13 +704,13 @@ class Cart {
       switch (shippingType.methodId) {
         case "flat_rate":
           FlatRate flatRate = (shippingType.object as FlatRate);
-          if (flatRate.taxable) {
+          if (flatRate.taxable != null && flatRate.taxable) {
             shippingTotal += double.parse(shippingType.cost);
           }
           break;
         case "local_pickup":
           LocalPickup localPickup = (shippingType.object as LocalPickup);
-          if (localPickup.taxable) {
+          if (localPickup.taxable != null && localPickup.taxable) {
             shippingTotal += double.parse(localPickup.cost);
           }
           break;
