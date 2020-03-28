@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,9 +10,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/models/cart.dart';
+import 'package:label_storemax/models/cart_line_item.dart';
+import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/models/customer_address.dart';
+import 'package:label_storemax/models/shipping_type.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
+import 'package:label_storemax/widgets/buttons.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
-import 'package:label_storemax/widgets/woosignal_ui.dart';
-import 'package:woosignal/woosignal.dart';
 import 'package:label_storemax/app_country_options.dart';
 
 class CheckoutShippingTypePage extends StatefulWidget {
@@ -43,8 +48,9 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   }
 
   _getShippingMethods() async {
-    WooSignal wooSignal = await WooSignal.getInstance(config: wsConfig);
-    List<WSShipping> wsShipping = await wooSignal.getShippingMethods();
+    List<WSShipping> wsShipping = await appWooSignal((api) {
+      return api.getShippingMethods();
+    });
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.shippingAddress;
     String postalCode = customerAddress.postalCode;
@@ -96,7 +102,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
 
       if (_shipping.methods.freeShipping != null) {
         _shipping.methods.freeShipping.forEach((freeShipping) {
-          if (_isNumeric(freeShipping.cost)) {
+          if (isNumeric(freeShipping.cost)) {
             Map<String, dynamic> tmpShippingOption = {};
             tmpShippingOption = {
               "id": freeShipping.id,
@@ -118,13 +124,6 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  bool _isNumeric(String str) {
-    if(str == null) {
-      return false;
-    }
-    return double.tryParse(str) != null;
   }
 
   Future<String> _getShippingPrice(int index) async {

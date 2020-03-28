@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,8 +11,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/models/cart.dart';
+import 'package:label_storemax/models/cart_line_item.dart';
+import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/models/customer_address.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
+import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
-import 'package:woosignal/woosignal.dart';
 
 class CartPage extends StatefulWidget {
   CartPage();
@@ -45,10 +50,12 @@ class _CartPageState extends State<CartPage> {
       });
       return [];
     }
-    WooSignal wooSignal = await WooSignal.getInstance(config: wsConfig);
+
     List<Map<String, dynamic>> cartJSON = cart.map((c) => c.toJson()).toList();
 
-    List<dynamic> cartRes = await wooSignal.cartCheck(cartJSON);
+    List<dynamic> cartRes = await appWooSignal((api) {
+      return api.cartCheck(cartJSON);
+    });
     _cartLines = cartRes.map((json) => CartLineItem.fromJson(json)).toList();
     if (_cartLines.length > 0) {
       Cart.getInstance.saveCartToPref(cartLineItems: _cartLines);

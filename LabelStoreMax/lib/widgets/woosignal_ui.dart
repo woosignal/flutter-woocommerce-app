@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,124 +10,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/labelconfig.dart';
+import 'package:label_storemax/models/cart.dart';
+import 'package:label_storemax/models/cart_line_item.dart';
+import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
 const appFontFamily = "Overpass";
-
-Widget wsCartIcon(BuildContext context) {
-  return IconButton(
-    icon: Stack(
-      children: <Widget>[
-        Positioned.fill(
-            child: Align(
-              child: Icon(Icons.shopping_cart, size: 20, color: Colors.black87),
-              alignment: Alignment.bottomCenter,
-            ),
-            bottom: 0),
-        Positioned.fill(
-            child: Align(
-              child: FutureBuilder<List<CartLineItem>>(
-                future: Cart.getInstance.getCart(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<CartLineItem>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Text("");
-                    default:
-                      if (snapshot.hasError)
-                        return Text("");
-                      else
-                        return new Text(
-                          snapshot.data.length.toString(),
-                          style: Theme.of(context).primaryTextTheme.body2,
-                          textAlign: TextAlign.center,
-                        );
-                  }
-                },
-              ),
-              alignment: Alignment.topCenter,
-            ),
-            top: 0)
-      ],
-    ),
-    onPressed: () {
-      Navigator.pushNamed(context, "/cart");
-    },
-  );
-}
-
-Widget wsMenuItem(BuildContext context,
-    {String title, Widget leading, void Function() action}) {
-  return Flexible(
-    child: InkWell(
-      child: Card(
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.only(top: 15, bottom: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              leading,
-              Text(" " + title,
-                  style: Theme.of(context).primaryTextTheme.body1),
-            ],
-          ),
-        ),
-        elevation: 1,
-        margin: EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
-      ),
-      onTap: action,
-    ),
-  );
-}
-
-Widget wsPrimaryButton(BuildContext context,
-    {String title, void Function() action}) {
-  return Container(
-    height: 60,
-    margin: EdgeInsets.only(top: 10),
-    child: RaisedButton(
-        padding: EdgeInsets.all(10),
-        child: Text(title, style: Theme.of(context).primaryTextTheme.button),
-        onPressed: action,
-        elevation: 0),
-  );
-}
-
-Widget wsSecondaryButton(BuildContext context,
-    {String title, void Function() action}) {
-  return Container(
-    height: 60,
-    margin: EdgeInsets.only(top: 10),
-    child: RaisedButton(
-        padding: EdgeInsets.all(10),
-        child: Text(title,
-            style: Theme.of(context).primaryTextTheme.body2,
-            textAlign: TextAlign.center),
-        onPressed: action,
-        color: HexColor("#f6f6f9"),
-        elevation: 0),
-  );
-}
-
-Widget wsLinkButton(BuildContext context,
-    {String title, void Function() action}) {
-  return Container(
-    height: 60,
-    margin: EdgeInsets.only(top: 10),
-    child: MaterialButton(
-        padding: EdgeInsets.all(10),
-        child: Text(title,
-            style: Theme.of(context).primaryTextTheme.body2,
-            textAlign: TextAlign.left),
-        onPressed: action,
-        elevation: 0),
-  );
-}
 
 Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
   return Row(
@@ -142,7 +34,11 @@ Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
       ),
       Flexible(
         child: Container(
-          child: Text(text2, style: Theme.of(context).primaryTextTheme.body2),
+          child: Text(text2,
+              style: Theme.of(context)
+                  .primaryTextTheme
+                  .body2
+                  .copyWith(fontSize: 16, color: Colors.black87)),
         ),
         flex: 3,
       )
@@ -168,45 +64,46 @@ Widget wsCheckoutRow(BuildContext context,
   return Flexible(
     child: InkWell(
       child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                child: Text(heading,
-                    style: Theme.of(context).primaryTextTheme.body1),
-                padding: EdgeInsets.only(bottom: 8),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      leadImage,
-                      Container(
-                        child: Text(leadTitle,
-                            style: Theme.of(context).primaryTextTheme.subhead,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false),
-                        padding: EdgeInsets.only(left: 15),
-                      )
-                    ],
-                  ),
-                  Icon(Icons.arrow_forward_ios)
-                ],
-              )
-            ],
-          ),
-          padding: EdgeInsets.all(8),
-          decoration: showBorderBottom == true
-              ? BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black12, width: 1)))
-              : BoxDecoration()),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              child: Text(heading,
+                  style: Theme.of(context).primaryTextTheme.body1),
+              padding: EdgeInsets.only(bottom: 8),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    leadImage,
+                    Container(
+                      child: Text(leadTitle,
+                          style: Theme.of(context).primaryTextTheme.subhead,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false),
+                      padding: EdgeInsets.only(left: 15),
+                    )
+                  ],
+                ),
+                Icon(Icons.arrow_forward_ios)
+              ],
+            )
+          ],
+        ),
+        padding: EdgeInsets.all(8),
+        decoration: showBorderBottom == true
+            ? BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.black12, width: 1)))
+            : BoxDecoration(),
+      ),
       onTap: action,
       borderRadius: BorderRadius.circular(8),
     ),
@@ -335,14 +232,18 @@ void wsModalBottom(BuildContext context,
             child: new Container(
                 padding: EdgeInsets.only(top: 25, left: 18, right: 18),
                 decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadius.only(
-                        topLeft: const Radius.circular(10.0),
-                        topRight: const Radius.circular(10.0))),
+                  color: Colors.white,
+                  borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(10.0),
+                      topRight: const Radius.circular(10.0)),
+                ),
                 child: Column(
                   children: <Widget>[
                     Text(title,
-                        style: Theme.of(context).primaryTextTheme.display1,
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .display1
+                            .copyWith(fontSize: 20),
                         textAlign: TextAlign.left),
                     bodyWidget,
                     extraWidget ?? Container()
@@ -481,12 +382,13 @@ Widget wsCardCartItem(BuildContext context,
     void Function() actionRemoveItem}) {
   return Container(
       decoration: BoxDecoration(
+          color: Colors.white,
           border: Border(
               bottom: BorderSide(
-        color: Colors.black12,
-        width: 1,
-      ))),
-      padding: EdgeInsets.all(8),
+            color: Colors.black12,
+            width: 1,
+          ))),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Column(
         children: <Widget>[
           Row(
@@ -508,8 +410,12 @@ Widget wsCardCartItem(BuildContext context,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(cartLineItem.name,
-                          style: Theme.of(context).primaryTextTheme.subhead),
+                      Text(
+                        cartLineItem.name,
+                        style: Theme.of(context).primaryTextTheme.subhead,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
                       (cartLineItem.variationOptions != null
                           ? Text(cartLineItem.variationOptions,
                               style: Theme.of(context).primaryTextTheme.body2)
@@ -575,9 +481,10 @@ Widget wsCardCartItem(BuildContext context,
       ));
 }
 
-Widget storeLogo({double height}) {
+Widget storeLogo({double height, double width}) {
   return cachedImage(app_logo_url,
-      height: height, placeholder: Container(height: height, width: height));
+      height: height,
+      placeholder: Container(height: height ?? 100, width: width ?? 100));
 }
 
 Widget cachedImage(image, {double height, Widget placeholder, BoxFit fit}) {

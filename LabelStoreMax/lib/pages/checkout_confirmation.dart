@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,27 +9,28 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
+import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/models/customer_address.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
+import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
-import 'package:woosignal_stripe/woosignal_stripe.dart';
-import 'package:woosignal/models/payload/order_wc.dart';
-import 'package:woosignal/models/response/order.dart' as WS;
-import 'package:woosignal/woosignal.dart';
-import 'dart:io';
 import 'package:label_storemax/app_country_options.dart';
 
 class CheckoutConfirmationPage extends StatefulWidget {
-  CheckoutConfirmationPage();
+  CheckoutConfirmationPage({Key key}) : super(key: key);
 
   @override
-  _CheckoutConfirmationPageState createState() =>
-      _CheckoutConfirmationPageState();
+  CheckoutConfirmationPageState createState() =>
+      CheckoutConfirmationPageState();
 }
 
-class _CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
-  _CheckoutConfirmationPageState();
+class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
+  CheckoutConfirmationPageState();
+
+  GlobalKey<CheckoutConfirmationPageState> _key = GlobalKey<CheckoutConfirmationPageState>();
 
   bool _showFullLoader;
 
@@ -48,9 +49,17 @@ class _CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     _getTaxes();
   }
 
+  void reloadState({bool showLoader}) {
+    setState(() {
+      _showFullLoader = showLoader ?? false;
+    });
+  }
+
   _getTaxes() async {
-    WooSignal wooSignal = await WooSignal.getInstance(config: wsConfig);
-    _taxRates = await wooSignal.getTaxRates(page: 1, perPage: 100);
+    _taxRates = await appWooSignal((api) {
+      return api.getTaxRates(page: 1, perPage: 100);
+    });
+
     if (CheckoutSession.getInstance.billingDetails.shippingAddress == null) {
       setState(() {
         _showFullLoader = false;
@@ -150,7 +159,8 @@ class _CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                           30,
                                           CheckoutSession.getInstance
                                               .billingDetails.billingAddress
-                                              .addressFull())),
+                                              .addressFull(),
+                                        )),
                                   action: _actionCheckoutDetails,
                                   showBorderBottom: true)
                               : wsCheckoutRow(context,
@@ -170,7 +180,7 @@ class _CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                               .paymentType.assetImage),
                                       width: 70),
                                   leadTitle: CheckoutSession
-                                      .getInstance.paymentType.name,
+                                      .getInstance.paymentType.desc,
                                   action: _actionPayWith,
                                   showBorderBottom: true)
                               : wsCheckoutRow(context,
@@ -236,8 +246,13 @@ class _CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     showAppLoader(),
-                    Text(trans(context, "One moment") + "...",
-                        style: Theme.of(context).primaryTextTheme.subhead)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Text(
+                        trans(context, "One moment") + "...",
+                        style: Theme.of(context).primaryTextTheme.subhead,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -284,168 +299,7 @@ class _CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    _pay();
-  }
-
-  Future<OrderWC> _buildOrderWC() async {
-    OrderWC orderWC = OrderWC();
-    if (Platform.isAndroid) {
-      orderWC.paymentMethod = "Stripe - Android App";
-      orderWC.paymentMethodTitle = "stripe";
-    } else if (Platform.isIOS) {
-      orderWC.paymentMethod = "Stripe - IOS App";
-      orderWC.paymentMethodTitle = "stripe";
-    }
-
-    orderWC.setPaid = true;
-    orderWC.status = "pending";
-    orderWC.currency = app_currency_iso.toUpperCase();
-
-    List<LineItems> lineItems = [];
-    List<CartLineItem> cartItems = await Cart.getInstance.getCart();
-    cartItems.forEach((cartItem) {
-      LineItems tmpLineItem = LineItems();
-      tmpLineItem.quantity = cartItem.quantity;
-      tmpLineItem.name = cartItem.name;
-      tmpLineItem.productId = cartItem.productId;
-      if (cartItem.variationId != null && cartItem.variationId != 0) {
-        tmpLineItem.variationId = cartItem.variationId;
-      }
-
-      tmpLineItem.total = cartItem.total;
-      tmpLineItem.subtotal = cartItem.subtotal;
-
-      lineItems.add(tmpLineItem);
-    });
-
-    orderWC.lineItems = lineItems;
-
-    BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails;
-
-    Billing billing = Billing();
-    billing.firstName = billingDetails.billingAddress.firstName;
-    billing.lastName = billingDetails.billingAddress.lastName;
-    billing.address1 = billingDetails.billingAddress.addressLine;
-    billing.city = billingDetails.billingAddress.city;
-    billing.postcode = billingDetails.billingAddress.postalCode;
-    billing.country = billingDetails.billingAddress.country;
-    billing.email = billingDetails.billingAddress.emailAddress;
-
-    orderWC.billing = billing;
-
-    Shipping shipping = Shipping();
-    shipping.firstName = billingDetails.shippingAddress.firstName;
-    shipping.lastName = billingDetails.shippingAddress.lastName;
-    shipping.address1 = billingDetails.shippingAddress.addressLine;
-    shipping.city = billingDetails.shippingAddress.city;
-    shipping.postcode = billingDetails.shippingAddress.postalCode;
-    shipping.country = billingDetails.shippingAddress.country;
-
-    orderWC.shipping = shipping;
-
-    orderWC.shippingLines = [];
-    Map<String, dynamic> shippingLineFeeObj =
-        CheckoutSession.getInstance.shippingType.toShippingLineFee();
-    if (shippingLineFeeObj != null) {
-      ShippingLines shippingLine = ShippingLines();
-      shippingLine.methodId = shippingLineFeeObj['method_id'];
-      shippingLine.methodTitle = shippingLineFeeObj['method_title'];
-      shippingLine.total = shippingLineFeeObj['total'];
-      orderWC.shippingLines.add(shippingLine);
-    }
-
-    if (_taxRate != null) {
-      orderWC.feeLines = [];
-      FeeLines feeLines = FeeLines();
-      feeLines.name = _taxRate.name;
-      feeLines.total = await Cart.getInstance.taxAmount(_taxRate);
-      feeLines.taxClass = "";
-      feeLines.taxStatus = "taxable";
-      orderWC.feeLines.add(feeLines);
-    }
-
-    return orderWC;
-  }
-
-  _pay() async {
-    WooSignal wsStore = await WooSignal.getInstance(config: wsConfig);
-
-    String cartTotal = await CheckoutSession.getInstance
-        .total(withFormat: false, taxRate: _taxRate);
-
-    FlutterStripePayment.setStripeSettings(
-        stripeAccount: app_stripe_account, liveMode: app_stripe_live_mode);
-
-    var paymentResponse = await FlutterStripePayment.addPaymentMethod();
-
-    if (paymentResponse.status == PaymentResponseStatus.succeeded) {
-      setState(() {
-        _showFullLoader = true;
-      });
-
-      BillingDetails checkoutDetails =
-          CheckoutSession.getInstance.billingDetails;
-
-      Map<String, dynamic> address = {
-        "name": checkoutDetails.billingAddress.nameFull(),
-        "line1": checkoutDetails.shippingAddress.addressLine,
-        "city": checkoutDetails.shippingAddress.city,
-        "postal_code": checkoutDetails.shippingAddress.postalCode,
-        "country": checkoutDetails.shippingAddress.country
-      };
-
-      String cartShortDesc = await Cart.getInstance.cartShortDesc();
-
-      dynamic rsp = await wsStore.stripePaymentIntent(
-          amount: cartTotal,
-          email: checkoutDetails.billingAddress.emailAddress,
-          desc: cartShortDesc,
-          shipping: address);
-
-      if (rsp == null) {
-        showToastNetworkError();
-        setState(() {
-          _showFullLoader = false;
-        });
-        return false;
-      }
-
-      String clientSecret = rsp["client_secret"];
-      var intentResponse = await FlutterStripePayment.confirmPaymentIntent(
-          clientSecret,
-          paymentResponse.paymentMethodId,
-          (double.parse(cartTotal) * 100));
-
-      if (intentResponse.status == PaymentResponseStatus.succeeded) {
-        OrderWC orderWC = await _buildOrderWC();
-        WS.Order order = await wsStore.createOrder(orderWC);
-
-        if (order != null) {
-          Cart.getInstance.clear();
-          Navigator.pushNamed(context, "/checkout-status", arguments: order);
-        } else {
-          showEdgeAlertWith(context,
-              title: trans(context, "Error"),
-              desc: trans(
-                  context, "Something went wrong, please contact our store"));
-          setState(() {
-            _showFullLoader = false;
-          });
-        }
-      } else if (intentResponse.status == PaymentResponseStatus.failed) {
-        if (app_debug) {
-          print(intentResponse.errorMessage);
-        }
-        showEdgeAlertWith(context,
-            title: trans(context, "Error"), desc: intentResponse.errorMessage);
-        setState(() {
-          _showFullLoader = false;
-        });
-      } else {
-        setState(() {
-          _showFullLoader = false;
-        });
-      }
-    }
+    CheckoutSession.getInstance.paymentType
+        .pay(context, state: this, taxRate: _taxRate);
   }
 }

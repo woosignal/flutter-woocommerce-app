@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,6 +10,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 
 class CheckoutPaymentTypePage extends StatefulWidget {
@@ -26,6 +28,12 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
   @override
   void initState() {
     super.initState();
+
+    if (CheckoutSession.getInstance.paymentType == null) {
+      if (getPaymentTypes() != null && getPaymentTypes().length > 0) {
+        CheckoutSession.getInstance.paymentType = getPaymentTypes().first;
+      }
+    }
   }
 
   @override
@@ -78,12 +86,16 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                       width: 60,
                                       fit: BoxFit.fitHeight,
                                       alignment: Alignment.center),
-                                  title: Text(getPaymentTypes()[index].name,
+                                  title: Text(getPaymentTypes()[index].desc,
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .subhead),
                                   selected: true,
-                                  trailing: Icon(Icons.check),
+                                  trailing: (CheckoutSession
+                                              .getInstance.paymentType ==
+                                          getPaymentTypes()[index]
+                                      ? Icon(Icons.check)
+                                      : null),
                                   onTap: () {
                                     CheckoutSession.getInstance.paymentType =
                                         getPaymentTypes()[index];

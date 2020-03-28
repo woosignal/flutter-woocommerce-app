@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,20 +10,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/products.dart' as WS;
-import 'package:woosignal/woosignal.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 
 class BrowseCategoryPage extends StatefulWidget {
-  BrowseCategoryPage();
+  final ProductCategory productCategory;
+  const BrowseCategoryPage({Key key, @required this.productCategory})
+      : super(key: key);
 
   @override
-  _BrowseCategoryPageState createState() => _BrowseCategoryPageState();
+  _BrowseCategoryPageState createState() =>
+      _BrowseCategoryPageState(productCategory);
 }
 
 class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
-  _BrowseCategoryPageState();
+  _BrowseCategoryPageState(this._selectedCategory);
 
   List<WS.Product> _products = [];
   var _productsController = ScrollController();
@@ -44,6 +47,11 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
     _shouldStopRequests = false;
     waitForNextRequest = false;
 
+    _fetchProductsForCategory();
+    _addScrollListener();
+  }
+
+  _addScrollListener() async {
     _productsController.addListener(() {
       double maxScroll = _productsController.position.maxScrollExtent;
       double currentScroll = _productsController.position.pixels;
@@ -55,44 +63,35 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
         if (waitForNextRequest) {
           return;
         }
-        WooSignal.getInstance(config: wsConfig).then((wcStore) {
-          waitForNextRequest = true;
-          _page = _page + 1;
-          wcStore
-              .getProducts(perPage: 50, page: _page, status: "publish")
-              .then((products) {
-            waitForNextRequest = false;
-            if (products.length == 0) {
-              _shouldStopRequests = true;
-            }
-            _products.addAll(products.toList());
-            setState(() {});
-          });
-        });
+
+        _fetchMoreProducts();
       }
     });
   }
 
-  _fetchProductsForCategory() {
-    WooSignal.getInstance(config: wsConfig).then((wcStore) {
-      wcStore
-          .getProducts(category: _selectedCategory.id.toString(), perPage: 50)
-          .then((products) {
-        _products = products;
-        setState(() {
-          _isLoading = false;
-        });
-      });
+  _fetchMoreProducts() async {
+    waitForNextRequest = true;
+    List<WS.Product> products = await appWooSignal((api) {
+      return api.getProducts(perPage: 50, page: _page, status: "publish");
     });
+    _products.addAll(products);
+    waitForNextRequest = false;
+    _page = _page + 1;
+
+    waitForNextRequest = false;
+    if (products.length == 0) {
+      _shouldStopRequests = true;
+    }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_isLoading) {
-      _selectedCategory = ModalRoute.of(context).settings.arguments;
-      _fetchProductsForCategory();
-    }
+  _fetchProductsForCategory() async {
+    _products = await appWooSignal((api) {
+      return api.getProducts(
+          category: _selectedCategory.id.toString(), perPage: 50);
+    });
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

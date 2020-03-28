@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,6 +10,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/models/billing_details.dart';
+import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/models/customer_address.dart';
+import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:label_storemax/app_country_options.dart';
 
@@ -82,27 +86,34 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
     wsModalBottom(context,
         title: trans(context, "Select a country"),
         bodyWidget: Expanded(
-          child: ListView.builder(
-              itemCount: appCountryOptions.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map<String, String> strName = appCountryOptions[index];
+          child: ListView.separated(
+            itemCount: appCountryOptions.length,
+            itemBuilder: (BuildContext context, int index) {
+              Map<String, String> strName = appCountryOptions[index];
 
-                return InkWell(
-                  child: Container(
-                    child: Text(strName["name"],
-                        style: Theme.of(context).primaryTextTheme.body2),
-                    padding: EdgeInsets.only(top: 25, bottom: 25),
-                  ),
-                  splashColor: Colors.grey,
-                  highlightColor: Colors.black12,
-                  onTap: () {
-                    setState(() {
-                      _strBillingCountry = strName["name"];
-                      Navigator.of(context).pop();
-                    });
-                  },
-                );
-              }),
+              return InkWell(
+                child: Container(
+                  child: Text(strName["name"],
+                      style: Theme.of(context).primaryTextTheme.body2),
+                  padding: EdgeInsets.only(top: 25, bottom: 25),
+                ),
+                splashColor: Colors.grey,
+                highlightColor: Colors.black12,
+                onTap: () {
+                  setState(() {
+                    _strBillingCountry = strName["name"];
+                    Navigator.of(context).pop();
+                  });
+                },
+              );
+            },
+            separatorBuilder: (cxt, i) {
+              return Divider(
+                height: 0,
+                color: Colors.black12,
+              );
+            },
+          ),
         ));
   }
 

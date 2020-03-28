@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,6 +10,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:label_storemax/pages/error_page.dart';
+import 'package:woosignal/models/response/order.dart';
+import 'package:woosignal/models/response/product_category.dart';
+import 'package:woosignal/models/response/products.dart';
 import 'labelconfig.dart';
 import 'package:label_storemax/pages/checkout_details.dart';
 import 'package:label_storemax/pages/home.dart';
@@ -32,7 +36,7 @@ import 'package:label_storemax/helpers/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -46,43 +50,106 @@ void main() async {
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new HomePage(),
         '/cart': (BuildContext context) => new CartPage(),
-        '/browse-category': (BuildContext context) => new BrowseCategoryPage(),
-        '/product-search': (BuildContext context) => new BrowseSearchPage(),
-        '/product-detail': (BuildContext context) => new ProductDetailPage(),
+        '/error': (BuildContext context) => new ErrorPage(),
         '/checkout': (BuildContext context) => new CheckoutConfirmationPage(),
-        '/checkout-status': (BuildContext context) => new CheckoutStatusPage(),
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case '/browse-category':
+            if (settings.arguments != null) {
+              final ProductCategory category =
+                  settings.arguments as ProductCategory;
+              return PageTransition(
+                child: BrowseCategoryPage(productCategory: category),
+                type: PageTransitionType.fade,
+              );
+            }
+            return PageTransition(
+              child: ErrorPage(),
+              type: PageTransitionType.fade,
+            );
+
+          case '/product-search':
+            if (settings.arguments != null) {
+              final String search = settings.arguments as String;
+              return PageTransition(
+                child: BrowseSearchPage(search: search),
+                type: PageTransitionType.fade,
+              );
+            }
+            return PageTransition(
+              child: ErrorPage(),
+              type: PageTransitionType.fade,
+            );
+
+          case '/product-detail':
+            if (settings.arguments != null) {
+              final Product product = settings.arguments as Product;
+              return PageTransition(
+                child: ProductDetailPage(product: product),
+                type: PageTransitionType.rightToLeftWithFade,
+              );
+            }
+            return PageTransition(
+              child: ErrorPage(),
+              type: PageTransitionType.fade,
+            );
+
+          case '/checkout-status':
+            if (settings.arguments != null) {
+              final Order order = settings.arguments as Order;
+              return PageTransition(
+                child: CheckoutStatusPage(order: order),
+                type: PageTransitionType.rightToLeftWithFade,
+              );
+            }
+            return PageTransition(
+              child: ErrorPage(),
+              type: PageTransitionType.fade,
+            );
+
           case '/home-menu':
             return PageTransition(
-                child: HomeMenuPage(), type: PageTransitionType.leftToRight);
+              child: HomeMenuPage(),
+              type: PageTransitionType.leftToRightWithFade,
+            );
+
           case '/checkout-details':
             return PageTransition(
-                child: CheckoutDetailsPage(),
-                type: PageTransitionType.downToUp);
+              child: CheckoutDetailsPage(),
+              type: PageTransitionType.downToUp,
+            );
+
           case '/about':
             return PageTransition(
-                child: AboutPage(), type: PageTransitionType.leftToRight);
+              child: AboutPage(),
+              type: PageTransitionType.leftToRightWithFade,
+            );
 
           case '/checkout-payment-type':
             return PageTransition(
-                child: CheckoutPaymentTypePage(),
-                type: PageTransitionType.downToUp);
+              child: CheckoutPaymentTypePage(),
+              type: PageTransitionType.downToUp,
+            );
 
           case '/checkout-shipping-type':
             return PageTransition(
-                child: CheckoutShippingTypePage(),
-                type: PageTransitionType.downToUp);
+              child: CheckoutShippingTypePage(),
+              type: PageTransitionType.downToUp,
+            );
 
           case '/home-search':
             return PageTransition(
-                child: HomeSearchPage(), type: PageTransitionType.downToUp);
+              child: HomeSearchPage(),
+              type: PageTransitionType.downToUp,
+            );
           default:
             return null;
         }
       },
-      supportedLocales: [Locale('en')],
+      supportedLocales: [
+        Locale('en'),
+      ],
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -106,14 +173,15 @@ void main() async {
           ),
         ),
         appBarTheme: AppBarTheme(
-            color: Colors.white,
-            textTheme: textThemeAppBar(),
-            elevation: 0.0,
-            brightness: Brightness.light,
-            iconTheme: IconThemeData(color: Colors.black),
-            actionsIconTheme: IconThemeData(
-              color: Colors.black,
-            )),
+          color: Colors.white,
+          textTheme: textThemeAppBar(),
+          elevation: 0.0,
+          brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Colors.black),
+          actionsIconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+        ),
         accentColor: Colors.black,
         accentTextTheme: textThemeAccent(),
         textTheme: textThemeMain(),

@@ -90,5 +90,7 @@
   "About Us": "About Us",
   "Something went wrong": "Something went wrong",
   "Product variation does not exist": "Product variation does not exist",
-  "This variation is unavailable": "This variation is unavailable"
+  "This variation is unavailable": "This variation is unavailable",
+  "Sorry, something went wrong": "Sorry, something went wrong",
+  "Back": "Back"
 }

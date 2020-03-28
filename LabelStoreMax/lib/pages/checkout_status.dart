@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,19 +10,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:woosignal/models/response/products.dart' as WS;
 import 'package:woosignal/models/response/order.dart' as WS;
 
+import '../widgets/woosignal_ui.dart';
+
 class CheckoutStatusPage extends StatefulWidget {
-  CheckoutStatusPage();
+  final WS.Order order;
+  CheckoutStatusPage({Key key, @required this.order}) : super(key: key);
 
   @override
-  _CheckoutStatusState createState() => _CheckoutStatusState();
+  _CheckoutStatusState createState() => _CheckoutStatusState(this.order);
 }
 
 class _CheckoutStatusState extends State<CheckoutStatusPage> {
-  _CheckoutStatusState();
+  _CheckoutStatusState(this._order);
 
   WS.Order _order;
 
@@ -32,18 +34,12 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _order = ModalRoute.of(context).settings.arguments;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Image.network(app_logo_url, height: 100),
+        title: storeLogo(height: 60),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),

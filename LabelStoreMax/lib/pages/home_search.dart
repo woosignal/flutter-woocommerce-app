@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,8 +10,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
-import 'package:label_storemax/widgets/woosignal_ui.dart';
+import 'package:label_storemax/widgets/buttons.dart';
+
+import '../widgets/woosignal_ui.dart';
 
 class HomeSearchPage extends StatefulWidget {
   HomeSearchPage();
@@ -45,8 +46,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Image.network(app_logo_url,
-            height: 60, alignment: Alignment.center),
+        title: storeLogo(height: 60),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -60,14 +60,21 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
               margin: EdgeInsets.only(bottom: 20),
             ),
             TextField(
-                controller: _txtSearchController,
-                style: Theme.of(context).primaryTextTheme.display2,
-                keyboardType: TextInputType.text,
-                autocorrect: false,
-                autofocus: true,
-                textCapitalization: TextCapitalization.sentences),
-            wsPrimaryButton(context,
-                title: trans(context, "Search"), action: _actionSearch)
+              controller: _txtSearchController,
+              style: Theme.of(context).primaryTextTheme.display2,
+              keyboardType: TextInputType.text,
+              autocorrect: false,
+              autofocus: true,
+              textCapitalization: TextCapitalization.sentences,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: wsPrimaryButton(
+                context,
+                title: trans(context, "Search"),
+                action: _actionSearch,
+              ),
+            )
           ],
         ),
       ),

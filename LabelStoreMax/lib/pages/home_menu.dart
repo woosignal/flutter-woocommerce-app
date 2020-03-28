@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,9 +9,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:label_storemax/labelconfig.dart';
-import 'package:label_storemax/widgets/woosignal_ui.dart';
+import 'package:label_storemax/widgets/menu_item.dart';
 import 'package:label_storemax/helpers/tools.dart';
+
+import '../widgets/woosignal_ui.dart';
 
 class HomeMenuPage extends StatefulWidget {
   HomeMenuPage();
@@ -50,7 +51,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.network(app_logo_url, height: 100),
+            storeLogo(height: 100),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

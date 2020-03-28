@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,19 +10,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:woosignal/models/response/products.dart' as WS;
-import 'package:woosignal/woosignal.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 
 class BrowseSearchPage extends StatefulWidget {
-  BrowseSearchPage();
+  final String search;
+  BrowseSearchPage({Key key, @required this.search}) : super(key: key);
 
   @override
-  _BrowseSearchState createState() => _BrowseSearchState();
+  _BrowseSearchState createState() => _BrowseSearchState(search);
 }
 
 class _BrowseSearchState extends State<BrowseSearchPage> {
-  _BrowseSearchState();
+  _BrowseSearchState(this._search);
 
   var _productsController = ScrollController();
   List<WS.Product> _products = [];
@@ -41,6 +42,11 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
     _shouldStopRequests = false;
     waitForNextRequest = false;
 
+    _fetchProductsForSearch(_page);
+    _addScrollListener();
+  }
+
+  _addScrollListener() async {
     _productsController.addListener(() {
       double maxScroll = _productsController.position.maxScrollExtent;
       double currentScroll = _productsController.position.pixels;
@@ -57,33 +63,20 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
     });
   }
 
-  _fetchProductsForSearch(int page) {
-    WooSignal.getInstance(config: wsConfig).then((wcStore) {
-      waitForNextRequest = true;
+  _fetchProductsForSearch(int page) async {
+    waitForNextRequest = true;
+    List<WS.Product> products = await appWooSignal((api) {
       _page = _page + 1;
-      wcStore
-          .getProducts(
-              search: _search, perPage: 100, page: page, status: "publish")
-          .then((products) {
-        waitForNextRequest = false;
-        if (products.length == 0) {
-          _shouldStopRequests = true;
-        }
-        _products.addAll(products.toList());
-        setState(() {
-          _isLoading = false;
-        });
-      });
+      return api.getProducts(
+          search: _search, perPage: 100, page: page, status: "publish");
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_isLoading) {
-      _search = ModalRoute.of(context).settings.arguments;
-      _fetchProductsForSearch(_page);
+    if (products.length == 0) {
+      _shouldStopRequests = true;
     }
+    setState(() {
+      _products.addAll(products.toList());
+      _isLoading = false;
+    });
   }
 
   @override
@@ -122,10 +115,14 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
                         ? GridView.count(
                             crossAxisCount: 2,
                             controller: _productsController,
-                            children: List.generate(_products.length, (index) {
-                              return wsCardProductItem(context,
-                                  index: index, product: _products[index]);
-                            }))
+                            children: List.generate(
+                              _products.length,
+                              (index) {
+                                return wsCardProductItem(context,
+                                    index: index, product: _products[index]);
+                              },
+                            ),
+                          )
                         : wsNoResults(context)),
                     flex: 1,
                   ),

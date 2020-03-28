@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
+import 'package:label_storemax/widgets/menu_item.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:package_info/package_info.dart';
 

@@ -3,7 +3,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -14,7 +14,7 @@
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 1.0
+ VERSION - 2.0
  https://woosignal.com
  */
 
@@ -22,7 +22,8 @@
 
 const app_name = "MyApp";
 
-const app_key = "your app key";
+const app_key =
+    "app_affb6434339b34443a297c2e40a3edab7102137e6d67de9abfe612b749bd";
 
 const app_logo_url = "https://woosignal.com/images/120x120_woosignal.png";
 
@@ -31,7 +32,9 @@ const app_privacy_url = "https://yourdomain.com/privacy";
 
 /*<! ------ STRIPE (OPTIONAL) ------!>*/
 
-const app_stripe_account = "your StripeAccount key"; // Your StripeAccount key from WooSignal
+const app_stripe_account =
+    "acct_1DNNUgADlQ9NE89O"; // Your StripeAccount key from WooSignal
+
 const app_stripe_live_mode = false; // SET true for live payments
 
 /*<! ------ APP CURRENCY ------!>*/
@@ -40,7 +43,7 @@ const app_currency_symbol = "\£";
 const app_currency_iso = "gbp";
 const app_locales_supported = ['en'];
 
-const paymentMethods = ["Stripe"];
+const app_payment_methods = ["Stripe", "RazorPay"];
 
 /*<! ------ DEBUGGER ENABLED ------!>*/
 

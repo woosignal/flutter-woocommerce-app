@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2019 WooSignal. All rights reserved.
+//  Copyright © 2020 WooSignal. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,9 +10,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/widgets/app_loader.dart';
+import 'package:label_storemax/widgets/cart_icon.dart';
 import 'package:woosignal/models/response/product_category.dart' as WS;
 import 'package:woosignal/models/response/products.dart' as WS;
-import 'package:woosignal/woosignal.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,9 +43,33 @@ class _HomePageState extends State<HomePage> {
     _isLoading = true;
 
     _page = 1;
+    _home();
+    _addScrollListener();
+  }
+
+  _home() async {
+    await _fetchProducts();
+    await _fetchCategories();
     _shouldStopRequests = false;
     waitForNextRequest = false;
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
+  _fetchProducts() async {
+    _products = await appWooSignal((api) {
+      return api.getProducts(perPage: 50, page: _page, status: "publish");
+    });
+  }
+
+  _fetchCategories() async {
+    _categories = await appWooSignal((api) {
+      return api.getProductCategories();
+    });
+  }
+
+  _addScrollListener() async {
     _productsController.addListener(() {
       double maxScroll = _productsController.position.maxScrollExtent;
       double currentScroll = _productsController.position.pixels;
@@ -56,86 +81,75 @@ class _HomePageState extends State<HomePage> {
         if (waitForNextRequest) {
           return;
         }
-        WooSignal.getInstance(config: wsConfig).then((wcStore) {
-          waitForNextRequest = true;
-          _page = _page + 1;
-          wcStore
-              .getProducts(perPage: 50, page: _page, status: "publish")
-              .then((products) {
-            waitForNextRequest = false;
-            if (products.length == 0) {
-              _shouldStopRequests = true;
-            }
-            _products.addAll(products.toList());
-            setState(() {});
-          });
-        });
+        _fetchMoreProducts();
       }
     });
+  }
 
-    WooSignal.getInstance(config: wsConfig).then((wcStore) {
-      wcStore
-          .getProducts(perPage: 50, page: _page, status: "publish")
-          .then((products) {
-        _products = products;
-        setState(() {
-          _isLoading = false;
-        });
-      });
-
-      wcStore.getProductCategories().then((categories) {
-        _categories = categories;
-        setState(() {});
-      });
+  _fetchMoreProducts() async {
+    waitForNextRequest = true;
+    List<WS.Product> products = await appWooSignal((api) {
+      _page = _page + 1;
+      return api.getProducts(perPage: 50, page: _page, status: "publish");
+    });
+    if (products.length == 0) {
+      _shouldStopRequests = true;
+    }
+    setState(() {
+      _products.addAll(products.toList());
     });
   }
 
   void _modalBottomSheetMenu() {
     showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (builder) {
-          return new Container(
-            height: double.infinity,
-            width: double.infinity - 10,
-            color: Colors.transparent,
-            child: new Container(
-              padding: EdgeInsets.only(top: 25, left: 18, right: 18),
-              decoration: new BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(10.0),
-                      topRight: const Radius.circular(10.0))),
-              child: Column(
-                children: <Widget>[
-                  Text(trans(context, "Categories"),
-                      style: Theme.of(context).primaryTextTheme.display1,
-                      textAlign: TextAlign.left),
-                  Expanded(
-                      child: new ListView.builder(
-                          itemCount: _categories.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              child: Container(
-                                child: Text(_categories[index].name),
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: HexColor("#f2f2f2"),
-                                            width: 2))),
-                              ),
-                              onTap: () {
-                                Navigator.pushNamed(context, "/browse-category",
-                                    arguments: _categories[index]);
-                              },
-                            );
-                          }))
-                ],
-              ),
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (builder) {
+        return new Container(
+          height: double.infinity,
+          width: double.infinity - 10,
+          color: Colors.transparent,
+          child: new Container(
+            padding: EdgeInsets.only(top: 25, left: 18, right: 18),
+            decoration: new BoxDecoration(
+              color: Colors.white,
+              borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(10.0),
+                  topRight: const Radius.circular(10.0)),
             ),
-          );
-        });
+            child: Column(
+              children: <Widget>[
+                Text(trans(context, "Categories"),
+                    style: Theme.of(context).primaryTextTheme.display1,
+                    textAlign: TextAlign.left),
+                Expanded(
+                  child: new ListView.builder(
+                      itemCount: _categories.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          child: Container(
+                            child: Text(_categories[index].name),
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                    color: HexColor("#f2f2f2"), width: 2),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, "/browse-category",
+                                arguments: _categories[index]);
+                          },
+                        );
+                      }),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -207,12 +221,13 @@ class _HomePageState extends State<HomePage> {
                 ? Expanded(child: showAppLoader())
                 : Expanded(
                     child: GridView.count(
-                        controller: _productsController,
-                        crossAxisCount: 2,
-                        children: List.generate(_products.length, (index) {
-                          return wsCardProductItem(context,
-                              index: index, product: _products[index]);
-                        })),
+                      controller: _productsController,
+                      crossAxisCount: 2,
+                      children: List.generate(_products.length, (index) {
+                        return wsCardProductItem(context,
+                            index: index, product: _products[index]);
+                      }),
+                    ),
                     flex: 1,
                   )),
           ],
