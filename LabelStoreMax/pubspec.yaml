@@ -23,7 +23,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  woosignal: ^1.0.2
+  woosignal: ^1.0.3
   woosignal_stripe: ^0.0.4
   shared_preferences: ^0.5.6+3
   cached_network_image: ^2.0.0
@@ -32,6 +32,7 @@ dependencies:
   flutter_money_formatter: ^0.8.3
   flutter_web_browser: ^0.11.0
   dio: ^3.0.9
+  intl: ^0.15.8
   flutter_swiper: ^1.1.6
   edge_alert: ^0.0.1
   status_alert: ^0.1.1
@@ -55,7 +56,7 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/icon/appicon.png"
-  
+
 dependency_overrides:
   intl:
 
