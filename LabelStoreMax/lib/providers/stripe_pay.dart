@@ -22,9 +22,7 @@ import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal_stripe/woosignal_stripe.dart';
 
 stripePay(context,
-    {@required CheckoutConfirmationPageState state,
-      TaxRate taxRate}) async {
-
+    {@required CheckoutConfirmationPageState state, TaxRate taxRate}) async {
   // CONFIGURE STRIPE
   FlutterStripePayment.setStripeSettings(
       stripeAccount: app_stripe_account, liveMode: app_stripe_live_mode);
@@ -37,7 +35,6 @@ stripePay(context,
 
     // CHECKOUT HELPER
     await checkout(taxRate, (total, billingDetails, cart) async {
-
       Map<String, dynamic> address = {
         "name": billingDetails.billingAddress.nameFull(),
         "line1": billingDetails.shippingAddress.addressLine,
@@ -83,8 +80,8 @@ stripePay(context,
           showEdgeAlertWith(
             context,
             title: trans(context, "Error"),
-            desc:
-            trans(context, "Something went wrong, please contact our store"),
+            desc: trans(
+                context, "Something went wrong, please contact our store"),
           );
           state.reloadState(showLoader: false);
         }

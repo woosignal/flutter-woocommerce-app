@@ -30,7 +30,8 @@ class CheckoutConfirmationPage extends StatefulWidget {
 class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   CheckoutConfirmationPageState();
 
-  GlobalKey<CheckoutConfirmationPageState> _key = GlobalKey<CheckoutConfirmationPageState>();
+  GlobalKey<CheckoutConfirmationPageState> _key =
+      GlobalKey<CheckoutConfirmationPageState>();
 
   bool _showFullLoader;
 

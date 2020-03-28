@@ -8,11 +8,12 @@ import 'package:label_storemax/providers/stripe_pay.dart';
 List<PaymentType> arrPaymentMethods = [
   addPayment(
     PaymentType(
-        id: 1,
-        name: "Stripe",
-        desc: "Debit or Credit Card",
-        assetImage: "dark_powered_by_stripe.png",
-        pay: stripePay,),
+      id: 1,
+      name: "Stripe",
+      desc: "Debit or Credit Card",
+      assetImage: "dark_powered_by_stripe.png",
+      pay: stripePay,
+    ),
   ),
 
   // e.g. add more here

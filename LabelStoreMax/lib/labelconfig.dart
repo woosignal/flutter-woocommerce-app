@@ -23,7 +23,7 @@
 const app_name = "MyApp";
 
 const app_key =
-    "app_affb6434339b34443a297c2e40a3edab7102137e6d67de9abfe612b749bd";
+    "app key";
 
 const app_logo_url = "https://woosignal.com/images/120x120_woosignal.png";
 
@@ -33,7 +33,7 @@ const app_privacy_url = "https://yourdomain.com/privacy";
 /*<! ------ STRIPE (OPTIONAL) ------!>*/
 
 const app_stripe_account =
-    "acct_1DNNUgADlQ9NE89O"; // Your StripeAccount key from WooSignal
+    "Your Stripe Account"; // Your StripeAccount key from WooSignal
 
 const app_stripe_live_mode = false; // SET true for live payments
 
@@ -43,7 +43,7 @@ const app_currency_symbol = "\£";
 const app_currency_iso = "gbp";
 const app_locales_supported = ['en'];
 
-const app_payment_methods = ["Stripe", "RazorPay"];
+const app_payment_methods = ["Stripe"];
 
 /*<! ------ DEBUGGER ENABLED ------!>*/
 

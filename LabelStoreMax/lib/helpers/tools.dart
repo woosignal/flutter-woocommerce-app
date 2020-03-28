@@ -192,7 +192,10 @@ bool isNumeric(String str) {
   return double.tryParse(str) != null;
 }
 
-checkout(TaxRate taxRate, Function(String total, BillingDetails billingDetails, Cart cart) completeCheckout) async {
+checkout(
+    TaxRate taxRate,
+    Function(String total, BillingDetails billingDetails, Cart cart)
+        completeCheckout) async {
   String cartTotal = await CheckoutSession.getInstance
       .total(withFormat: false, taxRate: taxRate);
   BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails;
