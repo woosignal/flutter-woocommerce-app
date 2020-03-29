@@ -99,6 +99,7 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
                 style: Theme.of(context).primaryTextTheme.title)
           ],
         ),
+        centerTitle: true,
       ),
       body: SafeArea(
         minimum: safeAreaDefault(),

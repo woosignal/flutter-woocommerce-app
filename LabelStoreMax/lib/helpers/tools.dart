@@ -215,7 +215,7 @@ double strCal({@required String sum}) {
 Future<double> workoutShippingCostWC({@required String sum}) async {
   List<CartLineItem> cartLineItem = await Cart.getInstance.getCart();
   sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
-    return cartLineItem.length.toString();
+    return cartLineItem.map((f) => f.quantity).toList().reduce((i,d) => i+d).toString();
   });
 
   String orderTotal = await Cart.getInstance.getSubtotal();

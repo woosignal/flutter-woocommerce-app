@@ -114,6 +114,7 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
                 style: Theme.of(context).primaryTextTheme.title)
           ],
         ),
+        centerTitle: true,
       ),
       body: SafeArea(
         minimum: safeAreaDefault(),
