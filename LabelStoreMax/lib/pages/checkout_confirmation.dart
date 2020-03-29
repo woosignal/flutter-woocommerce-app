@@ -217,6 +217,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                         color: Colors.black12,
                         thickness: 1,
                       ),
+                      wsCheckoutSubtotalWidgetFB(
+                          title: trans(context, "Subtotal")),
                       widgetCheckoutMeta(context,
                           title: trans(context, "Shipping fee"),
                           amount:
@@ -227,8 +229,6 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       (_taxRate != null
                           ? wsCheckoutTaxAmountWidgetFB(taxRate: _taxRate)
                           : Container()),
-                      wsCheckoutSubtotalWidgetFB(
-                          title: trans(context, "Subtotal")),
                       wsCheckoutTotalWidgetFB(
                           title: trans(context, "Total"), taxRate: _taxRate),
                       Divider(

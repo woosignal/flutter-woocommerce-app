@@ -231,6 +231,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.6"
+  math_expressions:
+    dependency: "direct main"
+    description:
+      name: math_expressions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   meta:
     dependency: transitive
     description:

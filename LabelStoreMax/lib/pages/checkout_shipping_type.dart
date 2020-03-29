@@ -17,6 +17,7 @@ import 'package:label_storemax/models/customer_address.dart';
 import 'package:label_storemax/models/shipping_type.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
+import 'package:math_expressions/math_expressions.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 import 'package:label_storemax/app_country_options.dart';
 
@@ -59,11 +60,9 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         .firstWhere((c) => c['name'] == country, orElse: () => null)["code"];
 
     for (final shipping in wsShipping) {
-      Locations location = shipping.locations
-          .firstWhere((ws) => (ws.code == postalCode || ws.code == countryCode),
-              orElse: () {
-        return null;
-      });
+      Locations location = shipping.locations.firstWhere(
+          (ws) => (ws.code == postalCode || ws.code == countryCode),
+          orElse: () => null);
 
       if (location != null) {
         _shipping = shipping;
@@ -129,21 +128,48 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   Future<String> _getShippingPrice(int index) async {
     double total = 0;
     List<CartLineItem> cartLineItem = await Cart.getInstance.getCart();
+
+    total +=
+        await workoutShippingCostWC(sum: _wsShippingOptions[index]['cost']);
+
     switch (_wsShippingOptions[index]['method_id']) {
       case "flat_rate":
         FlatRate flatRate = (_wsShippingOptions[index]['object'] as FlatRate);
-        cartLineItem.forEach((c) {
-          ShippingClasses shippingClasses = flatRate.shippingClasses
-              .firstWhere((s) => s.id == c.shippingClassId, orElse: () => null);
+
+        if (cartLineItem.firstWhere(
+                (t) => t.shippingClassId == null || t.shippingClassId == "0",
+                orElse: () => null) !=
+            null) {
+          total += await workoutShippingClassCostWC(
+              sum: flatRate.classCost,
+              cartLineItem: cartLineItem
+                  .where((t) =>
+                      t.shippingClassId == null || t.shippingClassId == "0")
+                  .toList());
+        }
+
+        List<CartLineItem> cItemsWithShippingClasses = cartLineItem
+            .where((t) => t.shippingClassId != null && t.shippingClassId != "0")
+            .toList();
+        for (int i = 0; i < cItemsWithShippingClasses.length; i++) {
+          ShippingClasses shippingClasses = flatRate.shippingClasses.firstWhere(
+              (d) => d.id == cItemsWithShippingClasses[i].shippingClassId,
+              orElse: () => null);
           if (shippingClasses != null) {
-            total = total + double.parse(shippingClasses.cost);
+            double classTotal = await workoutShippingClassCostWC(
+                sum: shippingClasses.cost,
+                cartLineItem: cartLineItem
+                    .where((g) => g.shippingClassId == shippingClasses.id)
+                    .toList());
+            total += classTotal;
           }
-        });
+        }
+
         break;
       default:
         break;
     }
-    return (total + double.parse(_wsShippingOptions[index]['cost'])).toString();
+    return (total).toString();
   }
 
   @override

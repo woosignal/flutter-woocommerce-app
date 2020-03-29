@@ -22,7 +22,8 @@
 
 const app_name = "MyApp";
 
-const app_key = "My app key";
+const app_key =
+    "My App Key";
 
 const app_logo_url = "https://woosignal.com/images/120x120_woosignal.png";
 

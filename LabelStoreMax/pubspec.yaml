@@ -36,6 +36,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   edge_alert: ^0.0.1
   status_alert: ^0.1.1
+  math_expressions: ^2.0.0
   fluttertoast: ^4.0.1
   flutter_spinkit: ^4.1.2+1
   flutter_launcher_icons: ^0.7.4

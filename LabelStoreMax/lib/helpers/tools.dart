@@ -16,11 +16,13 @@ import 'package:label_storemax/labelconfig.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:label_storemax/models/billing_details.dart';
 import 'package:label_storemax/models/cart.dart';
+import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/payment_type.dart';
 import 'package:html/parser.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:math_expressions/math_expressions.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
@@ -201,4 +203,154 @@ checkout(
   BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails;
   Cart cart = Cart.getInstance;
   return await completeCheckout(cartTotal, billingDetails, cart);
+}
+
+double strCal({@required String sum}) {
+  Parser p = Parser();
+  Expression exp = p.parse(sum);
+  ContextModel cm = ContextModel();
+  return exp.evaluate(EvaluationType.REAL, cm);
+}
+
+Future<double> workoutShippingCostWC({@required String sum}) async {
+  List<CartLineItem> cartLineItem = await Cart.getInstance.getCart();
+  sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
+    return cartLineItem.length.toString();
+  });
+
+  String orderTotal = await Cart.getInstance.getSubtotal();
+
+  sum = sum.replaceAllMapped(defaultRegex(r'\[fee(.*)]'), (replace) {
+    if (replace.groupCount < 1) {
+      return "()";
+    }
+    String newSum = replace.group(1);
+
+    // PERCENT
+    String percentVal = newSum.replaceAllMapped(
+        defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
+      if (replacePercent != null && replacePercent.groupCount >= 1) {
+        String strPercentage = "( (" +
+            orderTotal.toString() +
+            " * " +
+            replacePercent.group(1).toString() +
+            ") / 100 )";
+        double calPercentage = strCal(sum: strPercentage);
+
+        // MIN
+        String strRegexMinFee = r'min_fee="([0-9\.]+)"';
+        if (defaultRegex(strRegexMinFee).hasMatch(newSum)) {
+          String strMinFee =
+              defaultRegex(strRegexMinFee).firstMatch(newSum).group(1) ?? "0";
+          double doubleMinFee = double.parse(strMinFee);
+
+          if (calPercentage < doubleMinFee) {
+            return "(" + doubleMinFee.toString() + ")";
+          }
+          newSum = newSum.replaceAll(defaultRegex(strRegexMinFee), "");
+        }
+
+        // MAX
+        String strRegexMaxFee = r'max_fee="([0-9\.]+)"';
+        if (defaultRegex(strRegexMaxFee).hasMatch(newSum)) {
+          String strMaxFee =
+              defaultRegex(strRegexMaxFee).firstMatch(newSum).group(1) ?? "0";
+          double doubleMaxFee = double.parse(strMaxFee);
+
+          if (calPercentage > doubleMaxFee) {
+            return "(" + doubleMaxFee.toString() + ")";
+          }
+          newSum = newSum.replaceAll(defaultRegex(strRegexMaxFee), "");
+        }
+        return "(" + calPercentage.toString() + ")";
+      }
+      return "";
+    });
+
+    percentVal = percentVal
+        .replaceAll(
+            defaultRegex(r'(min_fee=\"([0-9\.]+)\"|max_fee=\"([0-9\.]+)\")'),
+            "")
+        .trim();
+    return percentVal;
+  });
+
+  return strCal(sum: sum);
+}
+
+Future<double> workoutShippingClassCostWC(
+    {@required String sum, List<CartLineItem> cartLineItem}) async {
+  sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
+    return cartLineItem.length.toString();
+  });
+
+  String orderTotal = await Cart.getInstance.getSubtotal();
+
+  sum = sum.replaceAllMapped(defaultRegex(r'\[fee(.*)]'), (replace) {
+    if (replace.groupCount < 1) {
+      return "()";
+    }
+    String newSum = replace.group(1);
+
+    // PERCENT
+    String percentVal = newSum.replaceAllMapped(
+        defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
+      if (replacePercent != null && replacePercent.groupCount >= 1) {
+        String strPercentage = "( (" +
+            orderTotal.toString() +
+            " * " +
+            replacePercent.group(1).toString() +
+            ") / 100 )";
+        double calPercentage = strCal(sum: strPercentage);
+
+        // MIN
+        String strRegexMinFee = r'min_fee="([0-9\.]+)"';
+        if (defaultRegex(strRegexMinFee).hasMatch(newSum)) {
+          String strMinFee =
+              defaultRegex(strRegexMinFee).firstMatch(newSum).group(1) ?? "0";
+          double doubleMinFee = double.parse(strMinFee);
+
+          if (calPercentage < doubleMinFee) {
+            return "(" + doubleMinFee.toString() + ")";
+          }
+          newSum = newSum.replaceAll(defaultRegex(strRegexMinFee), "");
+        }
+
+        // MAX
+        String strRegexMaxFee = r'max_fee="([0-9\.]+)"';
+        if (defaultRegex(strRegexMaxFee).hasMatch(newSum)) {
+          String strMaxFee =
+              defaultRegex(strRegexMaxFee).firstMatch(newSum).group(1) ?? "0";
+          double doubleMaxFee = double.parse(strMaxFee);
+
+          if (calPercentage > doubleMaxFee) {
+            return "(" + doubleMaxFee.toString() + ")";
+          }
+          newSum = newSum.replaceAll(defaultRegex(strRegexMaxFee), "");
+        }
+        return "(" + calPercentage.toString() + ")";
+      }
+      return "";
+    });
+
+    percentVal = percentVal
+        .replaceAll(
+            defaultRegex(r'(min_fee=\"([0-9\.]+)\"|max_fee=\"([0-9\.]+)\")'),
+            "")
+        .trim();
+    return percentVal;
+  });
+
+  return strCal(sum: sum);
+}
+
+RegExp defaultRegex(
+  String pattern, {
+  bool strict,
+}) {
+  return new RegExp(
+    pattern,
+    caseSensitive: strict ?? false,
+    multiLine: false,
+  );
 }
