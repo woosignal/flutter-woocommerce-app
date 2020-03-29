@@ -180,7 +180,7 @@ Widget wsCardProductItem(BuildContext context, {int index, Product product}) {
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(5)),
+            color: Colors.white, borderRadius: BorderRadius.circular(5),),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
@@ -207,6 +207,8 @@ Widget wsCardProductItem(BuildContext context, {int index, Product product}) {
               child: Text(
                 product.name,
                 style: Theme.of(context).textTheme.body1,
+                overflow: TextOverflow.clip,
+                maxLines: 1,
               ),
               flex: 1,
             )

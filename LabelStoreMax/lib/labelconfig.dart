@@ -22,8 +22,7 @@
 
 const app_name = "MyApp";
 
-const app_key =
-    "My App Key";
+const app_key = "My App Key";
 
 const app_logo_url = "https://woosignal.com/images/120x120_woosignal.png";
 
@@ -32,8 +31,7 @@ const app_privacy_url = "https://yourdomain.com/privacy";
 
 /*<! ------ STRIPE (OPTIONAL) ------!>*/
 
-const app_stripe_account =
-    "Your Stripe Account"; // Your StripeAccount key from WooSignal
+const app_stripe_account = "Your Stripe Account"; // Your StripeAccount key from WooSignal
 
 const app_stripe_live_mode = false; // SET true for live payments
 
