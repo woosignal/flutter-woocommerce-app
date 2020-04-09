@@ -281,7 +281,7 @@ Future<double> workoutShippingCostWC({@required String sum}) async {
 Future<double> workoutShippingClassCostWC(
     {@required String sum, List<CartLineItem> cartLineItem}) async {
   sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
-    return cartLineItem.length.toString();
+    return cartLineItem.map((f) => f.quantity).toList().reduce((i,d) => i+d).toString();
   });
 
   String orderTotal = await Cart.getInstance.getSubtotal();
