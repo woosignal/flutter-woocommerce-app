@@ -94,7 +94,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
               return InkWell(
                 child: Container(
                   child: Text(strName["name"],
-                      style: Theme.of(context).primaryTextTheme.body2),
+                      style: Theme.of(context).primaryTextTheme.bodyText1),
                   padding: EdgeInsets.only(top: 25, bottom: 25),
                 ),
                 splashColor: Colors.grey,
@@ -124,7 +124,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(trans(context, "Billing & Shipping Details"),
-            style: Theme.of(context).primaryTextTheme.subhead),
+            style: Theme.of(context).primaryTextTheme.subtitle1),
       ),
       body: SafeArea(
         minimum: safeAreaDefault(),
@@ -228,7 +228,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Text(trans(context, "Remember my details"),
-                            style: Theme.of(context).primaryTextTheme.body2),
+                            style: Theme.of(context).primaryTextTheme.bodyText1),
                         Checkbox(
                           value: valRememberDetails,
                           onChanged: (bool value) {

@@ -36,7 +36,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         title: Text(trans(context, "Menu"),
-            style: Theme.of(context).primaryTextTheme.subhead),
+            style: Theme.of(context).primaryTextTheme.subtitle1),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {

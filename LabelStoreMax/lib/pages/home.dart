@@ -115,12 +115,12 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               borderRadius: new BorderRadius.only(
                   topLeft: const Radius.circular(10.0),
-                  topRight: const Radius.circular(10.0)),
+                  topRight: const Radius.circular(10.0),),
             ),
             child: Column(
               children: <Widget>[
                 Text(trans(context, "Categories"),
-                    style: Theme.of(context).primaryTextTheme.display1,
+                    style: Theme.of(context).primaryTextTheme.headline4,
                     textAlign: TextAlign.left),
                 Expanded(
                   child: new ListView.builder(
@@ -197,10 +197,10 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(trans(context, "Shop") + " / ",
-                        style: Theme.of(context).primaryTextTheme.subhead),
+                        style: Theme.of(context).primaryTextTheme.subtitle1),
                     Text(
                       trans(context, "Newest"),
-                      style: Theme.of(context).primaryTextTheme.body1,
+                      style: Theme.of(context).primaryTextTheme.bodyText2,
                     )
                   ],
                 ),
@@ -209,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                   height: 60,
                   child: Text(
                     trans(context, "Browse categories"),
-                    style: Theme.of(context).primaryTextTheme.body2,
+                    style: Theme.of(context).primaryTextTheme.bodyText1,
                   ),
                   onPressed: () {
                     _modalBottomSheetMenu();

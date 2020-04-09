@@ -131,7 +131,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                 children: <Widget>[
                   Center(
                     child: Text(trans(context, "Checkout"),
-                        style: Theme.of(context).primaryTextTheme.subhead),
+                        style: Theme.of(context).primaryTextTheme.subtitle1),
                   ),
                   Expanded(
                     child: Container(
@@ -251,7 +251,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
                         trans(context, "One moment") + "...",
-                        style: Theme.of(context).primaryTextTheme.subhead,
+                        style: Theme.of(context).primaryTextTheme.subtitle1,
                       ),
                     )
                   ],

@@ -27,7 +27,7 @@ Widget wsCartIcon(BuildContext context) {
                       else
                         return new Text(
                           snapshot.data.length.toString(),
-                          style: Theme.of(context).primaryTextTheme.body2,
+                          style: Theme.of(context).primaryTextTheme.bodyText1,
                           textAlign: TextAlign.center,
                         );
                   }

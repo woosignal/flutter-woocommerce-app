@@ -94,7 +94,7 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(trans(context, "Search results for"),
-                style: Theme.of(context).primaryTextTheme.subhead),
+                style: Theme.of(context).primaryTextTheme.subtitle1),
             Text("\"" + _search + "\"",
                 style: Theme.of(context).primaryTextTheme.title)
           ],

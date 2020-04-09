@@ -179,7 +179,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(trans(context, "Shipping Methods"),
-            style: Theme.of(context).primaryTextTheme.subhead),
+            style: Theme.of(context).primaryTextTheme.subtitle1),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),

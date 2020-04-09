@@ -11,7 +11,6 @@
 import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:label_storemax/models/billing_details.dart';
@@ -57,22 +56,6 @@ String truncateWithEllipsis(int cutoff, String myString) {
   return (myString.length <= cutoff)
       ? myString
       : '${myString.substring(0, cutoff)}...';
-}
-
-void showToastWith({String message, String statusType}) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 3,
-      backgroundColor:
-          (statusType == "error" ? HexColor("#b5123a") : Colors.grey),
-      textColor: (statusType == "error" ? Colors.white : Colors.black),
-      fontSize: 16.0);
-}
-
-void showToastNetworkError() {
-  showToastWith(message: "Oops, something went wrong");
 }
 
 showStatusAlert(context,

@@ -37,7 +37,7 @@ Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
           child: Text(text2,
               style: Theme.of(context)
                   .primaryTextTheme
-                  .body2
+                  .bodyText1
                   .copyWith(fontSize: 16, color: Colors.black87)),
         ),
         flex: 3,
@@ -50,7 +50,7 @@ Widget wsNoResults(BuildContext context) {
   return Column(
     children: <Widget>[
       Text(trans(context, "No results"),
-          style: Theme.of(context).primaryTextTheme.body1),
+          style: Theme.of(context).primaryTextTheme.bodyText2),
     ],
   );
 }
@@ -70,7 +70,7 @@ Widget wsCheckoutRow(BuildContext context,
           children: <Widget>[
             Padding(
               child: Text(heading,
-                  style: Theme.of(context).primaryTextTheme.body1),
+                  style: Theme.of(context).primaryTextTheme.bodyText2),
               padding: EdgeInsets.only(bottom: 8),
             ),
             Row(
@@ -84,7 +84,7 @@ Widget wsCheckoutRow(BuildContext context,
                     leadImage,
                     Container(
                       child: Text(leadTitle,
-                          style: Theme.of(context).primaryTextTheme.subhead,
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           softWrap: false),
@@ -122,12 +122,12 @@ Widget wsTextEditingRow(BuildContext context,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          child: Text(heading, style: Theme.of(context).primaryTextTheme.body2),
+          child: Text(heading, style: Theme.of(context).primaryTextTheme.bodyText1),
           padding: EdgeInsets.only(bottom: 2),
         ),
         TextField(
             controller: controller,
-            style: Theme.of(context).primaryTextTheme.subhead,
+            style: Theme.of(context).primaryTextTheme.subtitle1,
             keyboardType: keyboardType ?? TextInputType.text,
             autocorrect: false,
             autofocus: shouldAutoFocus ?? false,
@@ -146,13 +146,13 @@ Widget widgetCheckoutMeta(BuildContext context, {String title, String amount}) {
     children: <Widget>[
       Flexible(
         child: Container(
-          child: Text(title, style: Theme.of(context).primaryTextTheme.body1),
+          child: Text(title, style: Theme.of(context).primaryTextTheme.bodyText2),
         ),
         flex: 3,
       ),
       Flexible(
         child: Container(
-          child: Text(amount, style: Theme.of(context).primaryTextTheme.body2),
+          child: Text(amount, style: Theme.of(context).primaryTextTheme.bodyText1),
         ),
         flex: 3,
       )
@@ -198,7 +198,7 @@ Widget wsCardProductItem(BuildContext context, {int index, Product product}) {
             Flexible(
               child: Text(
                 formatStringCurrency(total: product.price),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.left,
               ),
               flex: 1,
@@ -206,7 +206,7 @@ Widget wsCardProductItem(BuildContext context, {int index, Product product}) {
             Expanded(
               child: Text(
                 product.name,
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
                 overflow: TextOverflow.clip,
                 maxLines: 1,
               ),
@@ -244,7 +244,7 @@ void wsModalBottom(BuildContext context,
                     Text(title,
                         style: Theme.of(context)
                             .primaryTextTheme
-                            .display1
+                            .headline2
                             .copyWith(fontSize: 20),
                         textAlign: TextAlign.left),
                     bodyWidget,
@@ -414,13 +414,13 @@ Widget wsCardCartItem(BuildContext context,
                     children: <Widget>[
                       Text(
                         cartLineItem.name,
-                        style: Theme.of(context).primaryTextTheme.subhead,
+                        style: Theme.of(context).primaryTextTheme.subtitle1,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                       ),
                       (cartLineItem.variationOptions != null
                           ? Text(cartLineItem.variationOptions,
-                              style: Theme.of(context).primaryTextTheme.body2)
+                              style: Theme.of(context).primaryTextTheme.bodyText1)
                           : Container()),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -432,11 +432,11 @@ Widget wsCardCartItem(BuildContext context,
                                   : trans(context, "In Stock")),
                               style: (cartLineItem.stockStatus == "outofstock"
                                   ? Theme.of(context).textTheme.caption
-                                  : Theme.of(context).primaryTextTheme.body1)),
+                                  : Theme.of(context).primaryTextTheme.bodyText2)),
                           Text(
                               formatDoubleCurrency(
                                   total: double.parse(cartLineItem.total)),
-                              style: Theme.of(context).primaryTextTheme.subhead,
+                              style: Theme.of(context).primaryTextTheme.subtitle1,
                               textAlign: TextAlign.center)
                         ],
                       ),

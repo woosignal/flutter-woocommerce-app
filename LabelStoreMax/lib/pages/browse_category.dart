@@ -109,7 +109,7 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(trans(context, "Browse"),
-                style: Theme.of(context).primaryTextTheme.subhead),
+                style: Theme.of(context).primaryTextTheme.subtitle1),
             Text(_selectedCategory.name,
                 style: Theme.of(context).primaryTextTheme.title)
           ],

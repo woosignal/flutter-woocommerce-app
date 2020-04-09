@@ -9,8 +9,9 @@
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
+//
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/data/order_wc.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
@@ -55,7 +56,7 @@ stripePay(context,
       });
 
       if (rsp == null) {
-        showToastNetworkError();
+        showEdgeAlertWith(context,title: "Oops!", desc: "Something went wrong, please try again.", icon: Icons.payment, style: EdgeAlertStyle.WARNING);
         state.reloadState(showLoader: false);
         return;
       }
