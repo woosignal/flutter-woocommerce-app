@@ -94,7 +94,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
               return InkWell(
                 child: Container(
                   child: Text(strName["name"],
-                      style: Theme.of(context).primaryTextTheme.bodyText1),
+                      style: Theme.of(context).primaryTextTheme.body2),
                   padding: EdgeInsets.only(top: 25, bottom: 25),
                 ),
                 splashColor: Colors.grey,
@@ -123,8 +123,11 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(trans(context, "Billing & Shipping Details"),
-            style: Theme.of(context).primaryTextTheme.subtitle1),
+        title: Text(
+          trans(context, "Billing & Shipping Details"),
+          style: Theme.of(context).primaryTextTheme.subhead,
+        ),
+        centerTitle: true,
       ),
       body: SafeArea(
         minimum: safeAreaDefault(),
@@ -146,33 +149,43 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                         Row(
                           children: <Widget>[
                             Flexible(
-                              child: wsTextEditingRow(context,
-                                  heading: trans(context, "First Name"),
-                                  controller: _txtBillingFirstName,
-                                  shouldAutoFocus: true),
+                              child: wsTextEditingRow(
+                                context,
+                                heading: trans(context, "First Name"),
+                                controller: _txtBillingFirstName,
+                                shouldAutoFocus: true,
+                              ),
                             ),
                             Flexible(
-                              child: wsTextEditingRow(context,
-                                  heading: trans(context, "Last Name"),
-                                  controller: _txtBillingLastName),
+                              child: wsTextEditingRow(
+                                context,
+                                heading: trans(context, "Last Name"),
+                                controller: _txtBillingLastName,
+                              ),
                             ),
                           ],
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         ),
-                        wsTextEditingRow(context,
-                            heading: trans(context, "Address Line"),
-                            controller: _txtBillingAddressLine),
+                        wsTextEditingRow(
+                          context,
+                          heading: trans(context, "Address Line"),
+                          controller: _txtBillingAddressLine,
+                        ),
                         Row(children: <Widget>[
                           Flexible(
-                            child: wsTextEditingRow(context,
-                                heading: trans(context, "City"),
-                                controller: _txtBillingCity),
+                            child: wsTextEditingRow(
+                              context,
+                              heading: trans(context, "City"),
+                              controller: _txtBillingCity,
+                            ),
                           ),
                           Flexible(
-                            child: wsTextEditingRow(context,
-                                heading: trans(context, "Postal code"),
-                                controller: _txtBillingPostalCode),
+                            child: wsTextEditingRow(
+                              context,
+                              heading: trans(context, "Postal code"),
+                              controller: _txtBillingPostalCode,
+                            ),
                           ),
                         ]),
                         Row(
@@ -228,7 +241,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Text(trans(context, "Remember my details"),
-                            style: Theme.of(context).primaryTextTheme.bodyText1),
+                            style: Theme.of(context).primaryTextTheme.body2),
                         Checkbox(
                           value: valRememberDetails,
                           onChanged: (bool value) {
@@ -266,6 +279,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                         CheckoutSession.getInstance.clearBillingAddress();
                       }
 
+                      CheckoutSession.getInstance.shippingType = null;
                       Navigator.pop(context);
                     }),
                   ],

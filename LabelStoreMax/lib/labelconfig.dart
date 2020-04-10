@@ -23,6 +23,8 @@
 const app_name = "MyApp";
 
 const app_key = "Your App Key";
+// Your App key from WooSignal
+// link: https://woosignal.com/dashboard/apps
 
 const app_logo_url = "https://woosignal.com/images/120x120_woosignal.png";
 
@@ -31,9 +33,15 @@ const app_privacy_url = "https://yourdomain.com/privacy";
 
 /*<! ------ STRIPE (OPTIONAL) ------!>*/
 
-const app_stripe_account = "Your Stripe Account"; // Your StripeAccount key from WooSignal
+const app_stripe_account = "Your Stripe Key";
+// Your StripeAccount key from WooSignal
+// link: https://woosignal.com/dashboard
 
-const app_stripe_live_mode = false; // SET true for live payments
+const app_stripe_live_mode = false;
+// For Live Payments follow the below steps
+// #1 SET the above to true for live payments
+// #2 Next visit https://woosignal.com/dashboard
+// #3 Then change "Environment for Stripe" to Live mode
 
 /*<! ------ APP CURRENCY ------!>*/
 

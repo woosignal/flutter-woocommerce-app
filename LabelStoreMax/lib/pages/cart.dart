@@ -161,7 +161,7 @@ class _CartPageState extends State<CartPage> {
             child: Align(
               child: Padding(
                 child: Text(trans(context, "Clear Cart"),
-                    style: Theme.of(context).primaryTextTheme.bodyText1),
+                    style: Theme.of(context).primaryTextTheme.body2),
                 padding: EdgeInsets.only(right: 8),
               ),
               alignment: Alignment.centerLeft,
@@ -190,7 +190,7 @@ class _CartPageState extends State<CartPage> {
                             alignment: Alignment.center),
                         Padding(
                           child: Text(trans(context, "Empty Basket"),
-                              style: Theme.of(context).primaryTextTheme.bodyText2),
+                              style: Theme.of(context).primaryTextTheme.body1),
                           padding: EdgeInsets.only(top: 10),
                         )
                       ],

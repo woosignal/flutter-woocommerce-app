@@ -40,7 +40,7 @@ TextTheme textThemeAccent() {
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800),
-    bodyText1: new TextStyle(
+    body2: new TextStyle(
         color: HexColor("#606060"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700),
@@ -89,7 +89,7 @@ TextTheme textThemePrimary() {
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800),
-    bodyText1: new TextStyle(
+    body2: new TextStyle(
         color: HexColor("#606060"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700),
@@ -122,7 +122,7 @@ TextTheme textThemeMain() {
     headline: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     title: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     subhead: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    bodyText1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    body2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     body1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     caption: new TextStyle(
         color: Colors.redAccent, fontSize: 16, fontFamily: appFontFamily),
@@ -142,7 +142,7 @@ TextTheme textThemeAppBar() {
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w900),
     subhead: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    bodyText1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    body2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     body1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     caption: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     button: new TextStyle(color: Colors.black, fontFamily: appFontFamily),

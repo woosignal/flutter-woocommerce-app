@@ -56,7 +56,11 @@ stripePay(context,
       });
 
       if (rsp == null) {
-        showEdgeAlertWith(context,title: "Oops!", desc: "Something went wrong, please try again.", icon: Icons.payment, style: EdgeAlertStyle.WARNING);
+        showEdgeAlertWith(context,
+            title: "Oops!",
+            desc: "Something went wrong, please try again.",
+            icon: Icons.payment,
+            style: EdgeAlertStyle.WARNING);
         state.reloadState(showLoader: false);
         return;
       }

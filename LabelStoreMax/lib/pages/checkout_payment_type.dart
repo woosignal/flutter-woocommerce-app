@@ -43,7 +43,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(trans(context, "Payment Method"),
-            style: Theme.of(context).primaryTextTheme.subtitle1),
+            style: Theme.of(context).primaryTextTheme.subhead),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
