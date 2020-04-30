@@ -25,8 +25,7 @@ environment:
 dependencies:
   woosignal: ^1.0.6
   woosignal_stripe: ^0.0.4
-  wp_json_api:
-    path: ../../wp_json_mobile_api
+  wp_json_api: ^0.1.1
   shared_preferences: ^0.5.6+3
   cached_network_image: ^2.0.0
   page_transition: ^1.1.5

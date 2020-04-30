@@ -75,3 +75,5 @@
 /ios/Flutter/Flutter.podspec
 /ios/Podfile.lock
 /ios/Podfile
+
+.flutter-plugins-dependencies
