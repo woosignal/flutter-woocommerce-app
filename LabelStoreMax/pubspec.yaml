@@ -25,21 +25,27 @@ environment:
 dependencies:
   woosignal: ^1.0.6
   woosignal_stripe: ^0.0.4
+  wp_json_api:
+    path: ../../wp_json_mobile_api
   shared_preferences: ^0.5.6+3
   cached_network_image: ^2.0.0
   page_transition: ^1.1.5
   package_info: ^0.4.0+16
+  url_launcher: ^5.4.5
   flutter_money_formatter: ^0.8.3
+  platform_alert_dialog: ^1.0.0+2
   flutter_web_browser: ^0.11.0
   dio: ^3.0.9
-  intl: ^0.15.8
+  intl: ^0.16.1
   flutter_swiper: ^1.1.6
   edge_alert: ^0.0.1
+  bubble_tab_indicator: ^0.1.4
   status_alert: ^0.1.1
   math_expressions: ^2.0.0
   flutter_spinkit: ^4.1.2+1
   flutter_launcher_icons: ^0.7.4
   html: ^0.14.0+3
+  braintree_payment: ^1.2.4
   flutter:
     sdk: flutter
 

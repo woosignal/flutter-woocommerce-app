@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -305,9 +305,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                               itemCount: _product.images.length,
                               viewportFraction: 0.85,
                               scale: 0.9,
-                              onTap: (i) {
-                                setState(() {});
-                              },
+                              onTap: _productImageTapped,
                             ),
                           ),
                         ),
@@ -540,5 +538,13 @@ class _ProductDetailState extends State<ProductDetailPage> {
           style: EdgeAlertStyle.WARNING,
           icon: Icons.local_shipping);
     }
+  }
+
+  _productImageTapped(int i) {
+    Map<String, dynamic> obj = {
+      "index": i,
+      "images": _product.images.map((f) => f.src).toList()
+    };
+    Navigator.pushNamed(context, "/product-images", arguments: obj);
   }
 }

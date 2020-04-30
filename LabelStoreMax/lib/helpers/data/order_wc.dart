@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,6 +10,7 @@
 
 import 'dart:io';
 
+import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/billing_details.dart';
 import 'package:label_storemax/models/cart.dart';
@@ -32,6 +33,8 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate}) async {
   orderWC.setPaid = true;
   orderWC.status = "pending";
   orderWC.currency = app_currency_iso.toUpperCase();
+  orderWC.customerId =
+      (use_wp_login == true) ? int.parse(await readUserId()) : 0;
 
   List<LineItems> lineItems = [];
   List<CartLineItem> cartItems = await Cart.getInstance.getCart();
@@ -44,7 +47,8 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate}) async {
       tmpLineItem.variationId = cartItem.variationId;
     }
 
-    tmpLineItem.total = cartItem.total;
+    tmpLineItem.total =
+        (cartItem.quantity > 1 ? cartItem.getCartTotal() : cartItem.subtotal);
     tmpLineItem.subtotal = cartItem.subtotal;
 
     lineItems.add(tmpLineItem);

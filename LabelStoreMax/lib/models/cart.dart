@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -66,7 +66,7 @@ class Cart {
     if (withFormat != null && withFormat == true) {
       return formatDoubleCurrency(total: total);
     }
-    return total.toString();
+    return total.toStringAsFixed(2);
   }
 
   Future<String> getSubtotal({bool withFormat}) async {
@@ -78,7 +78,7 @@ class Cart {
     if (withFormat != null && withFormat == true) {
       return formatDoubleCurrency(total: subtotal);
     }
-    return subtotal.toString();
+    return subtotal.toStringAsFixed(2);
   }
 
   void updateQuantity(
@@ -176,6 +176,6 @@ class Cart {
     if (shippingTotal != 0) {
       total += ((double.parse(taxRate.rate) * shippingTotal) / 100);
     }
-    return (total).toString();
+    return (total).toStringAsFixed(2);
   }
 }

@@ -29,6 +29,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  braintree_payment:
+    dependency: "direct main"
+    description:
+      name: braintree_payment
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.4"
+  bubble_tab_indicator:
+    dependency: "direct main"
+    description:
+      name: bubble_tab_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -195,7 +209,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0+2"
+    version: "0.12.0+4"
   http_parser:
     dependency: transitive
     description:
@@ -217,6 +231,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.0"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1+1"
   matcher:
     dependency: transitive
     description:
@@ -287,6 +308,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1"
+  platform_alert_dialog:
+    dependency: "direct main"
+    description:
+      name: platform_alert_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+2"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   quiver:
     dependency: transitive
     description:
@@ -389,7 +424,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.11"
+    version: "0.2.15"
   transformer_page_view:
     dependency: transitive
     description:
@@ -404,6 +439,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  url_launcher:
+    dependency: "direct main"
+    description:
+      name: url_launcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.4.5"
+  url_launcher_macos:
+    dependency: transitive
+    description:
+      name: url_launcher_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+5"
+  url_launcher_platform_interface:
+    dependency: transitive
+    description:
+      name: url_launcher_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
+  url_launcher_web:
+    dependency: transitive
+    description:
+      name: url_launcher_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1+2"
   uuid:
     dependency: transitive
     description:
@@ -432,6 +495,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
+  wp_json_api:
+    dependency: "direct main"
+    description:
+      path: "../../wp_json_mobile_api"
+      relative: true
+    source: path
+    version: "0.0.2"
   xml:
     dependency: transitive
     description:

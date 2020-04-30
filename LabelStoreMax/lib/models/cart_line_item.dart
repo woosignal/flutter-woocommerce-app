@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -43,6 +43,10 @@ class CartLineItem {
       this.subtotal,
       this.total,
       this.metaData});
+
+  String getCartTotal() {
+    return (quantity * double.parse(subtotal)).toString();
+  }
 
   CartLineItem.fromJson(Map<String, dynamic> json)
       : name = json['name'],

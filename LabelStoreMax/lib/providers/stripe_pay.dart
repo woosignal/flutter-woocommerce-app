@@ -3,13 +3,14 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/data/order_wc.dart';
@@ -57,8 +58,8 @@ stripePay(context,
 
       if (rsp == null) {
         showEdgeAlertWith(context,
-            title: "Oops!",
-            desc: "Something went wrong, please try again.",
+            title: trans(context, "Oops!"),
+            desc: trans(context, "Something went wrong, please try again."),
             icon: Icons.payment,
             style: EdgeAlertStyle.WARNING);
         state.reloadState(showLoader: false);
@@ -86,7 +87,9 @@ stripePay(context,
             context,
             title: trans(context, "Error"),
             desc: trans(
-                context, "Something went wrong, please contact our store"),
+                context,
+                trans(
+                    context, "Something went wrong, please contact our store")),
           );
           state.reloadState(showLoader: false);
         }

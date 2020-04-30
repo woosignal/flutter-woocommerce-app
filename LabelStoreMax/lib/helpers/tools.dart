@@ -1,13 +1,14 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:intl/intl.dart';
 import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:html/parser.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
@@ -50,12 +52,6 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}
-
-String truncateWithEllipsis(int cutoff, String myString) {
-  return (myString.length <= cutoff)
-      ? myString
-      : '${myString.substring(0, cutoff)}...';
 }
 
 showStatusAlert(context,
@@ -141,7 +137,7 @@ String formatDoubleCurrency({double total}) {
   return fmf.output.symbolOnLeft;
 }
 
-String formatStringCurrency({String total}) {
+String formatStringCurrency({@required String total}) {
   double tmpVal;
   if (total == null || total == "") {
     tmpVal = 0;
@@ -345,3 +341,112 @@ RegExp defaultRegex(
     multiLine: false,
   );
 }
+
+bool isEmail(String em) {
+  String p =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = new RegExp(p);
+  return regExp.hasMatch(em);
+}
+
+// 6 LENGTH, 1 DIGIT
+bool validPassword(String pw) {
+  String p = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$';
+  RegExp regExp = new RegExp(p);
+  return regExp.hasMatch(pw);
+}
+
+navigatorPush(BuildContext context,
+    {@required String routeName, Object arguments, bool forgetAll = false}) {
+  if (forgetAll) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        routeName, (Route<dynamic> route) => false,
+        arguments: arguments ?? null);
+  } else {
+    Navigator.of(context).pushNamed(routeName, arguments: arguments ?? null);
+  }
+}
+
+PlatformDialogAction dialogAction(BuildContext context,
+    {@required title, ActionType actionType, Function() action}) {
+  return PlatformDialogAction(
+    actionType: actionType ?? ActionType.Default,
+    child: Text(title ?? ""),
+    onPressed: action ??
+        () {
+          Navigator.of(context).pop();
+        },
+  );
+}
+
+showPlatformAlertDialog(BuildContext context,
+    {String title,
+    String subtitle,
+    List<PlatformDialogAction> actions,
+    bool showDoneAction = true}) {
+  if (showDoneAction) {
+    actions
+        .add(dialogAction(context, title: trans(context, "Done"), action: () {
+      Navigator.of(context).pop();
+    }));
+  }
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return PlatformAlertDialog(
+        title: Text(title ?? ""),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(subtitle ?? ""),
+            ],
+          ),
+        ),
+        actions: actions,
+      );
+    },
+  );
+}
+
+DateTime parseDateTime(String strDate) {
+  return DateTime.parse(strDate);
+}
+
+DateFormat formatDateTime(String format) {
+  return DateFormat(format);
+}
+
+String dateFormatted({@required String date, @required String formatType}) {
+  return formatDateTime(formatType).format(parseDateTime(date));
+}
+
+enum FormatType {
+  DateTime,
+
+  Date,
+
+  Time,
+}
+
+String formatForDateTime(FormatType formatType) {
+  switch (formatType) {
+    case FormatType.Date:
+      {
+        return "yyyy-MM-dd";
+      }
+    case FormatType.DateTime:
+      {
+        return "dd-MM-yyyy hh:mm a";
+      }
+    case FormatType.Time:
+      {
+        return "hh:mm a";
+      }
+    default:
+      {
+        return "";
+      }
+  }
+}
+
+String capitalize(String s) => s[0].toUpperCase() + s.substring(1);

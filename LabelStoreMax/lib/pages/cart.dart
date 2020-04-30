@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -184,10 +184,11 @@ class _CartPageState extends State<CartPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Image(
-                            image: AssetImage("assets/images/cart_empty.png"),
-                            height: 150,
-                            alignment: Alignment.center),
+                        Icon(
+                          Icons.shopping_cart,
+                          size: 100,
+                          color: Colors.black45,
+                        ),
                         Padding(
                           child: Text(trans(context, "Empty Basket"),
                               style: Theme.of(context).primaryTextTheme.body1),

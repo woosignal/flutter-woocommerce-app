@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -49,6 +49,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
     _getTaxes();
   }
+
+  _fetchUserId() {}
 
   void reloadState({bool showLoader}) {
     setState(() {
@@ -110,7 +112,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
           icon: Icons.local_shipping);
       return;
     }
-    Navigator.pushNamed(context, "/checkout-shipping-type");
+    Navigator.pushNamed(context, "/checkout-shipping-type").then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -156,12 +160,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                           .billingDetails.billingAddress
                                           .hasMissingFields()
                                       ? "Billing address is incomplete"
-                                      : truncateWithEllipsis(
-                                          30,
-                                          CheckoutSession.getInstance
-                                              .billingDetails.billingAddress
-                                              .addressFull(),
-                                        )),
+                                      : CheckoutSession.getInstance
+                                          .billingDetails.billingAddress
+                                          .addressFull()),
                                   action: _actionCheckoutDetails,
                                   showBorderBottom: true)
                               : wsCheckoutRow(context,

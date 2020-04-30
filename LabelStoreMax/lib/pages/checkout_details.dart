@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -28,12 +28,12 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   _CheckoutDetailsPageState();
 
   // BILLING TEXT CONTROLLERS
-  TextEditingController _txtBillingFirstName;
-  TextEditingController _txtBillingLastName;
-  TextEditingController _txtBillingAddressLine;
-  TextEditingController _txtBillingCity;
-  TextEditingController _txtBillingPostalCode;
-  TextEditingController _txtBillingEmailAddress;
+  TextEditingController _txtShippingFirstName;
+  TextEditingController _txtShippingLastName;
+  TextEditingController _txtShippingAddressLine;
+  TextEditingController _txtShippingCity;
+  TextEditingController _txtShippingPostalCode;
+  TextEditingController _txtShippingEmailAddress;
   String _strBillingCountry;
 
   var valRememberDetails = true;
@@ -42,12 +42,12 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   void initState() {
     super.initState();
 
-    _txtBillingFirstName = TextEditingController();
-    _txtBillingLastName = TextEditingController();
-    _txtBillingAddressLine = TextEditingController();
-    _txtBillingCity = TextEditingController();
-    _txtBillingPostalCode = TextEditingController();
-    _txtBillingEmailAddress = TextEditingController();
+    _txtShippingFirstName = TextEditingController();
+    _txtShippingLastName = TextEditingController();
+    _txtShippingAddressLine = TextEditingController();
+    _txtShippingCity = TextEditingController();
+    _txtShippingPostalCode = TextEditingController();
+    _txtShippingEmailAddress = TextEditingController();
 
     if (CheckoutSession.getInstance.billingDetails.billingAddress == null) {
       CheckoutSession.getInstance.billingDetails.initSession();
@@ -55,12 +55,12 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       CheckoutSession.getInstance.billingDetails.billingAddress.initAddress();
     }
     BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails;
-    _txtBillingFirstName.text = billingDetails.billingAddress.firstName;
-    _txtBillingLastName.text = billingDetails.billingAddress.lastName;
-    _txtBillingAddressLine.text = billingDetails.billingAddress.addressLine;
-    _txtBillingCity.text = billingDetails.billingAddress.city;
-    _txtBillingPostalCode.text = billingDetails.billingAddress.postalCode;
-    _txtBillingEmailAddress.text = billingDetails.billingAddress.emailAddress;
+    _txtShippingFirstName.text = billingDetails.billingAddress.firstName;
+    _txtShippingLastName.text = billingDetails.billingAddress.lastName;
+    _txtShippingAddressLine.text = billingDetails.billingAddress.addressLine;
+    _txtShippingCity.text = billingDetails.billingAddress.city;
+    _txtShippingPostalCode.text = billingDetails.billingAddress.postalCode;
+    _txtShippingEmailAddress.text = billingDetails.billingAddress.emailAddress;
     _strBillingCountry = billingDetails.billingAddress.country;
 
     valRememberDetails = billingDetails.rememberDetails ?? true;
@@ -72,12 +72,12 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         await CheckoutSession.getInstance.getBillingAddress();
     if (sfCustomerAddress != null) {
       CustomerAddress customerAddress = sfCustomerAddress;
-      _txtBillingFirstName.text = customerAddress.firstName;
-      _txtBillingLastName.text = customerAddress.lastName;
-      _txtBillingAddressLine.text = customerAddress.addressLine;
-      _txtBillingCity.text = customerAddress.city;
-      _txtBillingPostalCode.text = customerAddress.postalCode;
-      _txtBillingEmailAddress.text = customerAddress.emailAddress;
+      _txtShippingFirstName.text = customerAddress.firstName;
+      _txtShippingLastName.text = customerAddress.lastName;
+      _txtShippingAddressLine.text = customerAddress.addressLine;
+      _txtShippingCity.text = customerAddress.city;
+      _txtShippingPostalCode.text = customerAddress.postalCode;
+      _txtShippingEmailAddress.text = customerAddress.emailAddress;
       _strBillingCountry = customerAddress.country;
     }
   }
@@ -152,7 +152,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                               child: wsTextEditingRow(
                                 context,
                                 heading: trans(context, "First Name"),
-                                controller: _txtBillingFirstName,
+                                controller: _txtShippingFirstName,
                                 shouldAutoFocus: true,
                               ),
                             ),
@@ -160,7 +160,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                               child: wsTextEditingRow(
                                 context,
                                 heading: trans(context, "Last Name"),
-                                controller: _txtBillingLastName,
+                                controller: _txtShippingLastName,
                               ),
                             ),
                           ],
@@ -170,21 +170,21 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                         wsTextEditingRow(
                           context,
                           heading: trans(context, "Address Line"),
-                          controller: _txtBillingAddressLine,
+                          controller: _txtShippingAddressLine,
                         ),
                         Row(children: <Widget>[
                           Flexible(
                             child: wsTextEditingRow(
                               context,
                               heading: trans(context, "City"),
-                              controller: _txtBillingCity,
+                              controller: _txtShippingCity,
                             ),
                           ),
                           Flexible(
                             child: wsTextEditingRow(
                               context,
                               heading: trans(context, "Postal code"),
-                              controller: _txtBillingPostalCode,
+                              controller: _txtShippingPostalCode,
                             ),
                           ),
                         ]),
@@ -194,7 +194,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                               child: wsTextEditingRow(context,
                                   heading: trans(context, "Email address"),
                                   keyboardType: TextInputType.emailAddress,
-                                  controller: _txtBillingEmailAddress),
+                                  controller: _txtShippingEmailAddress),
                             ),
                             Flexible(
                                 child: Padding(
@@ -256,14 +256,15 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                         title: trans(context, "USE SHIPPING ADDRESS"),
                         action: () {
                       CustomerAddress customerAddress = new CustomerAddress();
-                      customerAddress.firstName = _txtBillingFirstName.text;
-                      customerAddress.lastName = _txtBillingLastName.text;
-                      customerAddress.addressLine = _txtBillingAddressLine.text;
-                      customerAddress.city = _txtBillingCity.text;
-                      customerAddress.postalCode = _txtBillingPostalCode.text;
+                      customerAddress.firstName = _txtShippingFirstName.text;
+                      customerAddress.lastName = _txtShippingLastName.text;
+                      customerAddress.addressLine =
+                          _txtShippingAddressLine.text;
+                      customerAddress.city = _txtShippingCity.text;
+                      customerAddress.postalCode = _txtShippingPostalCode.text;
                       customerAddress.country = _strBillingCountry;
                       customerAddress.emailAddress =
-                          _txtBillingEmailAddress.text;
+                          _txtShippingEmailAddress.text;
 
                       CheckoutSession.getInstance.billingDetails
                           .shippingAddress = customerAddress;

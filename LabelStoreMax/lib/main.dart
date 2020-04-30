@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,10 +10,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
+import 'package:label_storemax/pages/account_billing_details.dart';
+import 'package:label_storemax/pages/account_detail.dart';
+import 'package:label_storemax/pages/account_landing.dart';
+import 'package:label_storemax/pages/account_order_detail.dart';
+import 'package:label_storemax/pages/account_profile_update.dart';
+import 'package:label_storemax/pages/account_register.dart';
+import 'package:label_storemax/pages/account_shipping_details.dart';
 import 'package:label_storemax/pages/error_page.dart';
+import 'package:label_storemax/pages/product_image_viewer_page.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/products.dart';
+import 'package:wp_json_api/wp_json_api.dart';
 import 'labelconfig.dart';
 import 'package:label_storemax/pages/checkout_details.dart';
 import 'package:label_storemax/pages/home.dart';
@@ -41,17 +51,36 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  String initialRoute = (use_wp_login) ? "/account-landing" : "/home";
+  WPJsonAPI.instance.initWith(
+      baseUrl: app_base_url,
+      shouldDebug: app_debug,
+      wpJsonPath: app_wp_api_path);
+  if (await authCheck() == true) {
+    initialRoute = "/home";
+  }
+
   runApp(
     new MaterialApp(
       title: app_name,
       color: Colors.white,
       debugShowCheckedModeBanner: false,
-      initialRoute: "/home",
+      initialRoute: initialRoute,
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new HomePage(),
         '/cart': (BuildContext context) => new CartPage(),
         '/error': (BuildContext context) => new ErrorPage(),
         '/checkout': (BuildContext context) => new CheckoutConfirmationPage(),
+        '/account-landing': (BuildContext context) => new AccountLandingPage(),
+        '/account-register': (BuildContext context) =>
+            new AccountRegistrationPage(),
+        '/account-detail': (BuildContext context) => new AccountDetailPage(),
+        '/account-update': (BuildContext context) =>
+            new AccountProfileUpdatePage(),
+        '/account-billing-details': (BuildContext context) =>
+            new AccountBillingDetailsPage(),
+        '/account-shipping-details': (BuildContext context) =>
+            new AccountShippingDetailsPage(),
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {
@@ -87,6 +116,30 @@ void main() async {
               final Product product = settings.arguments as Product;
               return PageTransition(
                 child: ProductDetailPage(product: product),
+                type: PageTransitionType.rightToLeftWithFade,
+              );
+            }
+            return PageTransition(
+              child: ErrorPage(),
+              type: PageTransitionType.fade,
+            );
+
+          case '/product-images':
+            if (settings.arguments != null) {
+              final Map<String, dynamic> args = settings.arguments;
+              return PageTransition(
+                  child: ProductImageViewerPage(
+                      initialIndex: args["index"], arrImageSrc: args["images"]),
+                  type: PageTransitionType.fade);
+            }
+            return PageTransition(
+                child: ErrorPage(), type: PageTransitionType.rightToLeft);
+
+          case '/account-order-detail':
+            if (settings.arguments != null) {
+              final int orderId = settings.arguments as int;
+              return PageTransition(
+                child: AccountOrderDetailPage(orderId: orderId),
                 type: PageTransitionType.rightToLeftWithFade,
               );
             }

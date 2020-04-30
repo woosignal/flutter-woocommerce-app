@@ -1,3 +1,11 @@
+## [2.0.1] - 2020-04-30
+
+* Login/register with WordPress
+* Updated product view
+* New account area
+* pubspec.yaml update
+* Bug fixes
+
 ## [2.0.0] - 2020-04-10
 
 * Flutter v1.12.13+hotfix.9 support

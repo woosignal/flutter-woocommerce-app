@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -151,17 +151,18 @@ TextTheme textThemeAppBar() {
 
 ColorScheme colorSchemeButton() {
   return ColorScheme.light(
-      primary: const Color(0xff6200ee),
-      primaryVariant: const Color(0xff3700b3),
-      secondary: const Color(0xff03dac6),
-      secondaryVariant: const Color(0xff018786),
-      surface: Colors.white,
-      background: Colors.white,
-      error: const Color(0xffb00020),
-      onPrimary: Colors.white,
-      onSecondary: Colors.black,
-      onSurface: Colors.black,
-      onBackground: Colors.black,
-      onError: Colors.white,
-      brightness: Brightness.light);
+    primary: const Color(0xff6200ee),
+    primaryVariant: const Color(0xff3700b3),
+    secondary: const Color(0xff03dac6),
+    secondaryVariant: const Color(0xff018786),
+    surface: Colors.white,
+    background: Colors.white,
+    error: const Color(0xffb00020),
+    onPrimary: Colors.white,
+    onSecondary: Colors.black,
+    onSurface: Colors.black,
+    onBackground: Colors.black,
+    onError: Colors.white,
+    brightness: Brightness.light,
+  );
 }

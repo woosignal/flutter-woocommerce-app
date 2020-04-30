@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  Copyright © 2020 WooSignal. All rights reserved.
+//  2020, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -73,27 +73,34 @@ Widget wsCheckoutRow(BuildContext context,
                   style: Theme.of(context).primaryTextTheme.body1),
               padding: EdgeInsets.only(bottom: 8),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    leadImage,
-                    Container(
-                      child: Text(leadTitle,
-                          style: Theme.of(context).primaryTextTheme.subhead,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false),
-                      padding: EdgeInsets.only(left: 15),
-                    )
-                  ],
-                ),
-                Icon(Icons.arrow_forward_ios)
-              ],
+            Flexible(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        leadImage,
+                        Flexible(
+                          child: Container(
+                            child: Text(leadTitle,
+                                style:
+                                    Theme.of(context).primaryTextTheme.subhead,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false),
+                            padding: EdgeInsets.only(left: 15),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
             )
           ],
         ),
@@ -115,23 +122,30 @@ Widget wsTextEditingRow(BuildContext context,
     {heading: String,
     TextEditingController controller,
     bool shouldAutoFocus,
-    TextInputType keyboardType}) {
+    TextInputType keyboardType,
+    bool obscureText}) {
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          child: Text(heading, style: Theme.of(context).primaryTextTheme.body2),
-          padding: EdgeInsets.only(bottom: 2),
+        Flexible(
+          child: Padding(
+            child:
+                Text(heading, style: Theme.of(context).primaryTextTheme.body2),
+            padding: EdgeInsets.only(bottom: 2),
+          ),
         ),
-        TextField(
-            controller: controller,
-            style: Theme.of(context).primaryTextTheme.subhead,
-            keyboardType: keyboardType ?? TextInputType.text,
-            autocorrect: false,
-            autofocus: shouldAutoFocus ?? false,
-            textCapitalization: TextCapitalization.sentences)
+        Flexible(
+          child: TextField(
+              controller: controller,
+              style: Theme.of(context).primaryTextTheme.subhead,
+              keyboardType: keyboardType ?? TextInputType.text,
+              autocorrect: false,
+              autofocus: shouldAutoFocus ?? false,
+              obscureText: obscureText ?? false,
+              textCapitalization: TextCapitalization.sentences),
+        )
       ],
     ),
     padding: EdgeInsets.all(2),
@@ -385,6 +399,7 @@ Widget wsCardCartItem(BuildContext context,
     void Function() actionDecrementQuantity,
     void Function() actionRemoveItem}) {
   return Container(
+      margin: EdgeInsets.only(bottom: 7),
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border(
@@ -493,12 +508,13 @@ Widget storeLogo({double height, double width}) {
 
 Widget cachedImage(image, {double height, Widget placeholder, BoxFit fit}) {
   return CachedNetworkImage(
-      imageUrl: image,
-      placeholder: (context, url) =>
-          placeholder ?? new CircularProgressIndicator(),
-      errorWidget: (context, url, error) => new Icon(Icons.error),
-      height: height ?? null,
-      width: null,
-      alignment: Alignment.center,
-      fit: fit);
+    imageUrl: image,
+    placeholder: (context, url) =>
+        placeholder ?? new CircularProgressIndicator(),
+    errorWidget: (context, url, error) => new Icon(Icons.error),
+    height: height ?? null,
+    width: null,
+    alignment: Alignment.center,
+    fit: fit,
+  );
 }
