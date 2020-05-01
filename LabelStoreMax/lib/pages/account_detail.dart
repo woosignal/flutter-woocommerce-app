@@ -364,7 +364,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                               textAlign: TextAlign.right,
                               style: Theme.of(context)
                                   .primaryTextTheme
-                                  .bodyText1
+                                  .body2
                                   .copyWith(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
