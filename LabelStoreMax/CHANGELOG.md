@@ -1,3 +1,7 @@
+## [2.0.2] - 2020-05-04
+
+* AndroidManifest.xml bug fix
+
 ## [2.0.1] - 2020-04-30
 
 * Login/register with WordPress

@@ -62,7 +62,15 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            // Uncomment "signingConfig signingConfigs.release"
+            // Remove "signingConfig signingConfigs.debug"
+            // When you're ready to build for release
+            // Also check out https://flutter.dev/docs/deployment/android
+            // Set the key.properties when building apk or appbundle
+
+//            signingConfig signingConfigs.release
+
+            signingConfig signingConfigs.debug
         }
     }
 

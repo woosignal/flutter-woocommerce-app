@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.woosignal.label_storemax">
+    package="com.woosignal.label_storemax"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -13,6 +14,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="label_storemax"
+        tools:replace="android:label"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
