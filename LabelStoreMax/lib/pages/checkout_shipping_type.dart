@@ -17,7 +17,6 @@ import 'package:label_storemax/models/customer_address.dart';
 import 'package:label_storemax/models/shipping_type.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
-import 'package:math_expressions/math_expressions.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 import 'package:label_storemax/app_country_options.dart';
 
@@ -49,9 +48,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   }
 
   _getShippingMethods() async {
-    List<WSShipping> wsShipping = await appWooSignal((api) {
-      return api.getShippingMethods();
-    });
+    List<WSShipping> wsShipping =
+        await appWooSignal((api) => api.getShippingMethods());
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.shippingAddress;
     String postalCode = customerAddress.postalCode;
@@ -70,9 +68,12 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
     }
 
-    if (_shipping != null) {
+    if (_shipping != null && _shipping.methods != null) {
       if (_shipping.methods.flatRate != null) {
-        _shipping.methods.flatRate.forEach((flatRate) {
+        _shipping.methods.flatRate
+            .where((t) => t != null)
+            .toList()
+            .forEach((flatRate) {
           Map<String, dynamic> tmpShippingOption = {};
           tmpShippingOption = {
             "id": flatRate.id,
@@ -86,7 +87,10 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
 
       if (_shipping.methods.localPickup != null) {
-        _shipping.methods.localPickup.forEach((localPickup) {
+        _shipping.methods.localPickup
+            .where((t) => t != null)
+            .toList()
+            .forEach((localPickup) {
           Map<String, dynamic> tmpShippingOption = {};
           tmpShippingOption = {
             "id": localPickup.id,
@@ -100,7 +104,10 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
 
       if (_shipping.methods.freeShipping != null) {
-        _shipping.methods.freeShipping.forEach((freeShipping) {
+        _shipping.methods.freeShipping
+            .where((t) => t != null)
+            .toList()
+            .forEach((freeShipping) {
           if (isNumeric(freeShipping.cost)) {
             Map<String, dynamic> tmpShippingOption = {};
             tmpShippingOption = {
@@ -183,7 +190,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
             context,
             "Shipping Methods",
           ),
-          style: Theme.of(context).primaryTextTheme.subhead,
+          style: Theme.of(context).primaryTextTheme.headline6,
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -234,7 +241,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                     ['title'],
                                                 style: Theme.of(context)
                                                     .primaryTextTheme
-                                                    .subhead),
+                                                    .subtitle1),
                                             selected: true,
                                             subtitle: FutureBuilder<String>(
                                               future: _getShippingPrice(index),
@@ -299,7 +306,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                         "Shipping is not supported for your country, sorry"),
                                     style: Theme.of(context)
                                         .primaryTextTheme
-                                        .title,
+                                        .headline6,
                                     textAlign: TextAlign.center))),
                         wsLinkButton(context, title: trans(context, "CANCEL"),
                             action: () {

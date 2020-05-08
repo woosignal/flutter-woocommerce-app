@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/menu_item.dart';
 import 'package:label_storemax/helpers/tools.dart';
@@ -37,7 +38,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         title: Text(trans(context, "Menu"),
-            style: Theme.of(context).primaryTextTheme.title),
+            style: Theme.of(context).primaryTextTheme.headline6),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
@@ -89,7 +90,12 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     Navigator.pushNamed(context, "/about");
   }
 
-  void _actionProfile() {
+  void _actionProfile() async {
+    if (use_wp_login == true && !(await authCheck())) {
+      UserAuth.instance.redirect = "/account-detail";
+      Navigator.pushNamed(context, "/account-landing");
+      return;
+    }
     Navigator.pushNamed(context, "/account-detail");
   }
 }

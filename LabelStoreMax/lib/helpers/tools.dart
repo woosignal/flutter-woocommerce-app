@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/helpers/app_localizations.dart';
@@ -22,9 +23,12 @@ import 'package:label_storemax/models/payment_type.dart';
 import 'package:html/parser.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:status_alert/status_alert.dart';
+import 'package:woosignal/models/response/products.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
 
@@ -63,11 +67,6 @@ showStatusAlert(context,
     subtitle: subtitle,
     configuration: IconConfiguration(icon: icon ?? Icons.done, size: 50),
   );
-}
-
-class PaymentMethodType {
-  static final int STRIPE = 1;
-  static final int APPLEPAY = 2;
 }
 
 class EdgeAlertStyle {
@@ -142,7 +141,7 @@ String formatStringCurrency({@required String total}) {
   if (total == null || total == "") {
     tmpVal = 0;
   } else {
-    tmpVal = double.parse(total);
+    tmpVal = parseWcPrice(total);
   }
   FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
     amount: tmpVal,
@@ -185,6 +184,9 @@ checkout(
 }
 
 double strCal({@required String sum}) {
+  if (sum == null || sum == "") {
+    return 0;
+  }
   Parser p = Parser();
   Expression exp = p.parse(sum);
   ContextModel cm = ContextModel();
@@ -192,6 +194,9 @@ double strCal({@required String sum}) {
 }
 
 Future<double> workoutShippingCostWC({@required String sum}) async {
+  if (sum == null || sum == "") {
+    return 0;
+  }
   List<CartLineItem> cartLineItem = await Cart.getInstance.getCart();
   sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
     return cartLineItem
@@ -263,6 +268,9 @@ Future<double> workoutShippingCostWC({@required String sum}) async {
 
 Future<double> workoutShippingClassCostWC(
     {@required String sum, List<CartLineItem> cartLineItem}) async {
+  if (sum == null || sum == "") {
+    return 0;
+  }
   sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
     return cartLineItem
         .map((f) => f.quantity)
@@ -357,14 +365,22 @@ bool validPassword(String pw) {
 }
 
 navigatorPush(BuildContext context,
-    {@required String routeName, Object arguments, bool forgetAll = false}) {
+    {@required String routeName,
+    Object arguments,
+    bool forgetAll = false,
+    int forgetLast}) {
   if (forgetAll) {
     Navigator.of(context).pushNamedAndRemoveUntil(
         routeName, (Route<dynamic> route) => false,
         arguments: arguments ?? null);
-  } else {
-    Navigator.of(context).pushNamed(routeName, arguments: arguments ?? null);
   }
+  if (forgetLast != null) {
+    int count = 0;
+    Navigator.of(context).popUntil((route) {
+      return count++ == forgetLast;
+    });
+  }
+  Navigator.of(context).pushNamed(routeName, arguments: arguments ?? null);
 }
 
 PlatformDialogAction dialogAction(BuildContext context,
@@ -450,3 +466,58 @@ String formatForDateTime(FormatType formatType) {
 }
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+
+double parseWcPrice(String price) => (double.tryParse(price) ?? 0);
+
+Widget refreshableScroll(context,
+    {@required refreshController,
+    @required VoidCallback onRefresh,
+    @required VoidCallback onLoading,
+    @required List<Product> products,
+    @required onTap,
+    key}) {
+  return SmartRefresher(
+      enablePullDown: false,
+      enablePullUp: true,
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = Text(trans(context, "pull up load"));
+          } else if (mode == LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text(trans(context, "Load Failed! Click retry!"));
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text(trans(context, "release to load more"));
+          } else {
+            body = Text(trans(context, "No more products"));
+          }
+          return Container(
+            height: 55.0,
+            child: Center(child: body),
+          );
+        },
+      ),
+      controller: refreshController,
+      onRefresh: onRefresh,
+      onLoading: onLoading,
+      child: (products.length != null && products.length > 0
+          ? GridView.count(
+              crossAxisCount: 2,
+              children: List.generate(
+                products.length,
+                (index) {
+                  return wsCardProductItem(context,
+                      index: index, product: products[index], onTap: onTap);
+                },
+              ))
+          : wsNoResults(context)));
+}
+
+class UserAuth {
+  UserAuth._privateConstructor();
+  static final UserAuth instance = UserAuth._privateConstructor();
+
+  String redirect = "/home";
+}

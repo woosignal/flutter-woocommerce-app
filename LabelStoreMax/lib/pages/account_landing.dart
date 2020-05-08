@@ -68,7 +68,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                         textAlign: TextAlign.left,
                         style: Theme.of(context)
                             .primaryTextTheme
-                            .display1
+                            .headline4
                             .copyWith(
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
@@ -119,7 +119,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   Padding(
                     child: Text(
                       trans(context, "Create an account"),
-                      style: Theme.of(context).primaryTextTheme.body2,
+                      style: Theme.of(context).primaryTextTheme.bodyText1,
                     ),
                     padding: EdgeInsets.only(left: 8),
                   )
@@ -132,6 +132,10 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
             wsLinkButton(context, title: trans(context, "Forgot Password"),
                 action: () {
               launch(app_forgot_password_url);
+            }),
+            Divider(),
+            wsLinkButton(context, title: trans(context, "Back"), action: () {
+              Navigator.pop(context);
             }),
           ],
         ),
@@ -157,7 +161,13 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
         authUser(token);
         storeUserId(wpUserLoginResponse.data.userId.toString());
 
-        navigatorPush(context, routeName: "/home", forgetAll: true);
+        showEdgeAlertWith(context,
+            title: trans(context, "Hello"),
+            desc: trans(context, "Welcome back"),
+            style: EdgeAlertStyle.SUCCESS,
+            icon: Icons.account_circle);
+        navigatorPush(context,
+            routeName: UserAuth.instance.redirect, forgetLast: 1);
       } else {
         showEdgeAlertWith(context,
             title: trans(context, "Oops!"),

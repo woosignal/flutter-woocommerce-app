@@ -82,9 +82,9 @@ TextTheme textThemePrimary() {
         fontWeight: FontWeight.w600),
     headline: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     title: new TextStyle(
-      color: Colors.black,
-      fontFamily: appFontFamily,
-    ),
+        color: Colors.black87,
+        fontFamily: appFontFamily,
+        fontWeight: FontWeight.w600),
     subhead: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,

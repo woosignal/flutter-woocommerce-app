@@ -50,13 +50,15 @@ class _ProductImageViewerPageState extends State<ProductImageViewerPage> {
                 index: _initialIndex,
                 itemBuilder: (BuildContext context, int index) {
                   return CachedNetworkImage(
-                      imageUrl: _arrImageSrc[index],
-                      placeholder: (context, url) =>
-                          new CircularProgressIndicator(
-                              strokeWidth: 2, backgroundColor: Colors.black12),
-                      errorWidget: (context, url, error) =>
-                          new Icon(Icons.error),
-                      fit: BoxFit.contain);
+                    imageUrl: _arrImageSrc[index],
+                    placeholder: (context, url) =>
+                        new CircularProgressIndicator(
+                      strokeWidth: 2,
+                      backgroundColor: Colors.black12,
+                    ),
+                    errorWidget: (context, url, error) => new Icon(Icons.error),
+                    fit: BoxFit.contain,
+                  );
                 },
                 itemCount: _arrImageSrc.length,
                 viewportFraction: 0.9,

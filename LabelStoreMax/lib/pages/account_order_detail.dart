@@ -55,7 +55,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
         ),
         title: Text(
           "Order #" + _orderId.toString(),
-          style: Theme.of(context).primaryTextTheme.title,
+          style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
       ),
@@ -157,7 +157,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                           total: _order.lineItems[i].total),
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .body1
+                                          .bodyText2
                                           .copyWith(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.black),
@@ -169,7 +169,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                               .toString(),
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .body2
+                                          .bodyText1
                                           .copyWith(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.black),

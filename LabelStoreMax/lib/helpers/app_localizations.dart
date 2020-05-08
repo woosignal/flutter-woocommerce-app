@@ -50,8 +50,10 @@ class _AppLocalizationsDelegate
   const _AppLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-      app_locales_supported.contains(locale.languageCode);
+  bool isSupported(Locale locale) => app_locales_supported
+      .map((e) => e.languageCode)
+      .toList()
+      .contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;

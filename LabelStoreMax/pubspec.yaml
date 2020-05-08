@@ -1,5 +1,5 @@
 # Label StoreMax
-# Version 2.0.0
+# Version 2.0.2
 #authors: - "Anthony Gordon"
 #documentation: https://woosignal.com/docs/app/ios/label-storemax
 #homepage: https://woosignal.com/
@@ -23,7 +23,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  woosignal: ^1.0.6
+  woosignal: ^1.0.8
   woosignal_stripe: ^0.0.4
   wp_json_api: ^0.1.2
   shared_preferences: ^0.5.6+3
@@ -34,6 +34,7 @@ dependencies:
   flutter_money_formatter: ^0.8.3
   platform_alert_dialog: ^1.0.0+2
   flutter_web_browser: ^0.11.0
+  pull_to_refresh: ^1.5.8
   dio: ^3.0.9
   intl: ^0.16.1
   flutter_swiper: ^1.1.6
@@ -44,7 +45,6 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   flutter_launcher_icons: ^0.7.4
   html: ^0.14.0+3
-  braintree_payment: ^1.2.4
   flutter:
     sdk: flutter
 
@@ -75,7 +75,7 @@ flutter:
     - assets/images/credit_cards.png
     - assets/images/shipping_icon.png
     - assets/images/dark_powered_by_stripe.png
-    - assets/images/cart_empty.png
+    - assets/images/cash_on_delivery.jpeg
     - lang/en.json
 
   fonts:

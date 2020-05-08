@@ -1,5 +1,12 @@
-## [2.0.2] - 2020-05-04
+## [2.0.2] - 2020-05-08
 
+* Flutter 1.17.0 support
+* Sort by feature
+* Cash on delivery added
+* RazorPay added
+* Login/register flow change for Apple user guidelines
+* Bug fixes
+* Pubspec.yaml update
 * AndroidManifest.xml bug fix
 
 ## [2.0.1] - 2020-04-30

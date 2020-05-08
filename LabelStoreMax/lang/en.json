@@ -129,5 +129,18 @@
   "Shipping Details": "Shipping Details",
   "State": "State",
   "Country": "Country",
-  "UPDATE DETAILS": "UPDATE DETAILS"
+  "UPDATE DETAILS": "UPDATE DETAILS",
+  "No more products": "No more products",
+  "release to load more": "release to load more",
+  "Load Failed! Click retry!": "Load Failed! Click retry!",
+  "pull up load": "pull up load",
+  "Sort: Low to high": "Sort: Low to high",
+  "Sort: High to low": "Sort: High to low",
+  "Sort: Name A-Z": "Sort: Name A-Z",
+  "Sort: Name Z-A": "Sort: Name Z-A",
+  "Cancel": "Cancel",
+  "Sort results": "Sort results",
+  "you're now logged in": "You're now logged in",
+  "Hello": "Hello",
+  "Welcome back": "Welcome back"
 }

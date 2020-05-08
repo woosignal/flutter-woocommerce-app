@@ -28,7 +28,7 @@ Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
     children: <Widget>[
       Flexible(
         child: Container(
-          child: Text(text1, style: Theme.of(context).textTheme.title),
+          child: Text(text1, style: Theme.of(context).textTheme.headline6),
         ),
         flex: 3,
       ),
@@ -37,7 +37,7 @@ Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
           child: Text(text2,
               style: Theme.of(context)
                   .primaryTextTheme
-                  .body2
+                  .bodyText1
                   .copyWith(fontSize: 16, color: Colors.black87)),
         ),
         flex: 3,
@@ -50,7 +50,7 @@ Widget wsNoResults(BuildContext context) {
   return Column(
     children: <Widget>[
       Text(trans(context, "No results"),
-          style: Theme.of(context).primaryTextTheme.body1),
+          style: Theme.of(context).primaryTextTheme.bodyText2),
     ],
   );
 }
@@ -70,7 +70,10 @@ Widget wsCheckoutRow(BuildContext context,
           children: <Widget>[
             Padding(
               child: Text(heading,
-                  style: Theme.of(context).primaryTextTheme.body1),
+                  style: Theme.of(context)
+                      .primaryTextTheme
+                      .bodyText2
+                      .copyWith(fontSize: 16)),
               padding: EdgeInsets.only(bottom: 8),
             ),
             Flexible(
@@ -87,8 +90,9 @@ Widget wsCheckoutRow(BuildContext context,
                         Flexible(
                           child: Container(
                             child: Text(leadTitle,
-                                style:
-                                    Theme.of(context).primaryTextTheme.subhead,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .subtitle1,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false),
@@ -131,15 +135,15 @@ Widget wsTextEditingRow(BuildContext context,
       children: <Widget>[
         Flexible(
           child: Padding(
-            child:
-                Text(heading, style: Theme.of(context).primaryTextTheme.body2),
+            child: Text(heading,
+                style: Theme.of(context).primaryTextTheme.bodyText1),
             padding: EdgeInsets.only(bottom: 2),
           ),
         ),
         Flexible(
           child: TextField(
               controller: controller,
-              style: Theme.of(context).primaryTextTheme.subhead,
+              style: Theme.of(context).primaryTextTheme.subtitle1,
               keyboardType: keyboardType ?? TextInputType.text,
               autocorrect: false,
               autofocus: shouldAutoFocus ?? false,
@@ -160,13 +164,15 @@ Widget widgetCheckoutMeta(BuildContext context, {String title, String amount}) {
     children: <Widget>[
       Flexible(
         child: Container(
-          child: Text(title, style: Theme.of(context).primaryTextTheme.body1),
+          child:
+              Text(title, style: Theme.of(context).primaryTextTheme.bodyText2),
         ),
         flex: 3,
       ),
       Flexible(
         child: Container(
-          child: Text(amount, style: Theme.of(context).primaryTextTheme.body2),
+          child:
+              Text(amount, style: Theme.of(context).primaryTextTheme.bodyText1),
         ),
         flex: 3,
       )
@@ -188,51 +194,68 @@ List<BoxShadow> wsBoxShadow({double blurRadius}) {
   ];
 }
 
-Widget wsCardProductItem(BuildContext context, {int index, Product product}) {
+Widget wsCardProductItem(BuildContext context,
+    {int index, Product product, onTap}) {
   return InkWell(
     child: Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Flexible(
-              child: CachedNetworkImage(
-                  imageUrl: (product.images.length > 0
-                      ? product.images.first.src
-                      : ""),
-                  placeholder: (context, url) =>
-                      new CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
-                  fit: BoxFit.fitWidth),
-              flex: 4,
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: wsBoxShadow(blurRadius: 4),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Flexible(
+            child: CachedNetworkImage(
+                imageUrl:
+                    (product.images.length > 0 ? product.images.first.src : ""),
+                placeholder: (context, url) => new CircularProgressIndicator(),
+                errorWidget: (context, url, error) => new Icon(Icons.error),
+                fit: BoxFit.contain),
+            flex: 4,
+          ),
+          Flexible(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  formatStringCurrency(total: product.price),
+                  style: Theme.of(context).textTheme.bodyText1,
+                  textAlign: TextAlign.center,
+                ),
+                (product.onSale
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Text(
+                          formatStringCurrency(total: product.regularPrice),
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.grey),
+                          textAlign: TextAlign.left,
+                        ),
+                      )
+                    : null),
+              ].where((t) => t != null).toList(),
             ),
-            Flexible(
-              child: Text(
-                formatStringCurrency(total: product.price),
-                style: Theme.of(context).textTheme.body2,
-                textAlign: TextAlign.left,
-              ),
-              flex: 1,
+            flex: 1,
+          ),
+          Expanded(
+            child: Text(
+              product.name,
+              style: Theme.of(context).textTheme.bodyText2,
+              overflow: TextOverflow.clip,
+              maxLines: 1,
             ),
-            Expanded(
-              child: Text(
-                product.name,
-                style: Theme.of(context).textTheme.body1,
-                overflow: TextOverflow.clip,
-                maxLines: 1,
-              ),
-              flex: 1,
-            )
-          ],
-        )),
-    onTap: () {
-      Navigator.pushNamed(context, "/product-detail", arguments: product);
-    },
+            flex: 1,
+          )
+        ],
+      ),
+    ),
+    onTap: () => onTap(product),
   );
 }
 
@@ -245,27 +268,41 @@ void wsModalBottom(BuildContext context,
         return SafeArea(
           child: Container(
             height: double.infinity,
-            width: double.infinity - 10,
+            width: double.infinity,
             color: Colors.transparent,
             child: new Container(
-                padding: EdgeInsets.only(top: 25, left: 18, right: 18),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: new BoxDecoration(
                   color: Colors.white,
                   borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(10.0),
-                      topRight: const Radius.circular(10.0)),
+                    topLeft: const Radius.circular(10.0),
+                    topRight: const Radius.circular(10.0),
+                  ),
                 ),
                 child: Column(
                   children: <Widget>[
-                    Text(title,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .display1
-                            .copyWith(fontSize: 20),
-                        textAlign: TextAlign.left),
-                    bodyWidget,
-                    extraWidget ?? Container()
-                  ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Text(title,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .headline4
+                              .copyWith(fontSize: 20),
+                          textAlign: TextAlign.left),
+                    ),
+                    Expanded(
+                      child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              boxShadow: wsBoxShadow(),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: bodyWidget),
+                    ),
+                    extraWidget ?? null
+                  ].where((t) => t != null).toList(),
                 )),
           ),
         );
@@ -431,13 +468,14 @@ Widget wsCardCartItem(BuildContext context,
                     children: <Widget>[
                       Text(
                         cartLineItem.name,
-                        style: Theme.of(context).primaryTextTheme.subhead,
+                        style: Theme.of(context).primaryTextTheme.subtitle1,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                       ),
                       (cartLineItem.variationOptions != null
                           ? Text(cartLineItem.variationOptions,
-                              style: Theme.of(context).primaryTextTheme.body2)
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText1)
                           : Container()),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -449,11 +487,14 @@ Widget wsCardCartItem(BuildContext context,
                                   : trans(context, "In Stock")),
                               style: (cartLineItem.stockStatus == "outofstock"
                                   ? Theme.of(context).textTheme.caption
-                                  : Theme.of(context).primaryTextTheme.body1)),
+                                  : Theme.of(context)
+                                      .primaryTextTheme
+                                      .bodyText2)),
                           Text(
                               formatDoubleCurrency(
                                   total: double.parse(cartLineItem.total)),
-                              style: Theme.of(context).primaryTextTheme.subhead,
+                              style:
+                                  Theme.of(context).primaryTextTheme.subtitle1,
                               textAlign: TextAlign.center)
                         ],
                       ),
@@ -479,7 +520,7 @@ Widget wsCardCartItem(BuildContext context,
                     highlightColor: Colors.transparent,
                   ),
                   Text(cartLineItem.quantity.toString(),
-                      style: Theme.of(context).primaryTextTheme.title),
+                      style: Theme.of(context).primaryTextTheme.headline6),
                   IconButton(
                     icon: Icon(Icons.remove_circle_outline),
                     onPressed: actionDecrementQuantity,

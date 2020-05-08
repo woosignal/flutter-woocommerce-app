@@ -142,7 +142,7 @@ class Cart {
 
     if (taxableCartLines.length > 0) {
       cartSubtotal = taxableCartLines
-          .map<double>((m) => double.parse(m.subtotal))
+          .map<double>((m) => parseWcPrice(m.subtotal))
           .reduce((a, b) => a + b);
     }
 
@@ -155,13 +155,19 @@ class Cart {
         case "flat_rate":
           FlatRate flatRate = (shippingType.object as FlatRate);
           if (flatRate.taxable != null && flatRate.taxable) {
-            shippingTotal += double.parse(shippingType.cost);
+            shippingTotal += parseWcPrice(
+                shippingType.cost == null || shippingType.cost == ""
+                    ? "0"
+                    : shippingType.cost);
           }
           break;
         case "local_pickup":
           LocalPickup localPickup = (shippingType.object as LocalPickup);
           if (localPickup.taxable != null && localPickup.taxable) {
-            shippingTotal += double.parse(localPickup.cost);
+            shippingTotal += parseWcPrice(
+                (localPickup.cost == null || localPickup.cost == ""
+                    ? "0"
+                    : localPickup.cost));
           }
           break;
         default:
@@ -171,10 +177,10 @@ class Cart {
 
     double total = 0;
     if (subtotal != 0) {
-      total += ((double.parse(taxRate.rate) * subtotal) / 100);
+      total += ((parseWcPrice(taxRate.rate) * subtotal) / 100);
     }
     if (shippingTotal != 0) {
-      total += ((double.parse(taxRate.rate) * shippingTotal) / 100);
+      total += ((parseWcPrice(taxRate.rate) * shippingTotal) / 100);
     }
     return (total).toStringAsFixed(2);
   }

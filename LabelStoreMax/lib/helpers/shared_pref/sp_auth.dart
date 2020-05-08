@@ -38,5 +38,5 @@ authLogout(BuildContext context) async {
   await sharedPref.save(keyAuthCheck, null);
   destroyUserId(context);
   Cart.getInstance.clear();
-  navigatorPush(context, routeName: "/account-landing", forgetAll: true);
+  navigatorPush(context, routeName: "/home", forgetAll: true);
 }

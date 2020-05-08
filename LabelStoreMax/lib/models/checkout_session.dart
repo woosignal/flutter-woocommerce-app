@@ -61,18 +61,18 @@ class CheckoutSession {
   }
 
   Future<String> total({bool withFormat, TaxRate taxRate}) async {
-    double totalCart = double.parse(await Cart.getInstance.getTotal());
+    double totalCart = parseWcPrice(await Cart.getInstance.getTotal());
     double totalShipping = 0;
     if (shippingType != null && shippingType.object != null) {
       switch (shippingType.methodId) {
         case "flat_rate":
-          totalShipping = double.parse(shippingType.cost);
+          totalShipping = parseWcPrice(shippingType.cost);
           break;
         case "free_shipping":
-          totalShipping = double.parse(shippingType.cost);
+          totalShipping = parseWcPrice(shippingType.cost);
           break;
         case "local_pickup":
-          totalShipping = double.parse(shippingType.cost);
+          totalShipping = parseWcPrice(shippingType.cost);
           break;
         default:
           break;
@@ -83,12 +83,12 @@ class CheckoutSession {
 
     if (taxRate != null) {
       String taxAmount = await Cart.getInstance.taxAmount(taxRate);
-      total += double.parse(taxAmount);
+      total += parseWcPrice(taxAmount);
     }
 
     if (withFormat != null && withFormat == true) {
       return formatDoubleCurrency(total: total);
     }
-    return total.toString();
+    return total.toStringAsFixed(2);
   }
 }

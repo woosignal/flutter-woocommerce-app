@@ -46,7 +46,7 @@ class _ErrorPageState extends State<ErrorPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   trans(context, "Sorry, something went wrong"),
-                  style: Theme.of(context).primaryTextTheme.body1,
+                  style: Theme.of(context).primaryTextTheme.bodyText2,
                   textAlign: TextAlign.center,
                 ),
               ),

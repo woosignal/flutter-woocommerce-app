@@ -85,7 +85,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         ),
         title: Text(
           trans(context, "Account"),
-          style: Theme.of(context).primaryTextTheme.title,
+          style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
       ),
@@ -212,7 +212,12 @@ class _AccountDetailPageState extends State<AccountDetailPage>
             leading: Icon(Icons.account_circle),
             title: Text(trans(context, "Update details")),
             onTap: () {
-              Navigator.pushNamed(context, "/account-update");
+              Navigator.pushNamed(context, "/account-update").then((onValue) {
+                setState(() {
+                  _isLoading = true;
+                });
+                _fetchWpUserData();
+              });
             },
           ),
         ),
@@ -238,9 +243,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
           child: ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text(trans(context, "Logout")),
-            onTap: () {
-              authLogout(context);
-            },
+            onTap: () => authLogout(context),
           ),
         ),
       ],
@@ -331,7 +334,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                   formatStringCurrency(total: _orders[i].total),
                                   style: Theme.of(context)
                                       .primaryTextTheme
-                                      .body1
+                                      .bodyText2
                                       .copyWith(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black),
@@ -343,7 +346,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                       trans(context, "items"),
                                   style: Theme.of(context)
                                       .primaryTextTheme
-                                      .body2
+                                      .bodyText1
                                       .copyWith(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black),
@@ -364,7 +367,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                               textAlign: TextAlign.right,
                               style: Theme.of(context)
                                   .primaryTextTheme
-                                  .body2
+                                  .bodyText1
                                   .copyWith(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),

@@ -61,7 +61,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
             ),
             TextField(
               controller: _txtSearchController,
-              style: Theme.of(context).primaryTextTheme.display2,
+              style: Theme.of(context).primaryTextTheme.headline3,
               keyboardType: TextInputType.text,
               autocorrect: false,
               autofocus: true,

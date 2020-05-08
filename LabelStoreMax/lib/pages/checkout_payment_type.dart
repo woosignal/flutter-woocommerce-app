@@ -43,7 +43,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(trans(context, "Payment Method"),
-            style: Theme.of(context).primaryTextTheme.subhead),
+            style: Theme.of(context).primaryTextTheme.headline6),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
@@ -74,35 +74,41 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Expanded(
-                          child: ListView.builder(
-                              itemCount: getPaymentTypes().length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return ListTile(
-                                  contentPadding: EdgeInsets.only(
-                                      top: 10, bottom: 10, left: 8, right: 8),
-                                  leading: Image(
-                                      image: AssetImage("assets/images/" +
-                                          getPaymentTypes()[index].assetImage),
-                                      width: 60,
-                                      fit: BoxFit.fitHeight,
-                                      alignment: Alignment.center),
-                                  title: Text(getPaymentTypes()[index].desc,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .subhead),
-                                  selected: true,
-                                  trailing: (CheckoutSession
-                                              .getInstance.paymentType ==
-                                          getPaymentTypes()[index]
-                                      ? Icon(Icons.check)
-                                      : null),
-                                  onTap: () {
-                                    CheckoutSession.getInstance.paymentType =
-                                        getPaymentTypes()[index];
-                                    Navigator.pop(context);
-                                  },
-                                );
-                              }),
+                          child: ListView.separated(
+                            itemCount: getPaymentTypes().length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                contentPadding: EdgeInsets.only(
+                                    top: 10, bottom: 10, left: 8, right: 8),
+                                leading: Image(
+                                    image: AssetImage("assets/images/" +
+                                        getPaymentTypes()[index].assetImage),
+                                    width: 60,
+                                    fit: BoxFit.contain,
+                                    alignment: Alignment.center),
+                                title: Text(getPaymentTypes()[index].desc,
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .subtitle1),
+                                selected: true,
+                                trailing:
+                                    (CheckoutSession.getInstance.paymentType ==
+                                            getPaymentTypes()[index]
+                                        ? Icon(Icons.check)
+                                        : null),
+                                onTap: () {
+                                  CheckoutSession.getInstance.paymentType =
+                                      getPaymentTypes()[index];
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                            separatorBuilder: (cxt, i) {
+                              return Divider(
+                                color: Colors.black12,
+                              );
+                            },
+                          ),
                         ),
                         wsLinkButton(context, title: trans(context, "CANCEL"),
                             action: () {

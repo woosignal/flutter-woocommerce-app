@@ -90,7 +90,7 @@ class _AccountShippingDetailsPageState
         backgroundColor: Colors.transparent,
         title: Text(
           trans(context, "Shipping Details"),
-          style: Theme.of(context).primaryTextTheme.subhead,
+          style: Theme.of(context).primaryTextTheme.subtitle1,
         ),
         centerTitle: true,
       ),

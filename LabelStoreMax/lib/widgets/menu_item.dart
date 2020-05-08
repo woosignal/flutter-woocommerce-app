@@ -24,7 +24,7 @@ Widget wsMenuItem(BuildContext context,
             children: <Widget>[
               leading,
               Text(" " + title,
-                  style: Theme.of(context).primaryTextTheme.body1),
+                  style: Theme.of(context).primaryTextTheme.bodyText2),
             ],
           ),
         ),

@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import Braintree
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {

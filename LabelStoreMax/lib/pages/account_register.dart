@@ -16,7 +16,6 @@ import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/helpers/shared_pref.dart';
-import 'package:wp_json_api/models/responses/WPUserInfoUpdatedResponse.dart';
 import 'package:wp_json_api/models/responses/WPUserRegisterResponse.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -61,7 +60,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
         ),
         title: Text(
           "Register",
-          style: Theme.of(context).primaryTextTheme.title,
+          style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
       ),
@@ -173,19 +172,25 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
 
       WPUserRegisterResponse wpUserRegisterResponse = await WPJsonAPI.instance
           .api((request) => request.wpRegister(
-              email: email, password: password, username: username));
+              email: email.toLowerCase(),
+              password: password,
+              username: username));
 
       if (wpUserRegisterResponse != null) {
         String token = wpUserRegisterResponse.data.userToken;
         authUser(token);
         storeUserId(wpUserRegisterResponse.data.userId.toString());
 
-        WPUserInfoUpdatedResponse wpUserInfoUpdatedResponse = await WPJsonAPI
-            .instance
-            .api((request) => request.wpUpdateUserInfo(token,
-                firstName: firstName, lastName: lastName));
+        await WPJsonAPI.instance.api((request) => request
+            .wpUpdateUserInfo(token, firstName: firstName, lastName: lastName));
 
-        navigatorPush(context, routeName: "/home", forgetAll: true);
+        showEdgeAlertWith(context,
+            title: trans(context, "Hello") + " $firstName",
+            desc: trans(context, "you're now logged in"),
+            style: EdgeAlertStyle.SUCCESS,
+            icon: Icons.account_circle);
+        navigatorPush(context,
+            routeName: UserAuth.instance.redirect, forgetLast: 2);
       } else {
         setState(() {
           showEdgeAlertWith(context,

@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/pages/account_billing_details.dart';
 import 'package:label_storemax/pages/account_detail.dart';
 import 'package:label_storemax/pages/account_landing.dart';
@@ -51,13 +50,12 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  String initialRoute = (use_wp_login) ? "/account-landing" : "/home";
-  WPJsonAPI.instance.initWith(
-      baseUrl: app_base_url,
-      shouldDebug: app_debug,
-      wpJsonPath: app_wp_api_path);
-  if (await authCheck() == true) {
-    initialRoute = "/home";
+  String initialRoute = "/home";
+  if (use_wp_login == true) {
+    WPJsonAPI.instance.initWith(
+        baseUrl: app_base_url,
+        shouldDebug: app_debug,
+        wpJsonPath: app_wp_api_path);
   }
 
   runApp(
@@ -71,7 +69,6 @@ void main() async {
         '/cart': (BuildContext context) => new CartPage(),
         '/error': (BuildContext context) => new ErrorPage(),
         '/checkout': (BuildContext context) => new CheckoutConfirmationPage(),
-        '/account-landing': (BuildContext context) => new AccountLandingPage(),
         '/account-register': (BuildContext context) =>
             new AccountRegistrationPage(),
         '/account-detail': (BuildContext context) => new AccountDetailPage(),
@@ -84,6 +81,12 @@ void main() async {
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case '/account-landing':
+            return PageTransition(
+              child: AccountLandingPage(),
+              type: PageTransitionType.downToUp,
+            );
+
           case '/browse-category':
             if (settings.arguments != null) {
               final ProductCategory category =
@@ -200,9 +203,7 @@ void main() async {
             return null;
         }
       },
-      supportedLocales: [
-        Locale('en'),
-      ],
+      supportedLocales: app_locales_supported,
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/cart_icon.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/product_category.dart' as WS;
 import 'package:woosignal/models/response/products.dart' as WS;
 import 'package:label_storemax/widgets/woosignal_ui.dart';
@@ -26,10 +27,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   _HomePageState();
 
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   List<WS.Product> _products = [];
   List<WS.ProductCategory> _categories = [];
-
-  var _productsController = ScrollController();
+  final GlobalKey _key = GlobalKey();
 
   int _page;
   bool _shouldStopRequests;
@@ -41,25 +43,17 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     _isLoading = true;
-
     _page = 1;
     _home();
-    _addScrollListener();
   }
 
   _home() async {
-    await _fetchProducts();
-    await _fetchCategories();
     _shouldStopRequests = false;
     waitForNextRequest = false;
+    await _fetchMoreProducts();
+    await _fetchCategories();
     setState(() {
       _isLoading = false;
-    });
-  }
-
-  _fetchProducts() async {
-    _products = await appWooSignal((api) {
-      return api.getProducts(perPage: 50, page: _page, status: "publish");
     });
   }
 
@@ -69,87 +63,48 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _addScrollListener() async {
-    _productsController.addListener(() {
-      double maxScroll = _productsController.position.maxScrollExtent;
-      double currentScroll = _productsController.position.pixels;
-      double delta = 50.0;
-      if (maxScroll - currentScroll <= delta) {
-        if (_shouldStopRequests) {
-          return;
-        }
-        if (waitForNextRequest) {
-          return;
-        }
-        _fetchMoreProducts();
-      }
-    });
-  }
-
   _fetchMoreProducts() async {
+    if (_shouldStopRequests) {
+      return;
+    }
+    if (waitForNextRequest) {
+      return;
+    }
     waitForNextRequest = true;
-    List<WS.Product> products = await appWooSignal((api) {
-      _page = _page + 1;
-      return api.getProducts(perPage: 50, page: _page, status: "publish");
-    });
+    List<WS.Product> products = await appWooSignal((api) => api.getProducts(
+        perPage: 50, page: _page, status: "publish", stockStatus: "instock"));
+    _page = _page + 1;
     if (products.length == 0) {
       _shouldStopRequests = true;
     }
+    waitForNextRequest = false;
     setState(() {
       _products.addAll(products.toList());
     });
   }
 
   void _modalBottomSheetMenu() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (builder) {
-        return new Container(
-          height: double.infinity,
-          width: double.infinity - 10,
-          color: Colors.transparent,
-          child: new Container(
-            padding: EdgeInsets.only(top: 25, left: 18, right: 18),
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(10.0),
-                topRight: const Radius.circular(10.0),
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                Text(trans(context, "Categories"),
-                    style: Theme.of(context).primaryTextTheme.display1,
-                    textAlign: TextAlign.left),
-                Expanded(
-                  child: new ListView.builder(
-                      itemCount: _categories.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          child: Container(
-                            child: Text(_categories[index].name),
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                    color: HexColor("#f2f2f2"), width: 2),
-                              ),
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, "/browse-category",
-                                arguments: _categories[index]);
-                          },
-                        );
-                      }),
-                )
-              ],
-            ),
-          ),
-        );
-      },
+    _key.currentState.setState(() {});
+    wsModalBottom(
+      context,
+      title: trans(context, "Categories"),
+      bodyWidget: ListView.separated(
+        itemCount: _categories.length,
+        separatorBuilder: (cxt, i) {
+          return Divider();
+        },
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(parseHtmlString(_categories[index].name)),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/browse-category",
+                      arguments: _categories[index])
+                  .then((value) => setState(() {}));
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -161,9 +116,7 @@ class _HomePageState extends State<HomePage> {
         leading: Container(
           child: IconButton(
             icon: Icon(Icons.menu),
-            onPressed: () {
-              Navigator.pushNamed(context, "/home-menu");
-            },
+            onPressed: () => Navigator.pushNamed(context, "/home-menu"),
           ),
           margin: EdgeInsets.only(left: 0),
         ),
@@ -177,11 +130,10 @@ class _HomePageState extends State<HomePage> {
               color: Colors.black,
               size: 35,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, "/home-search");
-            },
+            onPressed: () => Navigator.pushNamed(context, "/home-search")
+                .then((value) => _key.currentState.setState(() {})),
           ),
-          wsCartIcon(context)
+          wsCartIcon(context, key: _key)
         ],
       ),
       body: SafeArea(
@@ -198,10 +150,10 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(trans(context, "Shop") + " / ",
-                        style: Theme.of(context).primaryTextTheme.subhead),
+                        style: Theme.of(context).primaryTextTheme.subtitle1),
                     Text(
                       trans(context, "Newest"),
-                      style: Theme.of(context).primaryTextTheme.body1,
+                      style: Theme.of(context).primaryTextTheme.bodyText2,
                     )
                   ],
                 ),
@@ -210,30 +162,54 @@ class _HomePageState extends State<HomePage> {
                   height: 60,
                   child: Text(
                     trans(context, "Browse categories"),
-                    style: Theme.of(context).primaryTextTheme.body2,
+                    style: Theme.of(context).primaryTextTheme.bodyText1,
                   ),
-                  onPressed: () {
-                    _modalBottomSheetMenu();
-                  },
+                  onPressed: _modalBottomSheetMenu,
                 )
               ],
             ),
             (_isLoading
                 ? Expanded(child: showAppLoader())
                 : Expanded(
-                    child: GridView.count(
-                      controller: _productsController,
-                      crossAxisCount: 2,
-                      children: List.generate(_products.length, (index) {
-                        return wsCardProductItem(context,
-                            index: index, product: _products[index]);
-                      }),
-                    ),
+                    child: refreshableScroll(context,
+                        refreshController: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        products: _products,
+                        onTap: _showProduct),
                     flex: 1,
                   )),
           ],
         ),
       ),
     );
+  }
+
+  void _onRefresh() async {
+    await _fetchMoreProducts();
+    setState(() {});
+    if (_shouldStopRequests) {
+      _refreshController.resetNoData();
+    } else {
+      _refreshController.refreshCompleted();
+    }
+  }
+
+  void _onLoading() async {
+    await _fetchMoreProducts();
+
+    if (mounted) {
+      setState(() {});
+      if (_shouldStopRequests) {
+        _refreshController.loadNoData();
+      } else {
+        _refreshController.loadComplete();
+      }
+    }
+  }
+
+  _showProduct(WS.Product product) {
+    Navigator.pushNamed(context, "/product-detail", arguments: product)
+        .then((value) => _key.currentState.setState(() {}));
   }
 }

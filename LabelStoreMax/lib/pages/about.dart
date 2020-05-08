@@ -42,7 +42,7 @@ class _AboutPageState extends State<AboutPage> {
           },
         ),
         title: Text(trans(context, "About"),
-            style: Theme.of(context).primaryTextTheme.subhead),
+            style: Theme.of(context).primaryTextTheme.headline6),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -85,8 +85,9 @@ class _AboutPageState extends State<AboutPage> {
                                 trans(context, "Version") +
                                     ": " +
                                     snapshot.data.version,
-                                style:
-                                    Theme.of(context).primaryTextTheme.body2),
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText1),
                             padding: EdgeInsets.only(top: 15, bottom: 15),
                           );
                       }

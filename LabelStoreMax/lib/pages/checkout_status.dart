@@ -60,25 +60,25 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                         Padding(
                           child: Text(
                             trans(context, "Order Status"),
-                            style: Theme.of(context).primaryTextTheme.subhead,
+                            style: Theme.of(context).primaryTextTheme.subtitle1,
                           ),
                           padding: EdgeInsets.only(bottom: 15),
                         ),
                         Text(
                           trans(context, "Thank You!"),
-                          style: Theme.of(context).primaryTextTheme.title,
+                          style: Theme.of(context).primaryTextTheme.headline6,
                           textAlign: TextAlign.left,
                         ),
                         Text(
                           trans(context, "Your transaction details"),
-                          style: Theme.of(context).primaryTextTheme.body1,
+                          style: Theme.of(context).primaryTextTheme.bodyText2,
                           textAlign: TextAlign.left,
                         ),
                         Text(
                           trans(context, "Order Ref") +
                               ". #" +
                               _order.id.toString(),
-                          style: Theme.of(context).primaryTextTheme.body2,
+                          style: Theme.of(context).primaryTextTheme.bodyText1,
                           textAlign: TextAlign.left,
                         ),
                       ],
@@ -96,7 +96,9 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                       child: Image(
                           image: new AssetImage("assets/images/camion.gif"),
                           height: 170),
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
                       width: double.infinity),
                 ],
               ),
@@ -104,7 +106,7 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                 child: Padding(
                   child: Text(
                     trans(context, "Items"),
-                    style: Theme.of(context).primaryTextTheme.subhead,
+                    style: Theme.of(context).primaryTextTheme.subtitle1,
                     textAlign: TextAlign.left,
                   ),
                   padding: EdgeInsets.all(8),
@@ -130,24 +132,28 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                                   Text(lineItem.name,
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .body2,
+                                          .bodyText1,
                                       softWrap: false,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis),
                                   Text("x" + lineItem.quantity.toString(),
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .body1),
+                                          .bodyText2),
                                 ],
                               ),
                             ),
                             Text(
                                 formatStringCurrency(
                                     total: lineItem.total.toString()),
-                                style: Theme.of(context).primaryTextTheme.body2)
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText1)
                           ],
                         ),
-                        decoration: BoxDecoration(color: Colors.white),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
                         padding: EdgeInsets.all(16),
                         margin: EdgeInsets.all(8),
                       );

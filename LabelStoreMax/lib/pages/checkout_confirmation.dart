@@ -30,27 +30,24 @@ class CheckoutConfirmationPage extends StatefulWidget {
 class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   CheckoutConfirmationPageState();
 
-  GlobalKey<CheckoutConfirmationPageState> _key =
-      GlobalKey<CheckoutConfirmationPageState>();
-
   bool _showFullLoader;
 
   List<TaxRate> _taxRates;
   TaxRate _taxRate;
+  bool _isProcessingPayment;
 
   @override
   void initState() {
     super.initState();
 
     _showFullLoader = true;
+    _isProcessingPayment = false;
     if (CheckoutSession.getInstance.paymentType == null) {
       CheckoutSession.getInstance.paymentType = arrPaymentMethods.first;
     }
 
     _getTaxes();
   }
-
-  _fetchUserId() {}
 
   void reloadState({bool showLoader}) {
     setState(() {
@@ -135,7 +132,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                 children: <Widget>[
                   Center(
                     child: Text(trans(context, "Checkout"),
-                        style: Theme.of(context).primaryTextTheme.subhead),
+                        style: Theme.of(context).primaryTextTheme.subtitle1),
                   ),
                   Expanded(
                     child: Container(
@@ -239,8 +236,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                     ],
                   ),
                   wsPrimaryButton(context,
-                      title: trans(context, "CHECKOUT"),
-                      action: _handleCheckout),
+                      title: _isProcessingPayment
+                          ? "PROCESSING..."
+                          : trans(context, "CHECKOUT"),
+                      action: _isProcessingPayment ? null : _handleCheckout),
                 ],
               )
             : Center(
@@ -252,7 +251,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
                         trans(context, "One moment") + "...",
-                        style: Theme.of(context).primaryTextTheme.subhead,
+                        style: Theme.of(context).primaryTextTheme.subtitle1,
                       ),
                     )
                   ],
@@ -301,7 +300,21 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
+    if (_isProcessingPayment == true) {
+      return;
+    }
+
+    setState(() {
+      _isProcessingPayment = true;
+    });
+
     CheckoutSession.getInstance.paymentType
         .pay(context, state: this, taxRate: _taxRate);
+
+    Future.delayed(Duration(milliseconds: 5000), () {
+      setState(() {
+        _isProcessingPayment = false;
+      });
+    });
   }
 }

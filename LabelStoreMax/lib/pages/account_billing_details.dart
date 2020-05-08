@@ -89,7 +89,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
         backgroundColor: Colors.transparent,
         title: Text(
           trans(context, "Billing Details"),
-          style: Theme.of(context).primaryTextTheme.subhead,
+          style: Theme.of(context).primaryTextTheme.subtitle1,
         ),
         centerTitle: true,
       ),

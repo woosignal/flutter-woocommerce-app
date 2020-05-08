@@ -8,6 +8,8 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:label_storemax/helpers/tools.dart';
+
 class CartLineItem {
   String name;
   int productId;
@@ -45,7 +47,7 @@ class CartLineItem {
       this.metaData});
 
   String getCartTotal() {
-    return (quantity * double.parse(subtotal)).toString();
+    return (quantity * parseWcPrice(subtotal)).toString();
   }
 
   CartLineItem.fromJson(Map<String, dynamic> json)
@@ -56,7 +58,10 @@ class CartLineItem {
         shippingClassId = json['shipping_class_id'].toString(),
         taxStatus = json['tax_status'],
         stockQuantity = json['stock_quantity'],
-        isManagedStock = json['is_managed_stock'],
+        isManagedStock = (json['is_managed_stock'] != null &&
+                json['is_managed_stock'] is bool)
+            ? json['is_managed_stock']
+            : false,
         shippingIsTaxable = json['shipping_is_taxable'],
         subtotal = json['subtotal'],
         total = json['total'],

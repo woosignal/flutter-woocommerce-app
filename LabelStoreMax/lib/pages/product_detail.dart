@@ -50,9 +50,23 @@ class _ProductDetailState extends State<ProductDetailPage> {
   }
 
   _fetchProductVariations() async {
-    _productVariations = await appWooSignal((api) {
-      return api.getProductVariations(_product.id);
-    });
+    List<WS.ProductVariation> tmpVariations = [];
+    int currentPage = 1;
+
+    bool isFetching = true;
+    while (isFetching) {
+      List<WS.ProductVariation> tmp = await appWooSignal((api) {
+        return api.getProductVariations(_product.id,
+            perPage: 100, page: currentPage);
+      });
+      if (tmp != null && tmp.length > 0) {
+        tmpVariations.addAll(tmp);
+        currentPage += 1;
+      } else {
+        isFetching = false;
+      }
+    }
+    _productVariations = tmpVariations;
     setState(() {
       _isLoading = false;
     });
@@ -89,33 +103,30 @@ class _ProductDetailState extends State<ProductDetailPage> {
       title: trans(context, "Select a") +
           " " +
           _product.attributes[attributeIndex].name,
-      bodyWidget: Expanded(
-        child: ListView.separated(
-          itemCount: _product.attributes[attributeIndex].options.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(),
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(_product.attributes[attributeIndex].options[index],
-                  style: Theme.of(context).primaryTextTheme.subhead),
-              trailing: (_tmpAttributeObj.isNotEmpty &&
-                      _tmpAttributeObj.containsKey(attributeIndex) &&
-                      _tmpAttributeObj[attributeIndex]["value"] ==
-                          _product.attributes[attributeIndex].options[index])
-                  ? Icon(Icons.check, color: Colors.blueAccent)
-                  : null,
-              onTap: () {
-                _tmpAttributeObj[attributeIndex] = {
-                  "name": _product.attributes[attributeIndex].name,
-                  "value": _product.attributes[attributeIndex].options[index]
-                };
-                Navigator.pop(context, () {});
-                Navigator.pop(context);
-                _modalBottomSheetAttributes();
-              },
-            );
-          },
-        ),
-        flex: 1,
+      bodyWidget: ListView.separated(
+        itemCount: _product.attributes[attributeIndex].options.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(),
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(_product.attributes[attributeIndex].options[index],
+                style: Theme.of(context).primaryTextTheme.subtitle1),
+            trailing: (_tmpAttributeObj.isNotEmpty &&
+                    _tmpAttributeObj.containsKey(attributeIndex) &&
+                    _tmpAttributeObj[attributeIndex]["value"] ==
+                        _product.attributes[attributeIndex].options[index])
+                ? Icon(Icons.check, color: Colors.blueAccent)
+                : null,
+            onTap: () {
+              _tmpAttributeObj[attributeIndex] = {
+                "name": _product.attributes[attributeIndex].name,
+                "value": _product.attributes[attributeIndex].options[index]
+              };
+              Navigator.pop(context, () {});
+              Navigator.pop(context);
+              _modalBottomSheetAttributes();
+            },
+          );
+        },
       ),
     );
   }
@@ -134,8 +145,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
     wsModalBottom(
       context,
       title: trans(context, "Options"),
-      bodyWidget: Expanded(
-          child: ListView.separated(
+      bodyWidget: ListView.separated(
         itemCount: _product.attributes.length,
         separatorBuilder: (BuildContext context, int index) => Divider(
           color: Colors.black12,
@@ -144,11 +154,11 @@ class _ProductDetailState extends State<ProductDetailPage> {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(_product.attributes[index].name,
-                style: Theme.of(context).primaryTextTheme.subhead),
+                style: Theme.of(context).primaryTextTheme.subtitle1),
             subtitle: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(index))
                 ? Text(_tmpAttributeObj[index]["value"],
-                    style: Theme.of(context).primaryTextTheme.body2)
+                    style: Theme.of(context).primaryTextTheme.bodyText1)
                 : Text(trans(context, "Select a") +
                     " " +
                     _product.attributes[index].name),
@@ -161,7 +171,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
             },
           );
         },
-      )),
+      ),
       extraWidget: Container(
         decoration: BoxDecoration(
             border: Border(top: BorderSide(color: Colors.black12, width: 1))),
@@ -179,14 +189,14 @@ class _ProductDetailState extends State<ProductDetailPage> {
                             findProductVariation() == null)
                         ? trans(context, "This variation is unavailable")
                         : trans(context, "Choose your options"))),
-                style: Theme.of(context).primaryTextTheme.subhead),
+                style: Theme.of(context).primaryTextTheme.subtitle1),
             Text(
               (findProductVariation() != null
                   ? findProductVariation().stockStatus != "instock"
                       ? trans(context, "Out of stock")
                       : ""
                   : ""),
-              style: Theme.of(context).primaryTextTheme.subhead,
+              style: Theme.of(context).primaryTextTheme.subtitle1,
             ),
             wsPrimaryButton(context, title: trans(context, "Add to cart"),
                 action: () {
@@ -255,11 +265,10 @@ class _ProductDetailState extends State<ProductDetailPage> {
     wsModalBottom(
       context,
       title: trans(context, "Description"),
-      bodyWidget: Expanded(
-        child: SingleChildScrollView(
-          child: Text(parseHtmlString(_product.description)),
+      bodyWidget: SingleChildScrollView(
+        child: Text(
+          parseHtmlString(_product.description),
         ),
-        flex: 1,
       ),
     );
   }
@@ -312,7 +321,9 @@ class _ProductDetailState extends State<ProductDetailPage> {
                         Container(
                           height: 100,
                           padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 16),
+                            vertical: 10,
+                            horizontal: 16,
+                          ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -320,8 +331,11 @@ class _ProductDetailState extends State<ProductDetailPage> {
                               Flexible(
                                 child: Text(
                                   _product.name,
-                                  style:
-                                      Theme.of(context).primaryTextTheme.body2,
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .bodyText1
+                                      .copyWith(
+                                          color: Colors.black87, fontSize: 20),
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
@@ -338,13 +352,24 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                           total: _product.price),
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .display1
+                                          .headline4
                                           .copyWith(
                                             fontSize: 20,
                                           ),
                                       textAlign: TextAlign.right,
                                     ),
-                                  ],
+                                    (_product.onSale == true
+                                        ? Text(
+                                            formatStringCurrency(
+                                                total: _product.regularPrice),
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                            ),
+                                          )
+                                        : null)
+                                  ].where((t) => t != null).toList(),
                                 ),
                                 flex: 2,
                               )
@@ -352,7 +377,10 @@ class _ProductDetailState extends State<ProductDetailPage> {
                           ),
                         ),
                         Container(
-                          color: Colors.white,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: wsBoxShadow(),
+                              borderRadius: BorderRadius.circular(4)),
                           padding:
                               EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                           height: 180,
@@ -378,15 +406,13 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                       trans(context, "Full description"),
                                       style: Theme.of(context)
                                           .primaryTextTheme
-                                          .body1
+                                          .bodyText2
                                           .copyWith(fontSize: 14),
                                       textAlign: TextAlign.right,
                                     ),
                                     height: 50,
                                     minWidth: 60,
-                                    onPressed: () {
-                                      _modalBottomSheetMenu();
-                                    },
+                                    onPressed: _modalBottomSheetMenu,
                                   ),
                                 ],
                               ),
@@ -432,7 +458,8 @@ class _ProductDetailState extends State<ProductDetailPage> {
                           children: <Widget>[
                             Text(
                               "Quantity",
-                              style: Theme.of(context).primaryTextTheme.body2,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText1,
                             ),
                             Row(
                               children: <Widget>[
@@ -451,8 +478,9 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                 ),
                                 Text(
                                   _quantityIndicator.toString(),
-                                  style:
-                                      Theme.of(context).primaryTextTheme.body2,
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .bodyText1,
                                 ),
                                 IconButton(
                                   icon: Icon(
@@ -479,11 +507,12 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                 child: Align(
                               child: Text(
                                 formatStringCurrency(
-                                    total: (double.parse(_product.price) *
+                                    total: (parseWcPrice(_product.price) *
                                             _quantityIndicator)
                                         .toString()),
-                                style:
-                                    Theme.of(context).primaryTextTheme.display1,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline4,
                                 textAlign: TextAlign.center,
                               ),
                               alignment: Alignment.centerLeft,
@@ -492,9 +521,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                               child: wsPrimaryButton(
                                 context,
                                 title: trans(context, "Add to cart"),
-                                action: () {
-                                  _addItemToCart();
-                                },
+                                action: () => _addItemToCart(),
                               ),
                             ),
                           ],

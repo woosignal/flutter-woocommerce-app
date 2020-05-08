@@ -10,7 +10,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
@@ -67,6 +69,9 @@ class _CartPageState extends State<CartPage> {
 
   void _actionProceedToCheckout() async {
     List<CartLineItem> cartLineItems = await Cart.getInstance.getCart();
+    if (_isLoading == true) {
+      return;
+    }
     if (cartLineItems.length <= 0) {
       showEdgeAlertWith(context,
           title: trans(context, "Cart"),
@@ -93,6 +98,11 @@ class _CartPageState extends State<CartPage> {
           sfCustomerAddress;
       CheckoutSession.getInstance.billingDetails.shippingAddress =
           sfCustomerAddress;
+    }
+    if (use_wp_login == true && !(await authCheck())) {
+      UserAuth.instance.redirect = "/checkout";
+      Navigator.pushNamed(context, "/account-landing");
+      return;
     }
     Navigator.pushNamed(context, "/checkout");
   }
@@ -131,6 +141,9 @@ class _CartPageState extends State<CartPage> {
         desc: trans(context, "Item removed"),
         style: EdgeAlertStyle.WARNING,
         icon: Icons.remove_shopping_cart);
+    if (_cartLines.length == 0) {
+      _isCartEmpty = true;
+    }
     setState(() {});
   }
 
@@ -142,6 +155,7 @@ class _CartPageState extends State<CartPage> {
         desc: trans(context, "Cart cleared"),
         style: EdgeAlertStyle.SUCCESS,
         icon: Icons.delete_outline);
+    _isCartEmpty = true;
     setState(() {});
   }
 
@@ -151,7 +165,7 @@ class _CartPageState extends State<CartPage> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text(trans(context, "Shopping Cart"),
-            style: Theme.of(context).appBarTheme.textTheme.title),
+            style: Theme.of(context).appBarTheme.textTheme.headline6),
         textTheme: Theme.of(context).textTheme,
         elevation: 1,
         actions: <Widget>[
@@ -161,7 +175,7 @@ class _CartPageState extends State<CartPage> {
             child: Align(
               child: Padding(
                 child: Text(trans(context, "Clear Cart"),
-                    style: Theme.of(context).primaryTextTheme.body2),
+                    style: Theme.of(context).primaryTextTheme.bodyText1),
                 padding: EdgeInsets.only(right: 8),
               ),
               alignment: Alignment.centerLeft,
@@ -191,7 +205,8 @@ class _CartPageState extends State<CartPage> {
                         ),
                         Padding(
                           child: Text(trans(context, "Empty Basket"),
-                              style: Theme.of(context).primaryTextTheme.body1),
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText2),
                           padding: EdgeInsets.only(top: 10),
                         )
                       ],

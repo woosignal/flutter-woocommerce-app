@@ -85,35 +85,33 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   _showSelectCountryModal() {
     wsModalBottom(context,
         title: trans(context, "Select a country"),
-        bodyWidget: Expanded(
-          child: ListView.separated(
-            itemCount: appCountryOptions.length,
-            itemBuilder: (BuildContext context, int index) {
-              Map<String, String> strName = appCountryOptions[index];
+        bodyWidget: ListView.separated(
+          itemCount: appCountryOptions.length,
+          itemBuilder: (BuildContext context, int index) {
+            Map<String, String> strName = appCountryOptions[index];
 
-              return InkWell(
-                child: Container(
-                  child: Text(strName["name"],
-                      style: Theme.of(context).primaryTextTheme.body2),
-                  padding: EdgeInsets.only(top: 25, bottom: 25),
-                ),
-                splashColor: Colors.grey,
-                highlightColor: Colors.black12,
-                onTap: () {
-                  setState(() {
-                    _strBillingCountry = strName["name"];
-                    Navigator.of(context).pop();
-                  });
-                },
-              );
-            },
-            separatorBuilder: (cxt, i) {
-              return Divider(
-                height: 0,
-                color: Colors.black12,
-              );
-            },
-          ),
+            return InkWell(
+              child: Container(
+                child: Text(strName["name"],
+                    style: Theme.of(context).primaryTextTheme.bodyText1),
+                padding: EdgeInsets.only(top: 25, bottom: 25),
+              ),
+              splashColor: Colors.grey,
+              highlightColor: Colors.black12,
+              onTap: () {
+                setState(() {
+                  _strBillingCountry = strName["name"];
+                  Navigator.of(context).pop();
+                });
+              },
+            );
+          },
+          separatorBuilder: (cxt, i) {
+            return Divider(
+              height: 0,
+              color: Colors.black12,
+            );
+          },
         ));
   }
 
@@ -125,7 +123,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         backgroundColor: Colors.transparent,
         title: Text(
           trans(context, "Billing & Shipping Details"),
-          style: Theme.of(context).primaryTextTheme.subhead,
+          style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
       ),
@@ -241,7 +239,8 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Text(trans(context, "Remember my details"),
-                            style: Theme.of(context).primaryTextTheme.body2),
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyText2),
                         Checkbox(
                           value: valRememberDetails,
                           onChanged: (bool value) {

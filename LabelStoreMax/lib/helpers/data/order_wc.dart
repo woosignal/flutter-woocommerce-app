@@ -19,7 +19,7 @@ import 'package:label_storemax/models/checkout_session.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
-Future<OrderWC> buildOrderWC({TaxRate taxRate}) async {
+Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   OrderWC orderWC = OrderWC();
 
   String paymentMethodName = CheckoutSession.getInstance.paymentType.name ?? "";
@@ -30,7 +30,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate}) async {
 
   orderWC.paymentMethodTitle = paymentMethodName.toLowerCase();
 
-  orderWC.setPaid = true;
+  orderWC.setPaid = markPaid;
   orderWC.status = "pending";
   orderWC.currency = app_currency_iso.toUpperCase();
   orderWC.customerId =
