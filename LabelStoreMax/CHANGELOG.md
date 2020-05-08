@@ -3,7 +3,6 @@
 * Flutter 1.17.0 support
 * Sort by feature
 * Cash on delivery added
-* RazorPay added
 * Login/register flow change for Apple user guidelines
 * Bug fixes
 * Pubspec.yaml update

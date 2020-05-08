@@ -14,37 +14,37 @@ import 'package:label_storemax/helpers/tools.dart';
 
 TextTheme textThemeAccent() {
   return TextTheme(
-    display1: new TextStyle(
+    headline4: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800,
         fontSize: 26),
-    display2: new TextStyle(
+    headline3: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    display3: new TextStyle(
+    headline2: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    display4: new TextStyle(
+    headline1: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    headline: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    title: new TextStyle(
+    headline5: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline6: new TextStyle(
       color: Colors.black,
       fontFamily: appFontFamily,
     ),
-    subhead: new TextStyle(
+    subtitle1: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800),
-    body2: new TextStyle(
+    bodyText1: new TextStyle(
         color: HexColor("#606060"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700),
-    body1: new TextStyle(
+    bodyText2: new TextStyle(
         color: HexColor("#a8a8a8"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700,
@@ -63,37 +63,37 @@ TextTheme textThemeAccent() {
 
 TextTheme textThemePrimary() {
   return TextTheme(
-    display1: new TextStyle(
+    headline4: new  TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800,
         fontSize: 26),
-    display2: new TextStyle(
+    headline3: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    display3: new TextStyle(
+    headline2: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    display4: new TextStyle(
+    headline1: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    headline: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    title: new TextStyle(
+    headline5: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline6: new TextStyle(
         color: Colors.black87,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w600),
-    subhead: new TextStyle(
+    subtitle1: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800),
-    body2: new TextStyle(
+    bodyText1: new TextStyle(
         color: HexColor("#606060"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700),
-    body1: new TextStyle(
+    bodyText2: new TextStyle(
         color: HexColor("#a8a8a8"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700,
@@ -112,18 +112,18 @@ TextTheme textThemePrimary() {
 
 TextTheme textThemeMain() {
   return TextTheme(
-    display1: new TextStyle(
+    headline4: new  TextStyle(
       color: Colors.black,
       fontFamily: appFontFamily,
     ),
-    display2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    display3: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    display4: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    headline: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    title: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    subhead: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    body2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    body1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline3: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline5: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline6: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    subtitle1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    bodyText1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    bodyText2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     caption: new TextStyle(
         color: Colors.redAccent, fontSize: 16, fontFamily: appFontFamily),
     button: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
@@ -132,18 +132,18 @@ TextTheme textThemeMain() {
 
 TextTheme textThemeAppBar() {
   return TextTheme(
-    display1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    display2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    display3: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    display4: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    headline: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    title: new TextStyle(
+    headline4: new  TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline3: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline5: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline6: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w900),
-    subhead: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    body2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
-    body1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    subtitle1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    bodyText1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    bodyText2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     caption: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     button: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
   );

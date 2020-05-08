@@ -8,11 +8,12 @@
 # 1 Open: "lib/labelconfig.dart"
 
 ### Change App Icon
-# 1 Open: assets/icon/appicon.png (line 53) replace icon (1024px1024px icon size)
+# 1 Replace: assets/icon/appicon.png (1024px1024px icon size)
 # 2 Run this command from Terminal: flutter pub run flutter_launcher_icons:main
 
-### Submitting the IOS/Android app
-# 1 Open our online documentation: https://woosignal.com/docs/app/ios/label-storemax
+### Uploading the IOS/Android app
+# IOS https://flutter.dev/docs/deployment/ios
+# Android https://flutter.dev/docs/deployment/android
 
 name: label_storemax
 description: LabelStoreMAX

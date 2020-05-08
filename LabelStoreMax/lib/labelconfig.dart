@@ -60,7 +60,7 @@ const app_payment_methods = ["Stripe"];
 // Your StripeAccount key from WooSignal
 // link: https://woosignal.com/dashboard
 
-const app_stripe_account = "Your StripeAccount from WooSignal";
+const app_stripe_account = "Your Stripe Key from WooSignal";
 
 const app_stripe_live_mode = false;
 // For Live Payments follow the below steps
