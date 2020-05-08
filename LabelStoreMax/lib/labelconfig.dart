@@ -24,8 +24,7 @@ import 'dart:ui';
 
 const app_name = "MyApp";
 
-const app_key =
-    "Your app key from WooSingal";
+const app_key = "Your app key from WooSingal";
 // Your App key from WooSignal
 // link: https://woosignal.com/dashboard/apps
 
