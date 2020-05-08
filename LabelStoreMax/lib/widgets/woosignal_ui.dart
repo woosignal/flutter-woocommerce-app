@@ -492,7 +492,7 @@ Widget wsCardCartItem(BuildContext context,
                                       .bodyText2)),
                           Text(
                               formatDoubleCurrency(
-                                  total: double.parse(cartLineItem.total)),
+                                  total: parseWcPrice(cartLineItem.total)),
                               style:
                                   Theme.of(context).primaryTextTheme.subtitle1,
                               textAlign: TextAlign.center)
