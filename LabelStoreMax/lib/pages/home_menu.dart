@@ -37,13 +37,13 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text(trans(context, "Menu"),
-            style: Theme.of(context).primaryTextTheme.headline6),
+        title: Text(
+          trans(context, "Menu"),
+          style: Theme.of(context).primaryTextTheme.headline6,
+        ),
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
       ),
@@ -60,19 +60,25 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   (use_wp_login
-                      ? wsMenuItem(context,
+                      ? wsMenuItem(
+                          context,
                           title: trans(context, "Profile"),
                           leading: Icon(Icons.account_circle),
-                          action: _actionProfile)
+                          action: _actionProfile,
+                        )
                       : Container()),
-                  wsMenuItem(context,
-                      title: trans(context, "Cart"),
-                      leading: Icon(Icons.shopping_cart),
-                      action: _actionCart),
-                  wsMenuItem(context,
-                      title: trans(context, "About Us"),
-                      leading: Icon(Icons.account_balance),
-                      action: _actionAboutUs),
+                  wsMenuItem(
+                    context,
+                    title: trans(context, "Cart"),
+                    leading: Icon(Icons.shopping_cart),
+                    action: _actionCart,
+                  ),
+                  wsMenuItem(
+                    context,
+                    title: trans(context, "About Us"),
+                    leading: Icon(Icons.account_balance),
+                    action: _actionAboutUs,
+                  ),
                 ],
               ),
             ),

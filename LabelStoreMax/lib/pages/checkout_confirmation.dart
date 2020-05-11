@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/app_payment_methods.dart';
+import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/customer_address.dart';
@@ -39,7 +40,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   @override
   void initState() {
     super.initState();
-
+    _taxRates = [];
     _showFullLoader = true;
     _isProcessingPayment = false;
     if (CheckoutSession.getInstance.paymentType == null) {
@@ -56,9 +57,28 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   }
 
   _getTaxes() async {
-    _taxRates = await appWooSignal((api) {
-      return api.getTaxRates(page: 1, perPage: 100);
-    });
+    int pageIndex = 1;
+    bool fetchMore = true;
+    while (fetchMore == true) {
+      List<TaxRate> tmpTaxRates = await appWooSignal(
+          (api) => api.getTaxRates(page: pageIndex, perPage: 100));
+
+      if (tmpTaxRates != null && tmpTaxRates.length > 0) {
+        _taxRates.addAll(tmpTaxRates);
+      }
+      if (tmpTaxRates.length >= 100) {
+        pageIndex += 1;
+      } else {
+        fetchMore = false;
+      }
+    }
+
+    if (_taxRates == null || _taxRates.length == 0) {
+      setState(() {
+        _showFullLoader = false;
+      });
+      return;
+    }
 
     if (CheckoutSession.getInstance.billingDetails.shippingAddress == null) {
       setState(() {
@@ -68,17 +88,54 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     }
     String country =
         CheckoutSession.getInstance.billingDetails.shippingAddress.country;
+    String state =
+        CheckoutSession.getInstance.billingDetails.shippingAddress.state;
+    String postalCode =
+        CheckoutSession.getInstance.billingDetails.shippingAddress.postalCode;
+
     Map<String, dynamic> countryMap = appCountryOptions
         .firstWhere((c) => c['name'] == country, orElse: () => null);
+
     if (countryMap == null) {
       _showFullLoader = false;
       setState(() {});
       return;
     }
-    String countryCode = countryMap["code"];
 
-    TaxRate taxRate = _taxRates.firstWhere((t) => t.country == countryCode,
-        orElse: () => null);
+    TaxRate taxRate;
+
+    Map<String, dynamic> stateMap;
+    if (state != null) {
+      stateMap = appStateOptions.firstWhere((c) => c['name'] == state,
+          orElse: () => null);
+    }
+
+    if (stateMap != null) {
+      taxRate = _taxRates.firstWhere(
+          (t) =>
+              t.country == countryMap["code"] &&
+              t.state == stateMap["code"] &&
+              t.postcode == postalCode,
+          orElse: () => null);
+
+      if (taxRate == null) {
+        taxRate = _taxRates.firstWhere(
+            (t) =>
+                t.country == countryMap["code"] && t.state == stateMap["code"],
+            orElse: () => null);
+      }
+    }
+
+    if (taxRate == null) {
+      taxRate = _taxRates.firstWhere(
+          (t) => t.country == countryMap["code"] && t.postcode == postalCode,
+          orElse: () => null);
+
+      if (taxRate == null) {
+        taxRate = _taxRates.firstWhere((t) => t.country == countryMap["code"],
+            orElse: () => null);
+      }
+    }
 
     if (taxRate != null) {
       _taxRate = taxRate;
@@ -90,13 +147,16 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
   _actionCheckoutDetails() {
     Navigator.pushNamed(context, "/checkout-details").then((e) {
-      _showFullLoader = true;
+      setState(() {
+        _showFullLoader = true;
+      });
       _getTaxes();
     });
   }
 
   _actionPayWith() {
-    Navigator.pushNamed(context, "/checkout-payment-type");
+    Navigator.pushNamed(context, "/checkout-payment-type")
+        .then((value) => setState(() {}));
   }
 
   _actionSelectShipping() {
@@ -131,16 +191,19 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Center(
-                    child: Text(trans(context, "Checkout"),
-                        style: Theme.of(context).primaryTextTheme.subtitle1),
+                    child: Text(
+                      trans(context, "Checkout"),
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                    ),
                   ),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: wsBoxShadow()),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: wsBoxShadow(),
+                      ),
                       margin: EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -197,12 +260,14 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                       .getInstance.shippingType
                                       .getTitle(),
                                   action: _actionSelectShipping)
-                              : wsCheckoutRow(context,
+                              : wsCheckoutRow(
+                                  context,
                                   heading: trans(context, "Select shipping"),
                                   leadImage: Icon(Icons.local_shipping),
                                   leadTitle: trans(
                                       context, "Select a shipping option"),
-                                  action: _actionSelectShipping)),
+                                  action: _actionSelectShipping,
+                                )),
                         ],
                       ),
                     ),
@@ -235,11 +300,13 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       ),
                     ],
                   ),
-                  wsPrimaryButton(context,
-                      title: _isProcessingPayment
-                          ? "PROCESSING..."
-                          : trans(context, "CHECKOUT"),
-                      action: _isProcessingPayment ? null : _handleCheckout),
+                  wsPrimaryButton(
+                    context,
+                    title: _isProcessingPayment
+                        ? "PROCESSING..."
+                        : trans(context, "CHECKOUT"),
+                    action: _isProcessingPayment ? null : _handleCheckout,
+                  ),
                 ],
               )
             : Center(
@@ -263,40 +330,48 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
   _handleCheckout() async {
     if (CheckoutSession.getInstance.billingDetails.billingAddress == null) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Oops"),
-          desc: trans(context,
-              "Please select add your billing/shipping address to proceed"),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.local_shipping);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Oops"),
+        desc: trans(context,
+            "Please select add your billing/shipping address to proceed"),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.local_shipping,
+      );
       return;
     }
 
     if (CheckoutSession.getInstance.billingDetails.billingAddress
         .hasMissingFields()) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Oops"),
-          desc: trans(context, "Your billing/shipping details are incomplete"),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.local_shipping);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Oops"),
+        desc: trans(context, "Your billing/shipping details are incomplete"),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.local_shipping,
+      );
       return;
     }
 
     if (CheckoutSession.getInstance.shippingType == null) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Oops"),
-          desc: trans(context, "Please select a shipping method to proceed"),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.local_shipping);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Oops"),
+        desc: trans(context, "Please select a shipping method to proceed"),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.local_shipping,
+      );
       return;
     }
 
     if (CheckoutSession.getInstance.paymentType == null) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Oops"),
-          desc: trans(context, "Please select a payment method to proceed"),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.payment);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Oops"),
+        desc: trans(context, "Please select a payment method to proceed"),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.payment,
+      );
       return;
     }
 

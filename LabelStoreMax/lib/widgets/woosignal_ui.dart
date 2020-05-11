@@ -34,11 +34,13 @@ Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
       ),
       Flexible(
         child: Container(
-          child: Text(text2,
-              style: Theme.of(context)
-                  .primaryTextTheme
-                  .bodyText1
-                  .copyWith(fontSize: 16, color: Colors.black87)),
+          child: Text(
+            text2,
+            style: Theme.of(context)
+                .primaryTextTheme
+                .bodyText1
+                .copyWith(fontSize: 16, color: Colors.black87),
+          ),
         ),
         flex: 3,
       )
@@ -87,22 +89,24 @@ Widget wsCheckoutRow(BuildContext context,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         leadImage,
-                        Flexible(
+                        Expanded(
                           child: Container(
-                            child: Text(leadTitle,
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle1,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: false),
+                            child: Text(
+                              leadTitle,
+                              style:
+                                  Theme.of(context).primaryTextTheme.subtitle1,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                            ),
                             padding: EdgeInsets.only(left: 15),
+                            margin: EdgeInsets.only(right: 10),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  Icon(Icons.arrow_forward_ios),
                 ],
               ),
             )
@@ -111,8 +115,10 @@ Widget wsCheckoutRow(BuildContext context,
         padding: EdgeInsets.all(8),
         decoration: showBorderBottom == true
             ? BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(color: Colors.black12, width: 1)))
+                border: Border(
+                  bottom: BorderSide(color: Colors.black12, width: 1),
+                ),
+              )
             : BoxDecoration(),
       ),
       onTap: action,
@@ -135,20 +141,23 @@ Widget wsTextEditingRow(BuildContext context,
       children: <Widget>[
         Flexible(
           child: Padding(
-            child: Text(heading,
-                style: Theme.of(context).primaryTextTheme.bodyText1),
+            child: Text(
+              heading,
+              style: Theme.of(context).primaryTextTheme.bodyText1,
+            ),
             padding: EdgeInsets.only(bottom: 2),
           ),
         ),
         Flexible(
           child: TextField(
-              controller: controller,
-              style: Theme.of(context).primaryTextTheme.subtitle1,
-              keyboardType: keyboardType ?? TextInputType.text,
-              autocorrect: false,
-              autofocus: shouldAutoFocus ?? false,
-              obscureText: obscureText ?? false,
-              textCapitalization: TextCapitalization.sentences),
+            controller: controller,
+            style: Theme.of(context).primaryTextTheme.subtitle1,
+            keyboardType: keyboardType ?? TextInputType.text,
+            autocorrect: false,
+            autofocus: shouldAutoFocus ?? false,
+            obscureText: obscureText ?? false,
+            textCapitalization: TextCapitalization.sentences,
+          ),
         )
       ],
     ),
@@ -210,11 +219,12 @@ Widget wsCardProductItem(BuildContext context,
         children: <Widget>[
           Flexible(
             child: CachedNetworkImage(
-                imageUrl:
-                    (product.images.length > 0 ? product.images.first.src : ""),
-                placeholder: (context, url) => new CircularProgressIndicator(),
-                errorWidget: (context, url, error) => new Icon(Icons.error),
-                fit: BoxFit.contain),
+              imageUrl:
+                  (product.images.length > 0 ? product.images.first.src : ""),
+              placeholder: (context, url) => new CircularProgressIndicator(),
+              errorWidget: (context, url, error) => new Icon(Icons.error),
+              fit: BoxFit.contain,
+            ),
             flex: 4,
           ),
           Flexible(
@@ -233,8 +243,9 @@ Widget wsCardProductItem(BuildContext context,
                         child: Text(
                           formatStringCurrency(total: product.regularPrice),
                           style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              decoration: TextDecoration.lineThrough,
-                              color: Colors.grey),
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.grey,
+                              ),
                           textAlign: TextAlign.left,
                         ),
                       )
@@ -283,23 +294,27 @@ void wsModalBottom(BuildContext context,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text(title,
-                          style: Theme.of(context)
-                              .primaryTextTheme
-                              .headline4
-                              .copyWith(fontSize: 20),
-                          textAlign: TextAlign.left),
+                      child: Text(
+                        title,
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .headline4
+                            .copyWith(fontSize: 20),
+                        textAlign: TextAlign.left,
+                      ),
                     ),
                     Expanded(
                       child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              boxShadow: wsBoxShadow(),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: bodyWidget),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          boxShadow: wsBoxShadow(),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: bodyWidget,
+                      ),
                     ),
                     extraWidget ?? null
                   ].where((t) => t != null).toList(),
@@ -390,8 +405,11 @@ FutureBuilder wsCheckoutSubtotalWidgetFB({String title}) {
             return Text("");
           else
             return new Padding(
-              child: widgetCheckoutMeta(context,
-                  title: title, amount: snapshot.data),
+              child: widgetCheckoutMeta(
+                context,
+                title: title,
+                amount: snapshot.data,
+              ),
               padding: EdgeInsets.only(bottom: 0, top: 0),
             );
       }
@@ -436,109 +454,108 @@ Widget wsCardCartItem(BuildContext context,
     void Function() actionDecrementQuantity,
     void Function() actionRemoveItem}) {
   return Container(
-      margin: EdgeInsets.only(bottom: 7),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-              bottom: BorderSide(
-            color: Colors.black12,
-            width: 1,
-          ))),
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      child: Column(
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Flexible(
-                child: CachedNetworkImage(
-                  imageUrl: cartLineItem.imageSrc,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.contain,
+    margin: EdgeInsets.only(bottom: 7),
+    decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+            bottom: BorderSide(
+          color: Colors.black12,
+          width: 1,
+        ))),
+    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    child: Column(
+      children: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(
+              child: CachedNetworkImage(
+                imageUrl: cartLineItem.imageSrc,
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
+              ),
+              flex: 2,
+            ),
+            Flexible(
+              child: Padding(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      cartLineItem.name,
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),
+                    (cartLineItem.variationOptions != null
+                        ? Text(cartLineItem.variationOptions,
+                            style: Theme.of(context).primaryTextTheme.bodyText1)
+                        : Container()),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                            (cartLineItem.stockStatus == "outofstock"
+                                ? trans(context, "Out of stock")
+                                : trans(context, "In Stock")),
+                            style: (cartLineItem.stockStatus == "outofstock"
+                                ? Theme.of(context).textTheme.caption
+                                : Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText2)),
+                        Text(
+                            formatDoubleCurrency(
+                                total: double.parse(cartLineItem.total)),
+                            style: Theme.of(context).primaryTextTheme.subtitle1,
+                            textAlign: TextAlign.center)
+                      ],
+                    ),
+                  ],
                 ),
-                flex: 2,
+                padding: EdgeInsets.only(left: 8),
               ),
-              Flexible(
-                child: Padding(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        cartLineItem.name,
-                        style: Theme.of(context).primaryTextTheme.subtitle1,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                      (cartLineItem.variationOptions != null
-                          ? Text(cartLineItem.variationOptions,
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText1)
-                          : Container()),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                              (cartLineItem.stockStatus == "outofstock"
-                                  ? trans(context, "Out of stock")
-                                  : trans(context, "In Stock")),
-                              style: (cartLineItem.stockStatus == "outofstock"
-                                  ? Theme.of(context).textTheme.caption
-                                  : Theme.of(context)
-                                      .primaryTextTheme
-                                      .bodyText2)),
-                          Text(
-                              formatDoubleCurrency(
-                                  total: double.parse(cartLineItem.total)),
-                              style:
-                                  Theme.of(context).primaryTextTheme.subtitle1,
-                              textAlign: TextAlign.center)
-                        ],
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsets.only(left: 8),
+              flex: 5,
+            )
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add_circle_outline),
+                  onPressed: actionIncrementQuantity,
+                  highlightColor: Colors.transparent,
                 ),
-                flex: 5,
-              )
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.add_circle_outline),
-                    onPressed: actionIncrementQuantity,
-                    highlightColor: Colors.transparent,
-                  ),
-                  Text(cartLineItem.quantity.toString(),
-                      style: Theme.of(context).primaryTextTheme.headline6),
-                  IconButton(
-                    icon: Icon(Icons.remove_circle_outline),
-                    onPressed: actionDecrementQuantity,
-                    highlightColor: Colors.transparent,
-                  ),
-                ],
-              ),
-              IconButton(
-                alignment: Alignment.centerRight,
-                icon: Icon(Icons.delete_outline,
-                    color: Colors.deepOrangeAccent, size: 20),
-                onPressed: actionRemoveItem,
-                highlightColor: Colors.transparent,
-              ),
-            ],
-          )
-        ],
-      ));
+                Text(cartLineItem.quantity.toString(),
+                    style: Theme.of(context).primaryTextTheme.headline6),
+                IconButton(
+                  icon: Icon(Icons.remove_circle_outline),
+                  onPressed: actionDecrementQuantity,
+                  highlightColor: Colors.transparent,
+                ),
+              ],
+            ),
+            IconButton(
+              alignment: Alignment.centerRight,
+              icon: Icon(Icons.delete_outline,
+                  color: Colors.deepOrangeAccent, size: 20),
+              onPressed: actionRemoveItem,
+              highlightColor: Colors.transparent,
+            ),
+          ],
+        )
+      ],
+    ),
+  );
 }
 
 Widget storeLogo({double height, double width}) {

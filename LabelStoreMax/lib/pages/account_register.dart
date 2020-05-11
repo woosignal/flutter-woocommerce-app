@@ -54,9 +54,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Register",

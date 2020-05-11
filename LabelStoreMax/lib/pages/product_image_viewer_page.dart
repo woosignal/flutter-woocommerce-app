@@ -68,9 +68,7 @@ class _ProductImageViewerPageState extends State<ProductImageViewerPage> {
             Container(
               child: IconButton(
                 icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => Navigator.pop(context),
               ),
             )
           ],

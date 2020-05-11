@@ -77,9 +77,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         leading: Container(
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
           ),
           margin: EdgeInsets.only(left: 0),
         ),
@@ -211,32 +209,29 @@ class _AccountDetailPageState extends State<AccountDetailPage>
           child: ListTile(
             leading: Icon(Icons.account_circle),
             title: Text(trans(context, "Update details")),
-            onTap: () {
-              Navigator.pushNamed(context, "/account-update").then((onValue) {
-                setState(() {
-                  _isLoading = true;
-                });
-                _fetchWpUserData();
+            onTap: () =>
+                Navigator.pushNamed(context, "/account-update").then((onValue) {
+              setState(() {
+                _isLoading = true;
               });
-            },
+              _fetchWpUserData();
+            }),
           ),
         ),
         Card(
           child: ListTile(
             leading: Icon(Icons.local_shipping),
             title: Text(trans(context, "Shipping Details")),
-            onTap: () {
-              Navigator.pushNamed(context, "/account-shipping-details");
-            },
+            onTap: () =>
+                Navigator.pushNamed(context, "/account-shipping-details"),
           ),
         ),
         Card(
           child: ListTile(
             leading: Icon(Icons.credit_card),
             title: Text(trans(context, "Billing Details")),
-            onTap: () {
-              Navigator.pushNamed(context, "/account-billing-details");
-            },
+            onTap: () =>
+                Navigator.pushNamed(context, "/account-billing-details"),
           ),
         ),
         Card(
@@ -300,7 +295,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                                color: HexColor("#fcfcfc"), width: 1),
+                              color: HexColor("#fcfcfc"),
+                              width: 1,
+                            ),
                           ),
                         ),
                         child: Row(
@@ -356,14 +353,16 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                             ),
                             Text(
                               dateFormatted(
-                                      date: _orders[i].dateCreated,
-                                      formatType:
-                                          formatForDateTime(FormatType.Date)) +
+                                    date: _orders[i].dateCreated,
+                                    formatType:
+                                        formatForDateTime(FormatType.Date),
+                                  ) +
                                   "\n" +
                                   dateFormatted(
-                                      date: _orders[i].dateCreated,
-                                      formatType:
-                                          formatForDateTime(FormatType.Time)),
+                                    date: _orders[i].dateCreated,
+                                    formatType:
+                                        formatForDateTime(FormatType.Time),
+                                  ),
                               textAlign: TextAlign.right,
                               style: Theme.of(context)
                                   .primaryTextTheme

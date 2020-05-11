@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.0.2
+ VERSION - 2.0.3
  https://woosignal.com
  */
 
@@ -24,7 +24,9 @@ import 'dart:ui';
 
 const app_name = "MyApp";
 
-const app_key = "Your app key from WooSingal";
+//const app_key = "Your app key from WooSignal";
+const app_key =
+    "app_affb6434339b34443a297c2e40a3edab7102137e6d67de9abfe612b749bd";
 // Your App key from WooSignal
 // link: https://woosignal.com/dashboard/apps
 
@@ -32,7 +34,6 @@ const app_logo_url = "https://woosignal.com/images/120x120_woosignal.png";
 
 const app_terms_url = "https://yourdomain.com/terms";
 const app_privacy_url = "https://yourdomain.com/privacy";
-
 
 /*<! ------ APP SETTINGS ------!>*/
 
@@ -45,14 +46,12 @@ const app_locales_supported = [
 // then create a new lang json file using keys from en.json
 // e.g. lang/es.json
 
-
 /*<! ------ PAYMENT GATEWAYS ------!>*/
 
 // Available: "Stripe", "CashOnDelivery",
 // Add the method to the array below e.g. ["Stripe", "CashOnDelivery"]
 
 const app_payment_methods = ["Stripe"];
-
 
 /*<! ------ STRIPE (OPTIONAL) ------!>*/
 
@@ -67,7 +66,6 @@ const app_stripe_live_mode = false;
 // #2 Next visit https://woosignal.com/dashboard
 // #3 Then change "Environment for Stripe" to Live mode
 
-
 /*<! ------ WP LOGIN (OPTIONAL) ------!>*/
 
 // Allows customers to login/register, view account, purchase items as a user.
@@ -80,7 +78,6 @@ const app_base_url = "https://mysite.com"; // change to your url
 const app_forgot_password_url =
     "https://mysite.com/my-account/lost-password"; // change to your forgot password url
 const app_wp_api_path = "/wp-json"; // By default "/wp-json" should work
-
 
 /*<! ------ DEBUGGER ENABLED ------!>*/
 

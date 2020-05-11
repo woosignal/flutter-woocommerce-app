@@ -23,8 +23,10 @@ Widget wsMenuItem(BuildContext context,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               leading,
-              Text(" " + title,
-                  style: Theme.of(context).primaryTextTheme.bodyText2),
+              Text(
+                " " + title,
+                style: Theme.of(context).primaryTextTheme.bodyText2,
+              ),
             ],
           ),
         ),

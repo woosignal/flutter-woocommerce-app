@@ -48,12 +48,14 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
 
   _fetchProductsForSearch() async {
     waitForNextRequest = true;
-    List<WS.Product> products = await appWooSignal((api) => api.getProducts(
-        perPage: 100,
-        search: _search,
-        page: _page,
-        status: "publish",
-        stockStatus: "instock"));
+    List<WS.Product> products = await appWooSignal(
+      (api) => api.getProducts(
+          perPage: 100,
+          search: _search,
+          page: _page,
+          status: "publish",
+          stockStatus: "instock"),
+    );
     _products.addAll(products);
     waitForNextRequest = false;
     _page = _page + 1;

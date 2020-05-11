@@ -37,9 +37,7 @@ class _AboutPageState extends State<AboutPage> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text(trans(context, "About"),
             style: Theme.of(context).primaryTextTheme.headline6),
@@ -60,14 +58,18 @@ class _AboutPageState extends State<AboutPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  wsMenuItem(context,
-                      title: trans(context, "Privacy policy"),
-                      leading: Icon(Icons.people),
-                      action: _actionPrivacy),
-                  wsMenuItem(context,
-                      title: trans(context, "Terms and conditions"),
-                      leading: Icon(Icons.description),
-                      action: _actionTerms),
+                  wsMenuItem(
+                    context,
+                    title: trans(context, "Privacy policy"),
+                    leading: Icon(Icons.people),
+                    action: _actionPrivacy,
+                  ),
+                  wsMenuItem(
+                    context,
+                    title: trans(context, "Terms and conditions"),
+                    leading: Icon(Icons.description),
+                    action: _actionTerms,
+                  ),
                   FutureBuilder<PackageInfo>(
                     future: PackageInfo.fromPlatform(),
                     builder: (BuildContext context,
@@ -93,7 +95,7 @@ class _AboutPageState extends State<AboutPage> {
                       }
                       return null; // unreachable
                     },
-                  )
+                  ),
                 ],
               ),
               flex: 2,

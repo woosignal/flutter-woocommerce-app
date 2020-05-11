@@ -50,9 +50,9 @@ class _ErrorPageState extends State<ErrorPage> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              wsLinkButton(context, title: trans(context, "Back"), action: () {
-                Navigator.pop(context);
-              }),
+              wsLinkButton(context,
+                  title: trans(context, "Back"),
+                  action: () => Navigator.pop(context)),
             ],
           ),
         ),

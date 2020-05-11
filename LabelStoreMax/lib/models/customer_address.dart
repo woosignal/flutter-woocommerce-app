@@ -14,6 +14,7 @@ class CustomerAddress {
   String addressLine;
   String city;
   String postalCode;
+  String state;
   String country;
   String emailAddress;
 
@@ -23,6 +24,7 @@ class CustomerAddress {
       this.addressLine,
       this.city,
       this.postalCode,
+      this.state,
       this.country,
       this.emailAddress});
 
@@ -32,30 +34,35 @@ class CustomerAddress {
     addressLine = "";
     city = "";
     postalCode = "";
+    state = "";
     country = "";
     emailAddress = "";
   }
 
   bool hasMissingFields() {
     return (this.firstName.isEmpty ||
-        this.lastName.isEmpty ||
-        this.addressLine.isEmpty ||
-        this.city.isEmpty ||
-        this.postalCode.isEmpty);
+            this.lastName.isEmpty ||
+            this.addressLine.isEmpty ||
+            this.city.isEmpty ||
+            this.postalCode.isEmpty) &&
+        (this.country == "United States" ? this.state.isEmpty : false);
   }
 
   String addressFull() {
     List<String> tmpArrAddress = new List<String>();
-    if (addressLine != "") {
+    if (addressLine != null && addressLine != "") {
       tmpArrAddress.add(addressLine);
     }
-    if (city != "") {
+    if (city != null && city != "") {
       tmpArrAddress.add(city);
     }
-    if (postalCode != "") {
+    if (postalCode != null && postalCode != "") {
       tmpArrAddress.add(postalCode);
     }
-    if (country != "") {
+    if (state != null && state != "") {
+      tmpArrAddress.add(state);
+    }
+    if (country != null && country != "") {
       tmpArrAddress.add(country);
     }
     return tmpArrAddress.join(", ");
@@ -78,6 +85,7 @@ class CustomerAddress {
     addressLine = json['address_line'];
     city = json['city'];
     postalCode = json['postal_code'];
+    state = json['state'];
     country = json['country'];
     emailAddress = json['email_address'];
   }
@@ -89,6 +97,7 @@ class CustomerAddress {
     data['address_line'] = this.addressLine;
     data['city'] = this.city;
     data['postal_code'] = this.postalCode;
+    data['state'] = this.state;
     data['country'] = this.country;
     data['email_address'] = this.emailAddress;
     return data;

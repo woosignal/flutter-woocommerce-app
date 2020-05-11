@@ -91,7 +91,7 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
           children: <Widget>[
             Text(trans(context, "Browse"),
                 style: Theme.of(context).primaryTextTheme.subtitle1),
-            Text(_selectedCategory.name,
+            Text(parseHtmlString(_selectedCategory.name),
                 style: Theme.of(context).primaryTextTheme.headline6)
           ],
         ),
@@ -145,20 +145,26 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
   _sortProducts({@required SortByType by}) {
     switch (by) {
       case SortByType.LowToHigh:
-        _products.sort((product1, product2) => (parseWcPrice(product1.price))
-            .compareTo((double.tryParse(product2.price) ?? 0)));
+        _products.sort(
+          (product1, product2) => (parseWcPrice(product1.price))
+              .compareTo((parseWcPrice(product2.price))),
+        );
         break;
       case SortByType.HighToLow:
-        _products.sort((product1, product2) => (parseWcPrice(product2.price))
-            .compareTo((double.tryParse(product1.price) ?? 0)));
+        _products.sort(
+          (product1, product2) => (parseWcPrice(product2.price))
+              .compareTo((parseWcPrice(product1.price))),
+        );
         break;
       case SortByType.NameAZ:
         _products.sort(
-            (product1, product2) => product1.name.compareTo(product2.name));
+          (product1, product2) => product1.name.compareTo(product2.name),
+        );
         break;
       case SortByType.NameZA:
         _products.sort(
-            (product1, product2) => product2.name.compareTo(product1.name));
+          (product1, product2) => product2.name.compareTo(product1.name),
+        );
         break;
     }
     setState(() {

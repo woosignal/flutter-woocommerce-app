@@ -47,9 +47,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
         leading: Container(
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
           ),
           margin: EdgeInsets.only(left: 0),
         ),

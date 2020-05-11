@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
@@ -17,6 +18,7 @@ import 'package:label_storemax/models/customer_address.dart';
 import 'package:label_storemax/models/shipping_type.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
+import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 import 'package:label_storemax/app_country_options.dart';
 
@@ -54,12 +56,21 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         CheckoutSession.getInstance.billingDetails.shippingAddress;
     String postalCode = customerAddress.postalCode;
     String country = customerAddress.country;
+    String state = customerAddress.state;
+
     String countryCode = appCountryOptions
         .firstWhere((c) => c['name'] == country, orElse: () => null)["code"];
 
+    Map<String, dynamic> stateMap = appStateOptions
+        .firstWhere((c) => c['name'] == state, orElse: () => null);
+
     for (final shipping in wsShipping) {
       Locations location = shipping.locations.firstWhere(
-          (ws) => (ws.code == postalCode || ws.code == countryCode),
+          (ws) => (ws.type == "state" &&
+                  stateMap["code"] != null &&
+                  ws.code == "$countryCode:" + stateMap["code"] ||
+              ws.code == postalCode ||
+              ws.code == countryCode),
           orElse: () => null);
 
       if (location != null) {
@@ -198,9 +209,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
+          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
           child: LayoutBuilder(
             builder: (context, constraints) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,80 +235,79 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                             : (_isShippingSupported
                                 ? Expanded(
                                     child: ListView.separated(
-                                        itemCount: _wsShippingOptions.length,
-                                        separatorBuilder: (context, index) =>
-                                            Divider(
-                                              color: Colors.black12,
-                                            ),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return ListTile(
-                                            contentPadding: EdgeInsets.only(
-                                                left: 16, right: 16),
-                                            title: Text(
-                                                _wsShippingOptions[index]
-                                                    ['title'],
-                                                style: Theme.of(context)
-                                                    .primaryTextTheme
-                                                    .subtitle1),
-                                            selected: true,
-                                            subtitle: FutureBuilder<String>(
-                                              future: _getShippingPrice(index),
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot<String>
-                                                      snapshot) {
-                                                switch (
-                                                    snapshot.connectionState) {
-                                                  case ConnectionState.none:
+                                      itemCount: _wsShippingOptions.length,
+                                      separatorBuilder: (context, index) =>
+                                          Divider(
+                                        color: Colors.black12,
+                                      ),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ListTile(
+                                          contentPadding: EdgeInsets.only(
+                                              left: 16, right: 16),
+                                          title: Text(
+                                              _wsShippingOptions[index]
+                                                  ['title'],
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
+                                          selected: true,
+                                          subtitle: FutureBuilder<String>(
+                                            future: _getShippingPrice(index),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<String>
+                                                    snapshot) {
+                                              switch (
+                                                  snapshot.connectionState) {
+                                                case ConnectionState.none:
+                                                  return Text('');
+                                                case ConnectionState.active:
+                                                case ConnectionState.waiting:
+                                                  return Text('');
+                                                case ConnectionState.done:
+                                                  if (snapshot.hasError)
                                                     return Text('');
-                                                  case ConnectionState.active:
-                                                  case ConnectionState.waiting:
-                                                    return Text('');
-                                                  case ConnectionState.done:
-                                                    if (snapshot.hasError)
-                                                      return Text('');
-                                                    return Text(trans(
-                                                            context, "Price") +
-                                                        ": " +
-                                                        formatStringCurrency(
-                                                            total:
-                                                                snapshot.data));
-                                                }
-                                                return null; // unreachable
-                                              },
-                                            ),
-                                            trailing: (CheckoutSession
-                                                            .getInstance
-                                                            .shippingType !=
-                                                        null &&
-                                                    CheckoutSession
-                                                            .getInstance
-                                                            .shippingType
-                                                            .object ==
-                                                        _wsShippingOptions[
-                                                            index]["object"]
-                                                ? Icon(Icons.check)
-                                                : null),
-                                            onTap: () async {
-                                              ShippingType shippingType =
-                                                  ShippingType();
-                                              shippingType.object =
-                                                  _wsShippingOptions[index]
-                                                      ['object'];
-                                              shippingType.methodId =
-                                                  _wsShippingOptions[index]
-                                                      ['method_id'];
-                                              shippingType.cost =
-                                                  await _getShippingPrice(
-                                                      index);
-
-                                              CheckoutSession.getInstance
-                                                  .shippingType = shippingType;
-
-                                              Navigator.pop(context);
+                                                  return Text(
+                                                      trans(context, "Price") +
+                                                          ": " +
+                                                          formatStringCurrency(
+                                                              total: snapshot
+                                                                  .data));
+                                              }
+                                              return null; // unreachable
                                             },
-                                          );
-                                        }),
+                                          ),
+                                          trailing: (CheckoutSession.getInstance
+                                                          .shippingType !=
+                                                      null &&
+                                                  CheckoutSession
+                                                          .getInstance
+                                                          .shippingType
+                                                          .object ==
+                                                      _wsShippingOptions[index]
+                                                          ["object"]
+                                              ? Icon(Icons.check)
+                                              : null),
+                                          onTap: () async {
+                                            ShippingType shippingType =
+                                                ShippingType();
+                                            shippingType.object =
+                                                _wsShippingOptions[index]
+                                                    ['object'];
+                                            shippingType.methodId =
+                                                _wsShippingOptions[index]
+                                                    ['method_id'];
+                                            shippingType.cost =
+                                                await _getShippingPrice(index);
+
+                                            CheckoutSession.getInstance
+                                                .shippingType = shippingType;
+
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      },
+                                    ),
                                   )
                                 : Text(
                                     trans(context,
@@ -308,27 +316,17 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                         .primaryTextTheme
                                         .headline6,
                                     textAlign: TextAlign.center))),
-                        wsLinkButton(context, title: trans(context, "CANCEL"),
-                            action: () {
-                          Navigator.pop(context);
-                        }),
+                        wsLinkButton(
+                          context,
+                          title: trans(context, "CANCEL"),
+                          action: () => Navigator.pop(context),
+                        ),
                       ],
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: HexColor("#e8e8e8"),
-                          blurRadius: 15.0,
-                          // has the effect of softening the shadow
-                          spreadRadius: 0,
-                          offset: Offset(
-                            0,
-                            0,
-                          ),
-                        )
-                      ],
+                      boxShadow: wsBoxShadow(),
                     ),
                     padding: EdgeInsets.all(8),
                   ),

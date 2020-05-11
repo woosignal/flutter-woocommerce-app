@@ -63,7 +63,7 @@ TextTheme textThemeAccent() {
 
 TextTheme textThemePrimary() {
   return TextTheme(
-    headline4: new  TextStyle(
+    headline4: new TextStyle(
         color: Colors.black,
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800,
@@ -112,7 +112,7 @@ TextTheme textThemePrimary() {
 
 TextTheme textThemeMain() {
   return TextTheme(
-    headline4: new  TextStyle(
+    headline4: new TextStyle(
       color: Colors.black,
       fontFamily: appFontFamily,
     ),
@@ -132,7 +132,7 @@ TextTheme textThemeMain() {
 
 TextTheme textThemeAppBar() {
   return TextTheme(
-    headline4: new  TextStyle(color: Colors.black, fontFamily: appFontFamily),
+    headline4: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     headline3: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     headline2: new TextStyle(color: Colors.black, fontFamily: appFontFamily),
     headline1: new TextStyle(color: Colors.black, fontFamily: appFontFamily),

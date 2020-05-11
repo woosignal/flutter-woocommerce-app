@@ -80,7 +80,6 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
       body: isLoading
           ? showAppLoader()
           : SafeArea(
-//        minimum: safeAreaDefault(),
               child: Column(
                 children: <Widget>[
                   Expanded(
@@ -93,15 +92,20 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                             child: Row(
                               children: <Widget>[
                                 Flexible(
-                                    child: wsTextEditingRow(context,
-                                        heading: trans(context, "First Name"),
-                                        controller: _tfFirstName,
-                                        keyboardType: TextInputType.text)),
+                                  child: wsTextEditingRow(
+                                    context,
+                                    heading: trans(context, "First Name"),
+                                    controller: _tfFirstName,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                ),
                                 Flexible(
-                                  child: wsTextEditingRow(context,
-                                      heading: trans(context, "Last Name"),
-                                      controller: _tfLastName,
-                                      keyboardType: TextInputType.text),
+                                  child: wsTextEditingRow(
+                                    context,
+                                    heading: trans(context, "Last Name"),
+                                    controller: _tfLastName,
+                                    keyboardType: TextInputType.text,
+                                  ),
                                 ),
                               ],
                             ),

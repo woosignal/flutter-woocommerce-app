@@ -55,9 +55,16 @@ class _CartPageState extends State<CartPage> {
 
     List<Map<String, dynamic>> cartJSON = cart.map((c) => c.toJson()).toList();
 
-    List<dynamic> cartRes = await appWooSignal((api) {
-      return api.cartCheck(cartJSON);
-    });
+    List<dynamic> cartRes =
+        await appWooSignal((api) => api.cartCheck(cartJSON));
+    if (cartRes.length <= 0) {
+      Cart.getInstance.saveCartToPref(cartLineItems: []);
+      setState(() {
+        _isCartEmpty = true;
+        _isLoading = false;
+      });
+      return;
+    }
     _cartLines = cartRes.map((json) => CartLineItem.fromJson(json)).toList();
     if (_cartLines.length > 0) {
       Cart.getInstance.saveCartToPref(cartLineItems: _cartLines);
@@ -110,11 +117,13 @@ class _CartPageState extends State<CartPage> {
   actionIncrementQuantity({CartLineItem cartLineItem}) {
     if (cartLineItem.isManagedStock &&
         cartLineItem.quantity + 1 > cartLineItem.stockQuantity) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Cart"),
-          desc: trans(context, trans(context, "Maximum stock reached")),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.shopping_cart);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Cart"),
+        desc: trans(context, trans(context, "Maximum stock reached")),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.shopping_cart,
+      );
       return;
     }
     Cart.getInstance
@@ -136,11 +145,13 @@ class _CartPageState extends State<CartPage> {
   actionRemoveItem({int index}) {
     Cart.getInstance.removeCartItemForIndex(index: index);
     _cartLines.removeAt(index);
-    showEdgeAlertWith(context,
-        title: trans(context, "Updated"),
-        desc: trans(context, "Item removed"),
-        style: EdgeAlertStyle.WARNING,
-        icon: Icons.remove_shopping_cart);
+    showEdgeAlertWith(
+      context,
+      title: trans(context, "Updated"),
+      desc: trans(context, "Item removed"),
+      style: EdgeAlertStyle.WARNING,
+      icon: Icons.remove_shopping_cart,
+    );
     if (_cartLines.length == 0) {
       _isCartEmpty = true;
     }
@@ -194,26 +205,28 @@ class _CartPageState extends State<CartPage> {
             _isCartEmpty
                 ? Expanded(
                     child: FractionallySizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Icon(
-                          Icons.shopping_cart,
-                          size: 100,
-                          color: Colors.black45,
-                        ),
-                        Padding(
-                          child: Text(trans(context, "Empty Basket"),
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText2),
-                          padding: EdgeInsets.only(top: 10),
-                        )
-                      ],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Icon(
+                            Icons.shopping_cart,
+                            size: 100,
+                            color: Colors.black45,
+                          ),
+                          Padding(
+                            child: Text(trans(context, "Empty Basket"),
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText2),
+                            padding: EdgeInsets.only(top: 10),
+                          )
+                        ],
+                      ),
+                      heightFactor: 0.5,
+                      widthFactor: 1,
                     ),
-                    heightFactor: 0.5,
-                    widthFactor: 1,
-                  ))
+                  )
                 : (_isLoading
                     ? Expanded(child: showAppLoader())
                     : Expanded(
@@ -222,17 +235,18 @@ class _CartPageState extends State<CartPage> {
                             itemCount: _cartLines.length,
                             itemBuilder: (BuildContext context, int index) {
                               CartLineItem cartLineItem = _cartLines[index];
-                              return wsCardCartItem(context,
-                                  cartLineItem: cartLineItem,
-                                  actionIncrementQuantity: () {
-                                actionIncrementQuantity(
-                                    cartLineItem: cartLineItem);
-                              }, actionDecrementQuantity: () {
-                                actionDecrementQuantity(
-                                    cartLineItem: cartLineItem);
-                              }, actionRemoveItem: () {
-                                actionRemoveItem(index: index);
-                              });
+                              return wsCardCartItem(
+                                context,
+                                cartLineItem: cartLineItem,
+                                actionIncrementQuantity: () =>
+                                    actionIncrementQuantity(
+                                        cartLineItem: cartLineItem),
+                                actionDecrementQuantity: () =>
+                                    actionDecrementQuantity(
+                                        cartLineItem: cartLineItem),
+                                actionRemoveItem: () =>
+                                    actionRemoveItem(index: index),
+                              );
                             }),
                         flex: 3,
                       )),
@@ -258,9 +272,11 @@ class _CartPageState extends State<CartPage> {
                 }
               },
             ),
-            wsPrimaryButton(context,
-                title: trans(context, "PROCEED TO CHECKOUT"),
-                action: _actionProceedToCheckout),
+            wsPrimaryButton(
+              context,
+              title: trans(context, "PROCEED TO CHECKOUT"),
+              action: _actionProceedToCheckout,
+            ),
           ],
         ),
       ),

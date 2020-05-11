@@ -78,9 +78,10 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: wsBoxShadow(),
-                        color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: wsBoxShadow(),
+                      color: Colors.white,
+                    ),
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -134,9 +135,9 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
               launch(app_forgot_password_url);
             }),
             Divider(),
-            wsLinkButton(context, title: trans(context, "Back"), action: () {
-              Navigator.pop(context);
-            }),
+            wsLinkButton(context,
+                title: trans(context, "Back"),
+                action: () => Navigator.pop(context)),
           ],
         ),
       ),

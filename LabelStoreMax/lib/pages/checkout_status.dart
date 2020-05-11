@@ -87,19 +87,20 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                          bottom:
-                              BorderSide(color: Colors.black12, width: 1.0)),
+                        bottom: BorderSide(color: Colors.black12, width: 1.0),
+                      ),
                     ),
                     padding: EdgeInsets.only(bottom: 20),
                   ),
                   Container(
-                      child: Image(
-                          image: new AssetImage("assets/images/camion.gif"),
-                          height: 170),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      width: double.infinity),
+                    child: Image(
+                        image: new AssetImage("assets/images/camion.gif"),
+                        height: 170),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    width: double.infinity,
+                  ),
                 ],
               ),
               Align(
@@ -136,10 +137,12 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                                       softWrap: false,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis),
-                                  Text("x" + lineItem.quantity.toString(),
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .bodyText2),
+                                  Text(
+                                    "x" + lineItem.quantity.toString(),
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyText2,
+                                  ),
                                 ],
                               ),
                             ),
@@ -162,9 +165,7 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
               Align(
                 child: MaterialButton(
                   child: Text(trans(context, "Back to Home")),
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/home");
-                  },
+                  onPressed: () => Navigator.pushNamed(context, "/home"),
                 ),
                 alignment: Alignment.bottomCenter,
               ),

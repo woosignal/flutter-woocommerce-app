@@ -41,15 +41,22 @@ class Cart {
 
   void addToCart({CartLineItem cartLineItem}) async {
     List<CartLineItem> cartLineItems = await getCart();
-    var firstCartItem = cartLineItems.firstWhere(
-        (i) =>
-            i.productId == cartLineItem.productId ||
-            i.productId == cartLineItem.productId &&
-                i.variationId == cartLineItem.variationId, orElse: () {
-      return null;
-    });
-    if (firstCartItem != null) {
-      return;
+
+    if (cartLineItem.variationId != null) {
+      if (cartLineItems.firstWhere(
+              (i) => (i.productId == cartLineItem.productId &&
+                  i.variationId == cartLineItem.variationId),
+              orElse: () => null) !=
+          null) {
+        return;
+      }
+    } else {
+      var firstCartItem = cartLineItems.firstWhere(
+          (i) => i.productId == cartLineItem.productId,
+          orElse: () => null);
+      if (firstCartItem != null) {
+        return;
+      }
     }
     cartLineItems.add(cartLineItem);
 
@@ -60,7 +67,7 @@ class Cart {
     List<CartLineItem> cartLineItems = await getCart();
     double total = 0;
     cartLineItems.forEach((cartItem) {
-      total += (double.parse(cartItem.total) * cartItem.quantity);
+      total += (parseWcPrice(cartItem.total) * cartItem.quantity);
     });
 
     if (withFormat != null && withFormat == true) {
@@ -73,7 +80,7 @@ class Cart {
     List<CartLineItem> cartLineItems = await getCart();
     double subtotal = 0;
     cartLineItems.forEach((cartItem) {
-      subtotal += (double.parse(cartItem.subtotal) * cartItem.quantity);
+      subtotal += (parseWcPrice(cartItem.subtotal) * cartItem.quantity);
     });
     if (withFormat != null && withFormat == true) {
       return formatDoubleCurrency(total: subtotal);
@@ -133,6 +140,7 @@ class Cart {
     double shippingTotal = 0;
 
     List<CartLineItem> cartItems = await Cart.getInstance.getCart();
+
     if (cartItems.every((c) => c.taxStatus == 'none')) {
       return "0";
     }

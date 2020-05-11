@@ -51,9 +51,8 @@ Widget wsCartIcon(BuildContext context, {Key key}) {
               top: 0)
         ],
       ),
-      onPressed: () {
-        Navigator.pushNamed(context, "/cart");
-      },
+      onPressed: () => Navigator.pushNamed(context, "/cart")
+          .then((value) => setState(() {})),
     ),
   );
 }

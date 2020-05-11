@@ -55,12 +55,15 @@ class _ProductDetailState extends State<ProductDetailPage> {
 
     bool isFetching = true;
     while (isFetching) {
-      List<WS.ProductVariation> tmp = await appWooSignal((api) {
-        return api.getProductVariations(_product.id,
-            perPage: 100, page: currentPage);
-      });
+      List<WS.ProductVariation> tmp = await appWooSignal(
+        (api) => api.getProductVariations(_product.id,
+            perPage: 100, page: currentPage),
+      );
       if (tmp != null && tmp.length > 0) {
         tmpVariations.addAll(tmp);
+      }
+
+      if (tmp != null && tmp.length >= 100) {
         currentPage += 1;
       } else {
         isFetching = false;
@@ -166,9 +169,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                     _tmpAttributeObj.containsKey(index))
                 ? Icon(Icons.check, color: Colors.blueAccent)
                 : null,
-            onTap: () {
-              _modalBottomSheetOptionsForAttribute(index);
-            },
+            onTap: () => _modalBottomSheetOptionsForAttribute(index),
           );
         },
       ),
@@ -179,17 +180,17 @@ class _ProductDetailState extends State<ProductDetailPage> {
         child: Column(
           children: <Widget>[
             Text(
-                (findProductVariation() != null
-                    ? trans(context, "Price") +
-                        ": " +
-                        formatStringCurrency(
-                            total: findProductVariation().price)
-                    : (((_product.attributes.length ==
-                                _tmpAttributeObj.values.length) &&
-                            findProductVariation() == null)
-                        ? trans(context, "This variation is unavailable")
-                        : trans(context, "Choose your options"))),
-                style: Theme.of(context).primaryTextTheme.subtitle1),
+              (findProductVariation() != null
+                  ? trans(context, "Price") +
+                      ": " +
+                      formatStringCurrency(total: findProductVariation().price)
+                  : (((_product.attributes.length ==
+                              _tmpAttributeObj.values.length) &&
+                          findProductVariation() == null)
+                      ? trans(context, "This variation is unavailable")
+                      : trans(context, "Choose your options"))),
+              style: Theme.of(context).primaryTextTheme.subtitle1,
+            ),
             Text(
               (findProductVariation() != null
                   ? findProductVariation().stockStatus != "instock"
@@ -378,9 +379,10 @@ class _ProductDetailState extends State<ProductDetailPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: wsBoxShadow(),
-                              borderRadius: BorderRadius.circular(4)),
+                            color: Colors.white,
+                            boxShadow: wsBoxShadow(),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                           padding:
                               EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                           height: 180,
@@ -457,7 +459,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              "Quantity",
+                              trans(context, "Quantity"),
                               style:
                                   Theme.of(context).primaryTextTheme.bodyText1,
                             ),
@@ -556,15 +558,15 @@ class _ProductDetailState extends State<ProductDetailPage> {
       _modalBottomSheetAttributes();
       return;
     }
-    if (_product.stockStatus == "instock") {
-      _itemAddToCart(cartLineItem: cartLineItem);
-    } else {
+    if (_product.stockStatus != "instock") {
       showEdgeAlertWith(context,
           title: trans(context, "Sorry"),
           desc: trans(context, "This item is out of stock"),
           style: EdgeAlertStyle.WARNING,
           icon: Icons.local_shipping);
+      return;
     }
+    _itemAddToCart(cartLineItem: cartLineItem);
   }
 
   _productImageTapped(int i) {

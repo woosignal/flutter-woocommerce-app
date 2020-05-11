@@ -10,6 +10,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:label_storemax/widgets/woosignal_ui.dart';
 
 import '../helpers/tools.dart';
 
@@ -36,13 +37,18 @@ Widget wsSecondaryButton(BuildContext context,
     height: 60,
     margin: EdgeInsets.only(top: 10),
     child: RaisedButton(
-        padding: EdgeInsets.all(10),
-        child: Text(title,
-            style: Theme.of(context).primaryTextTheme.bodyText1,
-            textAlign: TextAlign.center),
-        onPressed: action,
-        color: HexColor("#f6f6f9"),
-        elevation: 0),
+      padding: EdgeInsets.all(10),
+      child: Text(
+        title,
+        style: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
+              color: Colors.black87,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      onPressed: action,
+      color: HexColor("#f6f6f9"),
+      elevation: 1,
+    ),
   );
 }
 
@@ -53,9 +59,11 @@ Widget wsLinkButton(BuildContext context,
     margin: EdgeInsets.only(top: 10),
     child: MaterialButton(
       padding: EdgeInsets.all(10),
-      child: Text(title,
-          style: Theme.of(context).primaryTextTheme.bodyText1,
-          textAlign: TextAlign.left),
+      child: Text(
+        title,
+        style: Theme.of(context).primaryTextTheme.bodyText1,
+        textAlign: TextAlign.left,
+      ),
       onPressed: action,
       elevation: 0,
     ),

@@ -50,9 +50,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
+          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
           child: LayoutBuilder(
             builder: (context, constraints) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,17 +101,16 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                 },
                               );
                             },
-                            separatorBuilder: (cxt, i) {
-                              return Divider(
-                                color: Colors.black12,
-                              );
-                            },
+                            separatorBuilder: (cxt, i) => Divider(
+                              color: Colors.black12,
+                            ),
                           ),
                         ),
-                        wsLinkButton(context, title: trans(context, "CANCEL"),
-                            action: () {
-                          Navigator.pop(context);
-                        }),
+                        wsLinkButton(
+                          context,
+                          title: trans(context, "CANCEL"),
+                          action: () => Navigator.pop(context),
+                        ),
                       ],
                     ),
                     decoration: BoxDecoration(

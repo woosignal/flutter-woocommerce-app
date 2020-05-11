@@ -1,3 +1,10 @@
+## [2.0.3] - 2020-05-12
+
+* New state options for taxes/shipping
+* Handle variations better
+* Code clean up
+* Bug fixes
+
 ## [2.0.2] - 2020-05-08
 
 * Flutter 1.17.0 support

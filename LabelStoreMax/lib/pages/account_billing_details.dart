@@ -96,9 +96,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
+          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
           child: _isLoading
               ? showAppLoader()
               : LayoutBuilder(
