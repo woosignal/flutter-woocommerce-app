@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.0.3
+ VERSION - 2.0.2
  https://woosignal.com
  */
 
@@ -24,9 +24,8 @@ import 'dart:ui';
 
 const app_name = "MyApp";
 
-//const app_key = "Your app key from WooSignal";
-const app_key =
-    "app_affb6434339b34443a297c2e40a3edab7102137e6d67de9abfe612b749bd";
+const app_key = "Your app key from WooSignal";
+
 // Your App key from WooSignal
 // link: https://woosignal.com/dashboard/apps
 
