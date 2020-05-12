@@ -499,19 +499,20 @@ Widget wsCardCartItem(BuildContext context,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                            (cartLineItem.stockStatus == "outofstock"
-                                ? trans(context, "Out of stock")
-                                : trans(context, "In Stock")),
-                            style: (cartLineItem.stockStatus == "outofstock"
-                                ? Theme.of(context).textTheme.caption
-                                : Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyText2)),
+                          (cartLineItem.stockStatus == "outofstock"
+                              ? trans(context, "Out of stock")
+                              : trans(context, "In Stock")),
+                          style: (cartLineItem.stockStatus == "outofstock"
+                              ? Theme.of(context).textTheme.caption
+                              : Theme.of(context).primaryTextTheme.bodyText2),
+                        ),
                         Text(
-                            formatDoubleCurrency(
-                                total: parseWcPrice(cartLineItem.total)),
-                            style: Theme.of(context).primaryTextTheme.subtitle1,
-                            textAlign: TextAlign.center)
+                          formatDoubleCurrency(
+                            total: parseWcPrice(cartLineItem.total),
+                          ),
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                          textAlign: TextAlign.center,
+                        )
                       ],
                     ),
                   ],
