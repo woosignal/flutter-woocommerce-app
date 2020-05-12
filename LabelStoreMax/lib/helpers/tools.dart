@@ -38,9 +38,8 @@ appWooSignal(Function(WooSignal) api) async {
   return await api(wooSignal);
 }
 
-List<PaymentType> getPaymentTypes() {
-  return arrPaymentMethods.where((v) => v != null).toList();
-}
+List<PaymentType> getPaymentTypes() =>
+    arrPaymentMethods.where((v) => v != null).toList();
 
 PaymentType addPayment(PaymentType paymentType) {
   return app_payment_methods.contains(paymentType.name) ? paymentType : null;
@@ -424,17 +423,12 @@ showPlatformAlertDialog(BuildContext context,
   );
 }
 
-DateTime parseDateTime(String strDate) {
-  return DateTime.parse(strDate);
-}
+DateTime parseDateTime(String strDate) => DateTime.parse(strDate);
 
-DateFormat formatDateTime(String format) {
-  return DateFormat(format);
-}
+DateFormat formatDateTime(String format) => DateFormat(format);
 
-String dateFormatted({@required String date, @required String formatType}) {
-  return formatDateTime(formatType).format(parseDateTime(date));
-}
+String dateFormatted({@required String date, @required String formatType}) =>
+    formatDateTime(formatType).format(parseDateTime(date));
 
 enum FormatType {
   DateTime,
@@ -477,42 +471,43 @@ Widget refreshableScroll(context,
     @required onTap,
     key}) {
   return SmartRefresher(
-      enablePullDown: false,
-      enablePullUp: true,
-      footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
-          Widget body;
-          if (mode == LoadStatus.idle) {
-            body = Text(trans(context, "pull up load"));
-          } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
-          } else if (mode == LoadStatus.failed) {
-            body = Text(trans(context, "Load Failed! Click retry!"));
-          } else if (mode == LoadStatus.canLoading) {
-            body = Text(trans(context, "release to load more"));
-          } else {
-            body = Text(trans(context, "No more products"));
-          }
-          return Container(
-            height: 55.0,
-            child: Center(child: body),
-          );
-        },
-      ),
-      controller: refreshController,
-      onRefresh: onRefresh,
-      onLoading: onLoading,
-      child: (products.length != null && products.length > 0
-          ? GridView.count(
-              crossAxisCount: 2,
-              children: List.generate(
-                products.length,
-                (index) {
-                  return wsCardProductItem(context,
-                      index: index, product: products[index], onTap: onTap);
-                },
-              ))
-          : wsNoResults(context)));
+    enablePullDown: false,
+    enablePullUp: true,
+    footer: CustomFooter(
+      builder: (BuildContext context, LoadStatus mode) {
+        Widget body;
+        if (mode == LoadStatus.idle) {
+          body = Text(trans(context, "pull up load"));
+        } else if (mode == LoadStatus.loading) {
+          body = CupertinoActivityIndicator();
+        } else if (mode == LoadStatus.failed) {
+          body = Text(trans(context, "Load Failed! Click retry!"));
+        } else if (mode == LoadStatus.canLoading) {
+          body = Text(trans(context, "release to load more"));
+        } else {
+          body = Text(trans(context, "No more products"));
+        }
+        return Container(
+          height: 55.0,
+          child: Center(child: body),
+        );
+      },
+    ),
+    controller: refreshController,
+    onRefresh: onRefresh,
+    onLoading: onLoading,
+    child: (products.length != null && products.length > 0
+        ? GridView.count(
+            crossAxisCount: 2,
+            children: List.generate(
+              products.length,
+              (index) {
+                return wsCardProductItem(context,
+                    index: index, product: products[index], onTap: onTap);
+              },
+            ))
+        : wsNoResults(context)),
+  );
 }
 
 class UserAuth {

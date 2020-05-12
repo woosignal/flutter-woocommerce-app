@@ -39,14 +39,13 @@ class CustomerAddress {
     emailAddress = "";
   }
 
-  bool hasMissingFields() {
-    return (this.firstName.isEmpty ||
-            this.lastName.isEmpty ||
-            this.addressLine.isEmpty ||
-            this.city.isEmpty ||
-            this.postalCode.isEmpty) &&
-        (this.country == "United States" ? this.state.isEmpty : false);
-  }
+  bool hasMissingFields() =>
+      (this.firstName.isEmpty ||
+          this.lastName.isEmpty ||
+          this.addressLine.isEmpty ||
+          this.city.isEmpty ||
+          this.postalCode.isEmpty) ||
+      (this.country == "United States" ? this.state.isEmpty : false);
 
   String addressFull() {
     List<String> tmpArrAddress = new List<String>();
