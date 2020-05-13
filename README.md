@@ -1,11 +1,17 @@
 <p align="center">
-  <img width="200" height="125" src="https://www.woosignal.com/images/woosignal_logo_stripe_blue.png" alt="Woosignal logo">
+  <img width="200" height="125" src="https://www.woosignal.com/images/woosignal_logo_stripe_blue.png" alt="WooSignal logo">
 </p>
 	
-# Woocommerce App: Label StoreMax
-### Label StoreMax - v2.0.2
+# WooCommerce App: Label StoreMax
+### Label StoreMax - v2.0.3
 
-![alt text](https://woosignal.com/images/woosignal_labelstoremax_main_banner_flutter.png "WooCommerce app WooSignal Flutter logo")
+[Official WooSignal WooCommerce App](https://woosignal.com)
+
+![alt text](https://woosignal.com/images/woocommerce_app_preview_2.png "WooCommerce app checkout experience")
+
+![alt text](https://woosignal.com/images/woocommerce_app_preview_3.png "WooCommerce app Login/Register for customers via WordPress")
+
+![alt text](https://woosignal.com/images/woocommerce_app_preview_1.png "Full integration with WooCommerce")
 
 ### About Label StoreMax
 
