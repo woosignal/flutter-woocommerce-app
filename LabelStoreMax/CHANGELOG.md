@@ -1,3 +1,8 @@
+## [2.0.4] - 2020-05-13
+
+* Added Flexible widget for checkout details
+* Bug fixes
+
 ## [2.0.3] - 2020-05-12
 
 * New state options for taxes/shipping

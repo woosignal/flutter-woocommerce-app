@@ -37,7 +37,6 @@ Widget wsSecondaryButton(BuildContext context,
     height: 60,
     margin: EdgeInsets.only(top: 10),
     child: RaisedButton(
-      padding: EdgeInsets.all(10),
       child: Text(
         title,
         style: Theme.of(context).primaryTextTheme.bodyText1.copyWith(

@@ -183,99 +183,107 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: wsTextEditingRow(
-                                context,
-                                heading: trans(context, "First Name"),
-                                controller: _txtShippingFirstName,
-                                shouldAutoFocus: true,
-                              ),
-                            ),
-                            Flexible(
-                              child: wsTextEditingRow(
-                                context,
-                                heading: trans(context, "Last Name"),
-                                controller: _txtShippingLastName,
-                              ),
-                            ),
-                          ],
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: wsTextEditingRow(
-                                context,
-                                heading: trans(context, "Address Line"),
-                                controller: _txtShippingAddressLine,
-                              ),
-                            ),
-                            Flexible(
-                              child: wsTextEditingRow(
-                                context,
-                                heading: trans(context, "City"),
-                                controller: _txtShippingCity,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: wsTextEditingRow(
-                                context,
-                                heading: trans(context, "Postal code"),
-                                controller: _txtShippingPostalCode,
-                              ),
-                            ),
-                            Flexible(
-                              child: wsTextEditingRow(context,
-                                  heading: trans(context, "Email address"),
-                                  keyboardType: TextInputType.emailAddress,
-                                  controller: _txtShippingEmailAddress),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            (_strBillingCountry == "United States"
-                                ? Flexible(
-                                    child: Padding(
-                                      child: wsSecondaryButton(
-                                        context,
-                                        title: (_strBillingState != null &&
-                                                _strBillingState.isNotEmpty
-                                            ? trans(context, "Selected") +
-                                                "\n" +
-                                                _strBillingState
-                                            : trans(context, "Select state")),
-                                        action: _showSelectStateModal,
-                                      ),
-                                      padding: EdgeInsets.all(8),
-                                    ),
-                                  )
-                                : null),
-                            Flexible(
-                              child: Padding(
-                                child: wsSecondaryButton(
+                        Flexible(
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: wsTextEditingRow(
                                   context,
-                                  title: (_strBillingCountry != null &&
-                                          _strBillingCountry.isNotEmpty
-                                      ? trans(context, "Selected") +
-                                          "\n" +
-                                          _strBillingCountry
-                                      : trans(context, "Select country")),
-                                  action: _showSelectCountryModal,
+                                  heading: trans(context, "First Name"),
+                                  controller: _txtShippingFirstName,
+                                  shouldAutoFocus: true,
                                 ),
-                                padding: EdgeInsets.all(8),
                               ),
-                            )
-                          ].where((element) => element != null).toList(),
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              Flexible(
+                                child: wsTextEditingRow(
+                                  context,
+                                  heading: trans(context, "Last Name"),
+                                  controller: _txtShippingLastName,
+                                ),
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          ),
+                        ),
+                        Flexible(
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: wsTextEditingRow(
+                                  context,
+                                  heading: trans(context, "Address Line"),
+                                  controller: _txtShippingAddressLine,
+                                ),
+                              ),
+                              Flexible(
+                                child: wsTextEditingRow(
+                                  context,
+                                  heading: trans(context, "City"),
+                                  controller: _txtShippingCity,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Flexible(
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: wsTextEditingRow(
+                                  context,
+                                  heading: trans(context, "Postal code"),
+                                  controller: _txtShippingPostalCode,
+                                ),
+                              ),
+                              Flexible(
+                                child: wsTextEditingRow(context,
+                                    heading: trans(context, "Email address"),
+                                    keyboardType: TextInputType.emailAddress,
+                                    controller: _txtShippingEmailAddress),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Flexible(
+                          child: Row(
+                            children: <Widget>[
+                              (_strBillingCountry == "United States"
+                                  ? Flexible(
+                                      child: Padding(
+                                        child: wsSecondaryButton(
+                                          context,
+                                          title: (_strBillingState != null &&
+                                                  _strBillingState.isNotEmpty
+                                              ? trans(context, "Selected") +
+                                                  "\n" +
+                                                  _strBillingState
+                                              : trans(context, "Select state")),
+                                          action: _showSelectStateModal,
+                                        ),
+                                        padding: EdgeInsets.all(8),
+                                      ),
+                                    )
+                                  : null),
+                              Flexible(
+                                child: Padding(
+                                  child: wsSecondaryButton(
+                                    context,
+                                    title: (_strBillingCountry != null &&
+                                            _strBillingCountry.isNotEmpty
+                                        ? trans(context, "Selected") +
+                                            "\n" +
+                                            _strBillingCountry
+                                        : trans(context, "Select country")),
+                                    action: _showSelectCountryModal,
+                                  ),
+                                  padding: EdgeInsets.all(8),
+                                ),
+                              )
+                            ].where((element) => element != null).toList(),
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          ),
                         )
                       ],
                     ),
@@ -286,7 +294,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                     ),
                     padding: EdgeInsets.all(8),
                   ),
-                  height: (constraints.maxHeight - constraints.minHeight) * 0.5,
+                  height: (constraints.maxHeight - constraints.minHeight) * 0.6,
                 ),
                 Column(
                   children: <Widget>[
