@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.0.4
+ VERSION - 2.0.5
  https://woosignal.com
  */
 
@@ -24,7 +24,8 @@ import 'dart:ui';
 
 const app_name = "MyApp";
 
-const app_key = "Your app key from WooSignal";
+const app_key =
+    "app_b2538b4325a4a6b0f3b919f4c91cea8087ba80977f4a7c1feda669127aca";
 
 // Your App key from WooSignal
 // link: https://woosignal.com/dashboard/apps
@@ -47,7 +48,7 @@ const app_locales_supported = [
 
 /*<! ------ PAYMENT GATEWAYS ------!>*/
 
-// Available: "Stripe", "CashOnDelivery",
+// Available: "Stripe", "CashOnDelivery", "RazorPay"
 // Add the method to the array below e.g. ["Stripe", "CashOnDelivery"]
 
 const app_payment_methods = ["Stripe"];
@@ -77,6 +78,11 @@ const app_base_url = "https://mysite.com"; // change to your url
 const app_forgot_password_url =
     "https://mysite.com/my-account/lost-password"; // change to your forgot password url
 const app_wp_api_path = "/wp-json"; // By default "/wp-json" should work
+
+/*<! ------ Razor Pay (OPTIONAL) ------!>*/
+// https://razorpay.com/
+
+const app_razor_id = "Your Razor ID from RazorPay";
 
 /*<! ------ DEBUGGER ENABLED ------!>*/
 

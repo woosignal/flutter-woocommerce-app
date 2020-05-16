@@ -291,14 +291,14 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                       .getTotal(withFormatting: true)),
                       (_taxRate != null
                           ? wsCheckoutTaxAmountWidgetFB(taxRate: _taxRate)
-                          : Container()),
+                          : null),
                       wsCheckoutTotalWidgetFB(
                           title: trans(context, "Total"), taxRate: _taxRate),
                       Divider(
                         color: Colors.black12,
                         thickness: 1,
                       ),
-                    ],
+                    ].where((e) => e != null).toList(),
                   ),
                   wsPrimaryButton(
                     context,

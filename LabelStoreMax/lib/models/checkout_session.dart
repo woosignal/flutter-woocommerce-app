@@ -21,7 +21,10 @@ import 'package:woosignal/models/response/tax_rate.dart';
 import '../helpers/tools.dart';
 
 class CheckoutSession {
-  String sfKeyCheckout = "CS_BILLING_DETAILS";
+  String sfKeyBillingCheckout = "CS_BILLING_DETAILS";
+  String sfKeyShippingCheckout = "CS_SHIPPING_DETAILS";
+  bool shipToDifferentAddress = false;
+
   CheckoutSession._privateConstructor();
   static final CheckoutSession getInstance =
       CheckoutSession._privateConstructor();
@@ -35,19 +38,25 @@ class CheckoutSession {
     shippingType = null;
   }
 
+  void clear() {
+    billingDetails = null;
+    shippingType = null;
+    paymentType = null;
+  }
+
   void saveBillingAddress() {
     SharedPref sharedPref = SharedPref();
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.billingAddress;
 
     String billingAddress = jsonEncode(customerAddress.toJson());
-    sharedPref.save(sfKeyCheckout, billingAddress);
+    sharedPref.save(sfKeyBillingCheckout, billingAddress);
   }
 
   Future<CustomerAddress> getBillingAddress() async {
     SharedPref sharedPref = SharedPref();
 
-    String strCheckoutDetails = await sharedPref.read(sfKeyCheckout);
+    String strCheckoutDetails = await sharedPref.read(sfKeyBillingCheckout);
 
     if (strCheckoutDetails != null && strCheckoutDetails != "") {
       return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
@@ -57,7 +66,30 @@ class CheckoutSession {
 
   void clearBillingAddress() {
     SharedPref sharedPref = SharedPref();
-    sharedPref.remove(sfKeyCheckout);
+    sharedPref.remove(sfKeyBillingCheckout);
+  }
+
+  void saveShippingAddress() {
+    SharedPref sharedPref = SharedPref();
+    CustomerAddress customerAddress =
+        CheckoutSession.getInstance.billingDetails.shippingAddress;
+
+    String shippingAddress = jsonEncode(customerAddress.toJson());
+    sharedPref.save(sfKeyShippingCheckout, shippingAddress);
+  }
+
+  Future<CustomerAddress> getShippingAddress() async {
+    SharedPref sharedPref = SharedPref();
+    String strCheckoutDetails = await sharedPref.read(sfKeyShippingCheckout);
+    if (strCheckoutDetails != null && strCheckoutDetails != "") {
+      return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
+    }
+    return null;
+  }
+
+  void clearShippingAddress() {
+    SharedPref sharedPref = SharedPref();
+    sharedPref.remove(sfKeyShippingCheckout);
   }
 
   Future<String> total({bool withFormat, TaxRate taxRate}) async {

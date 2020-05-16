@@ -1,3 +1,12 @@
+## [2.0.5] - 2020-05-16
+
+* RazorPay checkout added
+* Option to use shipping address
+* Config update
+* Pubspec.yaml change
+* Option to use different billing or shipping address
+* Bug fixes
+
 ## [2.0.4] - 2020-05-13
 
 * Added Flexible widget for checkout details

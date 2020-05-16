@@ -11,6 +11,7 @@
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/models/payment_type.dart';
 import 'package:label_storemax/providers/cash_on_delivery.dart';
+import 'package:label_storemax/providers/razor_pay.dart';
 import 'package:label_storemax/providers/stripe_pay.dart';
 
 // Payment methods available for uses in the app
@@ -36,15 +37,25 @@ List<PaymentType> arrPaymentMethods = [
     ),
   ),
 
+  addPayment(
+    PaymentType(
+      id: 3,
+      name: "RazorPay",
+      desc: "Debit or Credit Card",
+      assetImage: "razorpay.png",
+      pay: razorPay,
+    ),
+  ),
+
   // e.g. add more here
 
 //  addPayment(
 //    PaymentType(
-//      id: 3,
+//      id: 4,
 //      name: "MyNewPaymentMethod",
 //      desc: "Debit or Credit Card",
 //      assetImage: "add icon image to assets/images/myimage.png",
-//      pay: stripePay
+//      pay: myCustomPaymentFunction
 //    ),
 //  ),
 ];

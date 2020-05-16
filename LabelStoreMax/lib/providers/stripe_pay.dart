@@ -17,6 +17,7 @@ import 'package:label_storemax/helpers/data/order_wc.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
+import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/pages/checkout_confirmation.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/order.dart';
@@ -78,6 +79,7 @@ stripePay(context,
 
           if (order != null) {
             Cart.getInstance.clear();
+            CheckoutSession.getInstance.clear();
             Navigator.pushNamed(context, "/checkout-status", arguments: order);
           } else {
             showEdgeAlertWith(

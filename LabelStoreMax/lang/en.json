@@ -127,6 +127,7 @@
   "Done": "Done",
   "Billing Details": "Billing Details",
   "Shipping Details": "Shipping Details",
+  "Shipping Address": "Shipping Address",
   "State": "State",
   "Country": "Country",
   "UPDATE DETAILS": "UPDATE DETAILS",
@@ -145,5 +146,9 @@
   "Welcome back": "Welcome back",
   "Quantity": "Quantity",
   "Select a state": "Select a state",
-  "Select state": "Select state"
+  "Select state": "Select state",
+  "Ship to a different address?": "Ship to a different address?",
+  "USE DETAILS": "USE DETAILS",
+  "Not supported, try a card payment": "Not supported, try a card payment",
+  "Invalid shipping address, please check your shipping details": "Invalid shipping address, please check your shipping details"
 }
