@@ -58,9 +58,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchCategories() async {
-    _categories = await appWooSignal((api) {
-      return api.getProductCategories();
-    });
+    _categories = await appWooSignal((api) => api.getProductCategories());
   }
 
   _fetchMoreProducts() async {
@@ -90,9 +88,7 @@ class _HomePageState extends State<HomePage> {
       title: trans(context, "Categories"),
       bodyWidget: ListView.separated(
         itemCount: _categories.length,
-        separatorBuilder: (cxt, i) {
-          return Divider();
-        },
+        separatorBuilder: (cxt, i) => Divider(),
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(parseHtmlString(_categories[index].name)),
@@ -133,7 +129,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () => Navigator.pushNamed(context, "/home-search")
                 .then((value) => _key.currentState.setState(() {})),
           ),
-          wsCartIcon(context, key: _key)
+          wsCartIcon(context, key: _key),
         ],
       ),
       body: SafeArea(
@@ -150,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(trans(context, "Shop") + " / ",
-                        style: Theme.of(context).primaryTextTheme.subtitle1),
+                        style: Theme.of(context).primaryTextTheme.subtitle1,),
                     Text(
                       trans(context, "Newest"),
                       style: Theme.of(context).primaryTextTheme.bodyText2,
@@ -176,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                         onRefresh: _onRefresh,
                         onLoading: _onLoading,
                         products: _products,
-                        onTap: _showProduct),
+                        onTap: _showProduct,),
                     flex: 1,
                   )),
           ],

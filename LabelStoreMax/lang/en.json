@@ -150,5 +150,7 @@
   "Ship to a different address?": "Ship to a different address?",
   "USE DETAILS": "USE DETAILS",
   "Not supported, try a card payment": "Not supported, try a card payment",
-  "Invalid shipping address, please check your shipping details": "Invalid shipping address, please check your shipping details"
+  "Invalid shipping address, please check your shipping details": "Invalid shipping address, please check your shipping details",
+  "Was": "Was",
+  "off": "off"
 }

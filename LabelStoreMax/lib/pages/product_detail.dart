@@ -303,10 +303,12 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                 return CachedNetworkImage(
                                   imageUrl: _product.images[index].src,
                                   placeholder: (context, url) =>
-                                      new CircularProgressIndicator(
+                                      Center(
+                                        child: new CircularProgressIndicator(
                                     strokeWidth: 2,
                                     backgroundColor: Colors.black12,
                                   ),
+                                      ),
                                   errorWidget: (context, url, error) =>
                                       new Icon(Icons.error),
                                   fit: BoxFit.contain,
@@ -359,7 +361,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                           ),
                                       textAlign: TextAlign.right,
                                     ),
-                                    (_product.onSale == true
+                                    (_product.onSale == true && _product.type != "variable"
                                         ? Text(
                                             formatStringCurrency(
                                                 total: _product.regularPrice),

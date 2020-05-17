@@ -1,3 +1,9 @@
+## [2.0.6] - 2020-05-17
+
+* New product view
+* Improved product sale appearance
+* Bug fixes
+
 ## [2.0.5] - 2020-05-16
 
 * RazorPay checkout added

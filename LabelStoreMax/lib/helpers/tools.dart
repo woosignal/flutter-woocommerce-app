@@ -151,6 +151,12 @@ String formatStringCurrency({@required String total}) {
   return fmf.output.symbolOnLeft;
 }
 
+String workoutSaleDiscount({@required String salePrice, @required String priceBefore}) {
+  double dSalePrice = parseWcPrice(salePrice);
+  double dPriceBefore = parseWcPrice(priceBefore);
+  return ((dPriceBefore-dSalePrice) * (100 / dPriceBefore)).toStringAsFixed(0);
+}
+
 openBrowserTab({@required String url}) async {
   await FlutterWebBrowser.openWebPage(
       url: url, androidToolbarColor: Colors.white70);
@@ -499,15 +505,28 @@ Widget refreshableScroll(context,
     child: (products.length != null && products.length > 0
         ? GridView.count(
             crossAxisCount: 2,
+        childAspectRatio: calAspectRatio(context),
+            shrinkWrap: true,
             children: List.generate(
               products.length,
-              (index) {
-                return wsCardProductItem(context,
-                    index: index, product: products[index], onTap: onTap);
-              },
+              (index) => wsCardProductItem(context,
+                  index: index, product: products[index], onTap: onTap),
             ))
         : wsNoResults(context)),
   );
+}
+
+double calAspectRatio(BuildContext context) {
+  if (MediaQuery.of(context).size.height > 800) {
+    return MediaQuery.of(context).size.width /
+        (MediaQuery.of(context).size.height / 1.85);
+  }
+  if (MediaQuery.of(context).size.height > 700) {
+    return MediaQuery.of(context).size.width /
+        (MediaQuery.of(context).size.height / 1.5);
+  }
+  return MediaQuery.of(context).size.width /
+      (MediaQuery.of(context).size.height / 1.3);
 }
 
 class UserAuth {

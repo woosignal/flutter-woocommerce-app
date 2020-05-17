@@ -205,68 +205,82 @@ List<BoxShadow> wsBoxShadow({double blurRadius}) {
 
 Widget wsCardProductItem(BuildContext context,
     {int index, Product product, onTap}) {
-  return InkWell(
-    child: Container(
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: wsBoxShadow(blurRadius: 4),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Flexible(
-            child: CachedNetworkImage(
-              imageUrl:
-                  (product.images.length > 0 ? product.images.first.src : ""),
-              placeholder: (context, url) => new CircularProgressIndicator(),
-              errorWidget: (context, url, error) => new Icon(Icons.error),
-              fit: BoxFit.contain,
+  return LayoutBuilder(
+    builder: (cxt,constraints) => InkWell(
+      child: Container(
+        margin: EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(3.0),
+              child: CachedNetworkImage(
+                imageUrl:
+                (product.images.length > 0 ? product.images.first.src : ""),
+                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => new Icon(Icons.error),
+                fit: BoxFit.cover,
+                height: constraints.maxHeight / 1.8,
+                width: double.infinity,
+              ),
             ),
-            flex: 4,
-          ),
-          Flexible(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
+            Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: Text(
+                product.name,
+                style: Theme.of(context).textTheme.bodyText2,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Text(
                   formatStringCurrency(total: product.price),
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                (product.onSale
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          formatStringCurrency(total: product.regularPrice),
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.grey,
-                              ),
-                          textAlign: TextAlign.left,
-                        ),
-                      )
+              ),
+            ),
+            Flexible(
+              child: Container(
+                child: (product.onSale && product.type != "variable"
+                    ? RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: '',
+                    style: Theme.of(context).textTheme.bodyText1,
+                    children: <TextSpan>[
+                      TextSpan(text: '${trans(context, "Was")}: ', style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: Colors.black54,
+                          fontSize: 11
+                      ),),
+                      TextSpan(text: formatStringCurrency(total: product.regularPrice), style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey,
+                          fontSize: 11
+                      ),),
+                      TextSpan(text: " | ${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}", style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: Colors.black87,
+                          fontSize: 11
+                      ),),
+                    ],
+                  ),
+                )
                     : null),
-              ].where((t) => t != null).toList(),
+                width: double.infinity,
+              ),
             ),
-            flex: 1,
-          ),
-          Expanded(
-            child: Text(
-              product.name,
-              style: Theme.of(context).textTheme.bodyText2,
-              overflow: TextOverflow.clip,
-              maxLines: 1,
-            ),
-            flex: 1,
-          )
-        ],
+          ].where((e) => e != null).toList(),
+        ),
       ),
+      onTap: () => onTap(product),
     ),
-    onTap: () => onTap(product),
   );
 }
 
