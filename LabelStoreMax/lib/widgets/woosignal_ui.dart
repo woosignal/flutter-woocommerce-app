@@ -206,7 +206,7 @@ List<BoxShadow> wsBoxShadow({double blurRadius}) {
 Widget wsCardProductItem(BuildContext context,
     {int index, Product product, onTap}) {
   return LayoutBuilder(
-    builder: (cxt,constraints) => InkWell(
+    builder: (cxt, constraints) => InkWell(
       child: Container(
         margin: EdgeInsets.all(4),
         child: Column(
@@ -216,11 +216,16 @@ Widget wsCardProductItem(BuildContext context,
               borderRadius: BorderRadius.circular(3.0),
               child: CachedNetworkImage(
                 imageUrl:
-                (product.images.length > 0 ? product.images.first.src : ""),
-                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                    (product.images.length > 0 ? product.images.first.src : ""),
+                placeholder: (context, url) => Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  height: constraints.maxHeight / 1.75,
+                ),
                 errorWidget: (context, url, error) => new Icon(Icons.error),
-                fit: BoxFit.cover,
-                height: constraints.maxHeight / 1.8,
+                fit: BoxFit.fitWidth,
+                height: constraints.maxHeight / 1.75,
                 width: double.infinity,
               ),
             ),
@@ -239,10 +244,10 @@ Widget wsCardProductItem(BuildContext context,
                 padding: const EdgeInsets.only(top: 1),
                 child: Text(
                   formatStringCurrency(total: product.price),
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontWeight: FontWeight.w600, fontSize: 16),
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -251,27 +256,42 @@ Widget wsCardProductItem(BuildContext context,
               child: Container(
                 child: (product.onSale && product.type != "variable"
                     ? RichText(
-                  textAlign: TextAlign.left,
-                  text: TextSpan(
-                    text: '',
-                    style: Theme.of(context).textTheme.bodyText1,
-                    children: <TextSpan>[
-                      TextSpan(text: '${trans(context, "Was")}: ', style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          color: Colors.black54,
-                          fontSize: 11
-                      ),),
-                      TextSpan(text: formatStringCurrency(total: product.regularPrice), style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.grey,
-                          fontSize: 11
-                      ),),
-                      TextSpan(text: " | ${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}", style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          color: Colors.black87,
-                          fontSize: 11
-                      ),),
-                    ],
-                  ),
-                )
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: '',
+                          style: Theme.of(context).textTheme.bodyText1,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '${trans(context, "Was")}: ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                      color: Colors.black54, fontSize: 11),
+                            ),
+                            TextSpan(
+                              text: formatStringCurrency(
+                                  total: product.regularPrice),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: Colors.grey,
+                                      fontSize: 11),
+                            ),
+                            TextSpan(
+                              text:
+                                  " | ${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                      color: Colors.black87, fontSize: 11),
+                            ),
+                          ],
+                        ),
+                      )
                     : null),
                 width: double.infinity,
               ),

@@ -302,13 +302,12 @@ class _ProductDetailState extends State<ProductDetailPage> {
                               itemBuilder: (BuildContext context, int index) {
                                 return CachedNetworkImage(
                                   imageUrl: _product.images[index].src,
-                                  placeholder: (context, url) =>
-                                      Center(
-                                        child: new CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    backgroundColor: Colors.black12,
+                                  placeholder: (context, url) => Center(
+                                    child: new CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      backgroundColor: Colors.black12,
+                                    ),
                                   ),
-                                      ),
                                   errorWidget: (context, url, error) =>
                                       new Icon(Icons.error),
                                   fit: BoxFit.contain,
@@ -361,7 +360,8 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                           ),
                                       textAlign: TextAlign.right,
                                     ),
-                                    (_product.onSale == true && _product.type != "variable"
+                                    (_product.onSale == true &&
+                                            _product.type != "variable"
                                         ? Text(
                                             formatStringCurrency(
                                                 total: _product.regularPrice),

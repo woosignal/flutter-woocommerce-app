@@ -151,10 +151,12 @@ String formatStringCurrency({@required String total}) {
   return fmf.output.symbolOnLeft;
 }
 
-String workoutSaleDiscount({@required String salePrice, @required String priceBefore}) {
+String workoutSaleDiscount(
+    {@required String salePrice, @required String priceBefore}) {
   double dSalePrice = parseWcPrice(salePrice);
   double dPriceBefore = parseWcPrice(priceBefore);
-  return ((dPriceBefore-dSalePrice) * (100 / dPriceBefore)).toStringAsFixed(0);
+  return ((dPriceBefore - dSalePrice) * (100 / dPriceBefore))
+      .toStringAsFixed(0);
 }
 
 openBrowserTab({@required String url}) async {
@@ -505,7 +507,7 @@ Widget refreshableScroll(context,
     child: (products.length != null && products.length > 0
         ? GridView.count(
             crossAxisCount: 2,
-        childAspectRatio: calAspectRatio(context),
+            childAspectRatio: calAspectRatio(context),
             shrinkWrap: true,
             children: List.generate(
               products.length,

@@ -145,8 +145,10 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(trans(context, "Shop") + " / ",
-                        style: Theme.of(context).primaryTextTheme.subtitle1,),
+                    Text(
+                      trans(context, "Shop") + " / ",
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                    ),
                     Text(
                       trans(context, "Newest"),
                       style: Theme.of(context).primaryTextTheme.bodyText2,
@@ -167,12 +169,14 @@ class _HomePageState extends State<HomePage> {
             (_isLoading
                 ? Expanded(child: showAppLoader())
                 : Expanded(
-                    child: refreshableScroll(context,
-                        refreshController: _refreshController,
-                        onRefresh: _onRefresh,
-                        onLoading: _onLoading,
-                        products: _products,
-                        onTap: _showProduct,),
+                    child: refreshableScroll(
+                      context,
+                      refreshController: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      products: _products,
+                      onTap: _showProduct,
+                    ),
                     flex: 1,
                   )),
           ],
