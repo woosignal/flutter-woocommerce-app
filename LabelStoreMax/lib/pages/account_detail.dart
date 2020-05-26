@@ -46,8 +46,8 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     _page = 1;
     _orders = [];
     _tabs = [
-      new Tab(text: "Orders"),
-      new Tab(text: "Settings"),
+      new Tab(text: ""),
+      new Tab(text: ""),
     ];
     _tabController = TabController(vsync: this, length: _tabs.length);
     _activeBody = showAppLoader();
@@ -71,6 +71,10 @@ class _AccountDetailPageState extends State<AccountDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    _tabs = [
+      new Tab(text: trans(context, "Orders")),
+      new Tab(text: trans(context, "Settings")),
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

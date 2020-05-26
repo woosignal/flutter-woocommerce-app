@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.0.6
+ VERSION - 2.0.7
  https://woosignal.com
  */
 
@@ -38,8 +38,14 @@ const app_privacy_url = "https://yourdomain.com/privacy";
 
 const app_currency_symbol = "\£";
 const app_currency_iso = "gbp";
-const app_locales_supported = [
+const Locale app_locale = Locale('en');
+const List<Locale> app_locales_supported = [
   Locale('en'),
+  Locale('es'),
+  Locale('fr'),
+  Locale('hi'),
+  Locale('it'),
+  Locale('pt'),
 ];
 // If you want to localize the app, add the locale above
 // then create a new lang json file using keys from en.json

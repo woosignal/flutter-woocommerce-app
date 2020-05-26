@@ -209,6 +209,7 @@ void main() async {
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate
       ],
+      locale: app_locale,
       localeResolutionCallback:
           (Locale locale, Iterable<Locale> supportedLocales) {
         return locale;

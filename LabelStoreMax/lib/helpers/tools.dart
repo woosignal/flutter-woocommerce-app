@@ -521,7 +521,7 @@ Widget refreshableScroll(context,
 double calAspectRatio(BuildContext context) {
   if (MediaQuery.of(context).size.height > 800) {
     return MediaQuery.of(context).size.width /
-        (MediaQuery.of(context).size.height / 1.85);
+        (MediaQuery.of(context).size.height / 1.75);
   }
   if (MediaQuery.of(context).size.height > 700) {
     return MediaQuery.of(context).size.width /

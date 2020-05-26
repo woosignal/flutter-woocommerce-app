@@ -219,7 +219,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                   leadTitle: (CheckoutSession.getInstance
                                           .billingDetails.billingAddress
                                           .hasMissingFields()
-                                      ? "Billing address is incomplete"
+                                      ? trans(context, "Billing address is incomplete")
                                       : CheckoutSession.getInstance
                                           .billingDetails.billingAddress
                                           .addressFull()),

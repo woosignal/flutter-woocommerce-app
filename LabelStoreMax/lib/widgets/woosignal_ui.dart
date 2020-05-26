@@ -212,21 +212,25 @@ Widget wsCardProductItem(BuildContext context,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(3.0),
-              child: CachedNetworkImage(
-                imageUrl:
-                    (product.images.length > 0 ? product.images.first.src : ""),
-                placeholder: (context, url) => Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
+            Container(
+              height: constraints.maxHeight / 1.75,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(3.0),
+                child: CachedNetworkImage(
+                  imageUrl: (product.images.length > 0
+                      ? product.images.first.src
+                      : ""),
+                  placeholder: (context, url) => Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    height: constraints.maxHeight / 1.75,
                   ),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                  fit: BoxFit.fitWidth,
                   height: constraints.maxHeight / 1.75,
+                  width: double.infinity,
                 ),
-                errorWidget: (context, url, error) => new Icon(Icons.error),
-                fit: BoxFit.fitWidth,
-                height: constraints.maxHeight / 1.75,
-                width: double.infinity,
               ),
             ),
             Padding(
@@ -246,8 +250,8 @@ Widget wsCardProductItem(BuildContext context,
                   formatStringCurrency(total: product.price),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
-                      .copyWith(fontWeight: FontWeight.w600, fontSize: 16),
+                      .bodyText2
+                      .copyWith(fontWeight: FontWeight.w600),
                   textAlign: TextAlign.left,
                 ),
               ),

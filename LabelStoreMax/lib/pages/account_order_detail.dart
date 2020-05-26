@@ -52,7 +52,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
           margin: EdgeInsets.only(left: 0),
         ),
         title: Text(
-          "Order #" + _orderId.toString(),
+          "${capitalize(trans(context, "Order"))} #" + _orderId.toString(),
           style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
@@ -66,7 +66,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Ordered date: " +
+                  Text("${capitalize(trans(context, "Date Ordered"))}: " +
                       dateFormatted(
                           date: _order.dateCreated,
                           formatType: formatForDateTime(FormatType.Date))),
@@ -77,7 +77,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Flexible(child: Text("Ships to:")),
+                        Flexible(child: Text("${capitalize(trans(context, "Ships to"))}:")),
                         Flexible(
                           child: Text(
                             [
@@ -152,13 +152,13 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                   children: <Widget>[
                                     Text(
                                       formatStringCurrency(
-                                          total: _order.lineItems[i].total),
+                                          total: _order.lineItems[i].total,),
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .bodyText2
                                           .copyWith(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.black),
+                                              color: Colors.black,),
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
@@ -170,7 +170,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                           .bodyText1
                                           .copyWith(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.black),
+                                              color: Colors.black,),
                                       textAlign: TextAlign.left,
                                     ),
                                   ],

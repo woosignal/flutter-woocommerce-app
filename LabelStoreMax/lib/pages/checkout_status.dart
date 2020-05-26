@@ -94,8 +94,9 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                   ),
                   Container(
                     child: Image(
-                        image: new AssetImage("assets/images/camion.gif"),
-                        height: 170),
+                      image: new AssetImage("assets/images/camion.gif"),
+                      height: 170,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
@@ -130,13 +131,15 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Text(lineItem.name,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .bodyText1,
-                                      softWrap: false,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis),
+                                  Text(
+                                    lineItem.name,
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyText1,
+                                    softWrap: false,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                   Text(
                                     "x" + lineItem.quantity.toString(),
                                     style: Theme.of(context)
@@ -147,11 +150,11 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                               ),
                             ),
                             Text(
-                                formatStringCurrency(
-                                    total: lineItem.total.toString()),
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyText1)
+                              formatStringCurrency(
+                                  total: lineItem.total.toString()),
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText1,
+                            )
                           ],
                         ),
                         decoration: BoxDecoration(

@@ -152,5 +152,12 @@
   "Not supported, try a card payment": "Not supported, try a card payment",
   "Invalid shipping address, please check your shipping details": "Invalid shipping address, please check your shipping details",
   "Was": "Was",
-  "off": "off"
+  "off": "off",
+  "Maximum quantity reached": "Maximum quantity reached",
+  "Sorry, only": "Sorry, only",
+  "left": "left",
+  "Billing address is incomplete": "Billing address is incomplete",
+  "Order": "Order",
+  "Date Ordered": "Date Ordered",
+  "Ships to": "Ships to"
 }

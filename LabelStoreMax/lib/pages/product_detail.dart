@@ -111,8 +111,10 @@ class _ProductDetailState extends State<ProductDetailPage> {
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(_product.attributes[attributeIndex].options[index],
-                style: Theme.of(context).primaryTextTheme.subtitle1),
+            title: Text(
+              _product.attributes[attributeIndex].options[index],
+              style: Theme.of(context).primaryTextTheme.subtitle1,
+            ),
             trailing: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(attributeIndex) &&
                     _tmpAttributeObj[attributeIndex]["value"] ==
@@ -472,13 +474,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                     Icons.remove_circle_outline,
                                     size: 28,
                                   ),
-                                  onPressed: () {
-                                    if ((_quantityIndicator - 1) >= 1) {
-                                      setState(() {
-                                        _quantityIndicator--;
-                                      });
-                                    }
-                                  },
+                                  onPressed: _removeQuantityTapped,
                                 ),
                                 Text(
                                   _quantityIndicator.toString(),
@@ -491,13 +487,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                     Icons.add_circle_outline,
                                     size: 28,
                                   ),
-                                  onPressed: () {
-                                    if (_quantityIndicator != 0) {
-                                      setState(() {
-                                        _quantityIndicator++;
-                                      });
-                                    }
-                                  },
+                                  onPressed: _addQuantityTapped,
                                 ),
                               ],
                             )
@@ -577,5 +567,31 @@ class _ProductDetailState extends State<ProductDetailPage> {
       "images": _product.images.map((f) => f.src).toList()
     };
     Navigator.pushNamed(context, "/product-images", arguments: obj);
+  }
+
+  _addQuantityTapped() {
+    if (_product.manageStock != null && _product.manageStock == true) {
+      if (_quantityIndicator >= _product.stockQuantity) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Maximum quantity reached"),
+            desc:
+                "${trans(context, "Sorry, only")} ${_product.stockQuantity} ${trans(context, "left")}",
+            style: EdgeAlertStyle.INFO);
+        return;
+      }
+    }
+    if (_quantityIndicator != 0) {
+      setState(() {
+        _quantityIndicator++;
+      });
+    }
+  }
+
+  _removeQuantityTapped() {
+    if ((_quantityIndicator - 1) >= 1) {
+      setState(() {
+        _quantityIndicator--;
+      });
+    }
   }
 }

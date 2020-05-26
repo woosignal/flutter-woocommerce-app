@@ -1,3 +1,11 @@
+## [2.0.7] - 2020-05-26
+
+* New default locales added for Spanish, German, French, Hindi, Italian, Portuguese
+* Handle managed stock better in product detail
+* Removed unused pubspec dependencies
+* Pubspec updates
+* Bug fixes
+
 ## [2.0.6] - 2020-05-17
 
 * New product view

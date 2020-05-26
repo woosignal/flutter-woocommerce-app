@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
@@ -146,23 +147,29 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      trans(context, "Shop") + " / ",
+                      capitalize(trans(context, "Shop")) + " / ",
                       style: Theme.of(context).primaryTextTheme.subtitle1,
+                      maxLines: 1,
                     ),
-                    Text(
+                    AutoSizeText(
                       trans(context, "Newest"),
                       style: Theme.of(context).primaryTextTheme.bodyText2,
-                    )
+                      maxLines: 1,
+                    ),
                   ],
                 ),
-                MaterialButton(
-                  minWidth: 100,
-                  height: 60,
-                  child: Text(
-                    trans(context, "Browse categories"),
-                    style: Theme.of(context).primaryTextTheme.bodyText1,
+                Flexible(
+                  child: MaterialButton(
+                    minWidth: 100,
+                    height: 60,
+                    child: AutoSizeText(
+                      trans(context, "Browse categories"),
+                      style: Theme.of(context).primaryTextTheme.bodyText1,
+                      maxLines: 1,
+                      textAlign: TextAlign.right,
+                    ),
+                    onPressed: _modalBottomSheetMenu,
                   ),
-                  onPressed: _modalBottomSheetMenu,
                 )
               ],
             ),
