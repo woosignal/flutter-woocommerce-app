@@ -58,4 +58,4 @@ List<PaymentType> arrPaymentMethods = [
 //      pay: myCustomPaymentFunction
 //    ),
 //  ),
-];
+].where((e) => e != null).toList();

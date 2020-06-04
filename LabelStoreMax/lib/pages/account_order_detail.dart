@@ -77,7 +77,9 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Flexible(child: Text("${capitalize(trans(context, "Ships to"))}:")),
+                        Flexible(
+                            child: Text(
+                                "${capitalize(trans(context, "Ships to"))}:")),
                         Flexible(
                           child: Text(
                             [
@@ -152,13 +154,15 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                   children: <Widget>[
                                     Text(
                                       formatStringCurrency(
-                                          total: _order.lineItems[i].total,),
+                                        total: _order.lineItems[i].total,
+                                      ),
                                       style: Theme.of(context)
                                           .primaryTextTheme
                                           .bodyText2
                                           .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black,),
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
@@ -169,8 +173,9 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                           .primaryTextTheme
                                           .bodyText1
                                           .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black,),
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
                                       textAlign: TextAlign.left,
                                     ),
                                   ],

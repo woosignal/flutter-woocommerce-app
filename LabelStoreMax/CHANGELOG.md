@@ -1,3 +1,9 @@
+## [2.0.8] - 2020-06-04
+
+* Added pull to refresh
+* Pubspec.yaml updates
+* Bug fixes
+
 ## [2.0.7] - 2020-05-26
 
 * New default locales added for Spanish, German, French, Hindi, Italian, Portuguese

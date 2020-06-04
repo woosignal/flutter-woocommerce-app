@@ -120,13 +120,12 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
   }
 
   void _onRefresh() async {
+    _products = [];
+    _page = 1;
+    _shouldStopRequests = false;
+    waitForNextRequest = false;
     await _fetchMoreProducts();
-    setState(() {});
-    if (_shouldStopRequests) {
-      _refreshController.resetNoData();
-    } else {
-      _refreshController.refreshCompleted();
-    }
+    _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {

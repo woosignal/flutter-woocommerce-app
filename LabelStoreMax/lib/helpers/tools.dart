@@ -479,7 +479,7 @@ Widget refreshableScroll(context,
     @required onTap,
     key}) {
   return SmartRefresher(
-    enablePullDown: false,
+    enablePullDown: true,
     enablePullUp: true,
     footer: CustomFooter(
       builder: (BuildContext context, LoadStatus mode) {
