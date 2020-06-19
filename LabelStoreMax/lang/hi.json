@@ -159,5 +159,15 @@
   "Billing address is incomplete": "biling pata adhoora hai",
   "Order": "gan",
   "Date Ordered": "ordar ka dinaank",
-  "Ships to": "ko bheje"
+  "Ships to": "ko bheje",
+  "That email does not match our records": "vah eemel hamaare rikord se mel nahin khaata hai",
+  "That username does not match our records": "vah upayogakarta naam hamaare rikord se mel nahin khaata hai",
+  "That password does not match our records": "vah paasavard hamaare rikord se mel nahin khaata hai",
+  "The email and password field cannot be empty": "eemel aur paasavard feeld khaalee nahin ho sakata",
+  "Username taken, try another.": "vah upayogakarta naam liya gaya hai, doosara prayaas karen.",
+  "A user already exists": "ek upayogakarta pahale se maujood hai",
+  "That email is taken, try another": "vah eemel liya gaya hai, doosara prayaas karen",
+  "The email field is empty": "eemel feeld khaalee hai",
+  "No more orders": "aur koee aadesh nahin",
+  "Account updated": "khaata apadet kiya gaya"
 }

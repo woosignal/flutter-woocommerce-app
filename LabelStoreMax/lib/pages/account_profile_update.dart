@@ -15,8 +15,8 @@ import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
-import 'package:wp_json_api/models/responses/WPUserInfoResponse.dart';
-import 'package:wp_json_api/models/responses/WPUserInfoUpdatedResponse.dart';
+import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
+import 'package:wp_json_api/models/responses/wp_user_info_updated_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountProfileUpdatePage extends StatefulWidget {
@@ -132,22 +132,31 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
     );
   }
 
-  bool _isNetworking = false;
   _updateDetails() async {
     String firstName = _tfFirstName.text;
     String lastName = _tfLastName.text;
 
-    if (_isNetworking == false) {
+    if (isLoading == false) {
       setState(() {
-        _isNetworking = true;
         isLoading = true;
       });
 
-      WPUserInfoUpdatedResponse wpUserInfoUpdatedResponse =
-          await WPJsonAPI.instance.api((request) async {
-        return request.wpUpdateUserInfo(await readAuthToken(),
-            firstName: firstName, lastName: lastName);
-      });
+      String userToken = await readAuthToken();
+      WPUserInfoUpdatedResponse wpUserInfoUpdatedResponse;
+      try {
+        wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api((request) =>
+            request.wpUpdateUserInfo(userToken,
+                firstName: firstName, lastName: lastName));
+      } on Exception catch (e) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Invalid details"),
+            desc: trans(context, "Please check your email and password"),
+            style: EdgeAlertStyle.DANGER);
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
 
       if (wpUserInfoUpdatedResponse != null &&
           wpUserInfoUpdatedResponse.status == 200) {
@@ -155,16 +164,8 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
             title: trans(context, "Success"),
             desc: trans(context, "Account updated"),
             style: EdgeAlertStyle.SUCCESS);
-      } else {
-        showEdgeAlertWith(context,
-            title: trans(context, "Invalid details"),
-            desc: trans(context, "Please check your email and password"),
-            style: EdgeAlertStyle.WARNING);
+        Navigator.pop(context);
       }
-      setState(() {
-        _isNetworking = false;
-        isLoading = false;
-      });
     }
   }
 }

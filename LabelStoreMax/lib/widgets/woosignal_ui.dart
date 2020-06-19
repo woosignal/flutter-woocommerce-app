@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
@@ -211,93 +212,118 @@ Widget wsCardProductItem(BuildContext context,
         margin: EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              height: constraints.maxHeight / 1.75,
+              height: constraints.maxHeight / 2,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(3.0),
-                child: CachedNetworkImage(
-                  imageUrl: (product.images.length > 0
-                      ? product.images.first.src
-                      : ""),
-                  placeholder: (context, url) => Container(
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                child: Stack(
+                    children: [
+                  CachedNetworkImage(
+                    imageUrl: (product.images.length > 0
+                        ? product.images.first.src
+                        : ""),
+                    placeholder: (context, url) => Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      height: constraints.maxHeight / 2,
                     ),
-                    height: constraints.maxHeight / 1.75,
+                    errorWidget: (context, url, error) => new Icon(Icons.error),
+                    fit: BoxFit.contain,
+                    height: constraints.maxHeight / 2,
+                    width: double.infinity,
                   ),
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
-                  fit: BoxFit.fitWidth,
-                  height: constraints.maxHeight / 1.75,
-                  width: double.infinity,
-                ),
+                  (product.onSale && product.type != "variable"
+                      ? Positioned(
+                          bottom: 5,
+                          left: 8,
+                          right: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.white70,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: '',
+                                style: Theme.of(context).textTheme.bodyText1,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        "${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(
+                                          color: Colors.black87,
+                                          fontSize: 11,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : null),
+                ].where((e) => e != null).toList()),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 1),
+            Container(
+              margin: const EdgeInsets.only(top: 8, bottom: 8),
               child: Text(
                 product.name,
                 style: Theme.of(context).textTheme.bodyText2,
-                overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 1),
-                child: Text(
-                  formatStringCurrency(total: product.price),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.left,
-                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Flexible(
               child: Container(
-                child: (product.onSale && product.type != "variable"
-                    ? RichText(
-                        textAlign: TextAlign.left,
-                        text: TextSpan(
-                          text: '',
-                          style: Theme.of(context).textTheme.bodyText1,
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '${trans(context, "Was")}: ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      color: Colors.black54, fontSize: 11),
-                            ),
-                            TextSpan(
-                              text: formatStringCurrency(
-                                  total: product.regularPrice),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      decoration: TextDecoration.lineThrough,
-                                      color: Colors.grey,
-                                      fontSize: 11),
-                            ),
-                            TextSpan(
-                              text:
-                                  " | ${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      color: Colors.black87, fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      )
-                    : null),
-                width: double.infinity,
+                height: 50,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    AutoSizeText(
+                      formatStringCurrency(total: product.price) + " ",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.left,
+                    ),
+                    (product.onSale && product.type != "variable"
+                        ? RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: '${trans(context, "Was")}: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                        color: Colors.black54, fontSize: 11),
+                              ),
+                              TextSpan(
+                                text: formatStringCurrency(
+                                  total: product.regularPrice,
+                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                        decoration: TextDecoration.lineThrough,
+                                        color: Colors.grey,
+                                        fontSize: 11),
+                              ),
+                            ]),
+                          )
+                        : null),
+                  ].where((e) => e != null).toList(),
+                ),
               ),
             ),
           ].where((e) => e != null).toList(),

@@ -8,6 +8,8 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:label_storemax/app_payment_methods.dart';
@@ -471,6 +473,8 @@ String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
 double parseWcPrice(String price) => (double.tryParse(price) ?? 0);
 
+void appLogOutput(dynamic message) => (app_debug == true ? log(message) : null);
+
 Widget refreshableScroll(context,
     {@required refreshController,
     @required VoidCallback onRefresh,
@@ -507,7 +511,6 @@ Widget refreshableScroll(context,
     child: (products.length != null && products.length > 0
         ? GridView.count(
             crossAxisCount: 2,
-            childAspectRatio: calAspectRatio(context),
             shrinkWrap: true,
             children: List.generate(
               products.length,
@@ -521,11 +524,11 @@ Widget refreshableScroll(context,
 double calAspectRatio(BuildContext context) {
   if (MediaQuery.of(context).size.height > 800) {
     return MediaQuery.of(context).size.width /
-        (MediaQuery.of(context).size.height / 1.75);
+        (MediaQuery.of(context).size.height / 1.65);
   }
   if (MediaQuery.of(context).size.height > 700) {
     return MediaQuery.of(context).size.width /
-        (MediaQuery.of(context).size.height / 1.5);
+        (MediaQuery.of(context).size.height / 1.35);
   }
   return MediaQuery.of(context).size.width /
       (MediaQuery.of(context).size.height / 1.3);

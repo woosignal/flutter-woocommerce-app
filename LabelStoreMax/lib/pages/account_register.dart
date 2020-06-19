@@ -16,7 +16,13 @@ import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/helpers/shared_pref.dart';
-import 'package:wp_json_api/models/responses/WPUserRegisterResponse.dart';
+import 'package:wp_json_api/exceptions/empty_username_exception.dart';
+import 'package:wp_json_api/exceptions/existing_user_email_exception.dart';
+import 'package:wp_json_api/exceptions/existing_user_login_exception.dart';
+import 'package:wp_json_api/exceptions/invalid_nonce_exception.dart';
+import 'package:wp_json_api/exceptions/user_already_exist_exception.dart';
+import 'package:wp_json_api/exceptions/username_taken_exception.dart';
+import 'package:wp_json_api/models/responses/wp_user_register_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountRegistrationPage extends StatefulWidget {
@@ -72,18 +78,22 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                 child: Row(
                   children: <Widget>[
                     Flexible(
-                      child: wsTextEditingRow(context,
-                          heading: trans(context, "First Name"),
-                          controller: _tfFirstNameController,
-                          shouldAutoFocus: true,
-                          keyboardType: TextInputType.text),
+                      child: wsTextEditingRow(
+                        context,
+                        heading: trans(context, "First Name"),
+                        controller: _tfFirstNameController,
+                        shouldAutoFocus: true,
+                        keyboardType: TextInputType.text,
+                      ),
                     ),
                     Flexible(
-                      child: wsTextEditingRow(context,
-                          heading: trans(context, "Last Name"),
-                          controller: _tfLastNameController,
-                          shouldAutoFocus: false,
-                          keyboardType: TextInputType.text),
+                      child: wsTextEditingRow(
+                        context,
+                        heading: trans(context, "Last Name"),
+                        controller: _tfLastNameController,
+                        shouldAutoFocus: false,
+                        keyboardType: TextInputType.text,
+                      ),
                     ),
                   ],
                 )),
@@ -144,6 +154,10 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
     String firstName = _tfFirstNameController.text;
     String lastName = _tfLastNameController.text;
 
+    if (email != null) {
+      email = email.trim();
+    }
+
     if (!isEmail(email)) {
       showEdgeAlertWith(context,
           title: trans(context, "Oops"),
@@ -168,13 +182,59 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       String username =
           (email.replaceAll(new RegExp(r'(@|\.)'), "")) + randomStr(4);
 
-      WPUserRegisterResponse wpUserRegisterResponse = await WPJsonAPI.instance
-          .api((request) => request.wpRegister(
-              email: email.toLowerCase(),
-              password: password,
-              username: username));
+      WPUserRegisterResponse wpUserRegisterResponse;
+      try {
+        wpUserRegisterResponse = await WPJsonAPI.instance.api(
+          (request) => request.wpRegister(
+            email: email.toLowerCase(),
+            password: password,
+            username: username,
+          ),
+        );
+      } on UsernameTakenException catch (e) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, e.message),
+            style: EdgeAlertStyle.DANGER);
+      } on InvalidNonceException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Invalid details"),
+            desc: trans(
+                context, "Something went wrong, please contact our store"),
+            style: EdgeAlertStyle.DANGER);
+      } on ExistingUserLoginException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, "A user already exists"),
+            style: EdgeAlertStyle.DANGER);
+      } on ExistingUserEmailException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, "That email is taken, try another"),
+            style: EdgeAlertStyle.DANGER);
+      } on UserAlreadyExistException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, "A user already exists"),
+            style: EdgeAlertStyle.DANGER);
+      } on EmptyUsernameException catch (e) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, e.message),
+            style: EdgeAlertStyle.DANGER);
+      } on Exception catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, "Something went wrong"),
+            style: EdgeAlertStyle.DANGER);
+      } finally {
+        setState(() {
+          _hasTappedRegister = false;
+        });
+      }
 
-      if (wpUserRegisterResponse != null) {
+      if (wpUserRegisterResponse != null &&
+          wpUserRegisterResponse.status == 200) {
         String token = wpUserRegisterResponse.data.userToken;
         authUser(token);
         storeUserId(wpUserRegisterResponse.data.userId.toString());
@@ -189,14 +249,6 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             icon: Icons.account_circle);
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 2);
-      } else {
-        setState(() {
-          showEdgeAlertWith(context,
-              title: trans(context, "Invalid"),
-              desc: trans(context, "Please check your details"),
-              style: EdgeAlertStyle.WARNING);
-          _hasTappedRegister = false;
-        });
       }
     }
   }

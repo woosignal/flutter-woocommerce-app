@@ -15,8 +15,8 @@ import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
-import 'package:wp_json_api/models/responses/WCCustomerInfoResponse.dart';
-import 'package:wp_json_api/models/responses/WCCustomerUpdatedResponse.dart';
+import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
+import 'package:wp_json_api/models/responses/wc_customer_updated_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountBillingDetailsPage extends StatefulWidget {
@@ -182,7 +182,6 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                               BoxShadow(
                                 color: HexColor("#e8e8e8"),
                                 blurRadius: 15.0,
-                                // has the effect of softening the shadow
                                 spreadRadius: 0,
                                 offset: Offset(
                                   0,
@@ -228,28 +227,35 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
       _isUpdating = true;
     });
 
-    WCCustomerUpdatedResponse wcCustomerUpdatedResponse = await WPJsonAPI
-        .instance
-        .api((request) => request.wcUpdateCustomerInfo(userToken,
-            billingFirstName: firstName,
-            billingLastName: lastName,
-            billingAddress1: addressLine,
-            billingCity: city,
-            billingState: state,
-            billingPostcode: postalCode,
-            billingCountry: country));
-
-    setState(() {
-      _isUpdating = false;
-    });
-
-    if (wcCustomerUpdatedResponse.status != 200) {
+    WCCustomerUpdatedResponse wcCustomerUpdatedResponse;
+    try {
+      wcCustomerUpdatedResponse = await WPJsonAPI.instance.api((request) =>
+          request.wcUpdateCustomerInfo(userToken,
+              billingFirstName: firstName,
+              billingLastName: lastName,
+              billingAddress1: addressLine,
+              billingCity: city,
+              billingState: state,
+              billingPostcode: postalCode,
+              billingCountry: country));
+    } on Exception catch (_) {
       showEdgeAlertWith(context,
           title: trans(context, "Oops!"),
           desc: trans(context, "Something went wrong"),
-          style: EdgeAlertStyle.WARNING);
-      return;
+          style: EdgeAlertStyle.DANGER);
+    } finally {
+      setState(() {
+        _isUpdating = false;
+      });
     }
-    Navigator.pop(context);
+
+    if (wcCustomerUpdatedResponse != null &&
+        wcCustomerUpdatedResponse.status == 200) {
+      showEdgeAlertWith(context,
+          title: trans(context, "Success"),
+          desc: trans(context, "Account updated"),
+          style: EdgeAlertStyle.SUCCESS);
+      Navigator.pop(context);
+    }
   }
 }

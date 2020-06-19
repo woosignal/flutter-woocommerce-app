@@ -17,7 +17,11 @@ import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wp_json_api/models/responses/WPUserLoginResponse.dart';
+import 'package:wp_json_api/exceptions/incorrect_password_exception.dart';
+import 'package:wp_json_api/exceptions/invalid_email_exception.dart';
+import 'package:wp_json_api/exceptions/invalid_nonce_exception.dart';
+import 'package:wp_json_api/exceptions/invalid_username_exception.dart';
+import 'package:wp_json_api/models/responses/wp_user_login_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountLandingPage extends StatefulWidget {
@@ -148,16 +152,69 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
     String email = _tfEmailController.text;
     String password = _tfPasswordController.text;
 
+    if (email != null) {
+      email = email.trim();
+    }
+
+    if (email == "" || password == "") {
+      showEdgeAlertWith(context,
+          title: trans(context, "Invalid details"),
+          desc: trans(context, "The email and password field cannot be empty"),
+          style: EdgeAlertStyle.DANGER);
+      return;
+    }
+
+    if (!isEmail(email)) {
+      showEdgeAlertWith(context,
+          title: trans(context, "Oops"),
+          desc: trans(context, "That email address is not valid"),
+          style: EdgeAlertStyle.DANGER);
+      return;
+    }
+
     if (_hasTappedLogin == false) {
       setState(() {
         _hasTappedLogin = true;
       });
 
-      WPUserLoginResponse wpUserLoginResponse = await WPJsonAPI.instance
-          .api((request) => request.wpLogin(email: email, password: password));
-      _hasTappedLogin = false;
+      WPUserLoginResponse wpUserLoginResponse;
+      try {
+        wpUserLoginResponse = await WPJsonAPI.instance.api(
+            (request) => request.wpLogin(email: email, password: password));
+      } on InvalidNonceException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Invalid details"),
+            desc: trans(
+                context, "Something went wrong, please contact our store"),
+            style: EdgeAlertStyle.DANGER);
+      } on InvalidEmailException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Invalid details"),
+            desc: trans(context, "That email does not match our records"),
+            style: EdgeAlertStyle.DANGER);
+      } on InvalidUsernameException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Invalid details"),
+            desc: trans(context, "That username does not match our records"),
+            style: EdgeAlertStyle.DANGER);
+      } on IncorrectPasswordException catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Invalid details"),
+            desc: trans(context, "That password does not match our records"),
+            style: EdgeAlertStyle.DANGER);
+      } on Exception catch (_) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Oops!"),
+            desc: trans(context, "Invalid login credentials"),
+            style: EdgeAlertStyle.DANGER,
+            icon: Icons.account_circle);
+      } finally {
+        setState(() {
+          _hasTappedLogin = false;
+        });
+      }
 
-      if (wpUserLoginResponse != null) {
+      if (wpUserLoginResponse != null && wpUserLoginResponse.status == 200) {
         String token = wpUserLoginResponse.data.userToken;
         authUser(token);
         storeUserId(wpUserLoginResponse.data.userId.toString());
@@ -169,15 +226,6 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
             icon: Icons.account_circle);
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 1);
-      } else {
-        showEdgeAlertWith(context,
-            title: trans(context, "Oops!"),
-            desc: trans(context, "Invalid login credentials"),
-            style: EdgeAlertStyle.WARNING,
-            icon: Icons.account_circle);
-        setState(() {
-          _hasTappedLogin = false;
-        });
       }
     }
   }

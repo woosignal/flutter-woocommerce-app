@@ -16,8 +16,9 @@ import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/order.dart';
-import 'package:wp_json_api/models/responses/WCCustomerInfoResponse.dart';
+import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountDetailPage extends StatefulWidget {
@@ -27,6 +28,12 @@ class AccountDetailPage extends StatefulWidget {
 
 class _AccountDetailPageState extends State<AccountDetailPage>
     with SingleTickerProviderStateMixin {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  bool _shouldStopRequests;
+  bool waitForNextRequest;
+
   int _page;
   List<Order> _orders;
   WCCustomerInfoResponse _wcCustomerInfoResponse;
@@ -41,6 +48,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   @override
   void initState() {
     super.initState();
+    _shouldStopRequests = false;
+    waitForNextRequest = false;
+
     _isLoading = true;
     _isLoadingOrders = true;
     _page = 1;
@@ -56,17 +66,31 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   }
 
   _fetchWpUserData() async {
-    WCCustomerInfoResponse wcCustomerInfoResponse =
-        await WPJsonAPI.instance.api((request) async {
-      return request.wcCustomerInfo(await readAuthToken());
-    });
+    String userToken = await readAuthToken();
 
-    if (wcCustomerInfoResponse != null) {
-      _wcCustomerInfoResponse = wcCustomerInfoResponse;
+    WCCustomerInfoResponse wcCustomerInfoResponse;
+    try {
+      wcCustomerInfoResponse = await WPJsonAPI.instance
+          .api((request) => request.wcCustomerInfo(userToken));
+    } on Exception catch (_) {
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Oops!"),
+        desc: trans(context, "Something went wrong"),
+        style: EdgeAlertStyle.DANGER,
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
+
+    if (wcCustomerInfoResponse != null &&
+        wcCustomerInfoResponse.status == 200) {
+      setState(() {
+        _wcCustomerInfoResponse = wcCustomerInfoResponse;
+      });
+    }
   }
 
   @override
@@ -113,7 +137,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                               margin: EdgeInsets.only(top: 10),
                               child: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  _wcCustomerInfoResponse.data.avatar,
+                                  _wcCustomerInfoResponse != null
+                                      ? _wcCustomerInfoResponse.data.avatar
+                                      : "",
                                 ),
                               ),
                               height: 90,
@@ -252,18 +278,27 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   _fetchOrders() async {
     String userId = await readUserId();
 
-    if (userId == null) {
+    if (userId == null || _shouldStopRequests == true) {
       setState(() {
         _isLoadingOrders = false;
         _activeBody = _widgetOrders();
       });
       return;
     }
-    _orders = await appWooSignal((api) {
-      return api.getOrders(
-          customer: int.parse(userId), page: _page, perPage: 100);
-    });
+
+    List<Order> orders = await appWooSignal((api) =>
+        api.getOrders(customer: int.parse(userId), page: _page, perPage: 50));
+
+    if (orders.length <= 0) {
+      setState(() {
+        _shouldStopRequests = true;
+      });
+      return;
+    }
+
     setState(() {
+      _page += 1;
+      _orders.addAll(orders);
       _isLoadingOrders = false;
       _activeBody = _widgetOrders();
     });
@@ -272,127 +307,183 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   Widget _widgetOrders() {
     return _isLoadingOrders
         ? showAppLoader()
-        : _orders.length <= 0
-            ? Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.shopping_cart,
-                      color: Colors.black54,
-                      size: 40,
-                    ),
-                    Text(
-                      trans(context, "No orders found"),
-                    ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                itemBuilder: (cxt, i) {
-                  return Card(
-                    child: ListTile(
-                      contentPadding:
-                          EdgeInsets.only(top: 5, bottom: 5, left: 8, right: 6),
-                      title: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: HexColor("#fcfcfc"),
-                              width: 1,
+        : SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            footer: CustomFooter(
+              builder: (BuildContext context, LoadStatus mode) {
+                Widget body;
+                if (mode == LoadStatus.idle) {
+                  body = Text(trans(context, "pull up load"));
+                } else if (mode == LoadStatus.loading) {
+                  body = CupertinoActivityIndicator();
+                } else if (mode == LoadStatus.failed) {
+                  body = Text(trans(context, "Load Failed! Click retry!"));
+                } else if (mode == LoadStatus.canLoading) {
+                  body = Text(trans(context, "release to load more"));
+                } else {
+                  body = Text(trans(context, "No more orders"));
+                }
+                return Container(
+                  height: 55.0,
+                  child: Center(child: body),
+                );
+              },
+            ),
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            child: (_orders.length != null && _orders.length > 0
+                ? ListView.builder(
+                    itemBuilder: (cxt, i) {
+                      return Card(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.only(
+                              top: 5, bottom: 5, left: 8, right: 6),
+                          title: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: HexColor("#fcfcfc"),
+                                  width: 1,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "#" + _orders[i].id.toString(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              capitalize(_orders[i].status),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  formatStringCurrency(total: _orders[i].total),
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .bodyText2
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                  textAlign: TextAlign.left,
+                                  "#" + _orders[i].id.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  _orders[i].lineItems.length.toString() +
-                                      " " +
-                                      trans(context, "items"),
+                                  capitalize(_orders[i].status),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      formatStringCurrency(
+                                          total: _orders[i].total),
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .bodyText2
+                                          .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Text(
+                                      _orders[i].lineItems.length.toString() +
+                                          " " +
+                                          trans(context, "items"),
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .bodyText1
+                                          .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  dateFormatted(
+                                        date: _orders[i].dateCreated,
+                                        formatType:
+                                            formatForDateTime(FormatType.Date),
+                                      ) +
+                                      "\n" +
+                                      dateFormatted(
+                                        date: _orders[i].dateCreated,
+                                        formatType:
+                                            formatForDateTime(FormatType.Time),
+                                      ),
+                                  textAlign: TextAlign.right,
                                   style: Theme.of(context)
                                       .primaryTextTheme
                                       .bodyText1
                                       .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                  textAlign: TextAlign.left,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
                                 ),
                               ],
                             ),
-                            Text(
-                              dateFormatted(
-                                    date: _orders[i].dateCreated,
-                                    formatType:
-                                        formatForDateTime(FormatType.Date),
-                                  ) +
-                                  "\n" +
-                                  dateFormatted(
-                                    date: _orders[i].dateCreated,
-                                    formatType:
-                                        formatForDateTime(FormatType.Time),
-                                  ),
-                              textAlign: TextAlign.right,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                            ),
-                          ],
+                          ),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.chevron_right),
+                            ],
+                          ),
+                          onTap: () => _viewProfileDetail(i),
                         ),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.chevron_right),
-                        ],
-                      ),
-                      onTap: () {
-                        int orderId = _orders[i].id;
-                        Navigator.pushNamed(context, "/account-order-detail",
-                            arguments: orderId);
-                      },
+                      );
+                    },
+                    itemCount: _orders.length,
+                  )
+                : Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.shopping_cart,
+                          color: Colors.black54,
+                          size: 40,
+                        ),
+                        Text(
+                          trans(context, "No orders found"),
+                        ),
+                      ],
                     ),
-                  );
-                },
-                itemCount: _orders.length,
-              );
+                  )),
+          );
+  }
+
+  void _onRefresh() async {
+    _orders = [];
+    _page = 1;
+    _shouldStopRequests = false;
+    waitForNextRequest = false;
+    await _fetchOrders();
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    await _fetchOrders();
+
+    if (mounted) {
+      setState(() {});
+      if (_shouldStopRequests) {
+        _refreshController.loadNoData();
+      } else {
+        _refreshController.loadComplete();
+      }
+    }
+  }
+
+  _viewProfileDetail(int i) {
+    int orderId = _orders[i].id;
+    Navigator.pushNamed(
+      context,
+      "/account-order-detail",
+      arguments: orderId,
+    );
   }
 }

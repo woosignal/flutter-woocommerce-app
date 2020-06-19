@@ -134,8 +134,10 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                   ),
                                 ),
                                 Text(
-                                  capitalize(formatStringCurrency(
-                                      total: _order.lineItems[i].price)),
+                                  capitalize(
+                                    formatStringCurrency(
+                                        total: _order.lineItems[i].price),
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),

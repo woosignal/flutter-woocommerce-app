@@ -1,3 +1,11 @@
+## [2.0.9] - 2020-06-19
+
+* New UI for home products
+* Added pull to refresh to user orders
+* Pubspec.yaml updates
+* Flutter v1.17.3 support
+* Bug fixes
+
 ## [2.0.8] - 2020-06-04
 
 * Added pull to refresh

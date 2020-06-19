@@ -15,8 +15,8 @@ import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
-import 'package:wp_json_api/models/responses/WCCustomerInfoResponse.dart';
-import 'package:wp_json_api/models/responses/WCCustomerUpdatedResponse.dart';
+import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
+import 'package:wp_json_api/models/responses/wc_customer_updated_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountShippingDetailsPage extends StatefulWidget {
@@ -62,24 +62,39 @@ class _AccountShippingDetailsPageState
   }
 
   _fetchUserDetails() async {
-    WCCustomerInfoResponse wcCustomerInfoResponse =
-        await WPJsonAPI.instance.api((request) async {
-      return request.wcCustomerInfo(await readAuthToken());
-    });
+    String userToken = await readAuthToken();
 
-    Shipping shipping = wcCustomerInfoResponse.data.shipping;
-    _txtShippingFirstName.text = shipping.firstName;
-    _txtShippingLastName.text = shipping.lastName;
+    WCCustomerInfoResponse wcCustomerInfoResponse;
+    try {
+      wcCustomerInfoResponse = await WPJsonAPI.instance
+          .api((request) => request.wcCustomerInfo(userToken));
+    } on Exception catch (_) {
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Oops!"),
+        desc: trans(context, "Something went wrong"),
+        style: EdgeAlertStyle.DANGER,
+      );
+      Navigator.pop(context);
+      return;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
-    _txtShippingAddressLine.text = shipping.address1;
-    _txtShippingCity.text = shipping.city;
-    _txtShippingState.text = shipping.state;
-    _txtShippingPostalCode.text = shipping.postcode;
-    _txtShippingCountry.text = shipping.country;
+    if (wcCustomerInfoResponse != null &&
+        wcCustomerInfoResponse.status == 200) {
+      Shipping shipping = wcCustomerInfoResponse.data.shipping;
+      _txtShippingFirstName.text = shipping.firstName;
+      _txtShippingLastName.text = shipping.lastName;
 
-    setState(() {
-      _isLoading = false;
-    });
+      _txtShippingAddressLine.text = shipping.address1;
+      _txtShippingCity.text = shipping.city;
+      _txtShippingState.text = shipping.state;
+      _txtShippingPostalCode.text = shipping.postcode;
+      _txtShippingCountry.text = shipping.country;
+    }
   }
 
   @override
@@ -228,28 +243,46 @@ class _AccountShippingDetailsPageState
 
     String userToken = await readAuthToken();
 
+    if (_isUpdating == true) {
+      return;
+    }
+
     setState(() {
       _isUpdating = true;
     });
 
-    WCCustomerUpdatedResponse wcCustomerUpdatedResponse = await WPJsonAPI
-        .instance
-        .api((request) => request.wcUpdateCustomerInfo(userToken,
-            shippingFirstName: firstName,
-            shippingLastName: lastName,
-            shippingAddress1: addressLine,
-            shippingCity: city,
-            shippingState: state,
-            shippingPostcode: postalCode,
-            shippingCountry: country));
-
-    if (wcCustomerUpdatedResponse.status != 200) {
+    WCCustomerUpdatedResponse wcCustomerUpdatedResponse;
+    try {
+      wcCustomerUpdatedResponse = await WPJsonAPI.instance.api(
+        (request) => request.wcUpdateCustomerInfo(
+          userToken,
+          shippingFirstName: firstName,
+          shippingLastName: lastName,
+          shippingAddress1: addressLine,
+          shippingCity: city,
+          shippingState: state,
+          shippingPostcode: postalCode,
+          shippingCountry: country,
+        ),
+      );
+    } on Exception catch (_) {
       showEdgeAlertWith(context,
           title: trans(context, "Oops!"),
           desc: trans(context, "Something went wrong"),
-          style: EdgeAlertStyle.WARNING);
-      return;
+          style: EdgeAlertStyle.DANGER);
+    } finally {
+      setState(() {
+        _isUpdating = true;
+      });
     }
-    Navigator.pop(context);
+
+    if (wcCustomerUpdatedResponse != null &&
+        wcCustomerUpdatedResponse.status == 200) {
+      showEdgeAlertWith(context,
+          title: trans(context, "Success"),
+          desc: trans(context, "Account updated"),
+          style: EdgeAlertStyle.SUCCESS);
+      Navigator.pop(context);
+    }
   }
 }

@@ -10,6 +10,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/models/cart.dart';
+import 'package:label_storemax/models/checkout_session.dart';
 import 'package:woosignal/models/response/products.dart' as WS;
 import 'package:woosignal/models/response/order.dart' as WS;
 
@@ -31,6 +33,9 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
   @override
   void initState() {
     super.initState();
+
+    Cart.getInstance.clear();
+    CheckoutSession.getInstance.clear();
   }
 
   @override
@@ -151,7 +156,8 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
                             ),
                             Text(
                               formatStringCurrency(
-                                  total: lineItem.total.toString()),
+                                total: lineItem.total.toString(),
+                              ),
                               style:
                                   Theme.of(context).primaryTextTheme.bodyText1,
                             )

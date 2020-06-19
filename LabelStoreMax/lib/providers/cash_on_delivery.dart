@@ -29,8 +29,6 @@ cashOnDeliveryPay(context,
     Order order = await appWooSignal((api) => api.createOrder(orderWC));
 
     if (order != null) {
-      Cart.getInstance.clear();
-      CheckoutSession.getInstance.clear();
       Navigator.pushNamed(context, "/checkout-status", arguments: order);
     } else {
       showEdgeAlertWith(

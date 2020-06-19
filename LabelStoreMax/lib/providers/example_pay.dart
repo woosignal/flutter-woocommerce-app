@@ -48,7 +48,6 @@ examplePay(context,
 
   // CHECK IF ORDER IS NULL
   if (order != null) {
-    Cart.getInstance.clear();
     Navigator.pushNamed(context, "/checkout-status", arguments: order);
   } else {
     showEdgeAlertWith(

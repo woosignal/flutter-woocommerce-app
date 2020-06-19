@@ -159,5 +159,15 @@
   "Billing address is incomplete": "L'adresse de facturation est incomplète",
   "Order": "Ordre",
   "Date Ordered": "Date de commande",
-  "Ships to": "Expédié à"
+  "Ships to": "Expédié à",
+  "That email does not match our records": "Cet e-mail ne correspond pas à nos enregistrements",
+  "That username does not match our records": "Ce nom d'utilisateur ne correspond pas à nos enregistrements",
+  "That password does not match our records": "Ce mot de passe ne correspond pas à nos enregistrements",
+  "The email and password field cannot be empty": "Le champ e-mail et mot de passe ne peut pas être vide",
+  "Username taken, try another.": "Ce nom d'utilisateur est pris, essayez-en un autre.",
+  "A user already exists": "Un utilisateur existe déjà",
+  "That email is taken, try another": "Cet e-mail est pris, essayez un autre",
+  "The email field is empty": "Le champ e-mail est vide",
+  "No more orders": "Plus de commandes",
+  "Account updated": "Compte mis à jour"
 }
