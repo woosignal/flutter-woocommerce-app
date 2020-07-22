@@ -59,7 +59,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   _fetchCategories() async {
-    _categories = await appWooSignal((api) => api.getProductCategories());
+    _categories =
+        await appWooSignal((api) => api.getProductCategories(page: 100));
   }
 
   _fetchMoreProducts() async {
@@ -133,6 +134,7 @@ class _HomePageState extends State<HomePage> {
           wsCartIcon(context, key: _key),
         ],
       ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: Column(

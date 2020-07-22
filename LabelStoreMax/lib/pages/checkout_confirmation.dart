@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/customer_address.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
@@ -374,6 +375,29 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
         icon: Icons.payment,
       );
       return;
+    }
+
+    if (CheckoutSession.getInstance.shippingType.minimumValue != null) {
+      String total = await Cart.getInstance.getTotal();
+      if (total == null) {
+        return;
+      }
+      double doubleTotal = double.parse(total);
+      double doubleMinimumValue =
+          double.parse(CheckoutSession.getInstance.shippingType.minimumValue);
+
+      if (doubleTotal < doubleMinimumValue) {
+        showEdgeAlertWith(context,
+            title: trans(context, "Sorry"),
+            desc: trans(context, "Spend a minimum of") +
+                " " +
+                formatDoubleCurrency(total: doubleMinimumValue) +
+                " ${trans(context, "for")} " +
+                CheckoutSession.getInstance.shippingType.getTitle(),
+            style: EdgeAlertStyle.INFO,
+            duration: 3);
+        return;
+      }
     }
 
     if (_isProcessingPayment == true) {

@@ -220,6 +220,11 @@ Widget wsCardProductItem(BuildContext context,
                 borderRadius: BorderRadius.circular(3.0),
                 child: Stack(
                     children: [
+                  Container(
+                    color: Colors.grey[100],
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
                   CachedNetworkImage(
                     imageUrl: (product.images.length > 0
                         ? product.images.first.src
@@ -237,11 +242,11 @@ Widget wsCardProductItem(BuildContext context,
                   ),
                   (product.onSale && product.type != "variable"
                       ? Positioned(
-                          bottom: 5,
-                          left: 8,
-                          right: 8,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
                           child: Container(
-                            padding: EdgeInsets.all(2),
+                            padding: EdgeInsets.all(3),
                             decoration: BoxDecoration(
                               color: Colors.white70,
                               borderRadius: BorderRadius.circular(4),
@@ -273,7 +278,7 @@ Widget wsCardProductItem(BuildContext context,
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 8, bottom: 8),
+              margin: const EdgeInsets.only(top: 2, bottom: 2),
               child: Text(
                 product.name,
                 style: Theme.of(context).textTheme.bodyText2,

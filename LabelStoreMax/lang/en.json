@@ -169,5 +169,7 @@
   "That email is taken, try another": "That email is taken, try another",
   "The email field is empty": "The email field is empty",
   "No more orders": "No more orders",
-  "Account updated": "Account updated"
+  "Account updated": "Account updated",
+  "Spend a minimum of": "Spend a minimum of",
+  "for": "for"
 }

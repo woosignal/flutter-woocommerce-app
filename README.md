@@ -3,7 +3,9 @@
 </p>
 	
 # WooCommerce App: Label StoreMax
-### Label StoreMax - v2.0.9
+
+### Label StoreMax - v2.1.0
+
 
 [Official WooSignal WooCommerce App](https://woosignal.com)
 

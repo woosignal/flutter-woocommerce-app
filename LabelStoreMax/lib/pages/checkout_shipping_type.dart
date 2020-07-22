@@ -119,13 +119,15 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
             .where((t) => t != null)
             .toList()
             .forEach((freeShipping) {
-          if (isNumeric(freeShipping.cost)) {
+          if (isNumeric(freeShipping.cost) ||
+              freeShipping.cost == 'min_amount') {
             Map<String, dynamic> tmpShippingOption = {};
             tmpShippingOption = {
               "id": freeShipping.id,
               "method_id": "free_shipping",
               "title": freeShipping.title,
-              "cost": freeShipping.cost,
+              "cost": "0.00",
+              "min_amount": freeShipping.minimumOrderAmount,
               "object": freeShipping
             };
             _wsShippingOptions.add(tmpShippingOption);
@@ -246,11 +248,11 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                           contentPadding: EdgeInsets.only(
                                               left: 16, right: 16),
                                           title: Text(
-                                              _wsShippingOptions[index]
-                                                  ['title'],
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
+                                            _wsShippingOptions[index]['title'],
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .subtitle1,
+                                          ),
                                           selected: true,
                                           subtitle: FutureBuilder<String>(
                                             future: _getShippingPrice(index),
@@ -267,14 +269,52 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                 case ConnectionState.done:
                                                   if (snapshot.hasError)
                                                     return Text('');
-                                                  return Text(
-                                                      trans(context, "Price") +
-                                                          ": " +
-                                                          formatStringCurrency(
-                                                              total: snapshot
-                                                                  .data));
+                                                  return RichText(
+                                                      text: TextSpan(
+                                                    text: '',
+                                                    style: DefaultTextStyle.of(
+                                                            context)
+                                                        .style,
+                                                    children: <TextSpan>[
+                                                      (_wsShippingOptions[index]
+                                                                  ["object"]
+                                                              is FreeShipping
+                                                          ? TextSpan(
+                                                              text:
+                                                                  "Free postage")
+                                                          : TextSpan(
+                                                              text: trans(
+                                                                      context,
+                                                                      "Price") +
+                                                                  ": " +
+                                                                  formatStringCurrency(
+                                                                      total: snapshot
+                                                                          .data),
+                                                            )),
+                                                      _wsShippingOptions[index][
+                                                                  "min_amount"] !=
+                                                              null
+                                                          ? TextSpan(
+                                                              text: "\nSpend a minimum of " +
+                                                                  formatStringCurrency(
+                                                                      total: _wsShippingOptions[
+                                                                              index]
+                                                                          [
+                                                                          "min_amount"]),
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .primaryTextTheme
+                                                                  .bodyText2
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          14))
+                                                          : null,
+                                                    ]
+                                                        .where((e) => e != null)
+                                                        .toList(),
+                                                  ));
                                               }
-                                              return null; // unreachable
+                                              return null;
                                             },
                                           ),
                                           trailing: (CheckoutSession.getInstance
@@ -288,23 +328,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                           ["object"]
                                               ? Icon(Icons.check)
                                               : null),
-                                          onTap: () async {
-                                            ShippingType shippingType =
-                                                ShippingType();
-                                            shippingType.object =
-                                                _wsShippingOptions[index]
-                                                    ['object'];
-                                            shippingType.methodId =
-                                                _wsShippingOptions[index]
-                                                    ['method_id'];
-                                            shippingType.cost =
-                                                await _getShippingPrice(index);
-
-                                            CheckoutSession.getInstance
-                                                .shippingType = shippingType;
-
-                                            Navigator.pop(context);
-                                          },
+                                          onTap: () =>
+                                              _handleCheckoutTapped(index),
                                         );
                                       },
                                     ),
@@ -338,5 +363,19 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         ),
       ),
     );
+  }
+
+  _handleCheckoutTapped(int index) async {
+    ShippingType shippingType = ShippingType();
+    shippingType.object = _wsShippingOptions[index]['object'];
+    shippingType.methodId = _wsShippingOptions[index]['method_id'];
+    if (_wsShippingOptions[index]['min_amount'] != null) {
+      shippingType.minimumValue = _wsShippingOptions[index]['min_amount'];
+    }
+    shippingType.cost = await _getShippingPrice(index);
+
+    CheckoutSession.getInstance.shippingType = shippingType;
+
+    Navigator.pop(context);
   }
 }

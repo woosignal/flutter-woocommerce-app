@@ -11,6 +11,7 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/helpers/app_localizations.dart';
@@ -78,7 +79,12 @@ class EdgeAlertStyle {
 }
 
 void showEdgeAlertWith(context,
-    {title = "", desc = "", int gravity = 1, int style = 1, IconData icon}) {
+    {title = "",
+    desc = "",
+    int gravity = 1,
+    int style = 1,
+    IconData icon,
+    int duration}) {
   switch (style) {
     case 1: // SUCCESS
       EdgeAlert.show(context,
@@ -87,7 +93,7 @@ void showEdgeAlertWith(context,
           gravity: gravity,
           backgroundColor: Colors.green,
           icon: icon ?? Icons.check,
-          duration: EdgeAlert.LENGTH_LONG);
+          duration: duration ?? EdgeAlert.LENGTH_LONG);
       break;
     case 2: // WARNING
       EdgeAlert.show(context,
@@ -96,7 +102,7 @@ void showEdgeAlertWith(context,
           gravity: gravity,
           backgroundColor: Colors.orange,
           icon: icon ?? Icons.error_outline,
-          duration: EdgeAlert.LENGTH_LONG);
+          duration: duration ?? EdgeAlert.LENGTH_LONG);
       break;
     case 3: // INFO
       EdgeAlert.show(context,
@@ -105,7 +111,7 @@ void showEdgeAlertWith(context,
           gravity: gravity,
           backgroundColor: Colors.teal,
           icon: icon ?? Icons.info,
-          duration: EdgeAlert.LENGTH_LONG);
+          duration: duration ?? EdgeAlert.LENGTH_LONG);
       break;
     case 4: // DANGER
       EdgeAlert.show(context,
@@ -114,7 +120,7 @@ void showEdgeAlertWith(context,
           gravity: gravity,
           backgroundColor: Colors.redAccent,
           icon: icon ?? Icons.warning,
-          duration: EdgeAlert.LENGTH_LONG);
+          duration: duration ?? EdgeAlert.LENGTH_LONG);
       break;
     default:
       break;
@@ -509,14 +515,24 @@ Widget refreshableScroll(context,
     onRefresh: onRefresh,
     onLoading: onLoading,
     child: (products.length != null && products.length > 0
-        ? GridView.count(
+        ? StaggeredGridView.countBuilder(
             crossAxisCount: 2,
-            shrinkWrap: true,
-            children: List.generate(
-              products.length,
-              (index) => wsCardProductItem(context,
-                  index: index, product: products[index], onTap: onTap),
-            ))
+            itemCount: products.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 200,
+                child: wsCardProductItem(
+                  context,
+                  index: (index),
+                  product: products[index],
+                  onTap: onTap,
+                ),
+              );
+            },
+            staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
+          )
         : wsNoResults(context)),
   );
 }

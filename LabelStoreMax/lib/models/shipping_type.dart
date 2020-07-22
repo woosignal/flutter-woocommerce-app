@@ -15,12 +15,17 @@ import '../helpers/tools.dart';
 class ShippingType {
   String methodId;
   String cost;
+  String minimumValue;
   dynamic object;
 
-  ShippingType({this.methodId, this.object, this.cost});
+  ShippingType({this.methodId, this.object, this.cost, this.minimumValue});
 
-  Map<String, dynamic> toJson() =>
-      {'methodId': methodId, 'object': object, 'cost': cost};
+  Map<String, dynamic> toJson() => {
+        'methodId': methodId,
+        'object': object,
+        'cost': cost,
+        'minimumValue': minimumValue
+      };
 
   String getTotal({bool withFormatting}) {
     if (this.methodId != null && this.object != null) {

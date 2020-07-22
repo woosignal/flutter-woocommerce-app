@@ -1,5 +1,5 @@
 # Label StoreMax
-# Version 2.0.9
+# Version 2.1.0
 #authors: - "Anthony Gordon"
 #documentation: https://woosignal.com/docs/app/ios/label-storemax
 #homepage: https://woosignal.com/
@@ -24,9 +24,9 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  woosignal: ^1.1.0
+  woosignal: ^1.1.2
   woosignal_stripe: ^0.0.6
-  razorpay_flutter: ^1.2.1
+  razorpay_flutter: ^1.2.2
   wp_json_api: ^0.1.4
   shared_preferences: ^0.5.7+3
   cached_network_image: ^2.2.0+1
@@ -47,6 +47,7 @@ dependencies:
   flutter_launcher_icons: ^0.7.5
   auto_size_text: ^2.1.0
   html: ^0.14.0+3
+  flutter_staggered_grid_view: ^0.3.1
   flutter:
     sdk: flutter
 

@@ -1,3 +1,9 @@
+## [2.1.0] - 2020-07-22
+
+* Pubspec.yaml update for RazorPay
+* FreeShipping minimum value feature
+* New grid collection layout
+
 ## [2.0.9] - 2020-06-19
 
 * New UI for home products

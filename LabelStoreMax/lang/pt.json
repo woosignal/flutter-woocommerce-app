@@ -169,5 +169,7 @@
   "That email is taken, try another": "Esse e-mail foi recebido, tente outro",
   "The email field is empty": "O campo de email está vazio",
   "No more orders": "Não há mais pedidos",
-  "Account updated": "Conta atualizada"
+  "Account updated": "Conta atualizada",
+  "Spend a minimum of": "Gaste um mínimo de",
+  "for": "para"
 }
