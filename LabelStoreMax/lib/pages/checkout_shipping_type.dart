@@ -148,13 +148,6 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
             _wsShippingOptions.add(tmpShippingOption);
           }
         }
-
-        _shipping.methods.freeShipping
-            .where((t) => t != null)
-            .toList()
-            .forEach((freeShipping) async {
-
-        });
       }
     }
 
