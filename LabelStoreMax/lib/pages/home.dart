@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
 
   _fetchCategories() async {
     _categories =
-        await appWooSignal((api) => api.getProductCategories(page: 100));
+        await appWooSignal((api) => api.getProductCategories(perPage: 100));
   }
 
   _fetchMoreProducts() async {

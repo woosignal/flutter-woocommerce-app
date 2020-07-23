@@ -1,3 +1,8 @@
+## [2.1.1] - 2020-07-23
+
+* Bug fix for categories
+* Changes to FreeShipping
+
 ## [2.1.0] - 2020-07-22
 
 * Pubspec.yaml update for RazorPay

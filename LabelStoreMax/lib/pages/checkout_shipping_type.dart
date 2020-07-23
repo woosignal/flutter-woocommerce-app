@@ -115,23 +115,45 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
 
       if (_shipping.methods.freeShipping != null) {
-        _shipping.methods.freeShipping
+        List<FreeShipping> freeShipping = _shipping.methods.freeShipping
             .where((t) => t != null)
-            .toList()
-            .forEach((freeShipping) {
-          if (isNumeric(freeShipping.cost) ||
-              freeShipping.cost == 'min_amount') {
+            .toList();
+
+        for (int i = 0; i < freeShipping.length; i++) {
+          if (isNumeric(freeShipping[i].cost) ||
+              freeShipping[i].cost == 'min_amount') {
+
+            if (freeShipping[i].cost == 'min_amount') {
+              String total = await Cart.getInstance.getTotal();
+              if (total != null) {
+                double doubleTotal = double.parse(total);
+                double doubleMinimumValue =
+                double.parse(freeShipping[i].minimumOrderAmount);
+
+                if (doubleTotal < doubleMinimumValue) {
+                  continue;
+                }
+              }
+            }
+
             Map<String, dynamic> tmpShippingOption = {};
             tmpShippingOption = {
-              "id": freeShipping.id,
+              "id": freeShipping[i].id,
               "method_id": "free_shipping",
-              "title": freeShipping.title,
+              "title": freeShipping[i].title,
               "cost": "0.00",
-              "min_amount": freeShipping.minimumOrderAmount,
-              "object": freeShipping
+              "min_amount": freeShipping[i].minimumOrderAmount,
+              "object": freeShipping[i]
             };
             _wsShippingOptions.add(tmpShippingOption);
           }
+        }
+
+        _shipping.methods.freeShipping
+            .where((t) => t != null)
+            .toList()
+            .forEach((freeShipping) async {
+
         });
       }
     }

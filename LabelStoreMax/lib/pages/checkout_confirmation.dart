@@ -389,11 +389,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       if (doubleTotal < doubleMinimumValue) {
         showEdgeAlertWith(context,
             title: trans(context, "Sorry"),
-            desc: trans(context, "Spend a minimum of") +
-                " " +
-                formatDoubleCurrency(total: doubleMinimumValue) +
-                " ${trans(context, "for")} " +
-                CheckoutSession.getInstance.shippingType.getTitle(),
+            desc: "${trans(context, "Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans(context, "for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
             style: EdgeAlertStyle.INFO,
             duration: 3);
         return;
