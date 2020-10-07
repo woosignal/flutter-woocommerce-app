@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
       return;
     }
     waitForNextRequest = true;
+
     List<WS.Product> products = await appWooSignal((api) => api.getProducts(
         perPage: 50, page: _page, status: "publish", stockStatus: "instock"));
     _page = _page + 1;

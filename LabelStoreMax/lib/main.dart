@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:label_storemax/pages/account_billing_details.dart';
 import 'package:label_storemax/pages/account_detail.dart';
 import 'package:label_storemax/pages/account_landing.dart';
@@ -38,7 +39,6 @@ import 'package:label_storemax/pages/home_menu.dart';
 import 'package:label_storemax/pages/home_search.dart';
 import 'package:label_storemax/pages/browse_category.dart';
 import 'package:flutter/services.dart';
-import 'package:label_storemax/helpers/tools.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:label_storemax/helpers/app_themes.dart';
 import 'package:label_storemax/helpers/app_localizations.dart';
@@ -84,7 +84,7 @@ void main() async {
           case '/account-landing':
             return PageTransition(
               child: AccountLandingPage(),
-              type: PageTransitionType.downToUp,
+              type: PageTransitionType.bottomToTop,
             );
 
           case '/browse-category':
@@ -132,7 +132,9 @@ void main() async {
               final Map<String, dynamic> args = settings.arguments;
               return PageTransition(
                   child: ProductImageViewerPage(
-                      initialIndex: args["index"], arrImageSrc: args["images"]),
+                    initialIndex: args["index"],
+                    arrImageSrc: args["images"],
+                  ),
                   type: PageTransitionType.fade);
             }
             return PageTransition(
@@ -173,7 +175,7 @@ void main() async {
           case '/checkout-details':
             return PageTransition(
               child: CheckoutDetailsPage(),
-              type: PageTransitionType.downToUp,
+              type: PageTransitionType.bottomToTop,
             );
 
           case '/about':
@@ -185,19 +187,19 @@ void main() async {
           case '/checkout-payment-type':
             return PageTransition(
               child: CheckoutPaymentTypePage(),
-              type: PageTransitionType.downToUp,
+              type: PageTransitionType.bottomToTop,
             );
 
           case '/checkout-shipping-type':
             return PageTransition(
               child: CheckoutShippingTypePage(),
-              type: PageTransitionType.downToUp,
+              type: PageTransitionType.bottomToTop,
             );
 
           case '/home-search':
             return PageTransition(
               child: HomeSearchPage(),
-              type: PageTransitionType.downToUp,
+              type: PageTransitionType.bottomToTop,
             );
           default:
             return null;
@@ -215,11 +217,11 @@ void main() async {
         return locale;
       },
       theme: ThemeData(
-        primaryColor: HexColor("#2f4ffe"),
+        primaryColor: Hexcolor("#2f4ffe"),
         backgroundColor: Colors.white,
         buttonTheme: ButtonThemeData(
           hoverColor: Colors.transparent,
-          buttonColor: HexColor("#529cda"),
+          buttonColor: Hexcolor("#529cda"),
           colorScheme: colorSchemeButton(),
           minWidth: double.infinity,
           height: 70,

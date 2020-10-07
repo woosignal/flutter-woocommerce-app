@@ -10,6 +10,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
@@ -180,7 +181,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                color: HexColor("#e8e8e8"),
+                                color: Hexcolor("#e8e8e8"),
                                 blurRadius: 15.0,
                                 spreadRadius: 0,
                                 offset: Offset(

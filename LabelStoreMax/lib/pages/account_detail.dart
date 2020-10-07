@@ -11,6 +11,7 @@
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
 import 'package:label_storemax/helpers/tools.dart';
@@ -344,7 +345,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: HexColor("#fcfcfc"),
+                                  color: Hexcolor("#fcfcfc"),
                                   width: 1,
                                 ),
                               ),

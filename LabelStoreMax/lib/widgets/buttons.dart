@@ -10,9 +10,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:label_storemax/widgets/woosignal_ui.dart';
-
-import '../helpers/tools.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 Widget wsPrimaryButton(BuildContext context,
     {@required String title, void Function() action}) {
@@ -45,7 +43,7 @@ Widget wsSecondaryButton(BuildContext context,
         textAlign: TextAlign.center,
       ),
       onPressed: action,
-      color: HexColor("#f6f6f9"),
+      color: Hexcolor("#f6f6f9"),
       elevation: 1,
     ),
   );

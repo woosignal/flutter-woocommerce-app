@@ -81,7 +81,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (CheckoutSession.getInstance.billingDetails.shippingAddress == null) {
+    if (CheckoutSession.getInstance.billingDetails == null ||
+        CheckoutSession.getInstance.billingDetails.shippingAddress == null) {
       setState(() {
         _showFullLoader = false;
       });
@@ -210,16 +211,20 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          ((CheckoutSession.getInstance.billingDetails
-                                      .billingAddress !=
-                                  null)
+                          ((CheckoutSession.getInstance.billingDetails != null &&
+                                  CheckoutSession.getInstance.billingDetails
+                                          .billingAddress !=
+                                      null)
                               ? wsCheckoutRow(context,
                                   heading: trans(
                                       context, "Billing/shipping details"),
                                   leadImage: Icon(Icons.home),
-                                  leadTitle: (CheckoutSession.getInstance
-                                          .billingDetails.billingAddress
-                                          .hasMissingFields()
+                                  leadTitle: (CheckoutSession
+                                                  .getInstance.billingDetails ==
+                                              null ||
+                                          CheckoutSession.getInstance
+                                              .billingDetails.billingAddress
+                                              .hasMissingFields()
                                       ? trans(
                                           context, "Billing address is incomplete")
                                       : CheckoutSession.getInstance
@@ -228,11 +233,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                   action: _actionCheckoutDetails,
                                   showBorderBottom: true)
                               : wsCheckoutRow(context,
-                                  heading: trans(
-                                      context, "Billing/shipping details"),
+                                  heading: trans(context, "Billing/shipping details"),
                                   leadImage: Icon(Icons.home),
-                                  leadTitle: trans(context,
-                                      "Add billing & shipping details"),
+                                  leadTitle: trans(context, "Add billing & shipping details"),
                                   action: _actionCheckoutDetails,
                                   showBorderBottom: true)),
                           (CheckoutSession.getInstance.paymentType != null
@@ -389,7 +392,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       if (doubleTotal < doubleMinimumValue) {
         showEdgeAlertWith(context,
             title: trans(context, "Sorry"),
-            desc: "${trans(context, "Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans(context, "for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
+            desc:
+                "${trans(context, "Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans(context, "for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
             style: EdgeAlertStyle.INFO,
             duration: 3);
         return;

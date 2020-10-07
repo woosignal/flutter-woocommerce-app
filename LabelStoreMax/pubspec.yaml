@@ -1,15 +1,18 @@
-# Label StoreMax
-# Version 2.1.1
-#authors: - "Anthony Gordon"
-#documentation: https://woosignal.com/docs/app/ios/label-storemax
-#homepage: https://woosignal.com/
+# Official WooSignal App Template for WooCommerce
 
-### App Config
-# 1 Open: "lib/labelconfig.dart"
+# Label StoreMax
+# Version 2.2.0
+# Homepage: https://woosignal.com
+# Author: Anthony Gordon <agordon@woosignal.com>
+# Documentation: https://woosignal.com/docs/app/ios/label-storemax
+
+### App Configuration
+# 1 Open: "lib/labelconfig.dart" and edit the variables
+# 2 Open: "flutter_application_id.yaml" and update package name and display name
 
 ### Change App Icon
 # 1 Replace: assets/icon/appicon.png (1024px1024px icon size)
-# 2 Run this command from Terminal: flutter pub run flutter_launcher_icons:main
+# 2 Run this command from terminal: "flutter pub run flutter_launcher_icons:main"
 
 ### Uploading the IOS/Android app
 # IOS https://flutter.dev/docs/deployment/ios
@@ -24,30 +27,31 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  woosignal: ^1.1.2
+  woosignal: ^1.2.0
   woosignal_stripe: ^0.0.6
   razorpay_flutter: ^1.2.2
   wp_json_api: ^0.1.4
-  shared_preferences: ^0.5.7+3
-  cached_network_image: ^2.2.0+1
-  page_transition: ^1.1.5
+  shared_preferences: ^0.5.12
+  cached_network_image: ^2.3.2+1
+  page_transition: ^1.1.7+2
   package_info: ^0.4.0+16
-  url_launcher: ^5.4.11
+  url_launcher: ^5.7.2
   flutter_money_formatter: ^0.8.3
   platform_alert_dialog: ^1.0.0+2
-  flutter_web_browser: ^0.11.0
-  pull_to_refresh: ^1.5.8
+  flutter_web_browser: ^0.12.0
+  pull_to_refresh: ^1.6.2
   intl: ^0.16.1
   flutter_swiper: ^1.1.6
   edge_alert: ^0.0.1
   bubble_tab_indicator: ^0.1.4
   status_alert: ^0.1.2
-  math_expressions: ^2.0.0
+  math_expressions: ^2.0.1
+  hexcolor: ^1.0.4
   flutter_spinkit: ^4.1.2+1
-  flutter_launcher_icons: ^0.7.5
+  flutter_launcher_icons: ^0.8.1
   auto_size_text: ^2.1.0
   html: ^0.14.0+3
-  flutter_staggered_grid_view: ^0.3.1
+  flutter_staggered_grid_view: ^0.3.2
   flutter:
     sdk: flutter
 
@@ -57,6 +61,7 @@ dependencies:
   cupertino_icons: ^0.1.3
 
 dev_dependencies:
+  flutter_application_id: "^1.0.0"
   flutter_test:
     sdk: flutter
 

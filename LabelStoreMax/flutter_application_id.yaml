@@ -1,0 +1,12 @@
+# APP CONFIGURATION
+# Updates the package name and display name for your app
+
+# Run in the terminal: flutter pub run flutter_application_id:main
+
+flutter_application_id:
+  android:
+    id: "com.woosignal.label-android"
+    name: "Label StoreMax"
+  ios:
+    id: "com.woosignal.label-ios"
+    name: "Label StoreMax"

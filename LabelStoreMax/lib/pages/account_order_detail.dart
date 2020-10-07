@@ -10,6 +10,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
@@ -119,7 +120,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                    color: HexColor("#fcfcfc"), width: 1),
+                                    color: Hexcolor("#fcfcfc"), width: 1),
                               ),
                             ),
                             child: Row(

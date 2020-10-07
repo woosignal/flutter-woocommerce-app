@@ -115,20 +115,18 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
 
       if (_shipping.methods.freeShipping != null) {
-        List<FreeShipping> freeShipping = _shipping.methods.freeShipping
-            .where((t) => t != null)
-            .toList();
+        List<FreeShipping> freeShipping =
+            _shipping.methods.freeShipping.where((t) => t != null).toList();
 
         for (int i = 0; i < freeShipping.length; i++) {
           if (isNumeric(freeShipping[i].cost) ||
               freeShipping[i].cost == 'min_amount') {
-
             if (freeShipping[i].cost == 'min_amount') {
               String total = await Cart.getInstance.getTotal();
               if (total != null) {
                 double doubleTotal = double.parse(total);
                 double doubleMinimumValue =
-                double.parse(freeShipping[i].minimumOrderAmount);
+                    double.parse(freeShipping[i].minimumOrderAmount);
 
                 if (doubleTotal < doubleMinimumValue) {
                   continue;

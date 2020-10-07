@@ -175,8 +175,10 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text(trans(context, "Shopping Cart"),
-            style: Theme.of(context).appBarTheme.textTheme.headline6),
+        title: Text(
+          trans(context, "Shopping Cart"),
+          style: Theme.of(context).appBarTheme.textTheme.headline6,
+        ),
         textTheme: Theme.of(context).textTheme,
         elevation: 1,
         actions: <Widget>[
