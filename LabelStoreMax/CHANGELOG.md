@@ -1,3 +1,12 @@
+## [2.2.0] - 2020-10-07
+
+* Flutter 1.22.0 update
+* Android MainActivity.kt migration
+* Pubspec.yaml dependency updates
+* Bug fix for strange "billingAddress" error on checkout
+* flutter_application_id.yaml for updating package name and display name of the app in one command
+* Minor code format
+
 ## [2.1.1] - 2020-07-23
 
 * Bug fix for categories
