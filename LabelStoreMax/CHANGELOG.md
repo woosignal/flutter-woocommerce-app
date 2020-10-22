@@ -1,3 +1,8 @@
+## [2.2.1] - 2020-10-22
+
+* Minimum IOS deployment now IOS13
+* Pubspec.yaml dependency updates
+
 ## [2.2.0] - 2020-10-07
 
 * Flutter 1.22.0 update
