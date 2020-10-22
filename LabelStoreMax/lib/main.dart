@@ -217,11 +217,11 @@ void main() async {
         return locale;
       },
       theme: ThemeData(
-        primaryColor: Hexcolor("#2f4ffe"),
+        primaryColor: HexColor("#2f4ffe"),
         backgroundColor: Colors.white,
         buttonTheme: ButtonThemeData(
           hoverColor: Colors.transparent,
-          buttonColor: Hexcolor("#529cda"),
+          buttonColor: HexColor("#529cda"),
           colorScheme: colorSchemeButton(),
           minWidth: double.infinity,
           height: 70,

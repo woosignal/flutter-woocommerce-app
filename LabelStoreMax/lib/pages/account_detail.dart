@@ -345,7 +345,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Hexcolor("#fcfcfc"),
+                                  color: HexColor("#fcfcfc"),
                                   width: 1,
                                 ),
                               ),

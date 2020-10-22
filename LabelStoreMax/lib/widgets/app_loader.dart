@@ -13,5 +13,5 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 Widget showAppLoader() {
-  return SpinKitDoubleBounce(color: Hexcolor("#393318"));
+  return SpinKitDoubleBounce(color: HexColor("#393318"));
 }

@@ -181,7 +181,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                color: Hexcolor("#e8e8e8"),
+                                color: HexColor("#e8e8e8"),
                                 blurRadius: 15.0,
                                 spreadRadius: 0,
                                 offset: Offset(

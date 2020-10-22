@@ -194,7 +194,7 @@ Widget widgetCheckoutMeta(BuildContext context, {String title, String amount}) {
 List<BoxShadow> wsBoxShadow({double blurRadius}) {
   return [
     BoxShadow(
-      color: Hexcolor("#e8e8e8"),
+      color: HexColor("#e8e8e8"),
       blurRadius: blurRadius ?? 15.0,
       spreadRadius: 0,
       offset: Offset(

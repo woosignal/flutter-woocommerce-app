@@ -43,7 +43,7 @@ Widget wsSecondaryButton(BuildContext context,
         textAlign: TextAlign.center,
       ),
       onPressed: action,
-      color: Hexcolor("#f6f6f9"),
+      color: HexColor("#f6f6f9"),
       elevation: 1,
     ),
   );

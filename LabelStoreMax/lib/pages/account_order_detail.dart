@@ -120,7 +120,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                    color: Hexcolor("#fcfcfc"), width: 1),
+                                    color: HexColor("#fcfcfc"), width: 1),
                               ),
                             ),
                             child: Row(

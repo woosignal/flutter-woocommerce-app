@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
-import 'package:label_storemax/helpers/tools.dart';
 
 TextTheme textThemeAccent() {
   return TextTheme(
@@ -42,16 +41,16 @@ TextTheme textThemeAccent() {
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800),
     bodyText1: new TextStyle(
-        color: Hexcolor("#606060"),
+        color: HexColor("#606060"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700),
     bodyText2: new TextStyle(
-        color: Hexcolor("#a8a8a8"),
+        color: HexColor("#a8a8a8"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 18),
     caption: new TextStyle(
-        color: Hexcolor("#2a5080"),
+        color: HexColor("#2a5080"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 14),
@@ -91,16 +90,16 @@ TextTheme textThemePrimary() {
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w800),
     bodyText1: new TextStyle(
-        color: Hexcolor("#606060"),
+        color: HexColor("#606060"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700),
     bodyText2: new TextStyle(
-        color: Hexcolor("#a8a8a8"),
+        color: HexColor("#a8a8a8"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 18),
     caption: new TextStyle(
-        color: Hexcolor("#2a5080"),
+        color: HexColor("#2a5080"),
         fontFamily: appFontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 14),
