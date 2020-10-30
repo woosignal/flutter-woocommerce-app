@@ -4,7 +4,7 @@
 	
 # WooCommerce App: Label StoreMax
 
-### Label StoreMax - v2.2.1
+### Label StoreMax - v2.2.2
 
 
 [Official WooSignal WooCommerce App](https://woosignal.com)
@@ -26,8 +26,8 @@ Label StoreMax is a WooCommerce Flutter App template, built exclusively for onli
 
 - App Store Ready
 - One config file
-- Login/register via WordPress
-- Stripe, Cash on delivery, RazorPay
+- Login/Register via WordPress
+- Stripe, Cash On Delivery, RazorPay
 - Localized for en, es, pt, it, hi, fr
 
 ## Security Vulnerabilities

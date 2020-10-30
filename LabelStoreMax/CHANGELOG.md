@@ -1,3 +1,8 @@
+## [2.2.2] - 2020-10-30
+
+* Bug fix for Android build
+* Pubspec.yaml dependency updates
+
 ## [2.2.1] - 2020-10-22
 
 * Minimum IOS deployment now IOS13

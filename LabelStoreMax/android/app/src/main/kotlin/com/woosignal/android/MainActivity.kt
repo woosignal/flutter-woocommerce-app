@@ -1,4 +1,4 @@
-package com.woosignal.label_storemax
+package com.woosignal.android
 
 import io.flutter.embedding.android.FlutterActivity
 
