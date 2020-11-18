@@ -1,14 +1,10 @@
 # Official WooSignal App Template for WooCommerce
 
 # Label StoreMax
-# Version 2.2.2
+# Version 2.3.0
 # Homepage: https://woosignal.com
 # Author: Anthony Gordon <agordon@woosignal.com>
 # Documentation: https://woosignal.com/docs/app/ios/label-storemax
-
-### App Configuration
-# 1 Open: "lib/labelconfig.dart" and edit the variables
-# 2 Open: "flutter_application_id.yaml" and update package name and display name
 
 ### Change App Icon
 # 1 Replace: assets/icon/appicon.png (1024px1024px icon size)
@@ -30,7 +26,7 @@ dependencies:
   woosignal: ^1.2.1
   woosignal_stripe: ^0.0.6
   razorpay_flutter: ^1.2.2
-  wp_json_api: ^0.1.4
+  wp_json_api: ^2.0.0
   shared_preferences: ^0.5.12
   cached_network_image: ^2.3.3
   page_transition: ^1.1.7+2

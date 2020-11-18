@@ -62,8 +62,12 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     ];
     _tabController = TabController(vsync: this, length: _tabs.length);
     _activeBody = showAppLoader();
-    _fetchWpUserData();
-    _fetchOrders();
+    this.init();
+  }
+
+  init() async {
+    await _fetchWpUserData();
+    await _fetchOrders();
   }
 
   _fetchWpUserData() async {

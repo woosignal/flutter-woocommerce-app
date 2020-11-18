@@ -11,6 +11,7 @@
 import 'dart:convert';
 
 import 'package:label_storemax/helpers/shared_pref.dart';
+import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/shipping_type.dart';
@@ -148,9 +149,10 @@ class Cart {
         cartItems.where((c) => c.taxStatus == 'taxable').toList();
     double cartSubtotal = 0;
 
-    if (taxableCartLines.length > 0) {
+    if (app_products_prices_include_tax == false &&
+        taxableCartLines.length > 0) {
       cartSubtotal = taxableCartLines
-          .map<double>((m) => parseWcPrice(m.subtotal))
+          .map<double>((m) => parseWcPrice(m.subtotal) * m.quantity)
           .reduce((a, b) => a + b);
     }
 

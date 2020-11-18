@@ -80,21 +80,24 @@ class _CartPageState extends State<CartPage> {
       return;
     }
     if (cartLineItems.length <= 0) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Cart"),
-          desc: trans(context,
-              trans(context, "You need items in your cart to checkout")),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.shopping_cart);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Cart"),
+        desc: trans(context, "You need items in your cart to checkout"),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.shopping_cart,
+      );
       return;
     }
     if (!cartLineItems.every(
         (c) => c.stockStatus == 'instock' || c.stockStatus == 'onbackorder')) {
-      showEdgeAlertWith(context,
-          title: trans(context, "Cart"),
-          desc: trans(context, trans(context, "There is an item out of stock")),
-          style: EdgeAlertStyle.WARNING,
-          icon: Icons.shopping_cart);
+      showEdgeAlertWith(
+        context,
+        title: trans(context, "Cart"),
+        desc: trans(context, "There is an item out of stock"),
+        style: EdgeAlertStyle.WARNING,
+        icon: Icons.shopping_cart,
+      );
       return;
     }
     CheckoutSession.getInstance.initSession();
@@ -120,7 +123,7 @@ class _CartPageState extends State<CartPage> {
       showEdgeAlertWith(
         context,
         title: trans(context, "Cart"),
-        desc: trans(context, trans(context, "Maximum stock reached")),
+        desc: trans(context, "Maximum stock reached"),
         style: EdgeAlertStyle.WARNING,
         icon: Icons.shopping_cart,
       );
@@ -187,8 +190,10 @@ class _CartPageState extends State<CartPage> {
             splashColor: Colors.transparent,
             child: Align(
               child: Padding(
-                child: Text(trans(context, "Clear Cart"),
-                    style: Theme.of(context).primaryTextTheme.bodyText1),
+                child: Text(
+                  trans(context, "Clear Cart"),
+                  style: Theme.of(context).primaryTextTheme.bodyText1,
+                ),
                 padding: EdgeInsets.only(right: 8),
               ),
               alignment: Alignment.centerLeft,
@@ -217,10 +222,11 @@ class _CartPageState extends State<CartPage> {
                             color: Colors.black45,
                           ),
                           Padding(
-                            child: Text(trans(context, "Empty Basket"),
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyText2),
+                            child: Text(
+                              trans(context, "Empty Basket"),
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText2,
+                            ),
                             padding: EdgeInsets.only(top: 10),
                           )
                         ],
@@ -266,9 +272,11 @@ class _CartPageState extends State<CartPage> {
                       return Text("");
                     else
                       return new Padding(
-                        child: wsRow2Text(context,
-                            text1: trans(context, "Total"),
-                            text2: (_isLoading ? "" : snapshot.data)),
+                        child: wsRow2Text(
+                          context,
+                          text1: trans(context, "Total"),
+                          text2: (_isLoading ? "" : snapshot.data),
+                        ),
                         padding: EdgeInsets.only(bottom: 15, top: 15),
                       );
                 }

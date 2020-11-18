@@ -1,3 +1,9 @@
+## [2.3.0] - 2020-11-18
+
+* Option to set if prices include tax
+* Pubspec.yaml dependency updates
+* Bug fixes
+
 ## [2.2.2] - 2020-10-30
 
 * Bug fix for Android build

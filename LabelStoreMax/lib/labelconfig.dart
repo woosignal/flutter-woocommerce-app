@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.2.2
+ VERSION - 2.3.0
  https://woosignal.com
  */
 
@@ -38,7 +38,11 @@ const app_privacy_url = "https://yourdomain.com/privacy";
 
 const app_currency_symbol = "\£";
 const app_currency_iso = "gbp";
+
+const app_products_prices_include_tax = true;
+
 const Locale app_locale = Locale('en');
+
 const List<Locale> app_locales_supported = [
   Locale('en'),
   Locale('es'),
