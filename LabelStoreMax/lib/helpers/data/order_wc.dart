@@ -73,6 +73,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   orderWC.billing = billing;
 
   Shipping shipping = Shipping();
+
   shipping.firstName = billingDetails.shippingAddress.firstName;
   shipping.lastName = billingDetails.shippingAddress.lastName;
   shipping.address1 = billingDetails.shippingAddress.addressLine;
@@ -86,14 +87,16 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   orderWC.shipping = shipping;
 
   orderWC.shippingLines = [];
-  Map<String, dynamic> shippingLineFeeObj =
-      CheckoutSession.getInstance.shippingType.toShippingLineFee();
-  if (shippingLineFeeObj != null) {
-    ShippingLines shippingLine = ShippingLines();
-    shippingLine.methodId = shippingLineFeeObj['method_id'];
-    shippingLine.methodTitle = shippingLineFeeObj['method_title'];
-    shippingLine.total = shippingLineFeeObj['total'];
-    orderWC.shippingLines.add(shippingLine);
+  if (app_disable_shipping == false) {
+    Map<String, dynamic> shippingLineFeeObj =
+        CheckoutSession.getInstance.shippingType.toShippingLineFee();
+    if (shippingLineFeeObj != null) {
+      ShippingLines shippingLine = ShippingLines();
+      shippingLine.methodId = shippingLineFeeObj['method_id'];
+      shippingLine.methodTitle = shippingLineFeeObj['method_title'];
+      shippingLine.total = shippingLineFeeObj['total'];
+      orderWC.shippingLines.add(shippingLine);
+    }
   }
 
   if (taxRate != null) {

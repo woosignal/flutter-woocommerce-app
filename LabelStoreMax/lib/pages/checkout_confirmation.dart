@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:label_storemax/app_payment_methods.dart';
 import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/customer_address.dart';
@@ -208,73 +209,78 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       ),
                       margin: EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          ((CheckoutSession.getInstance.billingDetails != null &&
-                                  CheckoutSession.getInstance.billingDetails
-                                          .billingAddress !=
-                                      null)
-                              ? wsCheckoutRow(context,
-                                  heading: trans(
-                                      context, "Billing/shipping details"),
-                                  leadImage: Icon(Icons.home),
-                                  leadTitle: (CheckoutSession
-                                                  .getInstance.billingDetails ==
-                                              null ||
-                                          CheckoutSession.getInstance
-                                              .billingDetails.billingAddress
-                                              .hasMissingFields()
-                                      ? trans(
-                                          context, "Billing address is incomplete")
-                                      : CheckoutSession.getInstance
-                                          .billingDetails.billingAddress
-                                          .addressFull()),
-                                  action: _actionCheckoutDetails,
-                                  showBorderBottom: true)
-                              : wsCheckoutRow(context,
-                                  heading: trans(context, "Billing/shipping details"),
-                                  leadImage: Icon(Icons.home),
-                                  leadTitle: trans(context, "Add billing & shipping details"),
-                                  action: _actionCheckoutDetails,
-                                  showBorderBottom: true)),
-                          (CheckoutSession.getInstance.paymentType != null
-                              ? wsCheckoutRow(context,
-                                  heading: trans(context, "Payment method"),
-                                  leadImage: Image(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            ((CheckoutSession.getInstance.billingDetails != null &&
+                                    CheckoutSession.getInstance.billingDetails
+                                            .billingAddress !=
+                                        null)
+                                ? wsCheckoutRow(context,
+                                    heading: trans(
+                                        context, "Billing/shipping details"),
+                                    leadImage: Icon(Icons.home),
+                                    leadTitle:
+                                        (CheckoutSession.getInstance.billingDetails == null ||
+                                                CheckoutSession.getInstance
+                                                    .billingDetails.billingAddress
+                                                    .hasMissingFields()
+                                            ? trans(
+                                                context, "Billing address is incomplete")
+                                            : CheckoutSession.getInstance
+                                                .billingDetails.billingAddress
+                                                .addressFull()),
+                                    action: _actionCheckoutDetails,
+                                    showBorderBottom: true)
+                                : wsCheckoutRow(context,
+                                    heading:
+                                        trans(context, "Billing/shipping details"),
+                                    leadImage: Icon(Icons.home),
+                                    leadTitle: trans(context, "Add billing & shipping details"),
+                                    action: _actionCheckoutDetails,
+                                    showBorderBottom: true)),
+                            (CheckoutSession.getInstance.paymentType != null
+                                ? wsCheckoutRow(context,
+                                    heading: trans(context, "Payment method"),
+                                    leadImage: Image(
                                       image: AssetImage("assets/images/" +
                                           CheckoutSession.getInstance
                                               .paymentType.assetImage),
-                                      width: 70),
-                                  leadTitle: CheckoutSession
-                                      .getInstance.paymentType.desc,
-                                  action: _actionPayWith,
-                                  showBorderBottom: true)
-                              : wsCheckoutRow(context,
-                                  heading: trans(context, "Pay with"),
-                                  leadImage: Icon(Icons.payment),
-                                  leadTitle:
-                                      trans(context, "Select a payment method"),
-                                  action: _actionPayWith,
-                                  showBorderBottom: true)),
-                          (CheckoutSession.getInstance.shippingType != null
-                              ? wsCheckoutRow(context,
-                                  heading: trans(context, "Shipping selected"),
-                                  leadImage: Icon(Icons.local_shipping),
-                                  leadTitle: CheckoutSession
-                                      .getInstance.shippingType
-                                      .getTitle(),
-                                  action: _actionSelectShipping)
-                              : wsCheckoutRow(
-                                  context,
-                                  heading: trans(context, "Select shipping"),
-                                  leadImage: Icon(Icons.local_shipping),
-                                  leadTitle: trans(
-                                      context, "Select a shipping option"),
-                                  action: _actionSelectShipping,
-                                )),
-                        ],
-                      ),
+                                      width: 70,
+                                    ),
+                                    leadTitle: CheckoutSession
+                                        .getInstance.paymentType.desc,
+                                    action: _actionPayWith,
+                                    showBorderBottom: true)
+                                : wsCheckoutRow(context,
+                                    heading: trans(context, "Pay with"),
+                                    leadImage: Icon(Icons.payment),
+                                    leadTitle: trans(
+                                        context, "Select a payment method"),
+                                    action: _actionPayWith,
+                                    showBorderBottom: true)),
+                            app_disable_shipping == true
+                                ? null
+                                : (CheckoutSession.getInstance.shippingType !=
+                                        null
+                                    ? wsCheckoutRow(context,
+                                        heading:
+                                            trans(context, "Shipping selected"),
+                                        leadImage: Icon(Icons.local_shipping),
+                                        leadTitle: CheckoutSession
+                                            .getInstance.shippingType
+                                            .getTitle(),
+                                        action: _actionSelectShipping)
+                                    : wsCheckoutRow(
+                                        context,
+                                        heading:
+                                            trans(context, "Select shipping"),
+                                        leadImage: Icon(Icons.local_shipping),
+                                        leadTitle: trans(context,
+                                            "Select a shipping option"),
+                                        action: _actionSelectShipping,
+                                      )),
+                          ].where((e) => e != null).toList()),
                     ),
                   ),
                   Column(
@@ -286,14 +292,18 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                         thickness: 1,
                       ),
                       wsCheckoutSubtotalWidgetFB(
-                          title: trans(context, "Subtotal")),
-                      widgetCheckoutMeta(context,
-                          title: trans(context, "Shipping fee"),
-                          amount:
-                              CheckoutSession.getInstance.shippingType == null
-                                  ? trans(context, "Select shipping")
-                                  : CheckoutSession.getInstance.shippingType
-                                      .getTotal(withFormatting: true)),
+                        title: trans(context, "Subtotal"),
+                      ),
+                      app_disable_shipping == true
+                          ? null
+                          : widgetCheckoutMeta(context,
+                              title: trans(context, "Shipping fee"),
+                              amount:
+                                  CheckoutSession.getInstance.shippingType ==
+                                          null
+                                      ? trans(context, "Select shipping")
+                                      : CheckoutSession.getInstance.shippingType
+                                          .getTotal(withFormatting: true)),
                       (_taxRate != null
                           ? wsCheckoutTaxAmountWidgetFB(taxRate: _taxRate)
                           : null),
@@ -322,7 +332,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        trans(context, "One moment") + "...",
+                        "${trans(context, "One moment")}...",
                         style: Theme.of(context).primaryTextTheme.subtitle1,
                       ),
                     )
@@ -358,7 +368,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (CheckoutSession.getInstance.shippingType == null) {
+    if (app_disable_shipping == false &&
+        CheckoutSession.getInstance.shippingType == null) {
       showEdgeAlertWith(
         context,
         title: trans(context, "Oops"),
@@ -380,7 +391,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (CheckoutSession.getInstance.shippingType.minimumValue != null) {
+    if (app_disable_shipping == false &&
+        CheckoutSession.getInstance.shippingType.minimumValue != null) {
       String total = await Cart.getInstance.getTotal();
       if (total == null) {
         return;

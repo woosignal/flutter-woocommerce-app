@@ -1,3 +1,7 @@
+## [2.4.0] - 2020-11-19
+
+* Option to disable shipping in config
+
 ## [2.3.0] - 2020-11-18
 
 * Option to set if prices include tax
