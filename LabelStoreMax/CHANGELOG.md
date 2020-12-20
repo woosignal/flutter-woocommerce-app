@@ -1,3 +1,8 @@
+## [2.4.1] - 2020-12-20
+
+* Fix subtotal bug order creation
+* Pubspec.yaml dependency updates
+
 ## [2.4.0] - 2020-11-19
 
 * Option to disable shipping in config

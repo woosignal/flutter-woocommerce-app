@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.4.0
+ VERSION - 2.4.1
  https://woosignal.com
  */
 

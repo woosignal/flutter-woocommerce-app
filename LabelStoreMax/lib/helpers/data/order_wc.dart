@@ -11,6 +11,7 @@
 import 'dart:io';
 
 import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
+import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/billing_details.dart';
 import 'package:label_storemax/models/cart.dart';
@@ -49,7 +50,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
     tmpLineItem.total =
         (cartItem.quantity > 1 ? cartItem.getCartTotal() : cartItem.subtotal);
-    tmpLineItem.subtotal = cartItem.subtotal;
+    tmpLineItem.subtotal = (parseWcPrice(cartItem.subtotal) * cartItem.quantity).toString();
 
     lineItems.add(tmpLineItem);
   });
