@@ -80,7 +80,7 @@ const app_stripe_live_mode = false;
 /*<! ------ WP LOGIN (OPTIONAL) ------!>*/
 
 // Allows customers to login/register, view account, purchase items as a user.
-// #1 Install the "WP JSON API" plugin on WordPress via https://woosignal.com/plugins/wordpress/wpapp-json-api
+// #1 Install the "WP JSON API" plugin on WordPress via https://woosignal.com/plugins/wordpress/wp-json-api
 // #2 Next activate the plugin on your WordPress and enable "use_wp_login = true"
 // link: https://woosignal.com/dashboard/plugins
 
