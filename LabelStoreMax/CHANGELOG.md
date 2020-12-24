@@ -1,3 +1,9 @@
+## [2.5.0] - 2020-12-23
+
+* Ability to add image placeholders on products
+* Dart code formatted
+* Pubspec.yaml dependency updates
+
 ## [2.4.1] - 2020-12-20
 
 * Fix subtotal bug on order creation

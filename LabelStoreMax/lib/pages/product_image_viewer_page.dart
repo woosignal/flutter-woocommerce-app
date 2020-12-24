@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:label_storemax/labelconfig.dart';
 
 class ProductImageViewerPage extends StatefulWidget {
   final int initialIndex;
@@ -50,7 +51,9 @@ class _ProductImageViewerPageState extends State<ProductImageViewerPage> {
                 index: _initialIndex,
                 itemBuilder: (BuildContext context, int index) {
                   return CachedNetworkImage(
-                    imageUrl: _arrImageSrc[index],
+                    imageUrl: _arrImageSrc.length == 0
+                        ? app_product_placeholder_image
+                        : _arrImageSrc[index],
                     placeholder: (context, url) =>
                         new CircularProgressIndicator(
                       strokeWidth: 2,
@@ -60,7 +63,7 @@ class _ProductImageViewerPageState extends State<ProductImageViewerPage> {
                     fit: BoxFit.contain,
                   );
                 },
-                itemCount: _arrImageSrc.length,
+                itemCount: _arrImageSrc.length == 0 ? 1 : _arrImageSrc.length,
                 viewportFraction: 0.9,
                 scale: 0.95,
               ),

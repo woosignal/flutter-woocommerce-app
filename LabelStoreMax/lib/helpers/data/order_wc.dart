@@ -50,7 +50,8 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
     tmpLineItem.total =
         (cartItem.quantity > 1 ? cartItem.getCartTotal() : cartItem.subtotal);
-    tmpLineItem.subtotal = (parseWcPrice(cartItem.subtotal) * cartItem.quantity).toString();
+    tmpLineItem.subtotal = 
+        (parseWcPrice(cartItem.subtotal) * cartItem.quantity).toString();
 
     lineItems.add(tmpLineItem);
   });

@@ -39,8 +39,10 @@ class _AboutPageState extends State<AboutPage> {
           icon: Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(trans(context, "About"),
-            style: Theme.of(context).primaryTextTheme.headline6),
+        title: Text(
+          trans(context, "About"),
+          style: Theme.of(context).primaryTextTheme.headline6,
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -84,9 +86,7 @@ class _AboutPageState extends State<AboutPage> {
                           if (snapshot.hasError) return Text("");
                           return Padding(
                             child: Text(
-                                trans(context, "Version") +
-                                    ": " +
-                                    snapshot.data.version,
+                                "${trans(context, "Version")}: ${snapshot.data.version}",
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .bodyText1),

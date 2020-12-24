@@ -76,9 +76,11 @@ class _CartPageState extends State<CartPage> {
 
   void _actionProceedToCheckout() async {
     List<CartLineItem> cartLineItems = await Cart.getInstance.getCart();
+
     if (_isLoading == true) {
       return;
     }
+
     if (cartLineItems.length <= 0) {
       showEdgeAlertWith(
         context,
@@ -89,6 +91,7 @@ class _CartPageState extends State<CartPage> {
       );
       return;
     }
+
     if (!cartLineItems.every(
         (c) => c.stockStatus == 'instock' || c.stockStatus == 'onbackorder')) {
       showEdgeAlertWith(
@@ -100,20 +103,24 @@ class _CartPageState extends State<CartPage> {
       );
       return;
     }
+
     CheckoutSession.getInstance.initSession();
     CustomerAddress sfCustomerAddress =
         await CheckoutSession.getInstance.getBillingAddress();
+
     if (sfCustomerAddress != null) {
       CheckoutSession.getInstance.billingDetails.billingAddress =
           sfCustomerAddress;
       CheckoutSession.getInstance.billingDetails.shippingAddress =
           sfCustomerAddress;
     }
+
     if (use_wp_login == true && !(await authCheck())) {
       UserAuth.instance.redirect = "/checkout";
       Navigator.pushNamed(context, "/account-landing");
       return;
     }
+
     Navigator.pushNamed(context, "/checkout");
   }
 
@@ -236,7 +243,9 @@ class _CartPageState extends State<CartPage> {
                     ),
                   )
                 : (_isLoading
-                    ? Expanded(child: showAppLoader())
+                    ? Expanded(
+                        child: showAppLoader(),
+                      )
                     : Expanded(
                         child: ListView.builder(
                             padding: const EdgeInsets.all(8),

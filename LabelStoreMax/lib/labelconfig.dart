@@ -16,7 +16,7 @@ import 'dart:ui';
  Developer Notes
 
  SUPPORT EMAIL - support@woosignal.com
- VERSION - 2.4.1
+ VERSION - 2.5.0
  https://woosignal.com
  */
 
@@ -56,6 +56,8 @@ const List<Locale> app_locales_supported = [
 // If you want to localize the app, add the locale above
 // then create a new lang json file using keys from en.json
 // e.g. lang/es.json
+
+const app_product_placeholder_image = "https://woosignal.com/images/woocommerce-placeholder.png";
 
 /*<! ------ PAYMENT GATEWAYS ------!>*/
 

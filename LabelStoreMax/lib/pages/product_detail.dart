@@ -11,19 +11,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:label_storemax/helpers/tools.dart';
+import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/cart_icon.dart';
 import 'package:woosignal/models/response/product_variation.dart' as WS;
-import 'package:woosignal/models/response/products.dart' as WS;
+import 'package:woosignal/models/response/products.dart' as WSProduct;
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  final WS.Product product;
+  final WSProduct.Product product;
   const ProductDetailPage({Key key, @required this.product}) : super(key: key);
 
   @override
@@ -34,7 +35,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
   _ProductDetailState(this._product);
 
   bool _isLoading;
-  WS.Product _product;
+  WSProduct.Product _product;
   int _quantityIndicator = 1;
   List<WS.ProductVariation> _productVariations = [];
 
@@ -103,9 +104,8 @@ class _ProductDetailState extends State<ProductDetailPage> {
   void _modalBottomSheetOptionsForAttribute(int attributeIndex) {
     wsModalBottom(
       context,
-      title: trans(context, "Select a") +
-          " " +
-          _product.attributes[attributeIndex].name,
+      title:
+          "${trans(context, "Select a")} ${_product.attributes[attributeIndex].name}",
       bodyWidget: ListView.separated(
         itemCount: _product.attributes[attributeIndex].options.length,
         separatorBuilder: (BuildContext context, int index) => Divider(),
@@ -164,9 +164,8 @@ class _ProductDetailState extends State<ProductDetailPage> {
                     _tmpAttributeObj.containsKey(index))
                 ? Text(_tmpAttributeObj[index]["value"],
                     style: Theme.of(context).primaryTextTheme.bodyText1)
-                : Text(trans(context, "Select a") +
-                    " " +
-                    _product.attributes[index].name),
+                : Text(
+                    "${trans(context, "Select a")} ${_product.attributes[index].name}"),
             trailing: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(index))
                 ? Icon(Icons.check, color: Colors.blueAccent)
@@ -212,7 +211,8 @@ class _ProductDetailState extends State<ProductDetailPage> {
                 return;
               }
 
-              if (findProductVariation() == null) {
+              WS.ProductVariation productVariation = findProductVariation();
+              if (productVariation == null) {
                 showEdgeAlertWith(context,
                     title: trans(context, "Oops"),
                     desc: trans(context, "Product variation does not exist"),
@@ -220,39 +220,39 @@ class _ProductDetailState extends State<ProductDetailPage> {
                 return;
               }
 
-              if (findProductVariation() != null) {
-                if (findProductVariation().stockStatus != "instock") {
-                  showEdgeAlertWith(context,
-                      title: trans(context, "Sorry"),
-                      desc: trans(context, "This item is not in stock"),
-                      style: EdgeAlertStyle.WARNING);
-                  return;
-                }
+              if (productVariation.stockStatus != "instock") {
+                showEdgeAlertWith(context,
+                    title: trans(context, "Sorry"),
+                    desc: trans(context, "This item is not in stock"),
+                    style: EdgeAlertStyle.WARNING);
+                return;
               }
 
               List<String> options = [];
               _tmpAttributeObj.forEach((k, v) {
-                options.add(v["name"] + ": " + v["value"]);
+                options.add("${v["name"]}: ${v["value"]}");
               });
 
               CartLineItem cartLineItem = CartLineItem(
-                  name: _product.name,
-                  productId: _product.id,
-                  variationId: findProductVariation().id,
-                  quantity: 1,
-                  taxStatus: findProductVariation().taxStatus,
-                  shippingClassId:
-                      findProductVariation().shippingClassId.toString(),
-                  subtotal: findProductVariation().price,
-                  stockQuantity: findProductVariation().stockQuantity,
-                  isManagedStock: findProductVariation().manageStock,
-                  taxClass: findProductVariation().taxClass,
-                  imageSrc: (findProductVariation().image != null
-                      ? findProductVariation().image.src
-                      : _product.images.first.src),
-                  shippingIsTaxable: _product.shippingTaxable,
-                  variationOptions: options.join(", "),
-                  total: findProductVariation().price);
+                name: _product.name,
+                productId: _product.id,
+                variationId: productVariation.id,
+                quantity: 1,
+                taxStatus: productVariation.taxStatus,
+                shippingClassId: productVariation.shippingClassId.toString(),
+                subtotal: productVariation.price,
+                stockQuantity: productVariation.stockQuantity,
+                isManagedStock: productVariation.manageStock,
+                taxClass: productVariation.taxClass,
+                imageSrc: (productVariation.image != null
+                    ? productVariation.image.src
+                    : _product.images.length == 0
+                        ? app_product_placeholder_image
+                        : _product.images.first.src),
+                shippingIsTaxable: _product.shippingTaxable,
+                variationOptions: options.join(", "),
+                total: productVariation.price,
+              );
 
               _itemAddToCart(cartLineItem: cartLineItem);
               Navigator.of(context).pop();
@@ -303,7 +303,9 @@ class _ProductDetailState extends State<ProductDetailPage> {
                             child: new Swiper(
                               itemBuilder: (BuildContext context, int index) {
                                 return CachedNetworkImage(
-                                  imageUrl: _product.images[index].src,
+                                  imageUrl: _product.images.length == 0
+                                      ? app_product_placeholder_image
+                                      : _product.images[index].src,
                                   placeholder: (context, url) => Center(
                                     child: new CircularProgressIndicator(
                                       strokeWidth: 2,
@@ -315,7 +317,9 @@ class _ProductDetailState extends State<ProductDetailPage> {
                                   fit: BoxFit.contain,
                                 );
                               },
-                              itemCount: _product.images.length,
+                              itemCount: _product.images.length == 0
+                                  ? 1
+                                  : _product.images.length,
                               viewportFraction: 0.85,
                               scale: 0.9,
                               onTap: _productImageTapped,
@@ -542,7 +546,9 @@ class _ProductDetailState extends State<ProductDetailPage> {
       isManagedStock: _product.manageStock,
       stockQuantity: _product.stockQuantity,
       shippingIsTaxable: _product.shippingTaxable,
-      imageSrc: _product.images.first.src,
+      imageSrc: _product.images.length == 0
+          ? app_product_placeholder_image
+          : _product.images.first.src,
       total: _product.price,
     );
 

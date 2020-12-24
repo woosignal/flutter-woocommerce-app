@@ -15,7 +15,7 @@ import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/cart_icon.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/product_category.dart' as WS;
-import 'package:woosignal/models/response/products.dart' as WS;
+import 'package:woosignal/models/response/products.dart' as WSProduct;
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  List<WS.Product> _products = [];
+  List<WSProduct.Product> _products = [];
   List<WS.ProductCategory> _categories = [];
   final GlobalKey _key = GlobalKey();
 
@@ -72,8 +72,12 @@ class _HomePageState extends State<HomePage> {
     }
     waitForNextRequest = true;
 
-    List<WS.Product> products = await appWooSignal((api) => api.getProducts(
-        perPage: 50, page: _page, status: "publish", stockStatus: "instock"));
+    List<WSProduct.Product> products = await appWooSignal((api) =>
+        api.getProducts(
+            perPage: 50,
+            page: _page,
+            status: "publish",
+            stockStatus: "instock"));
     _page = _page + 1;
     if (products.length == 0) {
       _shouldStopRequests = true;
@@ -217,7 +221,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _showProduct(WS.Product product) {
+  _showProduct(WSProduct.Product product) {
     Navigator.pushNamed(context, "/product-detail", arguments: product)
         .then((value) => _key.currentState.setState(() {}));
   }

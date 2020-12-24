@@ -229,7 +229,7 @@ Widget wsCardProductItem(BuildContext context,
                   CachedNetworkImage(
                     imageUrl: (product.images.length > 0
                         ? product.images.first.src
-                        : ""),
+                        : app_product_placeholder_image),
                     placeholder: (context, url) => Container(
                       child: Center(
                         child: CircularProgressIndicator(),
@@ -541,7 +541,9 @@ Widget wsCardCartItem(BuildContext context,
           children: <Widget>[
             Flexible(
               child: CachedNetworkImage(
-                imageUrl: cartLineItem.imageSrc,
+                imageUrl: cartLineItem.imageSrc == ""
+                    ? app_product_placeholder_image
+                    : cartLineItem.imageSrc,
                 width: 100,
                 height: 100,
                 fit: BoxFit.contain,
