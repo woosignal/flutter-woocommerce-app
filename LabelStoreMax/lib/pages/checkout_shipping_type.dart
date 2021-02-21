@@ -8,6 +8,8 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
@@ -65,13 +67,18 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         .firstWhere((c) => c['name'] == state, orElse: () => null);
 
     for (final shipping in wsShipping) {
+      if (shipping.locations == null) {
+        continue;
+      }
       Locations location = shipping.locations.firstWhere(
-          (ws) => (ws.type == "state" &&
-                  stateMap["code"] != null &&
-                  ws.code == "$countryCode:" + stateMap["code"] ||
-              ws.code == postalCode ||
-              ws.code == countryCode),
-          orElse: () => null);
+        (ws) => (ws.type == "state" &&
+                stateMap != null &&
+                stateMap["code"] != null &&
+                ws.code == "$countryCode:" + stateMap["code"] ||
+            ws.code == postalCode ||
+            ws.code == countryCode),
+        orElse: () => null,
+      );
 
       if (location != null) {
         _shipping = shipping;
@@ -79,76 +86,13 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
     }
 
-    if (_shipping != null && _shipping.methods != null) {
-      if (_shipping.methods.flatRate != null) {
-        _shipping.methods.flatRate
-            .where((t) => t != null)
-            .toList()
-            .forEach((flatRate) {
-          Map<String, dynamic> tmpShippingOption = {};
-          tmpShippingOption = {
-            "id": flatRate.id,
-            "title": flatRate.title,
-            "method_id": "flat_rate",
-            "cost": flatRate.cost,
-            "object": flatRate
-          };
-          _wsShippingOptions.add(tmpShippingOption);
-        });
-      }
+    _handleShippingZones(_shipping);
 
-      if (_shipping.methods.localPickup != null) {
-        _shipping.methods.localPickup
-            .where((t) => t != null)
-            .toList()
-            .forEach((localPickup) {
-          Map<String, dynamic> tmpShippingOption = {};
-          tmpShippingOption = {
-            "id": localPickup.id,
-            "method_id": "local_pickup",
-            "title": localPickup.title,
-            "cost": localPickup.cost,
-            "object": localPickup
-          };
-          _wsShippingOptions.add(tmpShippingOption);
-        });
-      }
-
-      if (_shipping.methods.freeShipping != null) {
-        List<FreeShipping> freeShipping =
-            _shipping.methods.freeShipping.where((t) => t != null).toList();
-
-        for (int i = 0; i < freeShipping.length; i++) {
-          if (isNumeric(freeShipping[i].cost) ||
-              freeShipping[i].cost == 'min_amount') {
-            if (freeShipping[i].cost == 'min_amount') {
-              String total = await Cart.getInstance.getTotal();
-              if (total != null) {
-                double doubleTotal = double.parse(total);
-                double doubleMinimumValue =
-                    double.parse(freeShipping[i].minimumOrderAmount);
-
-                if (doubleTotal < doubleMinimumValue) {
-                  continue;
-                }
-              }
-            }
-
-            Map<String, dynamic> tmpShippingOption = {};
-            tmpShippingOption = {
-              "id": freeShipping[i].id,
-              "method_id": "free_shipping",
-              "title": freeShipping[i].title,
-              "cost": "0.00",
-              "min_amount": freeShipping[i].minimumOrderAmount,
-              "object": freeShipping[i]
-            };
-            _wsShippingOptions.add(tmpShippingOption);
-          }
-        }
-      }
+    if (_shipping == null) {
+      WSShipping noZones = wsShipping
+          .firstWhere((element) => element.parentId == 0, orElse: () => null);
+      _handleShippingZones(noZones);
     }
-
     if (_wsShippingOptions.length == 0) {
       _isShippingSupported = false;
     }
@@ -203,6 +147,78 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         break;
     }
     return (total).toString();
+  }
+
+  _handleShippingZones(WSShipping shipping) async {
+    if (shipping != null && shipping.methods != null) {
+      if (shipping.methods.flatRate != null) {
+        shipping.methods.flatRate
+            .where((t) => t != null)
+            .toList()
+            .forEach((flatRate) {
+          Map<String, dynamic> tmpShippingOption = {};
+          tmpShippingOption = {
+            "id": flatRate.id,
+            "title": flatRate.title,
+            "method_id": "flat_rate",
+            "cost": flatRate.cost,
+            "object": flatRate
+          };
+          _wsShippingOptions.add(tmpShippingOption);
+        });
+      }
+
+      if (shipping.methods.localPickup != null) {
+        shipping.methods.localPickup
+            .where((t) => t != null)
+            .toList()
+            .forEach((localPickup) {
+          Map<String, dynamic> tmpShippingOption = {};
+          tmpShippingOption = {
+            "id": localPickup.id,
+            "method_id": "local_pickup",
+            "title": localPickup.title,
+            "cost": localPickup.cost,
+            "object": localPickup
+          };
+          _wsShippingOptions.add(tmpShippingOption);
+        });
+      }
+
+      if (shipping.methods.freeShipping != null) {
+        List<FreeShipping> freeShipping =
+            shipping.methods.freeShipping.where((t) => t != null).toList();
+
+        for (int i = 0; i < freeShipping.length; i++) {
+          if (isNumeric(freeShipping[i].cost) ||
+              freeShipping[i].cost == 'min_amount') {
+            if (freeShipping[i].cost == 'min_amount') {
+              String total = await Cart.getInstance.getTotal();
+              if (total != null) {
+                double doubleTotal = double.parse(total);
+                double doubleMinimumValue =
+                    double.parse(freeShipping[i].minimumOrderAmount);
+
+                if (doubleTotal < doubleMinimumValue) {
+                  continue;
+                }
+              }
+            }
+
+            Map<String, dynamic> tmpShippingOption = {};
+            tmpShippingOption = {
+              "id": freeShipping[i].id,
+              "method_id": "free_shipping",
+              "title": freeShipping[i].title,
+              "cost": "0.00",
+              "min_amount": freeShipping[i].minimumOrderAmount,
+              "object": freeShipping[i]
+            };
+            _wsShippingOptions.add(tmpShippingOption);
+          }
+        }
+      }
+    }
   }
 
   @override

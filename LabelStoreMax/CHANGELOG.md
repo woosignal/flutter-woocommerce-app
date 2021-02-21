@@ -1,3 +1,8 @@
+## [2.5.1] - 2020-02-21
+
+* Pubspec.yaml dependency updates
+* Bug fixes
+
 ## [2.5.0] - 2020-12-23
 
 * Ability to add image placeholders on products
