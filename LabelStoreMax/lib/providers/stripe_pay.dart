@@ -3,7 +3,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -16,8 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:label_storemax/helpers/data/order_wc.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
-import 'package:label_storemax/models/cart.dart';
-import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/pages/checkout_confirmation.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/order.dart';
@@ -44,7 +42,8 @@ stripePay(context,
           "line1": billingDetails.shippingAddress.addressLine,
           "city": billingDetails.shippingAddress.city,
           "postal_code": billingDetails.shippingAddress.postalCode,
-          "country": billingDetails.shippingAddress.country
+          "country":
+              (billingDetails.shippingAddress?.customerCountry?.name ?? "")
         };
 
         String cartShortDesc = await cart.cartShortDesc();
@@ -108,11 +107,13 @@ stripePay(context,
       state.reloadState(showLoader: false);
     }
   } catch (ex) {
-    showEdgeAlertWith(context,
-        title: trans(context, "Oops!"),
-        desc: trans(context, "Something went wrong, please try again."),
-        icon: Icons.payment,
-        style: EdgeAlertStyle.WARNING);
+    showEdgeAlertWith(
+      context,
+      title: trans(context, "Oops!"),
+      desc: trans(context, "Something went wrong, please try again."),
+      icon: Icons.payment,
+      style: EdgeAlertStyle.WARNING,
+    );
     state.reloadState(showLoader: false);
   }
 }

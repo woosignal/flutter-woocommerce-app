@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -49,6 +49,10 @@ class CheckoutSession {
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.billingAddress;
 
+    if (customerAddress == null) {
+      return;
+    }
+
     String billingAddress = jsonEncode(customerAddress.toJson());
     sharedPref.save(sfKeyBillingCheckout, billingAddress);
   }
@@ -73,6 +77,10 @@ class CheckoutSession {
     SharedPref sharedPref = SharedPref();
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.shippingAddress;
+
+    if (customerAddress == null) {
+      return;
+    }
 
     String shippingAddress = jsonEncode(customerAddress.toJson());
     sharedPref.save(sfKeyShippingCheckout, shippingAddress);

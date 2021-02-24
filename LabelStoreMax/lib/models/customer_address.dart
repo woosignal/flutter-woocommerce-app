@@ -1,12 +1,14 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+import 'package:label_storemax/models/customer_country.dart';
 
 class CustomerAddress {
   String firstName;
@@ -14,9 +16,8 @@ class CustomerAddress {
   String addressLine;
   String city;
   String postalCode;
-  String state;
-  String country;
   String emailAddress;
+  CustomerCountry customerCountry;
 
   CustomerAddress(
       {this.firstName,
@@ -24,9 +25,8 @@ class CustomerAddress {
       this.addressLine,
       this.city,
       this.postalCode,
-      this.state,
-      this.country,
-      this.emailAddress});
+      this.emailAddress,
+      this.customerCountry});
 
   void initAddress() {
     firstName = "";
@@ -34,8 +34,7 @@ class CustomerAddress {
     addressLine = "";
     city = "";
     postalCode = "";
-    state = "";
-    country = "";
+    customerCountry = CustomerCountry();
     emailAddress = "";
   }
 
@@ -45,7 +44,9 @@ class CustomerAddress {
           this.addressLine.isEmpty ||
           this.city.isEmpty ||
           this.postalCode.isEmpty) ||
-      (this.country == "United States" ? this.state.isEmpty : false);
+      (this.customerCountry.hasState() == true
+          ? (this.customerCountry?.state?.name ?? "").isEmpty
+          : false);
 
   String addressFull() {
     List<String> tmpArrAddress = new List<String>();
@@ -58,11 +59,12 @@ class CustomerAddress {
     if (postalCode != null && postalCode != "") {
       tmpArrAddress.add(postalCode);
     }
-    if (state != null && state != "") {
-      tmpArrAddress.add(state);
+    if (this.customerCountry != null &&
+        this.customerCountry?.state?.name != null) {
+      tmpArrAddress.add(this.customerCountry?.state?.name);
     }
-    if (country != null && country != "") {
-      tmpArrAddress.add(country);
+    if (this.customerCountry != null && this.customerCountry?.name != null) {
+      tmpArrAddress.add(this.customerCountry.name);
     }
     return tmpArrAddress.join(", ");
   }
@@ -84,8 +86,7 @@ class CustomerAddress {
     addressLine = json['address_line'];
     city = json['city'];
     postalCode = json['postal_code'];
-    state = json['state'];
-    country = json['country'];
+    this.customerCountry = CustomerCountry.fromJson(json['customer_country']);
     emailAddress = json['email_address'];
   }
 
@@ -96,9 +97,13 @@ class CustomerAddress {
     data['address_line'] = this.addressLine;
     data['city'] = this.city;
     data['postal_code'] = this.postalCode;
-    data['state'] = this.state;
-    data['country'] = this.country;
+    data['state'] = this.customerCountry.state;
+    data['country'] = this.customerCountry.name;
     data['email_address'] = this.emailAddress;
+    data['customer_country'] = null;
+    if (this.customerCountry != null) {
+      data['customer_country'] = this.customerCountry.toJson();
+    }
     return data;
   }
 }

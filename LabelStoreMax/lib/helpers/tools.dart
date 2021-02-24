@@ -1,13 +1,14 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,7 @@ import 'package:label_storemax/models/billing_details.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
+import 'package:label_storemax/models/default_shipping.dart';
 import 'package:label_storemax/models/payment_type.dart';
 import 'package:html/parser.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
@@ -157,7 +159,7 @@ String workoutSaleDiscount(
 
 openBrowserTab({@required String url}) async {
   await FlutterWebBrowser.openWebPage(
-      url: url, androidToolbarColor: Colors.white70);
+      url: url, customTabsOptions: CustomTabsOptions(toolbarColor: Colors.white70));
 }
 
 EdgeInsets safeAreaDefault() {
@@ -543,4 +545,27 @@ class UserAuth {
   static final UserAuth instance = UserAuth._privateConstructor();
 
   String redirect = "/home";
+}
+
+Future<List<DefaultShipping>> getDefaultShipping(BuildContext context) async {
+  String data = await DefaultAssetBundle.of(context)
+      .loadString("assets/default_shipping.json");
+  dynamic dataJson = json.decode(data);
+  List<DefaultShipping> shipping = [];
+
+  dataJson.forEach((key, value) {
+    DefaultShipping defaultShipping = DefaultShipping();
+    defaultShipping.code = key;
+    defaultShipping.country = value['country'];
+
+    defaultShipping.states = [];
+    if (value['states'] != null) {
+      value['states'].forEach((key1, value2) {
+        defaultShipping.states
+            .add(DefaultShippingState(code: key1, name: value2));
+      });
+    }
+    shipping.add(defaultShipping);
+  });
+  return shipping;
 }

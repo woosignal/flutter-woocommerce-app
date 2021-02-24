@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -53,7 +53,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
           margin: EdgeInsets.only(left: 0),
         ),
         title: Text(
-          "${capitalize(trans(context, "Order"))} #" + _orderId.toString(),
+          "${capitalize(trans(context, "Order"))} #${_orderId.toString()}",
           style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
@@ -79,8 +79,9 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Flexible(
-                            child: Text(
-                                "${capitalize(trans(context, "Ships to"))}:")),
+                          child: Text(
+                              "${capitalize(trans(context, "Ships to"))}:"),
+                        ),
                         Flexible(
                           child: Text(
                             [
@@ -110,87 +111,91 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                     ),
                   ),
                   Expanded(
-                      child: ListView.builder(
-                    itemBuilder: (cxt, i) {
-                      return Card(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.only(
-                              top: 5, bottom: 5, left: 8, right: 6),
-                          title: Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                    color: HexColor("#fcfcfc"), width: 1),
+                    child: ListView.builder(
+                      itemBuilder: (cxt, i) {
+                        return Card(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.only(
+                                top: 5, bottom: 5, left: 8, right: 6),
+                            title: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                      color: HexColor("#fcfcfc"), width: 1),
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Flexible(
-                                  child: Text(
-                                    _order.lineItems[i].name,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Flexible(
+                                    child: Text(
+                                      _order.lineItems[i].name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(
+                                    capitalize(
+                                      formatStringCurrency(
+                                          total: _order.lineItems[i].price),
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                                Text(
-                                  capitalize(
-                                    formatStringCurrency(
-                                        total: _order.lineItems[i].price),
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      formatStringCurrency(
-                                        total: _order.lineItems[i].total,
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        formatStringCurrency(
+                                          total: _order.lineItems[i].total,
+                                        ),
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText2
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black,
+                                            ),
+                                        textAlign: TextAlign.left,
                                       ),
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .bodyText2
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
-                                          ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    Text(
-                                      "x" +
-                                          _order.lineItems[i].quantity
-                                              .toString(),
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .bodyText1
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
-                                          ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Text(
+                                        "x" +
+                                            _order.lineItems[i].quantity
+                                                .toString(),
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText1
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black,
+                                            ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                    itemCount: _order.lineItems.length,
-                  )),
+                        );
+                      },
+                      itemCount: _order.lineItems.length,
+                    ),
+                  ),
                 ],
               ),
       ),

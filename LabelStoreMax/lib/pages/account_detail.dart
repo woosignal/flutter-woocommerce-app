@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -32,14 +32,11 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  bool _shouldStopRequests;
-  bool waitForNextRequest;
+  bool _shouldStopRequests, waitForNextRequest, _isLoading, _isLoadingOrders;
 
   int _page;
   List<Order> _orders;
   WCCustomerInfoResponse _wcCustomerInfoResponse;
-  bool _isLoading;
-  bool _isLoadingOrders;
   int _currentTabIndex = 0;
   Widget _activeBody;
 
@@ -296,7 +293,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
 
     if (orders.length <= 0) {
       setState(() {
+        _isLoadingOrders = false;
         _shouldStopRequests = true;
+        _activeBody = _widgetOrders();
       });
       return;
     }
@@ -359,7 +358,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  "#" + _orders[i].id.toString(),
+                                  "#${_orders[i].id.toString()}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),

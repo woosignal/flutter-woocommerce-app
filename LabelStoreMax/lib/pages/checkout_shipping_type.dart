@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,18 +9,17 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/customer_address.dart';
+import 'package:label_storemax/models/customer_country.dart';
 import 'package:label_storemax/models/shipping_type.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
-import 'package:label_storemax/app_country_options.dart';
 
 class CheckoutShippingTypePage extends StatefulWidget {
   CheckoutShippingTypePage();
@@ -33,8 +32,7 @@ class CheckoutShippingTypePage extends StatefulWidget {
 class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   _CheckoutShippingTypePageState();
 
-  bool _isShippingSupported;
-  bool _isLoading;
+  bool _isShippingSupported, _isLoading;
   List<Map<String, dynamic>> _wsShippingOptions;
   WSShipping _shipping;
 
@@ -52,29 +50,47 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   _getShippingMethods() async {
     List<WSShipping> wsShipping =
         await appWooSignal((api) => api.getShippingMethods());
+
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.shippingAddress;
     String postalCode = customerAddress.postalCode;
-    String country = customerAddress.country;
-    String state = customerAddress.state;
+    CustomerCountry customerCountry = customerAddress.customerCountry;
 
-    String countryCode = appCountryOptions
-        .firstWhere((c) => c['name'] == country, orElse: () => null)["code"];
-
-    Map<String, dynamic> stateMap = appStateOptions
-        .firstWhere((c) => c['name'] == state, orElse: () => null);
+    if (customerCountry == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
 
     for (final shipping in wsShipping) {
       if (shipping.locations == null) {
         continue;
       }
+
       Locations location = shipping.locations.firstWhere(
-        (ws) => (ws.type == "state" &&
-                stateMap != null &&
-                stateMap["code"] != null &&
-                ws.code == "$countryCode:" + stateMap["code"] ||
-            ws.code == postalCode ||
-            ws.code == countryCode),
+        (ws) {
+          if (customerCountry.countryCode == null || ws.code == null) {
+            return false;
+          }
+
+          if (ws.type == "state") {
+            if (customerCountry.state != null &&
+                (customerCountry.state?.code ?? "") != "") {
+              return ws.code == customerCountry.state.code;
+            }
+          }
+
+          if (ws.type == "postcode" && ws.code == postalCode) {
+            return true;
+          }
+
+          if (ws.type == "country" && ws.code == customerCountry.countryCode) {
+            return true;
+          }
+
+          return false;
+        },
         orElse: () => null,
       );
 

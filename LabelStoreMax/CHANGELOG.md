@@ -1,3 +1,10 @@
+## [2.6.0] - 2020-02-24
+
+* Ability to manage affiliate products
+* Refreshed design for checkout details screen
+* New logic to manage shipping better
+* Bug fixes
+
 ## [2.5.1] - 2020-02-21
 
 * Pubspec.yaml dependency updates

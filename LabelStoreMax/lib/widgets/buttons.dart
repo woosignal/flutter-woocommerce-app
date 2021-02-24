@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -22,6 +22,8 @@ Widget wsPrimaryButton(BuildContext context,
       child: Text(
         title,
         style: Theme.of(context).primaryTextTheme.button.copyWith(fontSize: 16),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
       onPressed: action ?? null,
       elevation: 0,
@@ -41,6 +43,8 @@ Widget wsSecondaryButton(BuildContext context,
               color: Colors.black87,
             ),
         textAlign: TextAlign.center,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
       onPressed: action,
       color: HexColor("#f6f6f9"),
@@ -60,6 +64,8 @@ Widget wsLinkButton(BuildContext context,
         title,
         style: Theme.of(context).primaryTextTheme.bodyText1,
         textAlign: TextAlign.left,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
       onPressed: action,
       elevation: 0,

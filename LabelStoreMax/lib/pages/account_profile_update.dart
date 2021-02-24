@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -31,8 +31,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
   _AccountProfileUpdatePageState();
 
   bool isLoading;
-  TextEditingController _tfFirstName;
-  TextEditingController _tfLastName;
+  TextEditingController _tfFirstName, _tfLastName;
 
   @override
   void dispose() {
@@ -147,7 +146,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
         wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api((request) =>
             request.wpUpdateUserInfo(userToken,
                 firstName: firstName, lastName: lastName));
-      } on Exception catch (e) {
+      } on Exception catch (_) {
         showEdgeAlertWith(context,
             title: trans(context, "Invalid details"),
             desc: trans(context, "Please check your email and password"),

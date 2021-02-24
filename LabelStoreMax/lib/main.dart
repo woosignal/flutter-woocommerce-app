@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:label_storemax/helpers/shared_pref.dart';
 import 'package:label_storemax/pages/account_billing_details.dart';
 import 'package:label_storemax/pages/account_detail.dart';
 import 'package:label_storemax/pages/account_landing.dart';
@@ -18,8 +19,10 @@ import 'package:label_storemax/pages/account_order_detail.dart';
 import 'package:label_storemax/pages/account_profile_update.dart';
 import 'package:label_storemax/pages/account_register.dart';
 import 'package:label_storemax/pages/account_shipping_details.dart';
+import 'package:label_storemax/pages/customer_countries.dart';
 import 'package:label_storemax/pages/error_page.dart';
 import 'package:label_storemax/pages/product_image_viewer_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/products.dart';
@@ -199,6 +202,12 @@ void main() async {
           case '/home-search':
             return PageTransition(
               child: HomeSearchPage(),
+              type: PageTransitionType.bottomToTop,
+            );
+
+          case '/customer-countries':
+            return PageTransition(
+              child: CustomerCountriesPage(),
               type: PageTransitionType.bottomToTop,
             );
           default:

@@ -1,0 +1,2645 @@
+{
+  "AF": {
+    "country": "Afghanistan",
+    "states": {}
+  },
+  "AX": {
+    "country": "Åland Islands",
+    "states": {}
+  },
+  "AL": {
+    "country": "Albania",
+    "states": {}
+  },
+  "DZ": {
+    "country": "Algeria",
+    "states": {
+      "DZ:DZ-01": "Adrar",
+      "DZ:DZ-02": "Chlef",
+      "DZ:DZ-03": "Laghouat",
+      "DZ:DZ-04": "Oum El Bouaghi",
+      "DZ:DZ-05": "Batna",
+      "DZ:DZ-06": "Béjaïa",
+      "DZ:DZ-07": "Biskra",
+      "DZ:DZ-08": "Béchar",
+      "DZ:DZ-09": "Blida",
+      "DZ:DZ-10": "Bouira",
+      "DZ:DZ-11": "Tamanghasset",
+      "DZ:DZ-12": "Tébessa",
+      "DZ:DZ-13": "Tlemcen",
+      "DZ:DZ-14": "Tiaret",
+      "DZ:DZ-15": "Tizi Ouzou",
+      "DZ:DZ-16": "Algiers",
+      "DZ:DZ-17": "Djelfa",
+      "DZ:DZ-18": "Jijel",
+      "DZ:DZ-19": "Sétif",
+      "DZ:DZ-20": "Saïda",
+      "DZ:DZ-21": "Skikda",
+      "DZ:DZ-22": "Sidi Bel Abbès",
+      "DZ:DZ-23": "Annaba",
+      "DZ:DZ-24": "Guelma",
+      "DZ:DZ-25": "Constantine",
+      "DZ:DZ-26": "Médéa",
+      "DZ:DZ-27": "Mostaganem",
+      "DZ:DZ-28": "M’Sila",
+      "DZ:DZ-29": "Mascara",
+      "DZ:DZ-30": "Ouargla",
+      "DZ:DZ-31": "Oran",
+      "DZ:DZ-32": "El Bayadh",
+      "DZ:DZ-33": "Illizi",
+      "DZ:DZ-34": "Bordj Bou Arréridj",
+      "DZ:DZ-35": "Boumerdès",
+      "DZ:DZ-36": "El Tarf",
+      "DZ:DZ-37": "Tindouf",
+      "DZ:DZ-38": "Tissemsilt",
+      "DZ:DZ-39": "El Oued",
+      "DZ:DZ-40": "Khenchela",
+      "DZ:DZ-41": "Souk Ahras",
+      "DZ:DZ-42": "Tipasa",
+      "DZ:DZ-43": "Mila",
+      "DZ:DZ-44": "Aïn Defla",
+      "DZ:DZ-45": "Naama",
+      "DZ:DZ-46": "Aïn Témouchent",
+      "DZ:DZ-47": "Ghardaïa",
+      "DZ:DZ-48": "Relizane"
+    }
+  },
+  "AS": {
+    "country": "American Samoa",
+    "states": {}
+  },
+  "AD": {
+    "country": "Andorra",
+    "states": {}
+  },
+  "AO": {
+    "country": "Angola",
+    "states": {
+      "AO:BGO": "Bengo",
+      "AO:BLU": "Benguela",
+      "AO:BIE": "Bié",
+      "AO:CAB": "Cabinda",
+      "AO:CNN": "Cunene",
+      "AO:HUA": "Huambo",
+      "AO:HUI": "Huíla",
+      "AO:CCU": "Kuando Kubango",
+      "AO:CNO": "Kwanza-Norte",
+      "AO:CUS": "Kwanza-Sul",
+      "AO:LUA": "Luanda",
+      "AO:LNO": "Lunda-Norte",
+      "AO:LSU": "Lunda-Sul",
+      "AO:MAL": "Malanje",
+      "AO:MOX": "Moxico",
+      "AO:NAM": "Namibe",
+      "AO:UIG": "Uíge",
+      "AO:ZAI": "Zaire"
+    }
+  },
+  "AI": {
+    "country": "Anguilla",
+    "states": {}
+  },
+  "AQ": {
+    "country": "Antarctica",
+    "states": {}
+  },
+  "AG": {
+    "country": "Antigua and Barbuda",
+    "states": {}
+  },
+  "AR": {
+    "country": "Argentina",
+    "states": {
+      "AR:C": "Ciudad Autónoma de Buenos Aires",
+      "AR:B": "Buenos Aires",
+      "AR:K": "Catamarca",
+      "AR:H": "Chaco",
+      "AR:U": "Chubut",
+      "AR:X": "Córdoba",
+      "AR:W": "Corrientes",
+      "AR:E": "Entre Ríos",
+      "AR:P": "Formosa",
+      "AR:Y": "Jujuy",
+      "AR:L": "La Pampa",
+      "AR:F": "La Rioja",
+      "AR:M": "Mendoza",
+      "AR:N": "Misiones",
+      "AR:Q": "Neuquén",
+      "AR:R": "Río Negro",
+      "AR:A": "Salta",
+      "AR:J": "San Juan",
+      "AR:D": "San Luis",
+      "AR:Z": "Santa Cruz",
+      "AR:S": "Santa Fe",
+      "AR:G": "Santiago del Estero",
+      "AR:V": "Tierra del Fuego",
+      "AR:T": "Tucumán"
+    }
+  },
+  "AM": {
+    "country": "Armenia",
+    "states": {}
+  },
+  "AW": {
+    "country": "Aruba",
+    "states": {}
+  },
+  "AU": {
+    "country": "Australia",
+    "states": {
+      "AU:ACT": "Australian Capital Territory",
+      "AU:NSW": "New South Wales",
+      "AU:NT": "Northern Territory",
+      "AU:QLD": "Queensland",
+      "AU:SA": "South Australia",
+      "AU:TAS": "Tasmania",
+      "AU:VIC": "Victoria",
+      "AU:WA": "Western Australia"
+    }
+  },
+  "AT": {
+    "country": "Austria",
+    "states": {}
+  },
+  "AZ": {
+    "country": "Azerbaijan",
+    "states": {}
+  },
+  "BS": {
+    "country": "Bahamas",
+    "states": {}
+  },
+  "BH": {
+    "country": "Bahrain",
+    "states": {}
+  },
+  "BD": {
+    "country": "Bangladesh",
+    "states": {
+      "BD:BD-05": "Bagerhat",
+      "BD:BD-01": "Bandarban",
+      "BD:BD-02": "Barguna",
+      "BD:BD-06": "Barishal",
+      "BD:BD-07": "Bhola",
+      "BD:BD-03": "Bogura",
+      "BD:BD-04": "Brahmanbaria",
+      "BD:BD-09": "Chandpur",
+      "BD:BD-10": "Chattogram",
+      "BD:BD-12": "Chuadanga",
+      "BD:BD-11": "Cox's Bazar",
+      "BD:BD-08": "Cumilla",
+      "BD:BD-13": "Dhaka",
+      "BD:BD-14": "Dinajpur",
+      "BD:BD-15": "Faridpur ",
+      "BD:BD-16": "Feni",
+      "BD:BD-19": "Gaibandha",
+      "BD:BD-18": "Gazipur",
+      "BD:BD-17": "Gopalganj",
+      "BD:BD-20": "Habiganj",
+      "BD:BD-21": "Jamalpur",
+      "BD:BD-22": "Jashore",
+      "BD:BD-25": "Jhalokati",
+      "BD:BD-23": "Jhenaidah",
+      "BD:BD-24": "Joypurhat",
+      "BD:BD-29": "Khagrachhari",
+      "BD:BD-27": "Khulna",
+      "BD:BD-26": "Kishoreganj",
+      "BD:BD-28": "Kurigram",
+      "BD:BD-30": "Kushtia",
+      "BD:BD-31": "Lakshmipur",
+      "BD:BD-32": "Lalmonirhat",
+      "BD:BD-36": "Madaripur",
+      "BD:BD-37": "Magura",
+      "BD:BD-33": "Manikganj ",
+      "BD:BD-39": "Meherpur",
+      "BD:BD-38": "Moulvibazar",
+      "BD:BD-35": "Munshiganj",
+      "BD:BD-34": "Mymensingh",
+      "BD:BD-48": "Naogaon",
+      "BD:BD-43": "Narail",
+      "BD:BD-40": "Narayanganj",
+      "BD:BD-42": "Narsingdi",
+      "BD:BD-44": "Natore",
+      "BD:BD-45": "Nawabganj",
+      "BD:BD-41": "Netrakona",
+      "BD:BD-46": "Nilphamari",
+      "BD:BD-47": "Noakhali",
+      "BD:BD-49": "Pabna",
+      "BD:BD-52": "Panchagarh",
+      "BD:BD-51": "Patuakhali",
+      "BD:BD-50": "Pirojpur",
+      "BD:BD-53": "Rajbari",
+      "BD:BD-54": "Rajshahi",
+      "BD:BD-56": "Rangamati",
+      "BD:BD-55": "Rangpur",
+      "BD:BD-58": "Satkhira",
+      "BD:BD-62": "Shariatpur",
+      "BD:BD-57": "Sherpur",
+      "BD:BD-59": "Sirajganj",
+      "BD:BD-61": "Sunamganj",
+      "BD:BD-60": "Sylhet",
+      "BD:BD-63": "Tangail",
+      "BD:BD-64": "Thakurgaon"
+    }
+  },
+  "BB": {
+    "country": "Barbados",
+    "states": {}
+  },
+  "BY": {
+    "country": "Belarus",
+    "states": {}
+  },
+  "PW": {
+    "country": "Belau",
+    "states": {}
+  },
+  "BE": {
+    "country": "Belgium",
+    "states": {}
+  },
+  "BZ": {
+    "country": "Belize",
+    "states": {}
+  },
+  "BJ": {
+    "country": "Benin",
+    "states": {
+      "BJ:AL": "Alibori",
+      "BJ:AK": "Atakora",
+      "BJ:AQ": "Atlantique",
+      "BJ:BO": "Borgou",
+      "BJ:CO": "Collines",
+      "BJ:KO": "Kouffo",
+      "BJ:DO": "Donga",
+      "BJ:LI": "Littoral",
+      "BJ:MO": "Mono",
+      "BJ:OU": "Ouémé",
+      "BJ:PL": "Plateau",
+      "BJ:ZO": "Zou"
+    }
+  },
+  "BM": {
+    "country": "Bermuda",
+    "states": {}
+  },
+  "BT": {
+    "country": "Bhutan",
+    "states": {}
+  },
+  "BO": {
+    "country": "Bolivia",
+    "states": {
+      "BO:B": "Chuquisaca",
+      "BO:H": "Beni",
+      "BO:C": "Cochabamba",
+      "BO:L": "La Paz",
+      "BO:O": "Oruro",
+      "BO:N": "Pando",
+      "BO:P": "Potosí",
+      "BO:S": "Santa Cruz",
+      "BO:T": "Tarija"
+    }
+  },
+  "BQ": {
+    "country": "Bonaire, Saint Eustatius and Saba",
+    "states": {}
+  },
+  "BA": {
+    "country": "Bosnia and Herzegovina",
+    "states": {}
+  },
+  "BW": {
+    "country": "Botswana",
+    "states": {}
+  },
+  "BV": {
+    "country": "Bouvet Island",
+    "states": {}
+  },
+  "BR": {
+    "country": "Brazil",
+    "states": {
+      "BR:AC": "Acre",
+      "BR:AL": "Alagoas",
+      "BR:AP": "Amapá",
+      "BR:AM": "Amazonas",
+      "BR:BA": "Bahia",
+      "BR:CE": "Ceará",
+      "BR:DF": "Distrito Federal",
+      "BR:ES": "Espírito Santo",
+      "BR:GO": "Goiás",
+      "BR:MA": "Maranhão",
+      "BR:MT": "Mato Grosso",
+      "BR:MS": "Mato Grosso do Sul",
+      "BR:MG": "Minas Gerais",
+      "BR:PA": "Pará",
+      "BR:PB": "Paraíba",
+      "BR:PR": "Paraná",
+      "BR:PE": "Pernambuco",
+      "BR:PI": "Piauí",
+      "BR:RJ": "Rio de Janeiro",
+      "BR:RN": "Rio Grande do Norte",
+      "BR:RS": "Rio Grande do Sul",
+      "BR:RO": "Rondônia",
+      "BR:RR": "Roraima",
+      "BR:SC": "Santa Catarina",
+      "BR:SP": "São Paulo",
+      "BR:SE": "Sergipe",
+      "BR:TO": "Tocantins"
+    }
+  },
+  "IO": {
+    "country": "British Indian Ocean Territory",
+    "states": {}
+  },
+  "BN": {
+    "country": "Brunei",
+    "states": {}
+  },
+  "BG": {
+    "country": "Bulgaria",
+    "states": {
+      "BG:BG-01": "Blagoevgrad",
+      "BG:BG-02": "Burgas",
+      "BG:BG-08": "Dobrich",
+      "BG:BG-07": "Gabrovo",
+      "BG:BG-26": "Haskovo",
+      "BG:BG-09": "Kardzhali",
+      "BG:BG-10": "Kyustendil",
+      "BG:BG-11": "Lovech",
+      "BG:BG-12": "Montana",
+      "BG:BG-13": "Pazardzhik",
+      "BG:BG-14": "Pernik",
+      "BG:BG-15": "Pleven",
+      "BG:BG-16": "Plovdiv",
+      "BG:BG-17": "Razgrad",
+      "BG:BG-18": "Ruse",
+      "BG:BG-27": "Shumen",
+      "BG:BG-19": "Silistra",
+      "BG:BG-20": "Sliven",
+      "BG:BG-21": "Smolyan",
+      "BG:BG-23": "Sofia",
+      "BG:BG-22": "Sofia-Grad",
+      "BG:BG-24": "Stara Zagora",
+      "BG:BG-25": "Targovishte",
+      "BG:BG-03": "Varna",
+      "BG:BG-04": "Veliko Tarnovo",
+      "BG:BG-05": "Vidin",
+      "BG:BG-06": "Vratsa",
+      "BG:BG-28": "Yambol"
+    }
+  },
+  "BF": {
+    "country": "Burkina Faso",
+    "states": {}
+  },
+  "BI": {
+    "country": "Burundi",
+    "states": {}
+  },
+  "KH": {
+    "country": "Cambodia",
+    "states": {}
+  },
+  "CM": {
+    "country": "Cameroon",
+    "states": {}
+  },
+  "CA": {
+    "country": "Canada",
+    "states": {
+      "CA:AB": "Alberta",
+      "CA:BC": "British Columbia",
+      "CA:MB": "Manitoba",
+      "CA:NB": "New Brunswick",
+      "CA:NL": "Newfoundland and Labrador",
+      "CA:NT": "Northwest Territories",
+      "CA:NS": "Nova Scotia",
+      "CA:NU": "Nunavut",
+      "CA:ON": "Ontario",
+      "CA:PE": "Prince Edward Island",
+      "CA:QC": "Quebec",
+      "CA:SK": "Saskatchewan",
+      "CA:YT": "Yukon Territory"
+    }
+  },
+  "CV": {
+    "country": "Cape Verde",
+    "states": {}
+  },
+  "KY": {
+    "country": "Cayman Islands",
+    "states": {}
+  },
+  "CF": {
+    "country": "Central African Republic",
+    "states": {}
+  },
+  "TD": {
+    "country": "Chad",
+    "states": {}
+  },
+  "CL": {
+    "country": "Chile",
+    "states": {}
+  },
+  "CN": {
+    "country": "China",
+    "states": {
+      "CN:CN1": "Yunnan / 云南",
+      "CN:CN2": "Beijing / 北京",
+      "CN:CN3": "Tianjin / 天津",
+      "CN:CN4": "Hebei / 河北",
+      "CN:CN5": "Shanxi / 山西",
+      "CN:CN6": "Inner Mongolia / 內蒙古",
+      "CN:CN7": "Liaoning / 辽宁",
+      "CN:CN8": "Jilin / 吉林",
+      "CN:CN9": "Heilongjiang / 黑龙江",
+      "CN:CN10": "Shanghai / 上海",
+      "CN:CN11": "Jiangsu / 江苏",
+      "CN:CN12": "Zhejiang / 浙江",
+      "CN:CN13": "Anhui / 安徽",
+      "CN:CN14": "Fujian / 福建",
+      "CN:CN15": "Jiangxi / 江西",
+      "CN:CN16": "Shandong / 山东",
+      "CN:CN17": "Henan / 河南",
+      "CN:CN18": "Hubei / 湖北",
+      "CN:CN19": "Hunan / 湖南",
+      "CN:CN20": "Guangdong / 广东",
+      "CN:CN21": "Guangxi Zhuang / 广西壮族",
+      "CN:CN22": "Hainan / 海南",
+      "CN:CN23": "Chongqing / 重庆",
+      "CN:CN24": "Sichuan / 四川",
+      "CN:CN25": "Guizhou / 贵州",
+      "CN:CN26": "Shaanxi / 陕西",
+      "CN:CN27": "Gansu / 甘肃",
+      "CN:CN28": "Qinghai / 青海",
+      "CN:CN29": "Ningxia Hui / 宁夏",
+      "CN:CN30": "Macao / 澳门",
+      "CN:CN31": "Tibet / 西藏",
+      "CN:CN32": "Xinjiang / 新疆"
+    }
+  },
+  "CX": {
+    "country": "Christmas Island",
+    "states": {}
+  },
+  "CC": {
+    "country": "Cocos (Keeling) Islands",
+    "states": {}
+  },
+  "CO": {
+    "country": "Colombia",
+    "states": {}
+  },
+  "KM": {
+    "country": "Comoros",
+    "states": {}
+  },
+  "CG": {
+    "country": "Congo (Brazzaville)",
+    "states": {}
+  },
+  "CD": {
+    "country": "Congo (Kinshasa)",
+    "states": {}
+  },
+  "CK": {
+    "country": "Cook Islands",
+    "states": {}
+  },
+  "CR": {
+    "country": "Costa Rica",
+    "states": {}
+  },
+  "HR": {
+    "country": "Croatia",
+    "states": {}
+  },
+  "CU": {
+    "country": "Cuba",
+    "states": {}
+  },
+  "CW": {
+    "country": "Cura&ccedil;ao",
+    "states": {}
+  },
+  "CY": {
+    "country": "Cyprus",
+    "states": {}
+  },
+  "CZ": {
+    "country": "Czech Republic",
+    "states": {}
+  },
+  "DK": {
+    "country": "Denmark",
+    "states": {}
+  },
+  "DJ": {
+    "country": "Djibouti",
+    "states": {}
+  },
+  "DM": {
+    "country": "Dominica",
+    "states": {}
+  },
+  "DO": {
+    "country": "Dominican Republic",
+    "states": {}
+  },
+  "EC": {
+    "country": "Ecuador",
+    "states": {}
+  },
+  "EG": {
+    "country": "Egypt",
+    "states": {
+      "EG:EGALX": "Alexandria",
+      "EG:EGASN": "Aswan",
+      "EG:EGAST": "Asyut",
+      "EG:EGBA": "Red Sea",
+      "EG:EGBH": "Beheira",
+      "EG:EGBNS": "Beni Suef",
+      "EG:EGC": "Cairo",
+      "EG:EGDK": "Dakahlia",
+      "EG:EGDT": "Damietta",
+      "EG:EGFYM": "Faiyum",
+      "EG:EGGH": "Gharbia",
+      "EG:EGGZ": "Giza",
+      "EG:EGIS": "Ismailia",
+      "EG:EGJS": "South Sinai",
+      "EG:EGKB": "Qalyubia",
+      "EG:EGKFS": "Kafr el-Sheikh",
+      "EG:EGKN": "Qena",
+      "EG:EGLX": "Luxor",
+      "EG:EGMN": "Minya",
+      "EG:EGMNF": "Monufia",
+      "EG:EGMT": "Matrouh",
+      "EG:EGPTS": "Port Said",
+      "EG:EGSHG": "Sohag",
+      "EG:EGSHR": "Al Sharqia",
+      "EG:EGSIN": "North Sinai",
+      "EG:EGSUZ": "Suez",
+      "EG:EGWAD": "New Valley"
+    }
+  },
+  "SV": {
+    "country": "El Salvador",
+    "states": {}
+  },
+  "GQ": {
+    "country": "Equatorial Guinea",
+    "states": {}
+  },
+  "ER": {
+    "country": "Eritrea",
+    "states": {}
+  },
+  "EE": {
+    "country": "Estonia",
+    "states": {}
+  },
+  "ET": {
+    "country": "Ethiopia",
+    "states": {}
+  },
+  "FK": {
+    "country": "Falkland Islands",
+    "states": {}
+  },
+  "FO": {
+    "country": "Faroe Islands",
+    "states": {}
+  },
+  "FJ": {
+    "country": "Fiji",
+    "states": {}
+  },
+  "FI": {
+    "country": "Finland",
+    "states": {}
+  },
+  "FR": {
+    "country": "France",
+    "states": {}
+  },
+  "GF": {
+    "country": "French Guiana",
+    "states": {}
+  },
+  "PF": {
+    "country": "French Polynesia",
+    "states": {}
+  },
+  "TF": {
+    "country": "French Southern Territories",
+    "states": {}
+  },
+  "GA": {
+    "country": "Gabon",
+    "states": {}
+  },
+  "GM": {
+    "country": "Gambia",
+    "states": {}
+  },
+  "GE": {
+    "country": "Georgia",
+    "states": {}
+  },
+  "DE": {
+    "country": "Germany",
+    "states": {}
+  },
+  "GH": {
+    "country": "Ghana",
+    "states": {
+      "GH:AF": "Ahafo",
+      "GH:AH": "Ashanti",
+      "GH:BA": "Brong-Ahafo",
+      "GH:BO": "Bono",
+      "GH:BE": "Bono East",
+      "GH:CP": "Central",
+      "GH:EP": "Eastern",
+      "GH:AA": "Greater Accra",
+      "GH:NE": "North East",
+      "GH:NP": "Northern",
+      "GH:OT": "Oti",
+      "GH:SV": "Savannah",
+      "GH:UE": "Upper East",
+      "GH:UW": "Upper West",
+      "GH:TV": "Volta",
+      "GH:WP": "Western",
+      "GH:WN": "Western North"
+    }
+  },
+  "GI": {
+    "country": "Gibraltar",
+    "states": {}
+  },
+  "GR": {
+    "country": "Greece",
+    "states": {
+      "GR:I": "Attica",
+      "GR:A": "East Macedonia and Thrace",
+      "GR:B": "Central Macedonia",
+      "GR:C": "West Macedonia",
+      "GR:D": "Epirus",
+      "GR:E": "Thessaly",
+      "GR:F": "Ionian Islands",
+      "GR:G": "West Greece",
+      "GR:H": "Central Greece",
+      "GR:J": "Peloponnese",
+      "GR:K": "North Aegean",
+      "GR:L": "South Aegean",
+      "GR:M": "Crete"
+    }
+  },
+  "GL": {
+    "country": "Greenland",
+    "states": {}
+  },
+  "GD": {
+    "country": "Grenada",
+    "states": {}
+  },
+  "GP": {
+    "country": "Guadeloupe",
+    "states": {}
+  },
+  "GU": {
+    "country": "Guam",
+    "states": {}
+  },
+  "GT": {
+    "country": "Guatemala",
+    "states": {}
+  },
+  "GG": {
+    "country": "Guernsey",
+    "states": {}
+  },
+  "GN": {
+    "country": "Guinea",
+    "states": {}
+  },
+  "GW": {
+    "country": "Guinea-Bissau",
+    "states": {}
+  },
+  "GY": {
+    "country": "Guyana",
+    "states": {}
+  },
+  "HT": {
+    "country": "Haiti",
+    "states": {}
+  },
+  "HM": {
+    "country": "Heard Island and McDonald Islands",
+    "states": {}
+  },
+  "HN": {
+    "country": "Honduras",
+    "states": {}
+  },
+  "HK": {
+    "country": "Hong Kong",
+    "states": {
+      "HK:HONG KONG": "Hong Kong Island",
+      "HK:KOWLOON": "Kowloon",
+      "HK:NEW TERRITORIES": "New Territories"
+    }
+  },
+  "HU": {
+    "country": "Hungary",
+    "states": {
+      "HU:BK": "Bács-Kiskun",
+      "HU:BE": "Békés",
+      "HU:BA": "Baranya",
+      "HU:BZ": "Borsod-Abaúj-Zemplén",
+      "HU:BU": "Budapest",
+      "HU:CS": "Csongrád-Csanád",
+      "HU:FE": "Fejér",
+      "HU:GS": "Győr-Moson-Sopron",
+      "HU:HB": "Hajdú-Bihar",
+      "HU:HE": "Heves",
+      "HU:JN": "Jász-Nagykun-Szolnok",
+      "HU:KE": "Komárom-Esztergom",
+      "HU:NO": "Nógrád",
+      "HU:PE": "Pest",
+      "HU:SO": "Somogy",
+      "HU:SZ": "Szabolcs-Szatmár-Bereg",
+      "HU:TO": "Tolna",
+      "HU:VA": "Vas",
+      "HU:VE": "Veszprém",
+      "HU:ZA": "Zala"
+    }
+  },
+  "IS": {
+    "country": "Iceland",
+    "states": {}
+  },
+  "IN": {
+    "country": "India",
+    "states": {
+      "IN:AP": "Andhra Pradesh",
+      "IN:AR": "Arunachal Pradesh",
+      "IN:AS": "Assam",
+      "IN:BR": "Bihar",
+      "IN:CT": "Chhattisgarh",
+      "IN:GA": "Goa",
+      "IN:GJ": "Gujarat",
+      "IN:HR": "Haryana",
+      "IN:HP": "Himachal Pradesh",
+      "IN:JK": "Jammu and Kashmir",
+      "IN:JH": "Jharkhand",
+      "IN:KA": "Karnataka",
+      "IN:KL": "Kerala",
+      "IN:MP": "Madhya Pradesh",
+      "IN:MH": "Maharashtra",
+      "IN:MN": "Manipur",
+      "IN:ML": "Meghalaya",
+      "IN:MZ": "Mizoram",
+      "IN:NL": "Nagaland",
+      "IN:OR": "Orissa",
+      "IN:PB": "Punjab",
+      "IN:RJ": "Rajasthan",
+      "IN:SK": "Sikkim",
+      "IN:TN": "Tamil Nadu",
+      "IN:TS": "Telangana",
+      "IN:TR": "Tripura",
+      "IN:UK": "Uttarakhand",
+      "IN:UP": "Uttar Pradesh",
+      "IN:WB": "West Bengal",
+      "IN:AN": "Andaman and Nicobar Islands",
+      "IN:CH": "Chandigarh",
+      "IN:DN": "Dadra and Nagar Haveli",
+      "IN:DD": "Daman and Diu",
+      "IN:DL": "Delhi",
+      "IN:LD": "Lakshadeep",
+      "IN:PY": "Pondicherry (Puducherry)"
+    }
+  },
+  "ID": {
+    "country": "Indonesia",
+    "states": {
+      "ID:AC": "Daerah Istimewa Aceh",
+      "ID:SU": "Sumatera Utara",
+      "ID:SB": "Sumatera Barat",
+      "ID:RI": "Riau",
+      "ID:KR": "Kepulauan Riau",
+      "ID:JA": "Jambi",
+      "ID:SS": "Sumatera Selatan",
+      "ID:BB": "Bangka Belitung",
+      "ID:BE": "Bengkulu",
+      "ID:LA": "Lampung",
+      "ID:JK": "DKI Jakarta",
+      "ID:JB": "Jawa Barat",
+      "ID:BT": "Banten",
+      "ID:JT": "Jawa Tengah",
+      "ID:JI": "Jawa Timur",
+      "ID:YO": "Daerah Istimewa Yogyakarta",
+      "ID:BA": "Bali",
+      "ID:NB": "Nusa Tenggara Barat",
+      "ID:NT": "Nusa Tenggara Timur",
+      "ID:KB": "Kalimantan Barat",
+      "ID:KT": "Kalimantan Tengah",
+      "ID:KI": "Kalimantan Timur",
+      "ID:KS": "Kalimantan Selatan",
+      "ID:KU": "Kalimantan Utara",
+      "ID:SA": "Sulawesi Utara",
+      "ID:ST": "Sulawesi Tengah",
+      "ID:SG": "Sulawesi Tenggara",
+      "ID:SR": "Sulawesi Barat",
+      "ID:SN": "Sulawesi Selatan",
+      "ID:GO": "Gorontalo",
+      "ID:MA": "Maluku",
+      "ID:MU": "Maluku Utara",
+      "ID:PA": "Papua",
+      "ID:PB": "Papua Barat"
+    }
+  },
+  "IR": {
+    "country": "Iran",
+    "states": {
+      "IR:KHZ": "Khuzestan  (خوزستان)",
+      "IR:THR": "Tehran  (تهران)",
+      "IR:ILM": "Ilaam (ایلام)",
+      "IR:BHR": "Bushehr (بوشهر)",
+      "IR:ADL": "Ardabil (اردبیل)",
+      "IR:ESF": "Isfahan (اصفهان)",
+      "IR:YZD": "Yazd (یزد)",
+      "IR:KRH": "Kermanshah (کرمانشاه)",
+      "IR:KRN": "Kerman (کرمان)",
+      "IR:HDN": "Hamadan (همدان)",
+      "IR:GZN": "Ghazvin (قزوین)",
+      "IR:ZJN": "Zanjan (زنجان)",
+      "IR:LRS": "Luristan (لرستان)",
+      "IR:ABZ": "Alborz (البرز)",
+      "IR:EAZ": "East Azarbaijan (آذربایجان شرقی)",
+      "IR:WAZ": "West Azarbaijan (آذربایجان غربی)",
+      "IR:CHB": "Chaharmahal and Bakhtiari (چهارمحال و بختیاری)",
+      "IR:SKH": "South Khorasan (خراسان جنوبی)",
+      "IR:RKH": "Razavi Khorasan (خراسان رضوی)",
+      "IR:NKH": "North Khorasan (خراسان شمالی)",
+      "IR:SMN": "Semnan (سمنان)",
+      "IR:FRS": "Fars (فارس)",
+      "IR:QHM": "Qom (قم)",
+      "IR:KRD": "Kurdistan / کردستان)",
+      "IR:KBD": "Kohgiluyeh and BoyerAhmad (کهگیلوییه و بویراحمد)",
+      "IR:GLS": "Golestan (گلستان)",
+      "IR:GIL": "Gilan (گیلان)",
+      "IR:MZN": "Mazandaran (مازندران)",
+      "IR:MKZ": "Markazi (مرکزی)",
+      "IR:HRZ": "Hormozgan (هرمزگان)",
+      "IR:SBN": "Sistan and Baluchestan (سیستان و بلوچستان)"
+    }
+  },
+  "IQ": {
+    "country": "Iraq",
+    "states": {}
+  },
+  "IE": {
+    "country": "Ireland",
+    "states": {
+      "IE:CW": "Carlow",
+      "IE:CN": "Cavan",
+      "IE:CE": "Clare",
+      "IE:CO": "Cork",
+      "IE:DL": "Donegal",
+      "IE:D": "Dublin",
+      "IE:G": "Galway",
+      "IE:KY": "Kerry",
+      "IE:KE": "Kildare",
+      "IE:KK": "Kilkenny",
+      "IE:LS": "Laois",
+      "IE:LM": "Leitrim",
+      "IE:LK": "Limerick",
+      "IE:LD": "Longford",
+      "IE:LH": "Louth",
+      "IE:MO": "Mayo",
+      "IE:MH": "Meath",
+      "IE:MN": "Monaghan",
+      "IE:OY": "Offaly",
+      "IE:RN": "Roscommon",
+      "IE:SO": "Sligo",
+      "IE:TA": "Tipperary",
+      "IE:WD": "Waterford",
+      "IE:WH": "Westmeath",
+      "IE:WX": "Wexford",
+      "IE:WW": "Wicklow"
+    }
+  },
+  "IM": {
+    "country": "Isle of Man",
+    "states": {}
+  },
+  "IL": {
+    "country": "Israel",
+    "states": {}
+  },
+  "IT": {
+    "country": "Italy",
+    "states": {
+      "IT:AG": "Agrigento",
+      "IT:AL": "Alessandria",
+      "IT:AN": "Ancona",
+      "IT:AO": "Aosta",
+      "IT:AR": "Arezzo",
+      "IT:AP": "Ascoli Piceno",
+      "IT:AT": "Asti",
+      "IT:AV": "Avellino",
+      "IT:BA": "Bari",
+      "IT:BT": "Barletta-Andria-Trani",
+      "IT:BL": "Belluno",
+      "IT:BN": "Benevento",
+      "IT:BG": "Bergamo",
+      "IT:BI": "Biella",
+      "IT:BO": "Bologna",
+      "IT:BZ": "Bolzano",
+      "IT:BS": "Brescia",
+      "IT:BR": "Brindisi",
+      "IT:CA": "Cagliari",
+      "IT:CL": "Caltanissetta",
+      "IT:CB": "Campobasso",
+      "IT:CE": "Caserta",
+      "IT:CT": "Catania",
+      "IT:CZ": "Catanzaro",
+      "IT:CH": "Chieti",
+      "IT:CO": "Como",
+      "IT:CS": "Cosenza",
+      "IT:CR": "Cremona",
+      "IT:KR": "Crotone",
+      "IT:CN": "Cuneo",
+      "IT:EN": "Enna",
+      "IT:FM": "Fermo",
+      "IT:FE": "Ferrara",
+      "IT:FI": "Firenze",
+      "IT:FG": "Foggia",
+      "IT:FC": "Forlì-Cesena",
+      "IT:FR": "Frosinone",
+      "IT:GE": "Genova",
+      "IT:GO": "Gorizia",
+      "IT:GR": "Grosseto",
+      "IT:IM": "Imperia",
+      "IT:IS": "Isernia",
+      "IT:SP": "La Spezia",
+      "IT:AQ": "L'Aquila",
+      "IT:LT": "Latina",
+      "IT:LE": "Lecce",
+      "IT:LC": "Lecco",
+      "IT:LI": "Livorno",
+      "IT:LO": "Lodi",
+      "IT:LU": "Lucca",
+      "IT:MC": "Macerata",
+      "IT:MN": "Mantova",
+      "IT:MS": "Massa-Carrara",
+      "IT:MT": "Matera",
+      "IT:ME": "Messina",
+      "IT:MI": "Milano",
+      "IT:MO": "Modena",
+      "IT:MB": "Monza e della Brianza",
+      "IT:NA": "Napoli",
+      "IT:NO": "Novara",
+      "IT:NU": "Nuoro",
+      "IT:OR": "Oristano",
+      "IT:PD": "Padova",
+      "IT:PA": "Palermo",
+      "IT:PR": "Parma",
+      "IT:PV": "Pavia",
+      "IT:PG": "Perugia",
+      "IT:PU": "Pesaro e Urbino",
+      "IT:PE": "Pescara",
+      "IT:PC": "Piacenza",
+      "IT:PI": "Pisa",
+      "IT:PT": "Pistoia",
+      "IT:PN": "Pordenone",
+      "IT:PZ": "Potenza",
+      "IT:PO": "Prato",
+      "IT:RG": "Ragusa",
+      "IT:RA": "Ravenna",
+      "IT:RC": "Reggio Calabria",
+      "IT:RE": "Reggio Emilia",
+      "IT:RI": "Rieti",
+      "IT:RN": "Rimini",
+      "IT:RM": "Roma",
+      "IT:RO": "Rovigo",
+      "IT:SA": "Salerno",
+      "IT:SS": "Sassari",
+      "IT:SV": "Savona",
+      "IT:SI": "Siena",
+      "IT:SR": "Siracusa",
+      "IT:SO": "Sondrio",
+      "IT:SU": "Sud Sardegna",
+      "IT:TA": "Taranto",
+      "IT:TE": "Teramo",
+      "IT:TR": "Terni",
+      "IT:TO": "Torino",
+      "IT:TP": "Trapani",
+      "IT:TN": "Trento",
+      "IT:TV": "Treviso",
+      "IT:TS": "Trieste",
+      "IT:UD": "Udine",
+      "IT:VA": "Varese",
+      "IT:VE": "Venezia",
+      "IT:VB": "Verbano-Cusio-Ossola",
+      "IT:VC": "Vercelli",
+      "IT:VR": "Verona",
+      "IT:VV": "Vibo Valentia",
+      "IT:VI": "Vicenza",
+      "IT:VT": "Viterbo"
+    }
+  },
+  "CI": {
+    "country": "Ivory Coast",
+    "states": {}
+  },
+  "JM": {
+    "country": "Jamaica",
+    "states": {
+      "JM:JM-01": "Kingston",
+      "JM:JM-02": "Saint Andrew",
+      "JM:JM-03": "Saint Thomas",
+      "JM:JM-04": "Portland",
+      "JM:JM-05": "Saint Mary",
+      "JM:JM-06": "Saint Ann",
+      "JM:JM-07": "Trelawny",
+      "JM:JM-08": "Saint James",
+      "JM:JM-09": "Hanover",
+      "JM:JM-10": "Westmoreland",
+      "JM:JM-11": "Saint Elizabeth",
+      "JM:JM-12": "Manchester",
+      "JM:JM-13": "Clarendon",
+      "JM:JM-14": "Saint Catherine"
+    }
+  },
+  "JP": {
+    "country": "Japan",
+    "states": {
+      "JP:JP01": "Hokkaido",
+      "JP:JP02": "Aomori",
+      "JP:JP03": "Iwate",
+      "JP:JP04": "Miyagi",
+      "JP:JP05": "Akita",
+      "JP:JP06": "Yamagata",
+      "JP:JP07": "Fukushima",
+      "JP:JP08": "Ibaraki",
+      "JP:JP09": "Tochigi",
+      "JP:JP10": "Gunma",
+      "JP:JP11": "Saitama",
+      "JP:JP12": "Chiba",
+      "JP:JP13": "Tokyo",
+      "JP:JP14": "Kanagawa",
+      "JP:JP15": "Niigata",
+      "JP:JP16": "Toyama",
+      "JP:JP17": "Ishikawa",
+      "JP:JP18": "Fukui",
+      "JP:JP19": "Yamanashi",
+      "JP:JP20": "Nagano",
+      "JP:JP21": "Gifu",
+      "JP:JP22": "Shizuoka",
+      "JP:JP23": "Aichi",
+      "JP:JP24": "Mie",
+      "JP:JP25": "Shiga",
+      "JP:JP26": "Kyoto",
+      "JP:JP27": "Osaka",
+      "JP:JP28": "Hyogo",
+      "JP:JP29": "Nara",
+      "JP:JP30": "Wakayama",
+      "JP:JP31": "Tottori",
+      "JP:JP32": "Shimane",
+      "JP:JP33": "Okayama",
+      "JP:JP34": "Hiroshima",
+      "JP:JP35": "Yamaguchi",
+      "JP:JP36": "Tokushima",
+      "JP:JP37": "Kagawa",
+      "JP:JP38": "Ehime",
+      "JP:JP39": "Kochi",
+      "JP:JP40": "Fukuoka",
+      "JP:JP41": "Saga",
+      "JP:JP42": "Nagasaki",
+      "JP:JP43": "Kumamoto",
+      "JP:JP44": "Oita",
+      "JP:JP45": "Miyazaki",
+      "JP:JP46": "Kagoshima",
+      "JP:JP47": "Okinawa"
+    }
+  },
+  "JE": {
+    "country": "Jersey",
+    "states": {}
+  },
+  "JO": {
+    "country": "Jordan",
+    "states": {}
+  },
+  "KZ": {
+    "country": "Kazakhstan",
+    "states": {}
+  },
+  "KE": {
+    "country": "Kenya",
+    "states": {
+      "KE:KE01": "Baringo",
+      "KE:KE02": "Bomet",
+      "KE:KE03": "Bungoma",
+      "KE:KE04": "Busia",
+      "KE:KE05": "Elgeyo-Marakwet",
+      "KE:KE06": "Embu",
+      "KE:KE07": "Garissa",
+      "KE:KE08": "Homa Bay",
+      "KE:KE09": "Isiolo",
+      "KE:KE10": "Kajiado",
+      "KE:KE11": "Kakamega",
+      "KE:KE12": "Kericho",
+      "KE:KE13": "Kiambu",
+      "KE:KE14": "Kilifi",
+      "KE:KE15": "Kirinyaga",
+      "KE:KE16": "Kisii",
+      "KE:KE17": "Kisumu",
+      "KE:KE18": "Kitui",
+      "KE:KE19": "Kwale",
+      "KE:KE20": "Laikipia",
+      "KE:KE21": "Lamu",
+      "KE:KE22": "Machakos",
+      "KE:KE23": "Makueni",
+      "KE:KE24": "Mandera",
+      "KE:KE25": "Marsabit",
+      "KE:KE26": "Meru",
+      "KE:KE27": "Migori",
+      "KE:KE28": "Mombasa",
+      "KE:KE29": "Murang’a",
+      "KE:KE30": "Nairobi County",
+      "KE:KE31": "Nakuru",
+      "KE:KE32": "Nandi",
+      "KE:KE33": "Narok",
+      "KE:KE34": "Nyamira",
+      "KE:KE35": "Nyandarua",
+      "KE:KE36": "Nyeri",
+      "KE:KE37": "Samburu",
+      "KE:KE38": "Siaya",
+      "KE:KE39": "Taita-Taveta",
+      "KE:KE40": "Tana River",
+      "KE:KE41": "Tharaka-Nithi",
+      "KE:KE42": "Trans Nzoia",
+      "KE:KE43": "Turkana",
+      "KE:KE44": "Uasin Gishu",
+      "KE:KE45": "Vihiga",
+      "KE:KE46": "Wajir",
+      "KE:KE47": "West Pokot"
+    }
+  },
+  "KI": {
+    "country": "Kiribati",
+    "states": {}
+  },
+  "KW": {
+    "country": "Kuwait",
+    "states": {}
+  },
+  "KG": {
+    "country": "Kyrgyzstan",
+    "states": {}
+  },
+  "LA": {
+    "country": "Laos",
+    "states": {
+      "LA:AT": "Attapeu",
+      "LA:BK": "Bokeo",
+      "LA:BL": "Bolikhamsai",
+      "LA:CH": "Champasak",
+      "LA:HO": "Houaphanh",
+      "LA:KH": "Khammouane",
+      "LA:LM": "Luang Namtha",
+      "LA:LP": "Luang Prabang",
+      "LA:OU": "Oudomxay",
+      "LA:PH": "Phongsaly",
+      "LA:SL": "Salavan",
+      "LA:SV": "Savannakhet",
+      "LA:VI": "Vientiane Province",
+      "LA:VT": "Vientiane",
+      "LA:XA": "Sainyabuli",
+      "LA:XE": "Sekong",
+      "LA:XI": "Xiangkhouang",
+      "LA:XS": "Xaisomboun"
+    }
+  },
+  "LV": {
+    "country": "Latvia",
+    "states": {}
+  },
+  "LB": {
+    "country": "Lebanon",
+    "states": {}
+  },
+  "LS": {
+    "country": "Lesotho",
+    "states": {}
+  },
+  "LR": {
+    "country": "Liberia",
+    "states": {
+      "LR:BM": "Bomi",
+      "LR:BN": "Bong",
+      "LR:GA": "Gbarpolu",
+      "LR:GB": "Grand Bassa",
+      "LR:GC": "Grand Cape Mount",
+      "LR:GG": "Grand Gedeh",
+      "LR:GK": "Grand Kru",
+      "LR:LO": "Lofa",
+      "LR:MA": "Margibi",
+      "LR:MY": "Maryland",
+      "LR:MO": "Montserrado",
+      "LR:NM": "Nimba",
+      "LR:RV": "Rivercess",
+      "LR:RG": "River Gee",
+      "LR:SN": "Sinoe"
+    }
+  },
+  "LY": {
+    "country": "Libya",
+    "states": {}
+  },
+  "LI": {
+    "country": "Liechtenstein",
+    "states": {}
+  },
+  "LT": {
+    "country": "Lithuania",
+    "states": {}
+  },
+  "LU": {
+    "country": "Luxembourg",
+    "states": {}
+  },
+  "MO": {
+    "country": "Macao",
+    "states": {}
+  },
+  "MG": {
+    "country": "Madagascar",
+    "states": {}
+  },
+  "MW": {
+    "country": "Malawi",
+    "states": {}
+  },
+  "MY": {
+    "country": "Malaysia",
+    "states": {
+      "MY:JHR": "Johor",
+      "MY:KDH": "Kedah",
+      "MY:KTN": "Kelantan",
+      "MY:LBN": "Labuan",
+      "MY:MLK": "Malacca (Melaka)",
+      "MY:NSN": "Negeri Sembilan",
+      "MY:PHG": "Pahang",
+      "MY:PNG": "Penang (Pulau Pinang)",
+      "MY:PRK": "Perak",
+      "MY:PLS": "Perlis",
+      "MY:SBH": "Sabah",
+      "MY:SWK": "Sarawak",
+      "MY:SGR": "Selangor",
+      "MY:TRG": "Terengganu",
+      "MY:PJY": "Putrajaya",
+      "MY:KUL": "Kuala Lumpur"
+    }
+  },
+  "MV": {
+    "country": "Maldives",
+    "states": {}
+  },
+  "ML": {
+    "country": "Mali",
+    "states": {}
+  },
+  "MT": {
+    "country": "Malta",
+    "states": {}
+  },
+  "MH": {
+    "country": "Marshall Islands",
+    "states": {}
+  },
+  "MQ": {
+    "country": "Martinique",
+    "states": {}
+  },
+  "MR": {
+    "country": "Mauritania",
+    "states": {}
+  },
+  "MU": {
+    "country": "Mauritius",
+    "states": {}
+  },
+  "YT": {
+    "country": "Mayotte",
+    "states": {}
+  },
+  "MX": {
+    "country": "Mexico",
+    "states": {
+      "MX:DF": "Ciudad de México",
+      "MX:JA": "Jalisco",
+      "MX:NL": "Nuevo León",
+      "MX:AG": "Aguascalientes",
+      "MX:BC": "Baja California",
+      "MX:BS": "Baja California Sur",
+      "MX:CM": "Campeche",
+      "MX:CS": "Chiapas",
+      "MX:CH": "Chihuahua",
+      "MX:CO": "Coahuila",
+      "MX:CL": "Colima",
+      "MX:DG": "Durango",
+      "MX:GT": "Guanajuato",
+      "MX:GR": "Guerrero",
+      "MX:HG": "Hidalgo",
+      "MX:MX": "Estado de México",
+      "MX:MI": "Michoacán",
+      "MX:MO": "Morelos",
+      "MX:NA": "Nayarit",
+      "MX:OA": "Oaxaca",
+      "MX:PU": "Puebla",
+      "MX:QT": "Querétaro",
+      "MX:QR": "Quintana Roo",
+      "MX:SL": "San Luis Potosí",
+      "MX:SI": "Sinaloa",
+      "MX:SO": "Sonora",
+      "MX:TB": "Tabasco",
+      "MX:TM": "Tamaulipas",
+      "MX:TL": "Tlaxcala",
+      "MX:VE": "Veracruz",
+      "MX:YU": "Yucatán",
+      "MX:ZA": "Zacatecas"
+    }
+  },
+  "FM": {
+    "country": "Micronesia",
+    "states": {}
+  },
+  "MD": {
+    "country": "Moldova",
+    "states": {
+      "MD:C": "Chișinău",
+      "MD:BL": "Bălți",
+      "MD:AN": "Anenii Noi",
+      "MD:BS": "Basarabeasca",
+      "MD:BR": "Briceni",
+      "MD:CH": "Cahul",
+      "MD:CT": "Cantemir",
+      "MD:CL": "Călărași",
+      "MD:CS": "Căușeni",
+      "MD:CM": "Cimișlia",
+      "MD:CR": "Criuleni",
+      "MD:DN": "Dondușeni",
+      "MD:DR": "Drochia",
+      "MD:DB": "Dubăsari",
+      "MD:ED": "Edineț",
+      "MD:FL": "Fălești",
+      "MD:FR": "Florești",
+      "MD:GE": "UTA Găgăuzia",
+      "MD:GL": "Glodeni",
+      "MD:HN": "Hîncești",
+      "MD:IL": "Ialoveni",
+      "MD:LV": "Leova",
+      "MD:NS": "Nisporeni",
+      "MD:OC": "Ocnița",
+      "MD:OR": "Orhei",
+      "MD:RZ": "Rezina",
+      "MD:RS": "Rîșcani",
+      "MD:SG": "Sîngerei",
+      "MD:SR": "Soroca",
+      "MD:ST": "Strășeni",
+      "MD:SD": "Șoldănești",
+      "MD:SV": "Ștefan Vodă",
+      "MD:TR": "Taraclia",
+      "MD:TL": "Telenești",
+      "MD:UN": "Ungheni"
+    }
+  },
+  "MC": {
+    "country": "Monaco",
+    "states": {}
+  },
+  "MN": {
+    "country": "Mongolia",
+    "states": {}
+  },
+  "ME": {
+    "country": "Montenegro",
+    "states": {}
+  },
+  "MS": {
+    "country": "Montserrat",
+    "states": {}
+  },
+  "MA": {
+    "country": "Morocco",
+    "states": {}
+  },
+  "MZ": {
+    "country": "Mozambique",
+    "states": {
+      "MZ:MZP": "Cabo Delgado",
+      "MZ:MZG": "Gaza",
+      "MZ:MZI": "Inhambane",
+      "MZ:MZB": "Manica",
+      "MZ:MZL": "Maputo Province",
+      "MZ:MZMPM": "Maputo",
+      "MZ:MZN": "Nampula",
+      "MZ:MZA": "Niassa",
+      "MZ:MZS": "Sofala",
+      "MZ:MZT": "Tete",
+      "MZ:MZQ": "Zambézia"
+    }
+  },
+  "MM": {
+    "country": "Myanmar",
+    "states": {}
+  },
+  "NA": {
+    "country": "Namibia",
+    "states": {
+      "NA:ER": "Erongo",
+      "NA:HA": "Hardap",
+      "NA:KA": "Karas",
+      "NA:KE": "Kavango East",
+      "NA:KW": "Kavango West",
+      "NA:KH": "Khomas",
+      "NA:KU": "Kunene",
+      "NA:OW": "Ohangwena",
+      "NA:OH": "Omaheke",
+      "NA:OS": "Omusati",
+      "NA:ON": "Oshana",
+      "NA:OT": "Oshikoto",
+      "NA:OD": "Otjozondjupa",
+      "NA:CA": "Zambezi"
+    }
+  },
+  "NR": {
+    "country": "Nauru",
+    "states": {}
+  },
+  "NP": {
+    "country": "Nepal",
+    "states": {
+      "NP:BAG": "Bagmati",
+      "NP:BHE": "Bheri",
+      "NP:DHA": "Dhaulagiri",
+      "NP:GAN": "Gandaki",
+      "NP:JAN": "Janakpur",
+      "NP:KAR": "Karnali",
+      "NP:KOS": "Koshi",
+      "NP:LUM": "Lumbini",
+      "NP:MAH": "Mahakali",
+      "NP:MEC": "Mechi",
+      "NP:NAR": "Narayani",
+      "NP:RAP": "Rapti",
+      "NP:SAG": "Sagarmatha",
+      "NP:SET": "Seti"
+    }
+  },
+  "NL": {
+    "country": "Netherlands",
+    "states": {}
+  },
+  "NC": {
+    "country": "New Caledonia",
+    "states": {}
+  },
+  "NZ": {
+    "country": "New Zealand",
+    "states": {
+      "NZ:NL": "Northland",
+      "NZ:AK": "Auckland",
+      "NZ:WA": "Waikato",
+      "NZ:BP": "Bay of Plenty",
+      "NZ:TK": "Taranaki",
+      "NZ:GI": "Gisborne",
+      "NZ:HB": "Hawke’s Bay",
+      "NZ:MW": "Manawatu-Wanganui",
+      "NZ:WE": "Wellington",
+      "NZ:NS": "Nelson",
+      "NZ:MB": "Marlborough",
+      "NZ:TM": "Tasman",
+      "NZ:WC": "West Coast",
+      "NZ:CT": "Canterbury",
+      "NZ:OT": "Otago",
+      "NZ:SL": "Southland"
+    }
+  },
+  "NI": {
+    "country": "Nicaragua",
+    "states": {}
+  },
+  "NE": {
+    "country": "Niger",
+    "states": {}
+  },
+  "NG": {
+    "country": "Nigeria",
+    "states": {
+      "NG:AB": "Abia",
+      "NG:FC": "Abuja",
+      "NG:AD": "Adamawa",
+      "NG:AK": "Akwa Ibom",
+      "NG:AN": "Anambra",
+      "NG:BA": "Bauchi",
+      "NG:BY": "Bayelsa",
+      "NG:BE": "Benue",
+      "NG:BO": "Borno",
+      "NG:CR": "Cross River",
+      "NG:DE": "Delta",
+      "NG:EB": "Ebonyi",
+      "NG:ED": "Edo",
+      "NG:EK": "Ekiti",
+      "NG:EN": "Enugu",
+      "NG:GO": "Gombe",
+      "NG:IM": "Imo",
+      "NG:JI": "Jigawa",
+      "NG:KD": "Kaduna",
+      "NG:KN": "Kano",
+      "NG:KT": "Katsina",
+      "NG:KE": "Kebbi",
+      "NG:KO": "Kogi",
+      "NG:KW": "Kwara",
+      "NG:LA": "Lagos",
+      "NG:NA": "Nasarawa",
+      "NG:NI": "Niger",
+      "NG:OG": "Ogun",
+      "NG:ON": "Ondo",
+      "NG:OS": "Osun",
+      "NG:OY": "Oyo",
+      "NG:PL": "Plateau",
+      "NG:RI": "Rivers",
+      "NG:SO": "Sokoto",
+      "NG:TA": "Taraba",
+      "NG:YO": "Yobe",
+      "NG:ZA": "Zamfara"
+    }
+  },
+  "NU": {
+    "country": "Niue",
+    "states": {}
+  },
+  "NF": {
+    "country": "Norfolk Island",
+    "states": {}
+  },
+  "KP": {
+    "country": "North Korea",
+    "states": {}
+  },
+  "MK": {
+    "country": "North Macedonia",
+    "states": {}
+  },
+  "MP": {
+    "country": "Northern Mariana Islands",
+    "states": {}
+  },
+  "NO": {
+    "country": "Norway",
+    "states": {}
+  },
+  "OM": {
+    "country": "Oman",
+    "states": {}
+  },
+  "PK": {
+    "country": "Pakistan",
+    "states": {
+      "PK:JK": "Azad Kashmir",
+      "PK:BA": "Balochistan",
+      "PK:TA": "FATA",
+      "PK:GB": "Gilgit Baltistan",
+      "PK:IS": "Islamabad Capital Territory",
+      "PK:KP": "Khyber Pakhtunkhwa",
+      "PK:PB": "Punjab",
+      "PK:SD": "Sindh"
+    }
+  },
+  "PS": {
+    "country": "Palestinian Territory",
+    "states": {}
+  },
+  "PA": {
+    "country": "Panama",
+    "states": {}
+  },
+  "PG": {
+    "country": "Papua New Guinea",
+    "states": {}
+  },
+  "PY": {
+    "country": "Paraguay",
+    "states": {
+      "PY:PY-ASU": "Asunción",
+      "PY:PY-1": "Concepción",
+      "PY:PY-2": "San Pedro",
+      "PY:PY-3": "Cordillera",
+      "PY:PY-4": "Guairá",
+      "PY:PY-5": "Caaguazú",
+      "PY:PY-6": "Caazapá",
+      "PY:PY-7": "Itapúa",
+      "PY:PY-8": "Misiones",
+      "PY:PY-9": "Paraguarí",
+      "PY:PY-10": "Alto Paraná",
+      "PY:PY-11": "Central",
+      "PY:PY-12": "Ñeembucú",
+      "PY:PY-13": "Amambay",
+      "PY:PY-14": "Canindeyú",
+      "PY:PY-15": "Presidente Hayes",
+      "PY:PY-16": "Alto Paraguay",
+      "PY:PY-17": "Boquerón"
+    }
+  },
+  "PE": {
+    "country": "Peru",
+    "states": {
+      "PE:CAL": "El Callao",
+      "PE:LMA": "Municipalidad Metropolitana de Lima",
+      "PE:AMA": "Amazonas",
+      "PE:ANC": "Ancash",
+      "PE:APU": "Apurímac",
+      "PE:ARE": "Arequipa",
+      "PE:AYA": "Ayacucho",
+      "PE:CAJ": "Cajamarca",
+      "PE:CUS": "Cusco",
+      "PE:HUV": "Huancavelica",
+      "PE:HUC": "Huánuco",
+      "PE:ICA": "Ica",
+      "PE:JUN": "Junín",
+      "PE:LAL": "La Libertad",
+      "PE:LAM": "Lambayeque",
+      "PE:LIM": "Lima",
+      "PE:LOR": "Loreto",
+      "PE:MDD": "Madre de Dios",
+      "PE:MOQ": "Moquegua",
+      "PE:PAS": "Pasco",
+      "PE:PIU": "Piura",
+      "PE:PUN": "Puno",
+      "PE:SAM": "San Martín",
+      "PE:TAC": "Tacna",
+      "PE:TUM": "Tumbes",
+      "PE:UCA": "Ucayali"
+    }
+  },
+  "PH": {
+    "country": "Philippines",
+    "states": {
+      "PH:ABR": "Abra",
+      "PH:AGN": "Agusan del Norte",
+      "PH:AGS": "Agusan del Sur",
+      "PH:AKL": "Aklan",
+      "PH:ALB": "Albay",
+      "PH:ANT": "Antique",
+      "PH:APA": "Apayao",
+      "PH:AUR": "Aurora",
+      "PH:BAS": "Basilan",
+      "PH:BAN": "Bataan",
+      "PH:BTN": "Batanes",
+      "PH:BTG": "Batangas",
+      "PH:BEN": "Benguet",
+      "PH:BIL": "Biliran",
+      "PH:BOH": "Bohol",
+      "PH:BUK": "Bukidnon",
+      "PH:BUL": "Bulacan",
+      "PH:CAG": "Cagayan",
+      "PH:CAN": "Camarines Norte",
+      "PH:CAS": "Camarines Sur",
+      "PH:CAM": "Camiguin",
+      "PH:CAP": "Capiz",
+      "PH:CAT": "Catanduanes",
+      "PH:CAV": "Cavite",
+      "PH:CEB": "Cebu",
+      "PH:COM": "Compostela Valley",
+      "PH:NCO": "Cotabato",
+      "PH:DAV": "Davao del Norte",
+      "PH:DAS": "Davao del Sur",
+      "PH:DAC": "Davao Occidental",
+      "PH:DAO": "Davao Oriental",
+      "PH:DIN": "Dinagat Islands",
+      "PH:EAS": "Eastern Samar",
+      "PH:GUI": "Guimaras",
+      "PH:IFU": "Ifugao",
+      "PH:ILN": "Ilocos Norte",
+      "PH:ILS": "Ilocos Sur",
+      "PH:ILI": "Iloilo",
+      "PH:ISA": "Isabela",
+      "PH:KAL": "Kalinga",
+      "PH:LUN": "La Union",
+      "PH:LAG": "Laguna",
+      "PH:LAN": "Lanao del Norte",
+      "PH:LAS": "Lanao del Sur",
+      "PH:LEY": "Leyte",
+      "PH:MAG": "Maguindanao",
+      "PH:MAD": "Marinduque",
+      "PH:MAS": "Masbate",
+      "PH:MSC": "Misamis Occidental",
+      "PH:MSR": "Misamis Oriental",
+      "PH:MOU": "Mountain Province",
+      "PH:NEC": "Negros Occidental",
+      "PH:NER": "Negros Oriental",
+      "PH:NSA": "Northern Samar",
+      "PH:NUE": "Nueva Ecija",
+      "PH:NUV": "Nueva Vizcaya",
+      "PH:MDC": "Occidental Mindoro",
+      "PH:MDR": "Oriental Mindoro",
+      "PH:PLW": "Palawan",
+      "PH:PAM": "Pampanga",
+      "PH:PAN": "Pangasinan",
+      "PH:QUE": "Quezon",
+      "PH:QUI": "Quirino",
+      "PH:RIZ": "Rizal",
+      "PH:ROM": "Romblon",
+      "PH:WSA": "Samar",
+      "PH:SAR": "Sarangani",
+      "PH:SIQ": "Siquijor",
+      "PH:SOR": "Sorsogon",
+      "PH:SCO": "South Cotabato",
+      "PH:SLE": "Southern Leyte",
+      "PH:SUK": "Sultan Kudarat",
+      "PH:SLU": "Sulu",
+      "PH:SUN": "Surigao del Norte",
+      "PH:SUR": "Surigao del Sur",
+      "PH:TAR": "Tarlac",
+      "PH:TAW": "Tawi-Tawi",
+      "PH:ZMB": "Zambales",
+      "PH:ZAN": "Zamboanga del Norte",
+      "PH:ZAS": "Zamboanga del Sur",
+      "PH:ZSI": "Zamboanga Sibugay",
+      "PH:00": "Metro Manila"
+    }
+  },
+  "PN": {
+    "country": "Pitcairn",
+    "states": {}
+  },
+  "PL": {
+    "country": "Poland",
+    "states": {}
+  },
+  "PT": {
+    "country": "Portugal",
+    "states": {}
+  },
+  "PR": {
+    "country": "Puerto Rico",
+    "states": {}
+  },
+  "QA": {
+    "country": "Qatar",
+    "states": {}
+  },
+  "RE": {
+    "country": "Reunion",
+    "states": {}
+  },
+  "RO": {
+    "country": "Romania",
+    "states": {
+      "RO:AB": "Alba",
+      "RO:AR": "Arad",
+      "RO:AG": "Argeș",
+      "RO:BC": "Bacău",
+      "RO:BH": "Bihor",
+      "RO:BN": "Bistrița-Năsăud",
+      "RO:BT": "Botoșani",
+      "RO:BR": "Brăila",
+      "RO:BV": "Brașov",
+      "RO:B": "București",
+      "RO:BZ": "Buzău",
+      "RO:CL": "Călărași",
+      "RO:CS": "Caraș-Severin",
+      "RO:CJ": "Cluj",
+      "RO:CT": "Constanța",
+      "RO:CV": "Covasna",
+      "RO:DB": "Dâmbovița",
+      "RO:DJ": "Dolj",
+      "RO:GL": "Galați",
+      "RO:GR": "Giurgiu",
+      "RO:GJ": "Gorj",
+      "RO:HR": "Harghita",
+      "RO:HD": "Hunedoara",
+      "RO:IL": "Ialomița",
+      "RO:IS": "Iași",
+      "RO:IF": "Ilfov",
+      "RO:MM": "Maramureș",
+      "RO:MH": "Mehedinți",
+      "RO:MS": "Mureș",
+      "RO:NT": "Neamț",
+      "RO:OT": "Olt",
+      "RO:PH": "Prahova",
+      "RO:SJ": "Sălaj",
+      "RO:SM": "Satu Mare",
+      "RO:SB": "Sibiu",
+      "RO:SV": "Suceava",
+      "RO:TR": "Teleorman",
+      "RO:TM": "Timiș",
+      "RO:TL": "Tulcea",
+      "RO:VL": "Vâlcea",
+      "RO:VS": "Vaslui",
+      "RO:VN": "Vrancea"
+    }
+  },
+  "RU": {
+    "country": "Russia",
+    "states": {}
+  },
+  "RW": {
+    "country": "Rwanda",
+    "states": {}
+  },
+  "ST": {
+    "country": "S&atilde;o Tom&eacute; and Pr&iacute;ncipe",
+    "states": {}
+  },
+  "BL": {
+    "country": "Saint Barth&eacute;lemy",
+    "states": {}
+  },
+  "SH": {
+    "country": "Saint Helena",
+    "states": {}
+  },
+  "KN": {
+    "country": "Saint Kitts and Nevis",
+    "states": {}
+  },
+  "LC": {
+    "country": "Saint Lucia",
+    "states": {}
+  },
+  "SX": {
+    "country": "Saint Martin (Dutch part)",
+    "states": {}
+  },
+  "MF": {
+    "country": "Saint Martin (French part)",
+    "states": {}
+  },
+  "PM": {
+    "country": "Saint Pierre and Miquelon",
+    "states": {}
+  },
+  "VC": {
+    "country": "Saint Vincent and the Grenadines",
+    "states": {}
+  },
+  "WS": {
+    "country": "Samoa",
+    "states": {}
+  },
+  "SM": {
+    "country": "San Marino",
+    "states": {}
+  },
+  "SA": {
+    "country": "Saudi Arabia",
+    "states": {}
+  },
+  "SN": {
+    "country": "Senegal",
+    "states": {}
+  },
+  "RS": {
+    "country": "Serbia",
+    "states": {
+      "RS:RS00": "Belgrade",
+      "RS:RS14": "Bor",
+      "RS:RS11": "Braničevo",
+      "RS:RS02": "Central Banat",
+      "RS:RS10": "Danube",
+      "RS:RS23": "Jablanica",
+      "RS:RS09": "Kolubara",
+      "RS:RS08": "Mačva",
+      "RS:RS17": "Morava",
+      "RS:RS20": "Nišava",
+      "RS:RS01": "North Bačka",
+      "RS:RS03": "North Banat",
+      "RS:RS24": "Pčinja",
+      "RS:RS22": "Pirot",
+      "RS:RS13": "Pomoravlje",
+      "RS:RS19": "Rasina",
+      "RS:RS18": "Raška",
+      "RS:RS06": "South Bačka",
+      "RS:RS04": "South Banat",
+      "RS:RS07": "Srem",
+      "RS:RS12": "Šumadija",
+      "RS:RS21": "Toplica",
+      "RS:RS05": "West Bačka",
+      "RS:RS15": "Zaječar",
+      "RS:RS16": "Zlatibor",
+      "RS:RS25": "Kosovo",
+      "RS:RS26": "Peć",
+      "RS:RS27": "Prizren",
+      "RS:RS28": "Kosovska Mitrovica",
+      "RS:RS29": "Kosovo-Pomoravlje",
+      "RS:RSKM": "Kosovo-Metohija",
+      "RS:RSVO": "Vojvodina"
+    }
+  },
+  "SC": {
+    "country": "Seychelles",
+    "states": {}
+  },
+  "SL": {
+    "country": "Sierra Leone",
+    "states": {}
+  },
+  "SG": {
+    "country": "Singapore",
+    "states": {}
+  },
+  "SK": {
+    "country": "Slovakia",
+    "states": {}
+  },
+  "SI": {
+    "country": "Slovenia",
+    "states": {}
+  },
+  "SB": {
+    "country": "Solomon Islands",
+    "states": {}
+  },
+  "SO": {
+    "country": "Somalia",
+    "states": {}
+  },
+  "ZA": {
+    "country": "South Africa",
+    "states": {
+      "ZA:EC": "Eastern Cape",
+      "ZA:FS": "Free State",
+      "ZA:GP": "Gauteng",
+      "ZA:KZN": "KwaZulu-Natal",
+      "ZA:LP": "Limpopo",
+      "ZA:MP": "Mpumalanga",
+      "ZA:NC": "Northern Cape",
+      "ZA:NW": "North West",
+      "ZA:WC": "Western Cape"
+    }
+  },
+  "GS": {
+    "country": "South Georgia/Sandwich Islands",
+    "states": {}
+  },
+  "KR": {
+    "country": "South Korea",
+    "states": {}
+  },
+  "SS": {
+    "country": "South Sudan",
+    "states": {}
+  },
+  "ES": {
+    "country": "Spain",
+    "states": {
+      "ES:C": "A Coruña",
+      "ES:VI": "Araba/Álava",
+      "ES:AB": "Albacete",
+      "ES:A": "Alicante",
+      "ES:AL": "Almería",
+      "ES:O": "Asturias",
+      "ES:AV": "Ávila",
+      "ES:BA": "Badajoz",
+      "ES:PM": "Baleares",
+      "ES:B": "Barcelona",
+      "ES:BU": "Burgos",
+      "ES:CC": "Cáceres",
+      "ES:CA": "Cádiz",
+      "ES:S": "Cantabria",
+      "ES:CS": "Castellón",
+      "ES:CE": "Ceuta",
+      "ES:CR": "Ciudad Real",
+      "ES:CO": "Córdoba",
+      "ES:CU": "Cuenca",
+      "ES:GI": "Girona",
+      "ES:GR": "Granada",
+      "ES:GU": "Guadalajara",
+      "ES:SS": "Gipuzkoa",
+      "ES:H": "Huelva",
+      "ES:HU": "Huesca",
+      "ES:J": "Jaén",
+      "ES:LO": "La Rioja",
+      "ES:GC": "Las Palmas",
+      "ES:LE": "León",
+      "ES:L": "Lleida",
+      "ES:LU": "Lugo",
+      "ES:M": "Madrid",
+      "ES:MA": "Málaga",
+      "ES:ML": "Melilla",
+      "ES:MU": "Murcia",
+      "ES:NA": "Navarra",
+      "ES:OR": "Ourense",
+      "ES:P": "Palencia",
+      "ES:PO": "Pontevedra",
+      "ES:SA": "Salamanca",
+      "ES:TF": "Santa Cruz de Tenerife",
+      "ES:SG": "Segovia",
+      "ES:SE": "Sevilla",
+      "ES:SO": "Soria",
+      "ES:T": "Tarragona",
+      "ES:TE": "Teruel",
+      "ES:TO": "Toledo",
+      "ES:V": "Valencia",
+      "ES:VA": "Valladolid",
+      "ES:BI": "Biscay",
+      "ES:ZA": "Zamora",
+      "ES:Z": "Zaragoza"
+    }
+  },
+  "LK": {
+    "country": "Sri Lanka",
+    "states": {}
+  },
+  "SD": {
+    "country": "Sudan",
+    "states": {}
+  },
+  "SR": {
+    "country": "Suriname",
+    "states": {}
+  },
+  "SJ": {
+    "country": "Svalbard and Jan Mayen",
+    "states": {}
+  },
+  "SZ": {
+    "country": "Swaziland",
+    "states": {}
+  },
+  "SE": {
+    "country": "Sweden",
+    "states": {}
+  },
+  "CH": {
+    "country": "Switzerland",
+    "states": {
+      "CH:AG": "Aargau",
+      "CH:AR": "Appenzell Ausserrhoden",
+      "CH:AI": "Appenzell Innerrhoden",
+      "CH:BL": "Basel-Landschaft",
+      "CH:BS": "Basel-Stadt",
+      "CH:BE": "Bern",
+      "CH:FR": "Fribourg",
+      "CH:GE": "Geneva",
+      "CH:GL": "Glarus",
+      "CH:GR": "Graubünden",
+      "CH:JU": "Jura",
+      "CH:LU": "Luzern",
+      "CH:NE": "Neuchâtel",
+      "CH:NW": "Nidwalden",
+      "CH:OW": "Obwalden",
+      "CH:SH": "Schaffhausen",
+      "CH:SZ": "Schwyz",
+      "CH:SO": "Solothurn",
+      "CH:SG": "St. Gallen",
+      "CH:TG": "Thurgau",
+      "CH:TI": "Ticino",
+      "CH:UR": "Uri",
+      "CH:VS": "Valais",
+      "CH:VD": "Vaud",
+      "CH:ZG": "Zug",
+      "CH:ZH": "Zürich"
+    }
+  },
+  "SY": {
+    "country": "Syria",
+    "states": {}
+  },
+  "TW": {
+    "country": "Taiwan",
+    "states": {}
+  },
+  "TJ": {
+    "country": "Tajikistan",
+    "states": {}
+  },
+  "TZ": {
+    "country": "Tanzania",
+    "states": {
+      "TZ:TZ01": "Arusha",
+      "TZ:TZ02": "Dar es Salaam",
+      "TZ:TZ03": "Dodoma",
+      "TZ:TZ04": "Iringa",
+      "TZ:TZ05": "Kagera",
+      "TZ:TZ06": "Pemba North",
+      "TZ:TZ07": "Zanzibar North",
+      "TZ:TZ08": "Kigoma",
+      "TZ:TZ09": "Kilimanjaro",
+      "TZ:TZ10": "Pemba South",
+      "TZ:TZ11": "Zanzibar South",
+      "TZ:TZ12": "Lindi",
+      "TZ:TZ13": "Mara",
+      "TZ:TZ14": "Mbeya",
+      "TZ:TZ15": "Zanzibar West",
+      "TZ:TZ16": "Morogoro",
+      "TZ:TZ17": "Mtwara",
+      "TZ:TZ18": "Mwanza",
+      "TZ:TZ19": "Coast",
+      "TZ:TZ20": "Rukwa",
+      "TZ:TZ21": "Ruvuma",
+      "TZ:TZ22": "Shinyanga",
+      "TZ:TZ23": "Singida",
+      "TZ:TZ24": "Tabora",
+      "TZ:TZ25": "Tanga",
+      "TZ:TZ26": "Manyara",
+      "TZ:TZ27": "Geita",
+      "TZ:TZ28": "Katavi",
+      "TZ:TZ29": "Njombe",
+      "TZ:TZ30": "Simiyu"
+    }
+  },
+  "TH": {
+    "country": "Thailand",
+    "states": {
+      "TH:TH-37": "Amnat Charoen",
+      "TH:TH-15": "Ang Thong",
+      "TH:TH-14": "Ayutthaya",
+      "TH:TH-10": "Bangkok",
+      "TH:TH-38": "Bueng Kan",
+      "TH:TH-31": "Buri Ram",
+      "TH:TH-24": "Chachoengsao",
+      "TH:TH-18": "Chai Nat",
+      "TH:TH-36": "Chaiyaphum",
+      "TH:TH-22": "Chanthaburi",
+      "TH:TH-50": "Chiang Mai",
+      "TH:TH-57": "Chiang Rai",
+      "TH:TH-20": "Chonburi",
+      "TH:TH-86": "Chumphon",
+      "TH:TH-46": "Kalasin",
+      "TH:TH-62": "Kamphaeng Phet",
+      "TH:TH-71": "Kanchanaburi",
+      "TH:TH-40": "Khon Kaen",
+      "TH:TH-81": "Krabi",
+      "TH:TH-52": "Lampang",
+      "TH:TH-51": "Lamphun",
+      "TH:TH-42": "Loei",
+      "TH:TH-16": "Lopburi",
+      "TH:TH-58": "Mae Hong Son",
+      "TH:TH-44": "Maha Sarakham",
+      "TH:TH-49": "Mukdahan",
+      "TH:TH-26": "Nakhon Nayok",
+      "TH:TH-73": "Nakhon Pathom",
+      "TH:TH-48": "Nakhon Phanom",
+      "TH:TH-30": "Nakhon Ratchasima",
+      "TH:TH-60": "Nakhon Sawan",
+      "TH:TH-80": "Nakhon Si Thammarat",
+      "TH:TH-55": "Nan",
+      "TH:TH-96": "Narathiwat",
+      "TH:TH-39": "Nong Bua Lam Phu",
+      "TH:TH-43": "Nong Khai",
+      "TH:TH-12": "Nonthaburi",
+      "TH:TH-13": "Pathum Thani",
+      "TH:TH-94": "Pattani",
+      "TH:TH-82": "Phang Nga",
+      "TH:TH-93": "Phatthalung",
+      "TH:TH-56": "Phayao",
+      "TH:TH-67": "Phetchabun",
+      "TH:TH-76": "Phetchaburi",
+      "TH:TH-66": "Phichit",
+      "TH:TH-65": "Phitsanulok",
+      "TH:TH-54": "Phrae",
+      "TH:TH-83": "Phuket",
+      "TH:TH-25": "Prachin Buri",
+      "TH:TH-77": "Prachuap Khiri Khan",
+      "TH:TH-85": "Ranong",
+      "TH:TH-70": "Ratchaburi",
+      "TH:TH-21": "Rayong",
+      "TH:TH-45": "Roi Et",
+      "TH:TH-27": "Sa Kaeo",
+      "TH:TH-47": "Sakon Nakhon",
+      "TH:TH-11": "Samut Prakan",
+      "TH:TH-74": "Samut Sakhon",
+      "TH:TH-75": "Samut Songkhram",
+      "TH:TH-19": "Saraburi",
+      "TH:TH-91": "Satun",
+      "TH:TH-17": "Sing Buri",
+      "TH:TH-33": "Sisaket",
+      "TH:TH-90": "Songkhla",
+      "TH:TH-64": "Sukhothai",
+      "TH:TH-72": "Suphan Buri",
+      "TH:TH-84": "Surat Thani",
+      "TH:TH-32": "Surin",
+      "TH:TH-63": "Tak",
+      "TH:TH-92": "Trang",
+      "TH:TH-23": "Trat",
+      "TH:TH-34": "Ubon Ratchathani",
+      "TH:TH-41": "Udon Thani",
+      "TH:TH-61": "Uthai Thani",
+      "TH:TH-53": "Uttaradit",
+      "TH:TH-95": "Yala",
+      "TH:TH-35": "Yasothon"
+    }
+  },
+  "TL": {
+    "country": "Timor-Leste",
+    "states": {}
+  },
+  "TG": {
+    "country": "Togo",
+    "states": {}
+  },
+  "TK": {
+    "country": "Tokelau",
+    "states": {}
+  },
+  "TO": {
+    "country": "Tonga",
+    "states": {}
+  },
+  "TT": {
+    "country": "Trinidad and Tobago",
+    "states": {}
+  },
+  "TN": {
+    "country": "Tunisia",
+    "states": {}
+  },
+  "TR": {
+    "country": "Turkey",
+    "states": {
+      "TR:TR01": "Adana",
+      "TR:TR02": "Adıyaman",
+      "TR:TR03": "Afyon",
+      "TR:TR04": "Ağrı",
+      "TR:TR05": "Amasya",
+      "TR:TR06": "Ankara",
+      "TR:TR07": "Antalya",
+      "TR:TR08": "Artvin",
+      "TR:TR09": "Aydın",
+      "TR:TR10": "Balıkesir",
+      "TR:TR11": "Bilecik",
+      "TR:TR12": "Bingöl",
+      "TR:TR13": "Bitlis",
+      "TR:TR14": "Bolu",
+      "TR:TR15": "Burdur",
+      "TR:TR16": "Bursa",
+      "TR:TR17": "Çanakkale",
+      "TR:TR18": "Çankırı",
+      "TR:TR19": "Çorum",
+      "TR:TR20": "Denizli",
+      "TR:TR21": "Diyarbakır",
+      "TR:TR22": "Edirne",
+      "TR:TR23": "Elazığ",
+      "TR:TR24": "Erzincan",
+      "TR:TR25": "Erzurum",
+      "TR:TR26": "Eskişehir",
+      "TR:TR27": "Gaziantep",
+      "TR:TR28": "Giresun",
+      "TR:TR29": "Gümüşhane",
+      "TR:TR30": "Hakkari",
+      "TR:TR31": "Hatay",
+      "TR:TR32": "Isparta",
+      "TR:TR33": "İçel",
+      "TR:TR34": "İstanbul",
+      "TR:TR35": "İzmir",
+      "TR:TR36": "Kars",
+      "TR:TR37": "Kastamonu",
+      "TR:TR38": "Kayseri",
+      "TR:TR39": "Kırklareli",
+      "TR:TR40": "Kırşehir",
+      "TR:TR41": "Kocaeli",
+      "TR:TR42": "Konya",
+      "TR:TR43": "Kütahya",
+      "TR:TR44": "Malatya",
+      "TR:TR45": "Manisa",
+      "TR:TR46": "Kahramanmaraş",
+      "TR:TR47": "Mardin",
+      "TR:TR48": "Muğla",
+      "TR:TR49": "Muş",
+      "TR:TR50": "Nevşehir",
+      "TR:TR51": "Niğde",
+      "TR:TR52": "Ordu",
+      "TR:TR53": "Rize",
+      "TR:TR54": "Sakarya",
+      "TR:TR55": "Samsun",
+      "TR:TR56": "Siirt",
+      "TR:TR57": "Sinop",
+      "TR:TR58": "Sivas",
+      "TR:TR59": "Tekirdağ",
+      "TR:TR60": "Tokat",
+      "TR:TR61": "Trabzon",
+      "TR:TR62": "Tunceli",
+      "TR:TR63": "Şanlıurfa",
+      "TR:TR64": "Uşak",
+      "TR:TR65": "Van",
+      "TR:TR66": "Yozgat",
+      "TR:TR67": "Zonguldak",
+      "TR:TR68": "Aksaray",
+      "TR:TR69": "Bayburt",
+      "TR:TR70": "Karaman",
+      "TR:TR71": "Kırıkkale",
+      "TR:TR72": "Batman",
+      "TR:TR73": "Şırnak",
+      "TR:TR74": "Bartın",
+      "TR:TR75": "Ardahan",
+      "TR:TR76": "Iğdır",
+      "TR:TR77": "Yalova",
+      "TR:TR78": "Karabük",
+      "TR:TR79": "Kilis",
+      "TR:TR80": "Osmaniye",
+      "TR:TR81": "Düzce"
+    }
+  },
+  "TM": {
+    "country": "Turkmenistan",
+    "states": {}
+  },
+  "TC": {
+    "country": "Turks and Caicos Islands",
+    "states": {}
+  },
+  "TV": {
+    "country": "Tuvalu",
+    "states": {}
+  },
+  "UG": {
+    "country": "Uganda",
+    "states": {
+      "UG:UG314": "Abim",
+      "UG:UG301": "Adjumani",
+      "UG:UG322": "Agago",
+      "UG:UG323": "Alebtong",
+      "UG:UG315": "Amolatar",
+      "UG:UG324": "Amudat",
+      "UG:UG216": "Amuria",
+      "UG:UG316": "Amuru",
+      "UG:UG302": "Apac",
+      "UG:UG303": "Arua",
+      "UG:UG217": "Budaka",
+      "UG:UG218": "Bududa",
+      "UG:UG201": "Bugiri",
+      "UG:UG235": "Bugweri",
+      "UG:UG420": "Buhweju",
+      "UG:UG117": "Buikwe",
+      "UG:UG219": "Bukedea",
+      "UG:UG118": "Bukomansimbi",
+      "UG:UG220": "Bukwa",
+      "UG:UG225": "Bulambuli",
+      "UG:UG416": "Buliisa",
+      "UG:UG401": "Bundibugyo",
+      "UG:UG430": "Bunyangabu",
+      "UG:UG402": "Bushenyi",
+      "UG:UG202": "Busia",
+      "UG:UG221": "Butaleja",
+      "UG:UG119": "Butambala",
+      "UG:UG233": "Butebo",
+      "UG:UG120": "Buvuma",
+      "UG:UG226": "Buyende",
+      "UG:UG317": "Dokolo",
+      "UG:UG121": "Gomba",
+      "UG:UG304": "Gulu",
+      "UG:UG403": "Hoima",
+      "UG:UG417": "Ibanda",
+      "UG:UG203": "Iganga",
+      "UG:UG418": "Isingiro",
+      "UG:UG204": "Jinja",
+      "UG:UG318": "Kaabong",
+      "UG:UG404": "Kabale",
+      "UG:UG405": "Kabarole",
+      "UG:UG213": "Kaberamaido",
+      "UG:UG427": "Kagadi",
+      "UG:UG428": "Kakumiro",
+      "UG:UG101": "Kalangala",
+      "UG:UG222": "Kaliro",
+      "UG:UG122": "Kalungu",
+      "UG:UG102": "Kampala",
+      "UG:UG205": "Kamuli",
+      "UG:UG413": "Kamwenge",
+      "UG:UG414": "Kanungu",
+      "UG:UG206": "Kapchorwa",
+      "UG:UG236": "Kapelebyong",
+      "UG:UG126": "Kasanda",
+      "UG:UG406": "Kasese",
+      "UG:UG207": "Katakwi",
+      "UG:UG112": "Kayunga",
+      "UG:UG407": "Kibaale",
+      "UG:UG103": "Kiboga",
+      "UG:UG227": "Kibuku",
+      "UG:UG432": "Kikuube",
+      "UG:UG419": "Kiruhura",
+      "UG:UG421": "Kiryandongo",
+      "UG:UG408": "Kisoro",
+      "UG:UG305": "Kitgum",
+      "UG:UG319": "Koboko",
+      "UG:UG325": "Kole",
+      "UG:UG306": "Kotido",
+      "UG:UG208": "Kumi",
+      "UG:UG333": "Kwania",
+      "UG:UG228": "Kween",
+      "UG:UG123": "Kyankwanzi",
+      "UG:UG422": "Kyegegwa",
+      "UG:UG415": "Kyenjojo",
+      "UG:UG125": "Kyotera",
+      "UG:UG326": "Lamwo",
+      "UG:UG307": "Lira",
+      "UG:UG229": "Luuka",
+      "UG:UG104": "Luwero",
+      "UG:UG124": "Lwengo",
+      "UG:UG114": "Lyantonde",
+      "UG:UG223": "Manafwa",
+      "UG:UG320": "Maracha",
+      "UG:UG105": "Masaka",
+      "UG:UG409": "Masindi",
+      "UG:UG214": "Mayuge",
+      "UG:UG209": "Mbale",
+      "UG:UG410": "Mbarara",
+      "UG:UG423": "Mitooma",
+      "UG:UG115": "Mityana",
+      "UG:UG308": "Moroto",
+      "UG:UG309": "Moyo",
+      "UG:UG106": "Mpigi",
+      "UG:UG107": "Mubende",
+      "UG:UG108": "Mukono",
+      "UG:UG334": "Nabilatuk",
+      "UG:UG311": "Nakapiripirit",
+      "UG:UG116": "Nakaseke",
+      "UG:UG109": "Nakasongola",
+      "UG:UG230": "Namayingo",
+      "UG:UG234": "Namisindwa",
+      "UG:UG224": "Namutumba",
+      "UG:UG327": "Napak",
+      "UG:UG310": "Nebbi",
+      "UG:UG231": "Ngora",
+      "UG:UG424": "Ntoroko",
+      "UG:UG411": "Ntungamo",
+      "UG:UG328": "Nwoya",
+      "UG:UG331": "Omoro",
+      "UG:UG329": "Otuke",
+      "UG:UG321": "Oyam",
+      "UG:UG312": "Pader",
+      "UG:UG332": "Pakwach",
+      "UG:UG210": "Pallisa",
+      "UG:UG110": "Rakai",
+      "UG:UG429": "Rubanda",
+      "UG:UG425": "Rubirizi",
+      "UG:UG431": "Rukiga",
+      "UG:UG412": "Rukungiri",
+      "UG:UG111": "Sembabule",
+      "UG:UG232": "Serere",
+      "UG:UG426": "Sheema",
+      "UG:UG215": "Sironko",
+      "UG:UG211": "Soroti",
+      "UG:UG212": "Tororo",
+      "UG:UG113": "Wakiso",
+      "UG:UG313": "Yumbe",
+      "UG:UG330": "Zombo"
+    }
+  },
+  "UA": {
+    "country": "Ukraine",
+    "states": {}
+  },
+  "AE": {
+    "country": "United Arab Emirates",
+    "states": {}
+  },
+  "GB": {
+    "country": "United Kingdom (UK)",
+    "states": {}
+  },
+  "US": {
+    "country": "United States (US)",
+    "states": {
+      "US:AL": "Alabama",
+      "US:AK": "Alaska",
+      "US:AZ": "Arizona",
+      "US:AR": "Arkansas",
+      "US:CA": "California",
+      "US:CO": "Colorado",
+      "US:CT": "Connecticut",
+      "US:DE": "Delaware",
+      "US:DC": "District Of Columbia",
+      "US:FL": "Florida",
+      "US:GA": "Georgia",
+      "US:HI": "Hawaii",
+      "US:ID": "Idaho",
+      "US:IL": "Illinois",
+      "US:IN": "Indiana",
+      "US:IA": "Iowa",
+      "US:KS": "Kansas",
+      "US:KY": "Kentucky",
+      "US:LA": "Louisiana",
+      "US:ME": "Maine",
+      "US:MD": "Maryland",
+      "US:MA": "Massachusetts",
+      "US:MI": "Michigan",
+      "US:MN": "Minnesota",
+      "US:MS": "Mississippi",
+      "US:MO": "Missouri",
+      "US:MT": "Montana",
+      "US:NE": "Nebraska",
+      "US:NV": "Nevada",
+      "US:NH": "New Hampshire",
+      "US:NJ": "New Jersey",
+      "US:NM": "New Mexico",
+      "US:NY": "New York",
+      "US:NC": "North Carolina",
+      "US:ND": "North Dakota",
+      "US:OH": "Ohio",
+      "US:OK": "Oklahoma",
+      "US:OR": "Oregon",
+      "US:PA": "Pennsylvania",
+      "US:RI": "Rhode Island",
+      "US:SC": "South Carolina",
+      "US:SD": "South Dakota",
+      "US:TN": "Tennessee",
+      "US:TX": "Texas",
+      "US:UT": "Utah",
+      "US:VT": "Vermont",
+      "US:VA": "Virginia",
+      "US:WA": "Washington",
+      "US:WV": "West Virginia",
+      "US:WI": "Wisconsin",
+      "US:WY": "Wyoming",
+      "US:AA": "Armed Forces (AA)",
+      "US:AE": "Armed Forces (AE)",
+      "US:AP": "Armed Forces (AP)"
+    }
+  },
+  "UM": {
+    "country": "United States (US) Minor Outlying Islands",
+    "states": {
+      "UM:81": "Baker Island",
+      "UM:84": "Howland Island",
+      "UM:86": "Jarvis Island",
+      "UM:67": "Johnston Atoll",
+      "UM:89": "Kingman Reef",
+      "UM:71": "Midway Atoll",
+      "UM:76": "Navassa Island",
+      "UM:95": "Palmyra Atoll",
+      "UM:79": "Wake Island"
+    }
+  },
+  "UY": {
+    "country": "Uruguay",
+    "states": {}
+  },
+  "UZ": {
+    "country": "Uzbekistan",
+    "states": {}
+  },
+  "VU": {
+    "country": "Vanuatu",
+    "states": {}
+  },
+  "VA": {
+    "country": "Vatican",
+    "states": {}
+  },
+  "VE": {
+    "country": "Venezuela",
+    "states": {}
+  },
+  "VN": {
+    "country": "Vietnam",
+    "states": {}
+  },
+  "VG": {
+    "country": "Virgin Islands (British)",
+    "states": {}
+  },
+  "VI": {
+    "country": "Virgin Islands (US)",
+    "states": {}
+  },
+  "WF": {
+    "country": "Wallis and Futuna",
+    "states": {}
+  },
+  "EH": {
+    "country": "Western Sahara",
+    "states": {}
+  },
+  "YE": {
+    "country": "Yemen",
+    "states": {}
+  },
+  "ZM": {
+    "country": "Zambia",
+    "states": {
+      "ZM:ZM-01": "Western",
+      "ZM:ZM-02": "Central",
+      "ZM:ZM-03": "Eastern",
+      "ZM:ZM-04": "Luapula",
+      "ZM:ZM-05": "Northern",
+      "ZM:ZM-06": "North-Western",
+      "ZM:ZM-07": "Southern",
+      "ZM:ZM-08": "Copperbelt",
+      "ZM:ZM-09": "Lusaka",
+      "ZM:ZM-10": "Muchinga"
+    }
+  },
+  "ZW": {
+    "country": "Zimbabwe",
+    "states": {}
+  }
+}

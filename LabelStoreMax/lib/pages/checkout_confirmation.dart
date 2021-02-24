@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,17 +10,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/app_payment_methods.dart';
-import 'package:label_storemax/app_state_options.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/customer_address.dart';
+import 'package:label_storemax/models/customer_country.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
-import 'package:label_storemax/app_country_options.dart';
 
 class CheckoutConfirmationPage extends StatefulWidget {
   CheckoutConfirmationPage({Key key}) : super(key: key);
@@ -33,11 +32,10 @@ class CheckoutConfirmationPage extends StatefulWidget {
 class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   CheckoutConfirmationPageState();
 
-  bool _showFullLoader;
+  bool _showFullLoader, _isProcessingPayment;
 
   List<TaxRate> _taxRates;
   TaxRate _taxRate;
-  bool _isProcessingPayment;
 
   @override
   void initState() {
@@ -89,54 +87,57 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       });
       return;
     }
-    String country =
-        CheckoutSession.getInstance.billingDetails.shippingAddress.country;
-    String state =
-        CheckoutSession.getInstance.billingDetails.shippingAddress.state;
+    CustomerCountry shippingCountry = CheckoutSession
+        .getInstance.billingDetails.shippingAddress.customerCountry;
     String postalCode =
         CheckoutSession.getInstance.billingDetails.shippingAddress.postalCode;
 
-    Map<String, dynamic> countryMap = appCountryOptions
-        .firstWhere((c) => c['name'] == country, orElse: () => null);
-
-    if (countryMap == null) {
+    if (shippingCountry == null) {
       _showFullLoader = false;
       setState(() {});
       return;
     }
 
     TaxRate taxRate;
-
-    Map<String, dynamic> stateMap;
-    if (state != null) {
-      stateMap = appStateOptions.firstWhere((c) => c['name'] == state,
-          orElse: () => null);
-    }
-
-    if (stateMap != null) {
+    if (shippingCountry.hasState()) {
       taxRate = _taxRates.firstWhere(
-          (t) =>
-              t.country == countryMap["code"] &&
-              t.state == stateMap["code"] &&
-              t.postcode == postalCode,
-          orElse: () => null);
+        (t) {
+          if (shippingCountry == null ||
+              (shippingCountry?.state?.code ?? "") == "") {
+            return false;
+          }
 
-      if (taxRate == null) {
-        taxRate = _taxRates.firstWhere(
-            (t) =>
-                t.country == countryMap["code"] && t.state == stateMap["code"],
-            orElse: () => null);
-      }
+          List<String> stateElements = shippingCountry.state.code.split(":");
+          String state = stateElements.last;
+
+          if (t.country == shippingCountry.countryCode &&
+              t.state == state &&
+              t.postcode == postalCode) {
+            return true;
+          }
+
+          if (t.country == shippingCountry.countryCode && t.state == state) {
+            return true;
+          }
+          return false;
+        },
+        orElse: () => null,
+      );
     }
 
     if (taxRate == null) {
       taxRate = _taxRates.firstWhere(
-          (t) => t.country == countryMap["code"] && t.postcode == postalCode,
-          orElse: () => null);
+        (t) =>
+            t.country == shippingCountry.countryCode &&
+            t.postcode == postalCode,
+        orElse: () => null,
+      );
 
       if (taxRate == null) {
-        taxRate = _taxRates.firstWhere((t) => t.country == countryMap["code"],
-            orElse: () => null);
+        taxRate = _taxRates.firstWhere(
+          (t) => t.country == shippingCountry.countryCode,
+          orElse: () => null,
+        );
       }
     }
 
@@ -165,7 +166,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   _actionSelectShipping() {
     CustomerAddress shippingAddress =
         CheckoutSession.getInstance.billingDetails.shippingAddress;
-    if (shippingAddress == null || shippingAddress.country == "") {
+    if (shippingAddress == null || shippingAddress.customerCountry == null) {
       showEdgeAlertWith(context,
           title: trans(context, "Oops"),
           desc: trans(context, "Add your shipping details first"),

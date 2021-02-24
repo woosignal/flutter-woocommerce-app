@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -41,8 +41,7 @@ class _AccountShippingDetailsPageState
   TextEditingController _txtShippingState;
   TextEditingController _txtShippingCountry;
 
-  bool _isLoading;
-  bool _isUpdating;
+  bool _isLoading, _isUpdating;
 
   @override
   void initState() {

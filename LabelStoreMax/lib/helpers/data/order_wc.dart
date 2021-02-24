@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -50,7 +50,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
     tmpLineItem.total =
         (cartItem.quantity > 1 ? cartItem.getCartTotal() : cartItem.subtotal);
-    tmpLineItem.subtotal = 
+    tmpLineItem.subtotal =
         (parseWcPrice(cartItem.subtotal) * cartItem.quantity).toString();
 
     lineItems.add(tmpLineItem);
@@ -66,11 +66,11 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   billing.address1 = billingDetails.billingAddress.addressLine;
   billing.city = billingDetails.billingAddress.city;
   billing.postcode = billingDetails.billingAddress.postalCode;
-  billing.country = billingDetails.billingAddress.country;
   billing.email = billingDetails.billingAddress.emailAddress;
-  if (billingDetails.billingAddress.country == "United States") {
-    billing.state = billingDetails.billingAddress.state;
+  if (billingDetails.billingAddress.customerCountry.hasState()) {
+    billing.state = billingDetails.billingAddress.customerCountry.state.name;
   }
+  billing.country = billingDetails.billingAddress.customerCountry.name;
 
   orderWC.billing = billing;
 
@@ -81,10 +81,10 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   shipping.address1 = billingDetails.shippingAddress.addressLine;
   shipping.city = billingDetails.shippingAddress.city;
   shipping.postcode = billingDetails.shippingAddress.postalCode;
-  if (billingDetails.shippingAddress.country == "United States") {
-    shipping.state = billingDetails.shippingAddress.state;
+  if (billingDetails.shippingAddress.customerCountry.hasState()) {
+    billing.state = billingDetails.shippingAddress.customerCountry.state.name;
   }
-  shipping.country = billingDetails.shippingAddress.country;
+  billing.country = billingDetails.shippingAddress.customerCountry.name;
 
   orderWC.shipping = shipping;
 

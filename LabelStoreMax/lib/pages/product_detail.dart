@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -17,6 +17,7 @@ import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/cart_icon.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:woosignal/models/response/product_variation.dart' as WS;
 import 'package:woosignal/models/response/products.dart' as WSProduct;
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -462,41 +463,45 @@ class _ProductDetailState extends State<ProductDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              trans(context, "Quantity"),
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText1,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.remove_circle_outline,
-                                    size: 28,
+                        (_product.type != "external"
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    trans(context, "Quantity"),
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyText1,
                                   ),
-                                  onPressed: _removeQuantityTapped,
-                                ),
-                                Text(
-                                  _quantityIndicator.toString(),
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .bodyText1,
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add_circle_outline,
-                                    size: 28,
-                                  ),
-                                  onPressed: _addQuantityTapped,
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                                  Row(
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.remove_circle_outline,
+                                          size: 28,
+                                        ),
+                                        onPressed: _removeQuantityTapped,
+                                      ),
+                                      Text(
+                                        _quantityIndicator.toString(),
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText1,
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.add_circle_outline,
+                                          size: 28,
+                                        ),
+                                        onPressed: _addQuantityTapped,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            : null),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -515,16 +520,24 @@ class _ProductDetailState extends State<ProductDetailPage> {
                               ),
                               alignment: Alignment.centerLeft,
                             )),
-                            Flexible(
-                              child: wsPrimaryButton(
-                                context,
-                                title: trans(context, "Add to cart"),
-                                action: () => _addItemToCart(),
-                              ),
-                            ),
+                            _product.type == "external"
+                                ? Flexible(
+                                    child: wsPrimaryButton(
+                                      context,
+                                      title: trans(context, "Buy Product"),
+                                      action: () => _viewExternalProduct(),
+                                    ),
+                                  )
+                                : Flexible(
+                                    child: wsPrimaryButton(
+                                      context,
+                                      title: trans(context, "Add to cart"),
+                                      action: () => _addItemToCart(),
+                                    ),
+                                  ),
                           ],
                         ),
-                      ],
+                      ].where((e) => e != null).toList(),
                     ),
                     height: 140,
                   ),
@@ -598,6 +611,13 @@ class _ProductDetailState extends State<ProductDetailPage> {
       setState(() {
         _quantityIndicator--;
       });
+    }
+  }
+
+  _viewExternalProduct() {
+    if (_product.externalUrl != null && _product.externalUrl.isNotEmpty) {
+      // launch(_product.externalUrl);
+      openBrowserTab(url: _product.externalUrl);
     }
   }
 }

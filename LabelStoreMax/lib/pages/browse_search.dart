@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -27,12 +27,11 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
   List<WS.Product> _products = [];
   String _search;
-  bool _isLoading;
   int _page;
-  bool _shouldStopRequests;
-  bool waitForNextRequest;
+  bool _shouldStopRequests, waitForNextRequest, _isLoading;
 
   @override
   void initState() {

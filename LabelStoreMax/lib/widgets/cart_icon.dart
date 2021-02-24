@@ -1,7 +1,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -26,29 +26,30 @@ Widget wsCartIcon(BuildContext context, {Key key}) {
               ),
               bottom: 0),
           Positioned.fill(
-              child: Align(
-                child: FutureBuilder<List<CartLineItem>>(
-                  future: Cart.getInstance.getCart(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<CartLineItem>> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
+            child: Align(
+              child: FutureBuilder<List<CartLineItem>>(
+                future: Cart.getInstance.getCart(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<CartLineItem>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Text("");
+                    default:
+                      if (snapshot.hasError)
                         return Text("");
-                      default:
-                        if (snapshot.hasError)
-                          return Text("");
-                        else
-                          return new Text(
-                            snapshot.data.length.toString(),
-                            style: Theme.of(context).primaryTextTheme.bodyText1,
-                            textAlign: TextAlign.center,
-                          );
-                    }
-                  },
-                ),
-                alignment: Alignment.topCenter,
+                      else
+                        return new Text(
+                          snapshot.data.length.toString(),
+                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          textAlign: TextAlign.center,
+                        );
+                  }
+                },
               ),
-              top: 0)
+              alignment: Alignment.topCenter,
+            ),
+            top: 0,
+          )
         ],
       ),
       onPressed: () => Navigator.pushNamed(context, "/cart")

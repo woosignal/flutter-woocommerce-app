@@ -3,7 +3,7 @@
 //  Label StoreMAX
 //
 //  Created by Anthony Gordon.
-//  2020, WooSignal Ltd. All rights reserved.
+//  2021, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -14,8 +14,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:label_storemax/helpers/data/order_wc.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/models/cart.dart';
-import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/pages/checkout_confirmation.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/order.dart';
