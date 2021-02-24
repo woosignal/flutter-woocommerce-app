@@ -26,9 +26,18 @@ class CustomerCountry {
   }
 
   CustomerCountry.fromJson(Map<String, dynamic> json) {
-    countryCode = json['country_code'];
-    name = json['name'];
-    state = DefaultShippingState.fromJson(json['state']);
+    if (json == null) {
+      return;
+    }
+    if (json['country_code'] !=  null) {
+      countryCode = json['country_code'];
+    }
+    if (json['name'] !=  null) {
+      name = json['name'];
+    }
+    if (json['state'] != null) {
+      state = DefaultShippingState.fromJson(json['state']);
+    }
   }
 
   bool hasState() {
