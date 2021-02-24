@@ -616,7 +616,6 @@ class _ProductDetailState extends State<ProductDetailPage> {
 
   _viewExternalProduct() {
     if (_product.externalUrl != null && _product.externalUrl.isNotEmpty) {
-      // launch(_product.externalUrl);
       openBrowserTab(url: _product.externalUrl);
     }
   }
