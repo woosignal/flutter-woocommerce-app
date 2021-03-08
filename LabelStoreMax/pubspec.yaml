@@ -41,7 +41,7 @@ dependencies:
   intl: ^0.17.0
   flutter_swiper: ^1.1.6
   edge_alert: ^0.0.1
-  bubble_tab_indicator: ^0.1.4
+  bubble_tab_indicator: ^0.1.5
   status_alert: ^0.1.3
   math_expressions: ^2.0.2
   hexcolor: ^1.0.6

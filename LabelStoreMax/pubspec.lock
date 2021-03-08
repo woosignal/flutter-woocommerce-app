@@ -42,7 +42,7 @@ packages:
       name: bubble_tab_indicator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -706,5 +706,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.22.0"
