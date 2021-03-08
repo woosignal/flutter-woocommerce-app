@@ -10,10 +10,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,23 +32,20 @@ class AccountLandingPage extends StatefulWidget {
 }
 
 class _AccountLandingPageState extends State<AccountLandingPage> {
-  bool _hasTappedLogin;
-  TextEditingController _tfEmailController, _tfPasswordController;
+  bool _hasTappedLogin = false;
+  TextEditingController _tfEmailController = TextEditingController(),
+      _tfPasswordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    _hasTappedLogin = false;
-    _tfEmailController = TextEditingController();
-    _tfPasswordController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +56,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  storeLogo(height: 100),
+                  StoreLogo(height: 100),
                   Flexible(
                     child: Container(
                       height: 70,
@@ -91,19 +88,18 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        wsTextEditingRow(context,
+                        TextEditingRow(
                             heading: trans(context, "Email"),
                             controller: _tfEmailController,
                             keyboardType: TextInputType.emailAddress),
-                        wsTextEditingRow(context,
+                        TextEditingRow(
                             heading: trans(context, "Password"),
                             controller: _tfPasswordController,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: true),
-                        wsPrimaryButton(
-                          context,
+                        PrimaryButton(
                           title: trans(context, "Login"),
-                          action: _hasTappedLogin == true ? null : _loginUser,
+                          action: _hasTappedLogin == true ? () {} : _loginUser,
                         ),
                       ],
                     ),
@@ -111,7 +107,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                 ],
               ),
             ),
-            FlatButton(
+            TextButton(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -133,12 +129,15 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                 Navigator.pushNamed(context, "/account-register");
               },
             ),
-            wsLinkButton(context, title: trans(context, "Forgot Password"),
+            LinkButton(
+                title: trans(context, "Forgot Password"),
                 action: () {
-              launch(app_forgot_password_url);
-            }),
+                  String forgotPasswordUrl =
+                      AppHelper.instance.appConfig.wpLoginForgotPasswordUrl;
+                  launch(forgotPasswordUrl);
+                }),
             Divider(),
-            wsLinkButton(context,
+            LinkButton(
                 title: trans(context, "Back"),
                 action: () => Navigator.pop(context)),
           ],
@@ -151,7 +150,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
     String email = _tfEmailController.text;
     String password = _tfPasswordController.text;
 
-    if (email != null) {
+    if (email.isNotEmpty) {
       email = email.trim();
     }
 

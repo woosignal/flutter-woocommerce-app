@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:label_storemax/app_payment_methods.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:label_storemax/labelconfig.dart';
@@ -127,7 +128,7 @@ String formatDoubleCurrency({double total}) {
   FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
     amount: total,
     settings: MoneyFormatterSettings(
-      symbol: app_currency_symbol,
+      symbol: AppHelper.instance.appConfig.currencyMeta.symbolNative,
     ),
   );
   return fmf.output.symbolOnLeft;
@@ -143,7 +144,7 @@ String formatStringCurrency({@required String total}) {
   FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
     amount: tmpVal,
     settings: MoneyFormatterSettings(
-      symbol: app_currency_symbol,
+      symbol: AppHelper.instance.appConfig.currencyMeta.symbolNative,
     ),
   );
   return fmf.output.symbolOnLeft;
@@ -159,7 +160,8 @@ String workoutSaleDiscount(
 
 openBrowserTab({@required String url}) async {
   await FlutterWebBrowser.openWebPage(
-      url: url, customTabsOptions: CustomTabsOptions(toolbarColor: Colors.white70));
+      url: url,
+      customTabsOptions: CustomTabsOptions(toolbarColor: Colors.white70));
 }
 
 EdgeInsets safeAreaDefault() {
@@ -438,9 +440,7 @@ String dateFormatted({@required String date, @required String formatType}) =>
 
 enum FormatType {
   DateTime,
-
   Date,
-
   Time,
 }
 
@@ -511,8 +511,7 @@ Widget refreshableScroll(context,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 height: 200,
-                child: wsCardProductItem(
-                  context,
+                child: ProductItemContainer(
                   index: (index),
                   product: products[index],
                   onTap: onTap,
@@ -523,7 +522,7 @@ Widget refreshableScroll(context,
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,
           )
-        : wsNoResults(context)),
+        : NoProductResults()),
   );
 }
 
@@ -554,11 +553,8 @@ Future<List<DefaultShipping>> getDefaultShipping(BuildContext context) async {
   List<DefaultShipping> shipping = [];
 
   dataJson.forEach((key, value) {
-    DefaultShipping defaultShipping = DefaultShipping();
-    defaultShipping.code = key;
-    defaultShipping.country = value['country'];
-
-    defaultShipping.states = [];
+    DefaultShipping defaultShipping =
+        DefaultShipping(code: key, country: value['country'], states: []);
     if (value['states'] != null) {
       value['states'].forEach((key1, value2) {
         defaultShipping.states

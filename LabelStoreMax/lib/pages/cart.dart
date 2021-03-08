@@ -10,9 +10,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
@@ -31,15 +31,12 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   _CartPageState();
 
-  bool _isLoading = false;
-  bool _isCartEmpty = false;
-  List<CartLineItem> _cartLines;
+  bool _isLoading = true, _isCartEmpty = false;
+  List<CartLineItem> _cartLines = [];
 
   @override
   void initState() {
     super.initState();
-    _cartLines = [];
-    _isLoading = true;
     _cartCheck();
   }
 
@@ -115,7 +112,8 @@ class _CartPageState extends State<CartPage> {
           sfCustomerAddress;
     }
 
-    if (use_wp_login == true && !(await authCheck())) {
+    if (AppHelper.instance.appConfig.wpLoginEnabled == 1 &&
+        !(await authCheck())) {
       UserAuth.instance.redirect = "/checkout";
       Navigator.pushNamed(context, "/account-landing");
       return;
@@ -183,7 +181,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           trans(context, "Shopping Cart"),
@@ -252,8 +250,7 @@ class _CartPageState extends State<CartPage> {
                             itemCount: _cartLines.length,
                             itemBuilder: (BuildContext context, int index) {
                               CartLineItem cartLineItem = _cartLines[index];
-                              return wsCardCartItem(
-                                context,
+                              return CartItemContainer(
                                 cartLineItem: cartLineItem,
                                 actionIncrementQuantity: () =>
                                     actionIncrementQuantity(
@@ -291,8 +288,7 @@ class _CartPageState extends State<CartPage> {
                 }
               },
             ),
-            wsPrimaryButton(
-              context,
+            PrimaryButton(
               title: trans(context, "PROCEED TO CHECKOUT"),
               action: _actionProceedToCheckout,
             ),

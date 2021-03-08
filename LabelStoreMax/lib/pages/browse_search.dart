@@ -30,18 +30,14 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
 
   List<WS.Product> _products = [];
   String _search;
-  int _page;
-  bool _shouldStopRequests, waitForNextRequest, _isLoading;
+  int _page = 1;
+  bool _shouldStopRequests = false,
+      waitForNextRequest = false,
+      _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-
-    _isLoading = true;
-    _page = 1;
-    _shouldStopRequests = false;
-    waitForNextRequest = false;
-
     _fetchProductsForSearch();
   }
 
@@ -49,11 +45,12 @@ class _BrowseSearchState extends State<BrowseSearchPage> {
     waitForNextRequest = true;
     List<WS.Product> products = await appWooSignal(
       (api) => api.getProducts(
-          perPage: 100,
-          search: _search,
-          page: _page,
-          status: "publish",
-          stockStatus: "instock"),
+        perPage: 100,
+        search: _search,
+        page: _page,
+        status: "publish",
+        stockStatus: "instock",
+      ),
     );
     _products.addAll(products);
     waitForNextRequest = false;

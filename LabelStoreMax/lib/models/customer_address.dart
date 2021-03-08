@@ -49,7 +49,7 @@ class CustomerAddress {
           : false);
 
   String addressFull() {
-    List<String> tmpArrAddress = new List<String>();
+    List<String> tmpArrAddress = [];
     if (addressLine != null && addressLine != "") {
       tmpArrAddress.add(addressLine);
     }
@@ -70,7 +70,7 @@ class CustomerAddress {
   }
 
   String nameFull() {
-    List<String> tmpArrName = new List<String>();
+    List<String> tmpArrName = [];
     if (firstName != "") {
       tmpArrName.add(firstName);
     }

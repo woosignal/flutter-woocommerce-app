@@ -8,6 +8,8 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/cupertino.dart';
+
 class PaymentType {
   int id;
   String name;
@@ -15,5 +17,10 @@ class PaymentType {
   String assetImage;
   Function pay;
 
-  PaymentType({this.id, this.name, this.desc, this.assetImage, this.pay});
+  PaymentType(
+      {@required this.id,
+      @required this.name,
+      @required this.desc,
+      @required this.assetImage,
+      @required this.pay});
 }

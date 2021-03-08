@@ -11,64 +11,110 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:label_storemax/widgets/woosignal_ui.dart';
 
-Widget wsPrimaryButton(BuildContext context,
-    {@required String title, void Function() action}) {
-  return Container(
-    height: 55,
-    child: RaisedButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      padding: EdgeInsets.all(8),
-      child: Text(
-        title,
-        style: Theme.of(context).primaryTextTheme.button.copyWith(fontSize: 16),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onPressed: action ?? null,
-      elevation: 0,
-    ),
-  );
+class PrimaryButton extends StatelessWidget {
+  const PrimaryButton({
+    Key key,
+    this.title,
+    this.action,
+  }) : super(key: key);
+
+  final String title;
+  final void Function() action;
+
+  @override
+  Widget build(BuildContext context) => WooSignalButton(
+        key: key,
+        title: title,
+        action: action,
+        textStyle:
+            Theme.of(context).primaryTextTheme.button.copyWith(fontSize: 16),
+        bgColor: HexColor("#529cda"),
+      );
 }
 
-Widget wsSecondaryButton(BuildContext context,
-    {String title, void Function() action}) {
-  return Container(
-    height: 60,
-    margin: EdgeInsets.only(top: 10),
-    child: RaisedButton(
-      child: Text(
-        title,
-        style: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
+class SecondaryButton extends StatelessWidget {
+  const SecondaryButton({
+    Key key,
+    this.title,
+    this.action,
+  }) : super(key: key);
+
+  final String title;
+  final void Function() action;
+
+  @override
+  Widget build(BuildContext context) => WooSignalButton(
+        key: key,
+        title: title,
+        action: action,
+        textStyle: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
               color: Colors.black87,
             ),
-        textAlign: TextAlign.center,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onPressed: action,
-      color: HexColor("#f6f6f9"),
-      elevation: 1,
-    ),
-  );
+        bgColor: HexColor("#f6f6f9"),
+      );
 }
 
-Widget wsLinkButton(BuildContext context,
-    {String title, void Function() action}) {
-  return Container(
-    height: 60,
-    margin: EdgeInsets.only(top: 10),
-    child: MaterialButton(
-      padding: EdgeInsets.all(10),
-      child: Text(
-        title,
-        style: Theme.of(context).primaryTextTheme.bodyText1,
-        textAlign: TextAlign.left,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
+class LinkButton extends StatelessWidget {
+  const LinkButton({
+    Key key,
+    this.title,
+    this.action,
+  }) : super(key: key);
+
+  final String title;
+  final void Function() action;
+
+  @override
+  Widget build(BuildContext context) => WooSignalButton(
+        key: key,
+        title: title,
+        action: action,
+        textStyle: Theme.of(context).primaryTextTheme.bodyText1,
+        bgColor: Colors.transparent,
+      );
+}
+
+class WooSignalButton extends StatelessWidget {
+  const WooSignalButton({
+    Key key,
+    this.title,
+    this.action,
+    this.textStyle,
+    this.bgColor,
+  }) : super(key: key);
+
+  final String title;
+  final void Function() action;
+  final TextStyle textStyle;
+  final Color bgColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 55,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
       ),
-      onPressed: action,
-      elevation: 0,
-    ),
-  );
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0)),
+            padding: EdgeInsets.all(8),
+            elevation: 0,
+            primary: bgColor,
+            shadowColor: Colors.transparent),
+        child: Text(
+          title,
+          style: textStyle,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+        ),
+        onPressed: action ?? null,
+      ),
+    );
+  }
 }

@@ -25,42 +25,38 @@ class BrowseCategoryPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BrowseCategoryPageState createState() =>
-      _BrowseCategoryPageState(productCategory);
+  _BrowseCategoryPageState createState() => _BrowseCategoryPageState();
 }
 
 class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
-  _BrowseCategoryPageState(this._selectedCategory);
+  _BrowseCategoryPageState();
 
   List<WS.Product> _products = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  ProductCategory _selectedCategory;
 
-  int _page;
-  bool _shouldStopRequests, waitForNextRequest, _isLoading;
+  int _page = 1;
+  bool _shouldStopRequests = false,
+      waitForNextRequest = false,
+      _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-
-    _isLoading = true;
-
-    _page = 1;
-    _shouldStopRequests = false;
-    waitForNextRequest = false;
     _fetchMoreProducts();
   }
 
   _fetchMoreProducts() async {
     waitForNextRequest = true;
-    List<WS.Product> products = await appWooSignal((api) => api.getProducts(
-        perPage: 50,
-        category: _selectedCategory.id.toString(),
-        page: _page,
-        status: "publish",
-        stockStatus: "instock"));
+    List<WS.Product> products = await appWooSignal(
+      (api) => api.getProducts(
+          perPage: 50,
+          category: widget.productCategory.id.toString(),
+          page: _page,
+          status: "publish",
+          stockStatus: "instock"),
+    );
     _products.addAll(products);
     waitForNextRequest = false;
     _page = _page + 1;
@@ -90,7 +86,7 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
           children: <Widget>[
             Text(trans(context, "Browse"),
                 style: Theme.of(context).primaryTextTheme.subtitle1),
-            Text(parseHtmlString(_selectedCategory.name),
+            Text(parseHtmlString(widget.productCategory.name),
                 style: Theme.of(context).primaryTextTheme.headline6)
           ],
         ),
@@ -176,32 +172,31 @@ class _BrowseCategoryPageState extends State<BrowseCategoryPage> {
       title: trans(context, "Sort results"),
       bodyWidget: ListView(
         children: <Widget>[
-          wsLinkButton(context,
+          LinkButton(
               title: trans(context, "Sort: Low to high"),
               action: () => _sortProducts(by: SortByType.LowToHigh)),
           Divider(
             height: 0,
           ),
-          wsLinkButton(context,
+          LinkButton(
               title: trans(context, "Sort: High to low"),
               action: () => _sortProducts(by: SortByType.HighToLow)),
           Divider(
             height: 0,
           ),
-          wsLinkButton(context,
+          LinkButton(
               title: trans(context, "Sort: Name A-Z"),
               action: () => _sortProducts(by: SortByType.NameAZ)),
           Divider(
             height: 0,
           ),
-          wsLinkButton(context,
+          LinkButton(
               title: trans(context, "Sort: Name Z-A"),
               action: () => _sortProducts(by: SortByType.NameZA)),
           Divider(
             height: 0,
           ),
-          wsLinkButton(context,
-              title: trans(context, "Cancel"), action: _dismissModal)
+          LinkButton(title: trans(context, "Cancel"), action: _dismissModal)
         ],
       ),
     );

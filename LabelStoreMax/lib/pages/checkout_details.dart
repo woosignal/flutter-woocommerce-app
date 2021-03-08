@@ -29,29 +29,28 @@ class CheckoutDetailsPage extends StatefulWidget {
 class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   _CheckoutDetailsPageState();
 
-  bool _hasDifferentShippingAddress = false;
+  bool _hasDifferentShippingAddress = false, valRememberDetails = true;
   int activeTabIndex = 0;
 
   // TEXT CONTROLLERS
   TextEditingController
       // billing
-      _txtBillingFirstName,
-      _txtBillingLastName,
-      _txtBillingAddressLine,
-      _txtBillingCity,
-      _txtBillingPostalCode,
-      _txtBillingEmailAddress,
+      _txtBillingFirstName = TextEditingController(),
+      _txtBillingLastName = TextEditingController(),
+      _txtBillingAddressLine = TextEditingController(),
+      _txtBillingCity = TextEditingController(),
+      _txtBillingPostalCode = TextEditingController(),
+      _txtBillingEmailAddress = TextEditingController(),
       // shipping
-      _txtShippingFirstName,
-      _txtShippingLastName,
-      _txtShippingAddressLine,
-      _txtShippingCity,
-      _txtShippingPostalCode,
-      _txtShippingEmailAddress;
+      _txtShippingFirstName = TextEditingController(),
+      _txtShippingLastName = TextEditingController(),
+      _txtShippingAddressLine = TextEditingController(),
+      _txtShippingCity = TextEditingController(),
+      _txtShippingPostalCode = TextEditingController(),
+      _txtShippingEmailAddress = TextEditingController();
 
   CustomerCountry _billingCountry, _shippingCountry;
 
-  var valRememberDetails = true;
   Widget activeTab;
 
   Widget tabShippingDetails() => CustomerAddressInput(
@@ -79,22 +78,6 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   @override
   void initState() {
     super.initState();
-
-    // SHIPPING
-    _txtShippingFirstName = TextEditingController();
-    _txtShippingLastName = TextEditingController();
-    _txtShippingAddressLine = TextEditingController();
-    _txtShippingCity = TextEditingController();
-    _txtShippingPostalCode = TextEditingController();
-    _txtShippingEmailAddress = TextEditingController();
-
-    // BILLING
-    _txtBillingFirstName = TextEditingController();
-    _txtBillingLastName = TextEditingController();
-    _txtBillingAddressLine = TextEditingController();
-    _txtBillingCity = TextEditingController();
-    _txtBillingPostalCode = TextEditingController();
-    _txtBillingEmailAddress = TextEditingController();
 
     if (CheckoutSession.getInstance.billingDetails.billingAddress == null) {
       CheckoutSession.getInstance.billingDetails.initSession();
@@ -130,14 +113,15 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       return;
     }
     _setFields(
-        firstName: customerAddress.firstName,
-        lastName: customerAddress.lastName,
-        addressLine: customerAddress.addressLine,
-        city: customerAddress.city,
-        postalCode: customerAddress.postalCode,
-        emailAddress: customerAddress.emailAddress,
-        customerCountry: customerAddress.customerCountry,
-        type: type);
+      firstName: customerAddress.firstName,
+      lastName: customerAddress.lastName,
+      addressLine: customerAddress.addressLine,
+      city: customerAddress.city,
+      postalCode: customerAddress.postalCode,
+      emailAddress: customerAddress.emailAddress,
+      customerCountry: customerAddress.customerCountry,
+      type: type,
+    );
   }
 
   _setFields(
@@ -171,7 +155,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -286,7 +270,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                         )
                       ],
                     ),
-                    wsPrimaryButton(context,
+                    PrimaryButton(
                         title: trans(context, "USE DETAILS"),
                         action: () => _useDetailsTapped()),
                   ],
@@ -398,9 +382,9 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
     return customerShippingAddress;
   }
 
-  _navigateToSelectCountry({String type}) {
+  _navigateToSelectCountry({@required String type}) {
     Navigator.pushNamed(context, "/customer-countries").then((value) {
-      if (value == null || type == null) {
+      if (value == null) {
         return;
       }
       if (type == "billing") {

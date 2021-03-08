@@ -11,7 +11,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:label_storemax/helpers/shared_pref.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
+import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/pages/account_billing_details.dart';
 import 'package:label_storemax/pages/account_detail.dart';
 import 'package:label_storemax/pages/account_landing.dart';
@@ -21,11 +22,12 @@ import 'package:label_storemax/pages/account_register.dart';
 import 'package:label_storemax/pages/account_shipping_details.dart';
 import 'package:label_storemax/pages/customer_countries.dart';
 import 'package:label_storemax/pages/error_page.dart';
+import 'package:label_storemax/pages/no_connection_page.dart';
 import 'package:label_storemax/pages/product_image_viewer_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 import 'labelconfig.dart';
 import 'package:label_storemax/pages/checkout_details.dart';
@@ -52,18 +54,25 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  String initialRoute = '/no-connection';
+  WooSignalApp wooSignalApp = await appWooSignal((api) => api.getApp());
 
-  String initialRoute = "/home";
-  if (use_wp_login == true) {
-    WPJsonAPI.instance.initWith(
-        baseUrl: app_base_url,
-        shouldDebug: app_debug,
-        wpJsonPath: app_wp_api_path);
+  if (wooSignalApp != null) {
+    initialRoute = "/home";
+    AppHelper.instance.appConfig = wooSignalApp;
+
+    if (wooSignalApp.wpLoginEnabled == 1) {
+      WPJsonAPI.instance.initWith(
+        baseUrl: wooSignalApp.wpLoginBaseUrl,
+        shouldDebug: wooSignalApp.appDebug == 1 ? true : false,
+        wpJsonPath: wooSignalApp.wpLoginWpApiPath,
+      );
+    }
   }
 
   runApp(
     new MaterialApp(
-      title: app_name,
+      title: wooSignalApp?.appName ?? "Label StoreMax",
       color: Colors.white,
       debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
@@ -81,6 +90,7 @@ void main() async {
             new AccountBillingDetailsPage(),
         '/account-shipping-details': (BuildContext context) =>
             new AccountShippingDetailsPage(),
+        '/no-connection': (BuildContext context) => new NoConnectionPage(),
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {

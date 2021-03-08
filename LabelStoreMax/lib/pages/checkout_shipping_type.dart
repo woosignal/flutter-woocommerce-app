@@ -238,7 +238,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -383,9 +383,9 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline6,
-                                    textAlign: TextAlign.center))),
-                        wsLinkButton(
-                          context,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                        LinkButton(
                           title: trans(context, "CANCEL"),
                           action: () => Navigator.pop(context),
                         ),
@@ -409,13 +409,16 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   }
 
   _handleCheckoutTapped(int index) async {
-    ShippingType shippingType = ShippingType();
-    shippingType.object = _wsShippingOptions[index]['object'];
-    shippingType.methodId = _wsShippingOptions[index]['method_id'];
+    Map<String, dynamic> shippingOptions = _wsShippingOptions[index];
+    ShippingType shippingType = ShippingType(
+        methodId: shippingOptions['method_id'],
+        object: shippingOptions['object'],
+        cost: (await _getShippingPrice(index)),
+        minimumValue: null);
+
     if (_wsShippingOptions[index]['min_amount'] != null) {
       shippingType.minimumValue = _wsShippingOptions[index]['min_amount'];
     }
-    shippingType.cost = await _getShippingPrice(index);
 
     CheckoutSession.getInstance.shippingType = shippingType;
 

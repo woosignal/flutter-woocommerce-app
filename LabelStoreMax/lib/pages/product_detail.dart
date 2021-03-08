@@ -17,7 +17,6 @@ import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/cart_icon.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:woosignal/models/response/product_variation.dart' as WS;
 import 'package:woosignal/models/response/products.dart' as WSProduct;
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -201,63 +200,67 @@ class _ProductDetailState extends State<ProductDetailPage> {
                   : ""),
               style: Theme.of(context).primaryTextTheme.subtitle1,
             ),
-            wsPrimaryButton(context, title: trans(context, "Add to cart"),
+            PrimaryButton(
+                title: trans(context, "Add to cart"),
                 action: () {
-              if (_product.attributes.length !=
-                  _tmpAttributeObj.values.length) {
-                showEdgeAlertWith(context,
-                    title: trans(context, "Oops"),
-                    desc: trans(context, "Please select valid options first"),
-                    style: EdgeAlertStyle.WARNING);
-                return;
-              }
+                  if (_product.attributes.length !=
+                      _tmpAttributeObj.values.length) {
+                    showEdgeAlertWith(context,
+                        title: trans(context, "Oops"),
+                        desc:
+                            trans(context, "Please select valid options first"),
+                        style: EdgeAlertStyle.WARNING);
+                    return;
+                  }
 
-              WS.ProductVariation productVariation = findProductVariation();
-              if (productVariation == null) {
-                showEdgeAlertWith(context,
-                    title: trans(context, "Oops"),
-                    desc: trans(context, "Product variation does not exist"),
-                    style: EdgeAlertStyle.WARNING);
-                return;
-              }
+                  WS.ProductVariation productVariation = findProductVariation();
+                  if (productVariation == null) {
+                    showEdgeAlertWith(context,
+                        title: trans(context, "Oops"),
+                        desc:
+                            trans(context, "Product variation does not exist"),
+                        style: EdgeAlertStyle.WARNING);
+                    return;
+                  }
 
-              if (productVariation.stockStatus != "instock") {
-                showEdgeAlertWith(context,
-                    title: trans(context, "Sorry"),
-                    desc: trans(context, "This item is not in stock"),
-                    style: EdgeAlertStyle.WARNING);
-                return;
-              }
+                  if (productVariation.stockStatus != "instock") {
+                    showEdgeAlertWith(context,
+                        title: trans(context, "Sorry"),
+                        desc: trans(context, "This item is not in stock"),
+                        style: EdgeAlertStyle.WARNING);
+                    return;
+                  }
 
-              List<String> options = [];
-              _tmpAttributeObj.forEach((k, v) {
-                options.add("${v["name"]}: ${v["value"]}");
-              });
+                  List<String> options = [];
+                  _tmpAttributeObj.forEach((k, v) {
+                    options.add("${v["name"]}: ${v["value"]}");
+                  });
 
-              CartLineItem cartLineItem = CartLineItem(
-                name: _product.name,
-                productId: _product.id,
-                variationId: productVariation.id,
-                quantity: 1,
-                taxStatus: productVariation.taxStatus,
-                shippingClassId: productVariation.shippingClassId.toString(),
-                subtotal: productVariation.price,
-                stockQuantity: productVariation.stockQuantity,
-                isManagedStock: productVariation.manageStock,
-                taxClass: productVariation.taxClass,
-                imageSrc: (productVariation.image != null
-                    ? productVariation.image.src
-                    : _product.images.length == 0
-                        ? app_product_placeholder_image
-                        : _product.images.first.src),
-                shippingIsTaxable: _product.shippingTaxable,
-                variationOptions: options.join(", "),
-                total: productVariation.price,
-              );
+                  CartLineItem cartLineItem = CartLineItem(
+                    name: _product.name,
+                    productId: _product.id,
+                    variationId: productVariation.id,
+                    quantity: 1,
+                    taxStatus: productVariation.taxStatus,
+                    shippingClassId:
+                        productVariation.shippingClassId.toString(),
+                    subtotal: productVariation.price,
+                    stockQuantity: productVariation.stockQuantity,
+                    isManagedStock: productVariation.manageStock,
+                    taxClass: productVariation.taxClass,
+                    imageSrc: (productVariation.image != null
+                        ? productVariation.image.src
+                        : _product.images.length == 0
+                            ? app_product_placeholder_image
+                            : _product.images.first.src),
+                    shippingIsTaxable: _product.shippingTaxable,
+                    variationOptions: options.join(", "),
+                    total: productVariation.price,
+                  );
 
-              _itemAddToCart(cartLineItem: cartLineItem);
-              Navigator.of(context).pop();
-            }),
+                  _itemAddToCart(cartLineItem: cartLineItem);
+                  Navigator.of(context).pop();
+                }),
           ],
         ),
         margin: EdgeInsets.only(bottom: 10),
@@ -285,7 +288,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
         actions: <Widget>[
           wsCartIcon(context),
         ],
-        title: storeLogo(height: 55),
+        title: StoreLogo(height: 55),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -522,15 +525,13 @@ class _ProductDetailState extends State<ProductDetailPage> {
                             )),
                             _product.type == "external"
                                 ? Flexible(
-                                    child: wsPrimaryButton(
-                                      context,
+                                    child: PrimaryButton(
                                       title: trans(context, "Buy Product"),
                                       action: () => _viewExternalProduct(),
                                     ),
                                   )
                                 : Flexible(
-                                    child: wsPrimaryButton(
-                                      context,
+                                    child: PrimaryButton(
                                       title: trans(context, "Add to cart"),
                                       action: () => _addItemToCart(),
                                     ),

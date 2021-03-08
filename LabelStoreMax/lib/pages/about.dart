@@ -9,11 +9,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/menu_item.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:package_info/package_info.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 
 class AboutPage extends StatefulWidget {
   AboutPage();
@@ -25,9 +26,12 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   _AboutPageState();
 
+  WooSignalApp _wooSignalApp;
+
   @override
   void initState() {
     super.initState();
+    _wooSignalApp = AppHelper.instance.appConfig;
   }
 
   @override
@@ -48,11 +52,11 @@ class _AboutPageState extends State<AboutPage> {
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Flexible(
-              child: storeLogo(),
+            Expanded(
+              child: Center(child: StoreLogo()),
               flex: 2,
             ),
             Flexible(
@@ -60,14 +64,12 @@ class _AboutPageState extends State<AboutPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  wsMenuItem(
-                    context,
+                  MenuItem(
                     title: trans(context, "Privacy policy"),
                     leading: Icon(Icons.people),
                     action: _actionPrivacy,
                   ),
-                  wsMenuItem(
-                    context,
+                  MenuItem(
                     title: trans(context, "Terms and conditions"),
                     leading: Icon(Icons.description),
                     action: _actionTerms,
@@ -106,11 +108,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  void _actionTerms() {
-    openBrowserTab(url: app_terms_url);
-  }
+  void _actionTerms() => openBrowserTab(url: _wooSignalApp.appTermslink);
 
-  void _actionPrivacy() {
-    openBrowserTab(url: app_privacy_url);
-  }
+  void _actionPrivacy() => openBrowserTab(url: _wooSignalApp.appPrivacylink);
 }

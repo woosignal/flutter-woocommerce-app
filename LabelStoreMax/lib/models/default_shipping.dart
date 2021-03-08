@@ -8,18 +8,21 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/cupertino.dart';
+
 class DefaultShipping {
   String code;
   String country;
   List<DefaultShippingState> states;
-  DefaultShipping({this.code, this.country, this.states});
+  DefaultShipping(
+      {@required this.code, @required this.country, @required this.states});
 }
 
 class DefaultShippingState {
   String code;
   String name;
 
-  DefaultShippingState({this.code, this.name});
+  DefaultShippingState({@required this.code, @required this.name});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -29,9 +32,6 @@ class DefaultShippingState {
   }
 
   DefaultShippingState.fromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      return;
-    }
     this.code = json['code'];
     this.name = json['name'];
   }

@@ -9,8 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/menu_item.dart';
 import 'package:label_storemax/helpers/tools.dart';
 
@@ -53,28 +53,25 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            storeLogo(height: 100),
+            StoreLogo(height: 100),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  (use_wp_login
-                      ? wsMenuItem(
-                          context,
+                  (AppHelper.instance.appConfig.wpLoginEnabled == 1
+                      ? MenuItem(
                           title: trans(context, "Profile"),
                           leading: Icon(Icons.account_circle),
                           action: _actionProfile,
                         )
                       : Container()),
-                  wsMenuItem(
-                    context,
+                  MenuItem(
                     title: trans(context, "Cart"),
                     leading: Icon(Icons.shopping_cart),
                     action: _actionCart,
                   ),
-                  wsMenuItem(
-                    context,
+                  MenuItem(
                     title: trans(context, "About Us"),
                     leading: Icon(Icons.account_balance),
                     action: _actionAboutUs,
@@ -97,7 +94,8 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
   }
 
   void _actionProfile() async {
-    if (use_wp_login == true && !(await authCheck())) {
+    if (AppHelper.instance.appConfig.wpLoginEnabled == 1 &&
+        !(await authCheck())) {
       UserAuth.instance.redirect = "/account-detail";
       Navigator.pushNamed(context, "/account-landing");
       return;

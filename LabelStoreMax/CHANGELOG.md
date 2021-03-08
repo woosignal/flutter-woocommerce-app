@@ -1,3 +1,11 @@
+## [3.0.0] - 2020-03-08
+
+* Major release
+* Flutter 2.0.0+ support
+* Manage app from WooSignal
+* Code tidy up
+* Bug fixes
+
 ## [2.6.0] - 2020-02-24
 
 * Ability to manage affiliate products

@@ -100,7 +100,7 @@ class CheckoutSession {
     sharedPref.remove(sfKeyShippingCheckout);
   }
 
-  Future<String> total({bool withFormat, TaxRate taxRate}) async {
+  Future<String> total({bool withFormat = false, TaxRate taxRate}) async {
     double totalCart = parseWcPrice(await Cart.getInstance.getTotal());
     double totalShipping = 0;
     if (shippingType != null && shippingType.object != null) {
@@ -126,7 +126,7 @@ class CheckoutSession {
       total += parseWcPrice(taxAmount);
     }
 
-    if (withFormat != null && withFormat == true) {
+    if (withFormat == true) {
       return formatDoubleCurrency(total: total);
     }
     return total.toStringAsFixed(2);

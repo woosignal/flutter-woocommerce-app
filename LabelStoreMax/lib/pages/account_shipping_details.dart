@@ -33,31 +33,19 @@ class _AccountShippingDetailsPageState
   _AccountShippingDetailsPageState();
 
   // BILLING TEXT CONTROLLERS
-  TextEditingController _txtShippingFirstName;
-  TextEditingController _txtShippingLastName;
-  TextEditingController _txtShippingAddressLine;
-  TextEditingController _txtShippingCity;
-  TextEditingController _txtShippingPostalCode;
-  TextEditingController _txtShippingState;
-  TextEditingController _txtShippingCountry;
+  TextEditingController _txtShippingFirstName = TextEditingController();
+  TextEditingController _txtShippingLastName = TextEditingController();
+  TextEditingController _txtShippingAddressLine = TextEditingController();
+  TextEditingController _txtShippingCity = TextEditingController();
+  TextEditingController _txtShippingPostalCode = TextEditingController();
+  TextEditingController _txtShippingState = TextEditingController();
+  TextEditingController _txtShippingCountry = TextEditingController();
 
-  bool _isLoading, _isUpdating;
+  bool _isLoading = true, _isUpdating = false;
 
   @override
   void initState() {
     super.initState();
-
-    _txtShippingFirstName = TextEditingController();
-    _txtShippingLastName = TextEditingController();
-    _txtShippingAddressLine = TextEditingController();
-    _txtShippingCity = TextEditingController();
-    _txtShippingPostalCode = TextEditingController();
-    _txtShippingState = TextEditingController();
-    _txtShippingCountry = TextEditingController();
-
-    _isLoading = true;
-    _isUpdating = false;
-
     _fetchUserDetails();
   }
 
@@ -100,7 +88,7 @@ class _AccountShippingDetailsPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -131,16 +119,14 @@ class _AccountShippingDetailsPageState
                               Row(
                                 children: <Widget>[
                                   Flexible(
-                                    child: wsTextEditingRow(
-                                      context,
+                                    child: TextEditingRow(
                                       heading: trans(context, "First Name"),
                                       controller: _txtShippingFirstName,
                                       shouldAutoFocus: true,
                                     ),
                                   ),
                                   Flexible(
-                                    child: wsTextEditingRow(
-                                      context,
+                                    child: TextEditingRow(
                                       heading: trans(context, "Last Name"),
                                       controller: _txtShippingLastName,
                                     ),
@@ -150,22 +136,19 @@ class _AccountShippingDetailsPageState
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                               ),
-                              wsTextEditingRow(
-                                context,
+                              TextEditingRow(
                                 heading: trans(context, "Address Line"),
                                 controller: _txtShippingAddressLine,
                               ),
                               Row(children: <Widget>[
                                 Flexible(
-                                  child: wsTextEditingRow(
-                                    context,
+                                  child: TextEditingRow(
                                     heading: trans(context, "City"),
                                     controller: _txtShippingCity,
                                   ),
                                 ),
                                 Flexible(
-                                  child: wsTextEditingRow(
-                                    context,
+                                  child: TextEditingRow(
                                     heading: trans(context, "State"),
                                     controller: _txtShippingState,
                                   ),
@@ -174,15 +157,13 @@ class _AccountShippingDetailsPageState
                               Row(
                                 children: <Widget>[
                                   Flexible(
-                                    child: wsTextEditingRow(
-                                      context,
+                                    child: TextEditingRow(
                                       heading: trans(context, "Postal code"),
                                       controller: _txtShippingPostalCode,
                                     ),
                                   ),
                                   Flexible(
-                                    child: wsTextEditingRow(
-                                      context,
+                                    child: TextEditingRow(
                                       heading: trans(context, "Country"),
                                       controller: _txtShippingCountry,
                                     ),
@@ -218,10 +199,10 @@ class _AccountShippingDetailsPageState
                       ),
                       Column(
                         children: <Widget>[
-                          wsPrimaryButton(context,
+                          PrimaryButton(
                               title: trans(context, "UPDATE DETAILS"),
                               action:
-                                  _isUpdating ? null : _updateShippingDetails),
+                                  _isUpdating ? () {} : _updateShippingDetails),
                         ],
                       ),
                     ],

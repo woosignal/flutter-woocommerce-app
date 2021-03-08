@@ -32,12 +32,14 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  bool _shouldStopRequests, waitForNextRequest, _isLoading, _isLoadingOrders;
+  bool _shouldStopRequests = false,
+      waitForNextRequest = false,
+      _isLoading = true,
+      _isLoadingOrders = true;
 
-  int _page;
-  List<Order> _orders;
+  int _page = 1, _currentTabIndex = 0;
+  List<Order> _orders = [];
   WCCustomerInfoResponse _wcCustomerInfoResponse;
-  int _currentTabIndex = 0;
   Widget _activeBody;
 
   TabController _tabController;
@@ -46,11 +48,6 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   @override
   void initState() {
     super.initState();
-    _shouldStopRequests = false;
-    waitForNextRequest = false;
-
-    _isLoading = true;
-    _isLoadingOrders = true;
     _page = 1;
     _orders = [];
     _tabs = [
@@ -117,7 +114,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         ),
         centerTitle: true,
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: _isLoading
@@ -337,7 +334,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
             controller: _refreshController,
             onRefresh: _onRefresh,
             onLoading: _onLoading,
-            child: (_orders.length != null && _orders.length > 0
+            child: (_orders.length > 0
                 ? ListView.builder(
                     itemBuilder: (cxt, i) {
                       return Card(
@@ -482,12 +479,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     }
   }
 
-  _viewProfileDetail(int i) {
-    int orderId = _orders[i].id;
-    Navigator.pushNamed(
-      context,
-      "/account-order-detail",
-      arguments: orderId,
-    );
-  }
+  _viewProfileDetail(int i) => Navigator.pushNamed(
+        context,
+        "/account-order-detail",
+        arguments: _orders[i].id,
+      );
 }

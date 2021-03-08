@@ -40,9 +40,7 @@ class AppLocalizations {
     });
   }
 
-  String trans(String key) {
-    return _localizedStrings[key];
-  }
+  String trans(String key) => _localizedStrings[key];
 }
 
 class _AppLocalizationsDelegate

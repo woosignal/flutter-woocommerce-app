@@ -10,18 +10,20 @@
 
 import 'dart:io';
 
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/billing_details.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 
 Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   OrderWC orderWC = OrderWC();
+  WooSignalApp wooSignalApp = AppHelper.instance.appConfig;
 
   String paymentMethodName = CheckoutSession.getInstance.paymentType.name ?? "";
 
@@ -33,9 +35,9 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
   orderWC.setPaid = markPaid;
   orderWC.status = "pending";
-  orderWC.currency = app_currency_iso.toUpperCase();
+  orderWC.currency = wooSignalApp.currencyMeta.code.toUpperCase();
   orderWC.customerId =
-      (use_wp_login == true) ? int.parse(await readUserId()) : 0;
+      (wooSignalApp.wpLoginEnabled == 1) ? int.parse(await readUserId()) : 0;
 
   List<LineItems> lineItems = [];
   List<CartLineItem> cartItems = await Cart.getInstance.getCart();
@@ -89,7 +91,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   orderWC.shipping = shipping;
 
   orderWC.shippingLines = [];
-  if (app_disable_shipping == false) {
+  if (wooSignalApp.disableShipping != 1) {
     Map<String, dynamic> shippingLineFeeObj =
         CheckoutSession.getInstance.shippingType.toShippingLineFee();
     if (shippingLineFeeObj != null) {

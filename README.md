@@ -4,7 +4,7 @@
 	
 # WooCommerce App: Label StoreMax
 
-### Label StoreMax - v2.6.0
+### Label StoreMax - v3.0.0
 
 
 [Official WooSignal WooCommerce App](https://woosignal.com)
@@ -19,7 +19,7 @@
 
 Label StoreMax is a WooCommerce Flutter App template, built exclusively for online shopping and it offers a great variety of options to customise the look and feel of the App. Label StoreMax supports product views, multi-variation products, category searches + more.
 
-1. Supports the latest WooCommerce (3.0+)
+1. Supports the latest WooCommerce (3.5+)
 2. [Documentation available](https://woosignal.com/docs/app/ios/label-storemax)
 
 ## Some features integrated

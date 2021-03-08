@@ -9,13 +9,14 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_auth.dart';
 import 'package:label_storemax/helpers/shared_pref/sp_user_id.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/helpers/shared_pref.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:wp_json_api/exceptions/empty_username_exception.dart';
 import 'package:wp_json_api/exceptions/existing_user_email_exception.dart';
 import 'package:wp_json_api/exceptions/existing_user_login_exception.dart';
@@ -36,21 +37,16 @@ class AccountRegistrationPage extends StatefulWidget {
 class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
   _AccountRegistrationPageState();
 
-  bool _hasTappedRegister;
-  TextEditingController _tfEmailAddressController;
-  TextEditingController _tfPasswordController;
-  TextEditingController _tfFirstNameController;
-  TextEditingController _tfLastNameController;
+  bool _hasTappedRegister = false;
+  TextEditingController _tfEmailAddressController = TextEditingController();
+  TextEditingController _tfPasswordController = TextEditingController();
+  TextEditingController _tfFirstNameController = TextEditingController();
+  TextEditingController _tfLastNameController = TextEditingController();
+  WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   void initState() {
     super.initState();
-
-    _hasTappedRegister = false;
-    _tfEmailAddressController = TextEditingController();
-    _tfPasswordController = TextEditingController();
-    _tfFirstNameController = TextEditingController();
-    _tfLastNameController = TextEditingController();
   }
 
   @override
@@ -68,7 +64,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
         ),
         centerTitle: true,
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: Column(
@@ -78,8 +74,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                 child: Row(
                   children: <Widget>[
                     Flexible(
-                      child: wsTextEditingRow(
-                        context,
+                      child: TextEditingRow(
                         heading: trans(context, "First Name"),
                         controller: _tfFirstNameController,
                         shouldAutoFocus: true,
@@ -87,8 +82,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                       ),
                     ),
                     Flexible(
-                      child: wsTextEditingRow(
-                        context,
+                      child: TextEditingRow(
                         heading: trans(context, "Last Name"),
                         controller: _tfLastNameController,
                         shouldAutoFocus: false,
@@ -97,24 +91,22 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                     ),
                   ],
                 )),
-            wsTextEditingRow(
-              context,
+            TextEditingRow(
               heading: trans(context, "Email address"),
               controller: _tfEmailAddressController,
               shouldAutoFocus: false,
               keyboardType: TextInputType.emailAddress,
             ),
-            wsTextEditingRow(
-              context,
+            TextEditingRow(
               heading: trans(context, "Password"),
               controller: _tfPasswordController,
               shouldAutoFocus: true,
               obscureText: true,
             ),
             Padding(
-              child: wsPrimaryButton(context,
+              child: PrimaryButton(
                   title: trans(context, "Sign up"),
-                  action: _hasTappedRegister ? null : _signUpTapped),
+                  action: _hasTappedRegister ? () {} : _signUpTapped),
               padding: EdgeInsets.only(top: 10),
             ),
             Padding(
@@ -123,7 +115,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                   text: TextSpan(
                     text: trans(
                             context, "By tapping \"Register\" you agree to ") +
-                        app_name +
+                        AppHelper.instance.appConfig.appName +
                         '\'s ',
                     children: <TextSpan>[
                       TextSpan(
@@ -154,7 +146,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
     String firstName = _tfFirstNameController.text;
     String lastName = _tfLastNameController.text;
 
-    if (email != null) {
+    if (email.isNotEmpty) {
       email = email.trim();
     }
 
@@ -180,7 +172,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       });
 
       String username =
-          (email.replaceAll(new RegExp(r'(@|\.)'), "")) + randomStr(4);
+          (email.replaceAll(new RegExp(r'([@.])'), "")) + randomStr(4);
 
       WPUserRegisterResponse wpUserRegisterResponse;
       try {
@@ -243,7 +235,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             .wpUpdateUserInfo(token, firstName: firstName, lastName: lastName));
 
         showEdgeAlertWith(context,
-            title: trans(context, "Hello") + " $firstName",
+            title: "${trans(context, "Hello")} $firstName",
             desc: trans(context, "you're now logged in"),
             style: EdgeAlertStyle.SUCCESS,
             icon: Icons.account_circle);
@@ -254,26 +246,28 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
   }
 
   _viewTOSModal() {
-    showPlatformAlertDialog(context,
-        title: trans(context, "Actions"),
-        subtitle: trans(context, "View Terms and Conditions or Privacy policy"),
-        actions: [
-          dialogAction(context,
-              title: trans(context, "Terms and Conditions"),
-              action: _viewTermsConditions),
-          dialogAction(context,
-              title: trans(context, "Privacy Policy"),
-              action: _viewPrivacyPolicy),
-        ]);
+    showPlatformAlertDialog(
+      context,
+      title: trans(context, "Actions"),
+      subtitle: trans(context, "View Terms and Conditions or Privacy policy"),
+      actions: [
+        dialogAction(context,
+            title: trans(context, "Terms and Conditions"),
+            action: _viewTermsConditions),
+        dialogAction(context,
+            title: trans(context, "Privacy Policy"),
+            action: _viewPrivacyPolicy),
+      ],
+    );
   }
 
   void _viewTermsConditions() {
     Navigator.pop(context);
-    openBrowserTab(url: app_terms_url);
+    openBrowserTab(url: _wooSignalApp.appTermslink);
   }
 
   void _viewPrivacyPolicy() {
     Navigator.pop(context);
-    openBrowserTab(url: app_privacy_url);
+    openBrowserTab(url: _wooSignalApp.appPrivacylink);
   }
 }

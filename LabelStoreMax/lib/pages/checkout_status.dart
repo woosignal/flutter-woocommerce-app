@@ -44,7 +44,7 @@ class _CheckoutStatusState extends State<CheckoutStatusPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: storeLogo(height: 60),
+        title: StoreLogo(height: 60),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),

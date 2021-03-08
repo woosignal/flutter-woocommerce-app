@@ -10,8 +10,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:label_storemax/app_payment_methods.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/tools.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/customer_address.dart';
@@ -20,6 +20,7 @@ import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 import 'package:label_storemax/widgets/woosignal_ui.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CheckoutConfirmationPage extends StatefulWidget {
   CheckoutConfirmationPage({Key key}) : super(key: key);
@@ -32,17 +33,18 @@ class CheckoutConfirmationPage extends StatefulWidget {
 class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   CheckoutConfirmationPageState();
 
-  bool _showFullLoader, _isProcessingPayment;
+  bool _showFullLoader = true, _isProcessingPayment = false;
 
   List<TaxRate> _taxRates;
   TaxRate _taxRate;
+  WooSignalApp _wooSignalApp;
 
   @override
   void initState() {
     super.initState();
+    _wooSignalApp = AppHelper.instance.appConfig;
     _taxRates = [];
-    _showFullLoader = true;
-    _isProcessingPayment = false;
+
     if (CheckoutSession.getInstance.paymentType == null) {
       CheckoutSession.getInstance.paymentType = arrPaymentMethods.first;
     }
@@ -100,29 +102,26 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
     TaxRate taxRate;
     if (shippingCountry.hasState()) {
-      taxRate = _taxRates.firstWhere(
-        (t) {
-          if (shippingCountry == null ||
-              (shippingCountry?.state?.code ?? "") == "") {
-            return false;
-          }
-
-          List<String> stateElements = shippingCountry.state.code.split(":");
-          String state = stateElements.last;
-
-          if (t.country == shippingCountry.countryCode &&
-              t.state == state &&
-              t.postcode == postalCode) {
-            return true;
-          }
-
-          if (t.country == shippingCountry.countryCode && t.state == state) {
-            return true;
-          }
+      taxRate = _taxRates.firstWhere((t) {
+        if (shippingCountry == null ||
+            (shippingCountry?.state?.code ?? "") == "") {
           return false;
-        },
-        orElse: () => null,
-      );
+        }
+
+        List<String> stateElements = shippingCountry.state.code.split(":");
+        String state = stateElements.last;
+
+        if (t.country == shippingCountry.countryCode &&
+            t.state == state &&
+            t.postcode == postalCode) {
+          return true;
+        }
+
+        if (t.country == shippingCountry.countryCode && t.state == state) {
+          return true;
+        }
+        return false;
+      }, orElse: () => null);
     }
 
     if (taxRate == null) {
@@ -183,10 +182,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: storeLogo(height: 50),
+        title: StoreLogo(height: 50),
         centerTitle: true,
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: !_showFullLoader
@@ -260,7 +259,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                         context, "Select a payment method"),
                                     action: _actionPayWith,
                                     showBorderBottom: true)),
-                            app_disable_shipping == true
+                            _wooSignalApp.disableShipping == 1
                                 ? null
                                 : (CheckoutSession.getInstance.shippingType !=
                                         null
@@ -295,7 +294,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       wsCheckoutSubtotalWidgetFB(
                         title: trans(context, "Subtotal"),
                       ),
-                      app_disable_shipping == true
+                      _wooSignalApp.disableShipping == 1
                           ? null
                           : widgetCheckoutMeta(context,
                               title: trans(context, "Shipping fee"),
@@ -316,8 +315,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                       ),
                     ].where((e) => e != null).toList(),
                   ),
-                  wsPrimaryButton(
-                    context,
+                  PrimaryButton(
                     title: _isProcessingPayment
                         ? "PROCESSING..."
                         : trans(context, "CHECKOUT"),
@@ -369,7 +367,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (app_disable_shipping == false &&
+    if (_wooSignalApp.disableShipping == 1 &&
         CheckoutSession.getInstance.shippingType == null) {
       showEdgeAlertWith(
         context,
@@ -392,7 +390,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (app_disable_shipping == false &&
+    if (_wooSignalApp.disableShipping != 1 &&
         CheckoutSession.getInstance.shippingType.minimumValue != null) {
       String total = await Cart.getInstance.getTotal();
       if (total == null) {
@@ -411,6 +409,17 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
             duration: 3);
         return;
       }
+    }
+
+    bool appStatus = await appWooSignal((api) => api.checkAppStatus());
+
+    if (!appStatus) {
+      showEdgeAlertWith(context,
+          title: trans(context, "Sorry"),
+          desc: "${trans(context, "Retry later")}",
+          style: EdgeAlertStyle.INFO,
+          duration: 3);
+      return;
     }
 
     if (_isProcessingPayment == true) {

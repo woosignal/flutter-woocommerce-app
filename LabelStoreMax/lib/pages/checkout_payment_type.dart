@@ -39,7 +39,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(trans(context, "Payment Method"),
@@ -106,8 +106,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                             ),
                           ),
                         ),
-                        wsLinkButton(
-                          context,
+                        LinkButton(
                           title: trans(context, "CANCEL"),
                           action: () => Navigator.pop(context),
                         ),

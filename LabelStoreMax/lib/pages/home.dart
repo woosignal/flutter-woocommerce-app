@@ -8,8 +8,8 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
 import 'package:label_storemax/widgets/cart_icon.dart';
@@ -34,15 +34,12 @@ class _HomePageState extends State<HomePage> {
   List<WS.ProductCategory> _categories = [];
   final GlobalKey _key = GlobalKey();
 
-  int _page;
-  bool _shouldStopRequests, waitForNextRequest, _isLoading;
+  int _page = 1;
+  bool _shouldStopRequests, waitForNextRequest, _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-
-    _isLoading = true;
-    _page = 1;
     _home();
   }
 
@@ -86,7 +83,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _modalBottomSheetMenu() {
+  _modalBottomSheetMenu() {
     _key.currentState.setState(() {});
     wsModalBottom(
       context,
@@ -94,23 +91,22 @@ class _HomePageState extends State<HomePage> {
       bodyWidget: ListView.separated(
         itemCount: _categories.length,
         separatorBuilder: (cxt, i) => Divider(),
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(parseHtmlString(_categories[index].name)),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, "/browse-category",
-                      arguments: _categories[index])
-                  .then((value) => setState(() {}));
-            },
-          );
-        },
+        itemBuilder: (BuildContext context, int index) => ListTile(
+          title: Text(parseHtmlString(_categories[index].name)),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, "/browse-category",
+                    arguments: _categories[index])
+                .then((value) => setState(() {}));
+          },
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    List<String> bannerImages = AppHelper.instance.appConfig.bannerImages;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -121,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           ),
           margin: EdgeInsets.only(left: 0),
         ),
-        title: storeLogo(height: 50),
+        title: StoreLogo(height: 55),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -144,50 +140,18 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      capitalize(trans(context, "Shop")) + " / ",
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
-                      maxLines: 1,
-                    ),
-                    AutoSizeText(
-                      trans(context, "Newest"),
-                      style: Theme.of(context).primaryTextTheme.bodyText2,
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
-                Flexible(
-                  child: MaterialButton(
-                    minWidth: 100,
-                    height: 60,
-                    child: AutoSizeText(
-                      trans(context, "Browse categories"),
-                      style: Theme.of(context).primaryTextTheme.bodyText1,
-                      maxLines: 1,
-                      textAlign: TextAlign.right,
-                    ),
-                    onPressed: _modalBottomSheetMenu,
-                  ),
-                )
-              ],
-            ),
             (_isLoading
                 ? Expanded(child: showAppLoader())
                 : Expanded(
-                    child: refreshableScroll(
-                      context,
-                      refreshController: _refreshController,
+                    child: RefreshableScrollContainer(
+                      controller: _refreshController,
                       onRefresh: _onRefresh,
                       onLoading: _onLoading,
                       products: _products,
                       onTap: _showProduct,
+                      bannerHeight: MediaQuery.of(context).size.height / 3.5,
+                      bannerImages: bannerImages,
+                      modalBottomSheetMenu: _modalBottomSheetMenu,
                     ),
                     flex: 1,
                   )),
@@ -206,7 +170,7 @@ class _HomePageState extends State<HomePage> {
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async {
+  _onLoading() async {
     await _fetchMoreProducts();
 
     if (mounted) {
@@ -219,8 +183,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _showProduct(WSProduct.Product product) {
-    Navigator.pushNamed(context, "/product-detail", arguments: product)
-        .then((value) => _key.currentState.setState(() {}));
-  }
+  _showProduct(WSProduct.Product product) =>
+      Navigator.pushNamed(context, "/product-detail", arguments: product)
+          .then((value) => _key.currentState.setState(() {}));
 }

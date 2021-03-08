@@ -37,16 +37,14 @@ class CustomerAddressInput extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Flexible(
-                child: wsTextEditingRow(
-                  context,
+                child: TextEditingRow(
                   heading: trans(context, "First Name"),
                   controller: txtControllerFirstName,
                   shouldAutoFocus: true,
                 ),
               ),
               Flexible(
-                child: wsTextEditingRow(
-                  context,
+                child: TextEditingRow(
                   heading: trans(context, "Last Name"),
                   controller: txtControllerLastName,
                 ),
@@ -60,15 +58,13 @@ class CustomerAddressInput extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Flexible(
-                child: wsTextEditingRow(
-                  context,
+                child: TextEditingRow(
                   heading: trans(context, "Address Line"),
                   controller: txtControllerAddressLine,
                 ),
               ),
               Flexible(
-                child: wsTextEditingRow(
-                  context,
+                child: TextEditingRow(
                   heading: trans(context, "City"),
                   controller: txtControllerCity,
                 ),
@@ -80,14 +76,13 @@ class CustomerAddressInput extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Flexible(
-                child: wsTextEditingRow(
-                  context,
+                child: TextEditingRow(
                   heading: trans(context, "Postal code"),
                   controller: txtControllerPostalCode,
                 ),
               ),
               Flexible(
-                child: wsTextEditingRow(context,
+                child: TextEditingRow(
                     heading: trans(context, "Email address"),
                     keyboardType: TextInputType.emailAddress,
                     controller: txtControllerEmailAddress),
@@ -96,38 +91,62 @@ class CustomerAddressInput extends StatelessWidget {
           ),
         ),
         Flexible(
-          child: Row(
-            children: <Widget>[
-              (customerCountry.hasState()
-                  ? Flexible(
-                      child: Padding(
-                        child: wsSecondaryButton(
-                          context,
-                          title: (customerCountry.state != null
-                              ? "${trans(context, "Selected")}\n${customerCountry?.state?.name ?? ""}"
-                              : trans(context, "Select state")),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Row(
+              children: <Widget>[
+                if (customerCountry.hasState())
+                  Flexible(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Text(
+                            trans(context, "State"),
+                            style: Theme.of(context).primaryTextTheme.bodyText1,
+                            textAlign: TextAlign.left,
+                          ),
+                          width: double.infinity,
+                        ),
+                        Padding(
+                          child: SecondaryButton(
+                            title: (customerCountry.state != null
+                                ? "${trans(context, "Selected")}\n${customerCountry?.state?.name ?? ""}"
+                                : trans(context, "Select state")),
+                            action: onTapCountry,
+                          ),
+                          padding: EdgeInsets.all(8),
+                        ),
+                      ],
+                    ),
+                  ),
+                Flexible(
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Text(
+                          trans(context, "Country"),
+                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          textAlign: TextAlign.left,
+                        ),
+                        width: double.infinity,
+                      ),
+                      Padding(
+                        child: SecondaryButton(
+                          title: (customerCountry != null &&
+                                  (customerCountry?.name ?? "").isNotEmpty
+                              ? "${trans(context, "Selected")}\n${customerCountry.name}"
+                              : trans(context, "Select country")),
                           action: onTapCountry,
                         ),
                         padding: EdgeInsets.all(8),
                       ),
-                    )
-                  : null),
-              Flexible(
-                child: Padding(
-                  child: wsSecondaryButton(
-                    context,
-                    title: (customerCountry != null &&
-                            (customerCountry?.name ?? "").isNotEmpty
-                        ? "${trans(context, "Selected")}\n${customerCountry.name}"
-                        : trans(context, "Select country")),
-                    action: onTapCountry,
+                    ],
                   ),
-                  padding: EdgeInsets.all(8),
                 ),
-              ),
-            ].where((element) => element != null).toList(),
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ].where((element) => element != null).toList(),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
           ),
         ),
       ].where((e) => e != null).toList(),

@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/cupertino.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 
 import '../helpers/tools.dart';
@@ -18,7 +19,11 @@ class ShippingType {
   String minimumValue;
   dynamic object;
 
-  ShippingType({this.methodId, this.object, this.cost, this.minimumValue});
+  ShippingType(
+      {@required this.methodId,
+      this.object,
+      @required this.cost,
+      @required this.minimumValue});
 
   Map<String, dynamic> toJson() => {
         'methodId': methodId,
@@ -27,8 +32,8 @@ class ShippingType {
         'minimumValue': minimumValue
       };
 
-  String getTotal({bool withFormatting}) {
-    if (this.methodId != null && this.object != null) {
+  String getTotal({bool withFormatting = false}) {
+    if (this.object != null) {
       switch (this.methodId) {
         case "flat_rate":
           FlatRate flatRate = (this.object as FlatRate);
@@ -47,14 +52,13 @@ class ShippingType {
               : localPickup.cost);
         default:
           return "0";
-          break;
       }
     }
     return "0";
   }
 
   String getTitle() {
-    if (this.methodId != null && this.object != null) {
+    if (this.object != null) {
       switch (this.methodId) {
         case "flat_rate":
           FlatRate flatRate = (this.object as FlatRate);
@@ -67,14 +71,13 @@ class ShippingType {
           return localPickup.title;
         default:
           return "";
-          break;
       }
     }
     return "";
   }
 
   Map<String, dynamic> toShippingLineFee() {
-    if (this.methodId != null && this.object != null) {
+    if (this.object != null) {
       Map<String, dynamic> tmpShippingLinesObj = {};
 
       switch (this.methodId) {
@@ -98,7 +101,6 @@ class ShippingType {
           break;
         default:
           return null;
-          break;
       }
       return tmpShippingLinesObj;
     }

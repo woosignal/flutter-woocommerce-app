@@ -30,8 +30,9 @@ class AccountProfileUpdatePage extends StatefulWidget {
 class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
   _AccountProfileUpdatePageState();
 
-  bool isLoading;
-  TextEditingController _tfFirstName, _tfLastName;
+  bool isLoading = true;
+  TextEditingController _tfFirstName = TextEditingController(),
+      _tfLastName = TextEditingController();
 
   @override
   void dispose() {
@@ -41,11 +42,6 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
   @override
   void initState() {
     super.initState();
-
-    isLoading = true;
-    _tfFirstName = TextEditingController();
-    _tfLastName = TextEditingController();
-
     _fetchUserDetails();
   }
 
@@ -91,16 +87,14 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                             child: Row(
                               children: <Widget>[
                                 Flexible(
-                                  child: wsTextEditingRow(
-                                    context,
+                                  child: TextEditingRow(
                                     heading: trans(context, "First Name"),
                                     controller: _tfFirstName,
                                     keyboardType: TextInputType.text,
                                   ),
                                 ),
                                 Flexible(
-                                  child: wsTextEditingRow(
-                                    context,
+                                  child: TextEditingRow(
                                     heading: trans(context, "Last Name"),
                                     controller: _tfLastName,
                                     keyboardType: TextInputType.text,
@@ -115,7 +109,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                           Padding(
                             padding: EdgeInsets.only(top: 10),
                           ),
-                          wsPrimaryButton(context,
+                          PrimaryButton(
                               title: trans(context, "Update details"),
                               action: _updateDetails)
                         ],

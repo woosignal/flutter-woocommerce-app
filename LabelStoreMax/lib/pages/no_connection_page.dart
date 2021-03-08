@@ -1,4 +1,4 @@
-//  Label StoreMAX
+//  StoreMob
 //
 //  Created by Anthony Gordon.
 //  2021, WooSignal Ltd. All rights reserved.
@@ -9,22 +9,24 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/widgets/buttons.dart';
 
-class ErrorPage extends StatefulWidget {
-  ErrorPage();
+class NoConnectionPage extends StatefulWidget {
+  NoConnectionPage();
 
   @override
-  _ErrorPageState createState() => _ErrorPageState();
+  _NoConnectionPageState createState() => _NoConnectionPageState();
 }
 
-class _ErrorPageState extends State<ErrorPage> {
-  _ErrorPageState();
+class _NoConnectionPageState extends State<NoConnectionPage> {
+  _NoConnectionPageState();
 
   @override
   void initState() {
     super.initState();
+    print('WooCommerce site is not connected');
   }
 
   @override
@@ -45,18 +47,27 @@ class _ErrorPageState extends State<ErrorPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  trans(context, "Sorry, something went wrong"),
+                  trans(context, "Oops, something went wrong"),
                   style: Theme.of(context).primaryTextTheme.bodyText2,
                   textAlign: TextAlign.center,
                 ),
               ),
-              LinkButton(
-                  title: trans(context, "Back"),
-                  action: () => Navigator.pop(context)),
+              LinkButton(title: trans(context, "Retry"), action: _retry),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _retry() async {
+    AppHelper.instance.appConfig = await appWooSignal((api) => api.getApp());
+
+    if (AppHelper.instance.appConfig != null) {
+      Navigator.pushNamed(context, "/home");
+      return;
+    }
+    showEdgeAlertWith(context,
+        title: trans(context, "Oops"), desc: trans(context, "Retry later"));
   }
 }

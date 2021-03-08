@@ -46,7 +46,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: storeLogo(height: 60),
+        title: StoreLogo(height: 55),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -69,8 +69,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: wsPrimaryButton(
-                context,
+              child: PrimaryButton(
                 title: trans(context, "Search"),
                 action: _actionSearch,
               ),

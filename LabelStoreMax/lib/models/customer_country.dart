@@ -29,10 +29,10 @@ class CustomerCountry {
     if (json == null) {
       return;
     }
-    if (json['country_code'] !=  null) {
+    if (json['country_code'] != null) {
       countryCode = json['country_code'];
     }
-    if (json['name'] !=  null) {
+    if (json['name'] != null) {
       name = json['name'];
     }
     if (json['state'] != null) {
@@ -40,9 +40,8 @@ class CustomerCountry {
     }
   }
 
-  bool hasState() {
-    return this.state != null && this.state.name != null ? true : false;
-  }
+  bool hasState() =>
+      (this.state != null && this.state.name != null ? true : false);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

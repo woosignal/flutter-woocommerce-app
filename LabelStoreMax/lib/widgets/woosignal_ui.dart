@@ -9,13 +9,18 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/widgets/app_loader.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -50,13 +55,168 @@ Widget wsRow2Text(BuildContext context, {String text1, String text2}) {
   );
 }
 
-Widget wsNoResults(BuildContext context) {
-  return Column(
-    children: <Widget>[
-      Text(trans(context, "No results"),
-          style: Theme.of(context).primaryTextTheme.bodyText2),
-    ],
-  );
+class NoProductResults extends StatelessWidget {
+  const NoProductResults({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          Text(trans(context, "No results"),
+              style: Theme.of(context).primaryTextTheme.bodyText2),
+        ],
+      );
+}
+
+class TopNav extends StatelessWidget {
+  const TopNav({Key key, this.onPressBrowseCategories}) : super(key: key);
+
+  final Function() onPressBrowseCategories;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "${capitalize(trans(context, "Shop"))} / ",
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+                maxLines: 1,
+              ),
+              AutoSizeText(
+                trans(context, "Newest"),
+                style: Theme.of(context).primaryTextTheme.bodyText2,
+                maxLines: 1,
+              ),
+            ],
+          ),
+          Flexible(
+            child: MaterialButton(
+              minWidth: 100,
+              height: 60,
+              child: AutoSizeText(
+                trans(context, "Browse categories"),
+                style: Theme.of(context).primaryTextTheme.bodyText1,
+                maxLines: 1,
+                textAlign: TextAlign.right,
+              ),
+              onPressed: onPressBrowseCategories,
+            ),
+          )
+        ],
+      );
+}
+
+class RefreshableScrollContainer extends StatelessWidget {
+  const RefreshableScrollContainer(
+      {Key key,
+      this.controller,
+      this.onRefresh,
+      this.onLoading,
+      this.products,
+      this.onTap,
+      this.bannerHeight,
+      this.bannerImages,
+      this.modalBottomSheetMenu})
+      : super(key: key);
+
+  final RefreshController controller;
+  final Function onRefresh;
+  final Function onLoading;
+  final List<Product> products;
+  final Function onTap;
+  final double bannerHeight;
+  final List<String> bannerImages;
+  final Function modalBottomSheetMenu;
+
+  @override
+  Widget build(BuildContext context) => SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text(trans(context, "pull up load"));
+            } else if (mode == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text(trans(context, "Load Failed! Click retry!"));
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text(trans(context, "release to load more"));
+            } else {
+              body = Text(trans(context, "No more products"));
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        controller: controller,
+        onRefresh: onRefresh,
+        onLoading: onLoading,
+        child: (products.length != null && products.length > 0
+            ? StaggeredGridView.countBuilder(
+                crossAxisCount: 2,
+                itemCount:
+                    (products.length + (bannerImages.length > 0 ? 2 : 0)),
+                itemBuilder: (BuildContext context, int index) {
+                  if (bannerImages.length > 0 && index == 0) {
+                    return Container(
+                      child: Swiper(
+                        itemBuilder: (BuildContext context, int index) {
+                          return CachedImage(
+                            image: bannerImages[index],
+                            fit: BoxFit.contain,
+                          );
+                        },
+                        itemCount: bannerImages.length,
+                        viewportFraction: 0.8,
+                        scale: 0.9,
+                      ),
+                      height: bannerHeight,
+                    );
+                  }
+                  if (bannerImages.length > 0 && index == 1 ||
+                      bannerImages.length == 0 && index == 0) {
+                    return TopNav(
+                      onPressBrowseCategories: modalBottomSheetMenu,
+                    );
+                  }
+                  int productIndex =
+                      (index - (bannerImages.length > 0 ? 2 : 0));
+
+                  return Container(
+                    height: 200,
+                    child: ProductItemContainer(
+                      index: productIndex,
+                      product: products[productIndex],
+                      onTap: onTap,
+                    ),
+                  );
+                },
+                staggeredTileBuilder: (int index) {
+                  if (index == 0) {
+                    return new StaggeredTile.fit(2);
+                  }
+                  if (bannerImages.length == 0) {
+                    return new StaggeredTile.fit(1);
+                  }
+                  if (bannerImages.length > 0 && index == 0 || index == 1) {
+                    return new StaggeredTile.fit(2);
+                  }
+                  return new StaggeredTile.fit(1);
+                },
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+              )
+            : NoProductResults()),
+      );
 }
 
 Widget wsCheckoutRow(BuildContext context,
@@ -130,42 +290,53 @@ Widget wsCheckoutRow(BuildContext context,
   );
 }
 
-Widget wsTextEditingRow(BuildContext context,
-    {heading: String,
-    TextEditingController controller,
-    bool shouldAutoFocus,
-    TextInputType keyboardType,
-    bool obscureText}) {
-  return Container(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Flexible(
-          child: Padding(
-            child: Text(
-              heading,
-              style: Theme.of(context).primaryTextTheme.bodyText1,
+class TextEditingRow extends StatelessWidget {
+  const TextEditingRow({
+    Key key,
+    this.heading,
+    this.controller,
+    this.shouldAutoFocus,
+    this.keyboardType,
+    this.obscureText,
+  }) : super(key: key);
+
+  final String heading;
+  final TextEditingController controller;
+  final bool shouldAutoFocus;
+  final TextInputType keyboardType;
+  final bool obscureText;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Flexible(
+              child: Padding(
+                child: Text(
+                  heading,
+                  style: Theme.of(context).primaryTextTheme.bodyText1,
+                ),
+                padding: EdgeInsets.only(bottom: 2),
+              ),
             ),
-            padding: EdgeInsets.only(bottom: 2),
-          ),
+            Flexible(
+              child: TextField(
+                controller: controller,
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+                keyboardType: keyboardType ?? TextInputType.text,
+                autocorrect: false,
+                autofocus: shouldAutoFocus ?? false,
+                obscureText: obscureText ?? false,
+                textCapitalization: TextCapitalization.sentences,
+              ),
+            )
+          ],
         ),
-        Flexible(
-          child: TextField(
-            controller: controller,
-            style: Theme.of(context).primaryTextTheme.subtitle1,
-            keyboardType: keyboardType ?? TextInputType.text,
-            autocorrect: false,
-            autofocus: shouldAutoFocus ?? false,
-            obscureText: obscureText ?? false,
-            textCapitalization: TextCapitalization.sentences,
-          ),
-        )
-      ],
-    ),
-    padding: EdgeInsets.all(2),
-    height: 78,
-  );
+        padding: EdgeInsets.all(2),
+        height: 78,
+      );
 }
 
 Widget widgetCheckoutMeta(BuildContext context, {String title, String amount}) {
@@ -191,229 +362,241 @@ Widget widgetCheckoutMeta(BuildContext context, {String title, String amount}) {
   );
 }
 
-List<BoxShadow> wsBoxShadow({double blurRadius}) {
-  return [
-    BoxShadow(
-      color: HexColor("#e8e8e8"),
-      blurRadius: blurRadius ?? 15.0,
-      spreadRadius: 0,
-      offset: Offset(
-        0,
-        0,
-      ),
-    )
-  ];
-}
+List<BoxShadow> wsBoxShadow({double blurRadius}) => [
+      BoxShadow(
+        color: HexColor("#e8e8e8"),
+        blurRadius: blurRadius ?? 15.0,
+        spreadRadius: 0,
+        offset: Offset(
+          0,
+          0,
+        ),
+      )
+    ];
 
-Widget wsCardProductItem(BuildContext context,
-    {int index, Product product, onTap}) {
-  return LayoutBuilder(
-    builder: (cxt, constraints) => InkWell(
-      child: Container(
-        margin: EdgeInsets.all(4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              height: constraints.maxHeight / 2,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(3.0),
-                child: Stack(
-                    children: [
-                  Container(
-                    color: Colors.grey[100],
-                    height: double.infinity,
-                    width: double.infinity,
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: (product.images.length > 0
-                        ? product.images.first.src
-                        : app_product_placeholder_image),
-                    placeholder: (context, url) => Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
+class ProductItemContainer extends StatelessWidget {
+  const ProductItemContainer({
+    Key key,
+    this.index,
+    this.product,
+    this.onTap,
+  }) : super(key: key);
+
+  final int index;
+  final Product product;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (cxt, constraints) => InkWell(
+          child: Container(
+            margin: EdgeInsets.all(4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  height: constraints.maxHeight / 2,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(3.0),
+                    child: Stack(
+                        children: [
+                      Container(
+                        color: Colors.grey[100],
+                        height: double.infinity,
+                        width: double.infinity,
                       ),
-                      height: constraints.maxHeight / 2,
-                    ),
-                    errorWidget: (context, url, error) => new Icon(Icons.error),
-                    fit: BoxFit.contain,
-                    height: constraints.maxHeight / 2,
-                    width: double.infinity,
+                      CachedNetworkImage(
+                        imageUrl: (product.images.length > 0
+                            ? product.images.first.src
+                            : app_product_placeholder_image),
+                        placeholder: (context, url) => Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          height: constraints.maxHeight / 2,
+                        ),
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
+                        fit: BoxFit.contain,
+                        height: constraints.maxHeight / 2,
+                        width: double.infinity,
+                      ),
+                      (product.onSale && product.type != "variable"
+                          ? Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  color: Colors.white70,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    text: '',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text:
+                                            "${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .copyWith(
+                                              color: Colors.black87,
+                                              fontSize: 11,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : null),
+                    ].where((e) => e != null).toList()),
                   ),
-                  (product.onSale && product.type != "variable"
-                      ? Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: Colors.white70,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: '',
-                                style: Theme.of(context).textTheme.bodyText1,
-                                children: <TextSpan>[
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 2, bottom: 2),
+                  child: Text(
+                    product.name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    height: 50,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          formatStringCurrency(total: product.price) + " ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(fontWeight: FontWeight.w600),
+                          textAlign: TextAlign.left,
+                        ),
+                        (product.onSale && product.type != "variable"
+                            ? RichText(
+                                text: TextSpan(children: [
                                   TextSpan(
-                                    text:
-                                        "${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}",
+                                    text: '${trans(context, "Was")}: ',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
                                         .copyWith(
-                                          color: Colors.black87,
-                                          fontSize: 11,
-                                        ),
+                                            color: Colors.black54,
+                                            fontSize: 11),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      : null),
-                ].where((e) => e != null).toList()),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 2, bottom: 2),
-              child: Text(
-                product.name,
-                style: Theme.of(context).textTheme.bodyText2,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Flexible(
-              child: Container(
-                height: 50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    AutoSizeText(
-                      formatStringCurrency(total: product.price) + " ",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.left,
+                                  TextSpan(
+                                    text: formatStringCurrency(
+                                      total: product.regularPrice,
+                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color: Colors.grey,
+                                            fontSize: 11),
+                                  ),
+                                ]),
+                              )
+                            : null),
+                      ].where((e) => e != null).toList(),
                     ),
-                    (product.onSale && product.type != "variable"
-                        ? RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: '${trans(context, "Was")}: ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                        color: Colors.black54, fontSize: 11),
-                              ),
-                              TextSpan(
-                                text: formatStringCurrency(
-                                  total: product.regularPrice,
-                                ),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Colors.grey,
-                                        fontSize: 11),
-                              ),
-                            ]),
-                          )
-                        : null),
-                  ].where((e) => e != null).toList(),
+                  ),
                 ),
-              ),
+              ].where((e) => e != null).toList(),
             ),
-          ].where((e) => e != null).toList(),
+          ),
+          onTap: () => onTap(product),
         ),
-      ),
-      onTap: () => onTap(product),
-    ),
-  );
+      );
 }
 
 void wsModalBottom(BuildContext context,
     {String title, Widget bodyWidget, Widget extraWidget}) {
   showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (builder) {
-        return SafeArea(
-          child: Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.transparent,
-            child: new Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: new BorderRadius.only(
-                    topLeft: const Radius.circular(10.0),
-                    topRight: const Radius.circular(10.0),
-                  ),
+    context: context,
+    backgroundColor: Colors.transparent,
+    builder: (builder) {
+      return SafeArea(
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          color: Colors.transparent,
+          child: new Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(10.0),
+                  topRight: const Radius.circular(10.0),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        title,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .headline4
-                            .copyWith(fontSize: 20),
-                        textAlign: TextAlign.left,
-                      ),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      title,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .headline4
+                          .copyWith(fontSize: 20),
+                      textAlign: TextAlign.left,
                     ),
-                    Expanded(
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          boxShadow: wsBoxShadow(),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: bodyWidget,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: wsBoxShadow(),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      child: bodyWidget,
                     ),
-                    extraWidget ?? null
-                  ].where((t) => t != null).toList(),
-                )),
-          ),
-        );
-      });
-}
-
-FutureBuilder getTotalWidget() {
-  return FutureBuilder<String>(
-    future: Cart.getInstance.getTotal(withFormat: true),
-    builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.waiting:
-          return showAppLoader();
-        default:
-          if (snapshot.hasError)
-            return Text("");
-          else
-            return new Padding(
-              child: wsRow2Text(context,
-                  text1: trans(context, "Total"), text2: snapshot.data),
-              padding: EdgeInsets.only(bottom: 15, top: 15),
-            );
-      }
+                  ),
+                  extraWidget ?? null
+                ].where((t) => t != null).toList(),
+              )),
+        ),
+      );
     },
   );
 }
+
+FutureBuilder getTotalWidget() => FutureBuilder<String>(
+      future: Cart.getInstance.getTotal(withFormat: true),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return showAppLoader();
+          default:
+            if (snapshot.hasError)
+              return Text("");
+            else
+              return new Padding(
+                child: wsRow2Text(context,
+                    text1: trans(context, "Total"), text2: snapshot.data),
+                padding: EdgeInsets.only(bottom: 15, top: 15),
+              );
+        }
+      },
+    );
 
 FutureBuilder wsCheckoutTotalWidgetFB({String title, TaxRate taxRate}) {
   return FutureBuilder<String>(
@@ -507,7 +690,7 @@ FutureBuilder wsWidgetCartItemsFB(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   CartLineItem cartLineItem = snapshot.data[index];
-                  return wsCardCartItem(context,
+                  return CartItemContainer(
                       cartLineItem: cartLineItem,
                       actionIncrementQuantity: actionIncrementQuantity,
                       actionDecrementQuantity: actionDecrementQuantity,
@@ -518,134 +701,179 @@ FutureBuilder wsWidgetCartItemsFB(
   );
 }
 
-Widget wsCardCartItem(BuildContext context,
-    {CartLineItem cartLineItem,
-    void Function() actionIncrementQuantity,
-    void Function() actionDecrementQuantity,
-    void Function() actionRemoveItem}) {
-  return Container(
-    margin: EdgeInsets.only(bottom: 7),
-    decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-            bottom: BorderSide(
-          color: Colors.black12,
-          width: 1,
-        ))),
-    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-    child: Column(
-      children: <Widget>[
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Flexible(
-              child: CachedNetworkImage(
-                imageUrl: cartLineItem.imageSrc == ""
-                    ? app_product_placeholder_image
-                    : cartLineItem.imageSrc,
-                width: 100,
-                height: 100,
-                fit: BoxFit.contain,
-              ),
-              flex: 2,
-            ),
-            Flexible(
-              child: Padding(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      cartLineItem.name,
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                    ),
-                    (cartLineItem.variationOptions != null
-                        ? Text(cartLineItem.variationOptions,
-                            style: Theme.of(context).primaryTextTheme.bodyText1)
-                        : Container()),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          (cartLineItem.stockStatus == "outofstock"
-                              ? trans(context, "Out of stock")
-                              : trans(context, "In Stock")),
-                          style: (cartLineItem.stockStatus == "outofstock"
-                              ? Theme.of(context).textTheme.caption
-                              : Theme.of(context).primaryTextTheme.bodyText2),
-                        ),
-                        Text(
-                          formatDoubleCurrency(
-                            total: parseWcPrice(cartLineItem.total),
-                          ),
-                          style: Theme.of(context).primaryTextTheme.subtitle1,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.only(left: 8),
-              ),
-              flex: 5,
-            )
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+class CartItemContainer extends StatelessWidget {
+  const CartItemContainer({
+    Key key,
+    @required this.cartLineItem,
+    @required this.actionIncrementQuantity,
+    @required this.actionDecrementQuantity,
+    @required this.actionRemoveItem,
+  }) : super(key: key);
+
+  final CartLineItem cartLineItem;
+  final void Function() actionIncrementQuantity;
+  final void Function() actionDecrementQuantity;
+  final void Function() actionRemoveItem;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: EdgeInsets.only(bottom: 7),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+                bottom: BorderSide(
+              color: Colors.black12,
+              width: 1,
+            ))),
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        child: Column(
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.add_circle_outline),
-                  onPressed: actionIncrementQuantity,
-                  highlightColor: Colors.transparent,
+                Flexible(
+                  child: CachedNetworkImage(
+                    imageUrl: cartLineItem.imageSrc == ""
+                        ? app_product_placeholder_image
+                        : cartLineItem.imageSrc,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.contain,
+                  ),
+                  flex: 2,
                 ),
-                Text(cartLineItem.quantity.toString(),
-                    style: Theme.of(context).primaryTextTheme.headline6),
+                Flexible(
+                  child: Padding(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          cartLineItem.name,
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        ),
+                        (cartLineItem.variationOptions != null
+                            ? Text(cartLineItem.variationOptions,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText1)
+                            : Container()),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              (cartLineItem.stockStatus == "outofstock"
+                                  ? trans(context, "Out of stock")
+                                  : trans(context, "In Stock")),
+                              style: (cartLineItem.stockStatus == "outofstock"
+                                  ? Theme.of(context).textTheme.caption
+                                  : Theme.of(context)
+                                      .primaryTextTheme
+                                      .bodyText2),
+                            ),
+                            Text(
+                              formatDoubleCurrency(
+                                total: parseWcPrice(cartLineItem.total),
+                              ),
+                              style:
+                                  Theme.of(context).primaryTextTheme.subtitle1,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.only(left: 8),
+                  ),
+                  flex: 5,
+                )
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.add_circle_outline),
+                      onPressed: actionIncrementQuantity,
+                      highlightColor: Colors.transparent,
+                    ),
+                    Text(cartLineItem.quantity.toString(),
+                        style: Theme.of(context).primaryTextTheme.headline6),
+                    IconButton(
+                      icon: Icon(Icons.remove_circle_outline),
+                      onPressed: actionDecrementQuantity,
+                      highlightColor: Colors.transparent,
+                    ),
+                  ],
+                ),
                 IconButton(
-                  icon: Icon(Icons.remove_circle_outline),
-                  onPressed: actionDecrementQuantity,
+                  alignment: Alignment.centerRight,
+                  icon: Icon(Icons.delete_outline,
+                      color: Colors.deepOrangeAccent, size: 20),
+                  onPressed: actionRemoveItem,
                   highlightColor: Colors.transparent,
                 ),
               ],
-            ),
-            IconButton(
-              alignment: Alignment.centerRight,
-              icon: Icon(Icons.delete_outline,
-                  color: Colors.deepOrangeAccent, size: 20),
-              onPressed: actionRemoveItem,
-              highlightColor: Colors.transparent,
-            ),
+            )
           ],
-        )
-      ],
-    ),
-  );
+        ),
+      );
 }
 
-Widget storeLogo({double height, double width}) {
-  return cachedImage(app_logo_url,
+class StoreLogo extends StatelessWidget {
+  const StoreLogo({
+    Key key,
+    this.height = 100,
+    this.width = 100,
+    this.placeholder = const CircularProgressIndicator(),
+    this.fit = BoxFit.contain,
+  }) : super(key: key);
+
+  final double height;
+  final double width;
+  final Widget placeholder;
+  final BoxFit fit;
+
+  @override
+  Widget build(BuildContext context) => CachedImage(
+      image: AppHelper.instance.appConfig.appLogo,
       height: height,
-      placeholder: Container(height: height ?? 100, width: width ?? 100));
+      placeholder: Container(height: height, width: width));
 }
 
-Widget cachedImage(image, {double height, Widget placeholder, BoxFit fit}) {
-  return CachedNetworkImage(
-    imageUrl: image,
-    placeholder: (context, url) =>
-        placeholder ?? new CircularProgressIndicator(),
-    errorWidget: (context, url, error) => new Icon(Icons.error),
-    height: height ?? null,
-    width: null,
-    alignment: Alignment.center,
-    fit: fit,
-  );
+class CachedImage extends StatelessWidget {
+  const CachedImage({
+    Key key,
+    this.image,
+    this.height = 70,
+    this.width = 70,
+    this.placeholder = const CircularProgressIndicator(),
+    this.fit = BoxFit.contain,
+  }) : super(key: key);
+
+  final String image;
+  final double height;
+  final double width;
+  final Widget placeholder;
+  final BoxFit fit;
+
+  @override
+  Widget build(BuildContext context) => CachedNetworkImage(
+        imageUrl: image,
+        placeholder: (context, url) => placeholder,
+        errorWidget: (context, url, error) => new Icon(Icons.error),
+        height: height,
+        width: width,
+        alignment: Alignment.center,
+        fit: fit,
+      );
 }

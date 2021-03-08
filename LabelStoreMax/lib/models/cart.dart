@@ -10,8 +10,9 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/shared_pref.dart';
-import 'package:label_storemax/labelconfig.dart';
 import 'package:label_storemax/models/cart_line_item.dart';
 import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/models/shipping_type.dart';
@@ -31,7 +32,7 @@ class Cart {
     SharedPref sharedPref = SharedPref();
     String currentCartArrJSON = (await sharedPref.read(_keyCart) as String);
     if (currentCartArrJSON == null) {
-      cartLineItems = List<CartLineItem>();
+      cartLineItems = [];
     } else {
       cartLineItems = (jsonDecode(currentCartArrJSON) as List<dynamic>)
           .map((i) => CartLineItem.fromJson(i))
@@ -40,7 +41,7 @@ class Cart {
     return cartLineItems;
   }
 
-  void addToCart({CartLineItem cartLineItem}) async {
+  void addToCart({@required CartLineItem cartLineItem}) async {
     List<CartLineItem> cartLineItems = await getCart();
 
     if (cartLineItem.variationId != null) {
@@ -52,7 +53,7 @@ class Cart {
         return;
       }
     } else {
-      var firstCartItem = cartLineItems.firstWhere(
+      CartLineItem firstCartItem = cartLineItems.firstWhere(
           (i) => i.productId == cartLineItem.productId,
           orElse: () => null);
       if (firstCartItem != null) {
@@ -64,7 +65,7 @@ class Cart {
     saveCartToPref(cartLineItems: cartLineItems);
   }
 
-  Future<String> getTotal({bool withFormat}) async {
+  Future<String> getTotal({bool withFormat = false}) async {
     List<CartLineItem> cartLineItems = await getCart();
     double total = 0;
     cartLineItems.forEach((cartItem) {
@@ -77,7 +78,7 @@ class Cart {
     return total.toStringAsFixed(2);
   }
 
-  Future<String> getSubtotal({bool withFormat}) async {
+  Future<String> getSubtotal({bool withFormat = false}) async {
     List<CartLineItem> cartLineItems = await getCart();
     double subtotal = 0;
     cartLineItems.forEach((cartItem) {
@@ -90,9 +91,10 @@ class Cart {
   }
 
   void updateQuantity(
-      {CartLineItem cartLineItem, int incrementQuantity}) async {
+      {@required CartLineItem cartLineItem,
+      @required int incrementQuantity}) async {
     List<CartLineItem> cartLineItems = await getCart();
-    List<CartLineItem> tmpCartItem = new List<CartLineItem>();
+    List<CartLineItem> tmpCartItem = [];
     cartLineItems.forEach((cartItem) {
       if (cartItem.variationId == cartLineItem.variationId &&
           cartItem.productId == cartLineItem.productId) {
@@ -107,15 +109,14 @@ class Cart {
 
   Future<String> cartShortDesc() async {
     List<CartLineItem> cartLineItems = await getCart();
-    var tmpShortItemDesc = [];
-    cartLineItems.forEach((cartItem) {
-      tmpShortItemDesc
-          .add(cartItem.quantity.toString() + " x | " + cartItem.name);
-    });
-    return tmpShortItemDesc.join(",");
+    return cartLineItems
+        .map((cartItem) =>
+            "${cartItem.quantity.toString()} x | ${cartItem.name}")
+        .toList()
+        .join(",");
   }
 
-  void removeCartItemForIndex({int index}) async {
+  void removeCartItemForIndex({@required int index}) async {
     List<CartLineItem> cartLineItems = await getCart();
     cartLineItems.removeAt(index);
     saveCartToPref(cartLineItems: cartLineItems);
@@ -123,13 +124,13 @@ class Cart {
 
   void clear() {
     SharedPref sharedPref = SharedPref();
-    List<CartLineItem> cartLineItems = new List<CartLineItem>();
+    List<CartLineItem> cartLineItems = [];
     String jsonArrCartItems =
         jsonEncode(cartLineItems.map((i) => i.toJson()).toList());
     sharedPref.save(_keyCart, jsonArrCartItems);
   }
 
-  void saveCartToPref({List<CartLineItem> cartLineItems}) {
+  void saveCartToPref({@required List<CartLineItem> cartLineItems}) {
     SharedPref sharedPref = SharedPref();
     String jsonArrCartItems =
         jsonEncode(cartLineItems.map((i) => i.toJson()).toList());
@@ -149,7 +150,7 @@ class Cart {
         cartItems.where((c) => c.taxStatus == 'taxable').toList();
     double cartSubtotal = 0;
 
-    if (app_products_prices_include_tax == false &&
+    if (AppHelper.instance.appConfig.productPricesIncludeTax == 1 &&
         taxableCartLines.length > 0) {
       cartSubtotal = taxableCartLines
           .map<double>((m) => parseWcPrice(m.subtotal) * m.quantity)

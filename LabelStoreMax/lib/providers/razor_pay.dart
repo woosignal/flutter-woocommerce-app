@@ -12,11 +12,10 @@
 //
 
 import 'package:flutter/widgets.dart';
+import 'package:label_storemax/helpers/app_helper.dart';
 import 'package:label_storemax/helpers/data/order_wc.dart';
 import 'package:label_storemax/helpers/tools.dart';
 import 'package:label_storemax/labelconfig.dart';
-import 'package:label_storemax/models/cart.dart';
-import 'package:label_storemax/models/checkout_session.dart';
 import 'package:label_storemax/pages/checkout_confirmation.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -25,16 +24,16 @@ import 'package:woosignal/models/response/order.dart';
 
 razorPay(context,
     {@required CheckoutConfirmationPageState state, TaxRate taxRate}) async {
-  Razorpay _razorpay = Razorpay();
+  Razorpay razorPay = Razorpay();
 
-  _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+  razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
       (PaymentSuccessResponse response) async {
     OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
 
     Order order = await appWooSignal((api) => api.createOrder(orderWC));
 
     if (order != null) {
-      _razorpay.clear();
+      razorPay.clear();
       Navigator.pushNamed(context, "/checkout-status", arguments: order);
     } else {
       showEdgeAlertWith(context,
@@ -44,27 +43,27 @@ razorPay(context,
             trans(context, "Something went wrong, please contact our store"),
           ),
           style: EdgeAlertStyle.WARNING);
-      _razorpay.clear();
+      razorPay.clear();
       state.reloadState(showLoader: false);
     }
   });
 
-  _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (PaymentFailureResponse response) {
+  razorPay.on(Razorpay.EVENT_PAYMENT_ERROR, (PaymentFailureResponse response) {
     showEdgeAlertWith(context,
         title: trans(context, "Error"),
         desc: response.message,
         style: EdgeAlertStyle.WARNING);
-    _razorpay.clear();
+    razorPay.clear();
     state.reloadState(showLoader: false);
   });
 
-  _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+  razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET,
       (ExternalWalletResponse response) {
     showEdgeAlertWith(context,
         title: trans(context, "Error"),
         desc: trans(context, "Not supported, try a card payment"),
         style: EdgeAlertStyle.WARNING);
-    _razorpay.clear();
+    razorPay.clear();
     state.reloadState(showLoader: false);
   });
 
@@ -73,7 +72,7 @@ razorPay(context,
     var options = {
       'key': app_razor_id,
       'amount': (parseWcPrice(total) * 100).toInt(),
-      'name': app_name,
+      'name': AppHelper.instance.appConfig.appName,
       'description': await cart.cartShortDesc(),
       'prefill': {
         "name": [
@@ -87,6 +86,6 @@ razorPay(context,
 
     state.reloadState(showLoader: true);
 
-    _razorpay.open(options);
+    razorPay.open(options);
   });
 }

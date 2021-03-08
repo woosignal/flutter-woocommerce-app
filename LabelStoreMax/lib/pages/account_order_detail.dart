@@ -19,24 +19,21 @@ import 'package:woosignal/models/response/order.dart';
 class AccountOrderDetailPage extends StatefulWidget {
   final int orderId;
 
-  AccountOrderDetailPage({Key key, this.orderId}) : super(key: key);
+  AccountOrderDetailPage({Key key, @required this.orderId}) : super(key: key);
 
   @override
-  _AccountOrderDetailPageState createState() =>
-      _AccountOrderDetailPageState(this.orderId);
+  _AccountOrderDetailPageState createState() => _AccountOrderDetailPageState();
 }
 
 class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
-  _AccountOrderDetailPageState(this._orderId);
+  _AccountOrderDetailPageState();
 
-  int _orderId;
   Order _order;
-  bool _isLoading;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _isLoading = true;
     _fetchOrder();
   }
 
@@ -53,12 +50,12 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
           margin: EdgeInsets.only(left: 0),
         ),
         title: Text(
-          "${capitalize(trans(context, "Order"))} #${_orderId.toString()}",
+          "${capitalize(trans(context, "Order"))} #${widget.orderId.toString()}",
           style: Theme.of(context).primaryTextTheme.headline6,
         ),
         centerTitle: true,
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         minimum: safeAreaDefault(),
         child: _isLoading
@@ -173,9 +170,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        "x" +
-                                            _order.lineItems[i].quantity
-                                                .toString(),
+                                        "x${_order.lineItems[i].quantity.toString()}",
                                         style: Theme.of(context)
                                             .primaryTextTheme
                                             .bodyText1
@@ -209,7 +204,7 @@ class _AccountOrderDetailPageState extends State<AccountOrderDetailPage> {
 
   _fetchOrder() async {
     _order = await appWooSignal((api) {
-      return api.retrieveOrder(_orderId);
+      return api.retrieveOrder(widget.orderId);
     });
     if (_order != null) {
       setState(() {

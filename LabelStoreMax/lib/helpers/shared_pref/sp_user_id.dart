@@ -20,8 +20,7 @@ storeUserId(String v) async {
 
 Future<String> readUserId() async {
   SharedPref sharedPref = SharedPref();
-  String val = await sharedPref.read(keyUserId);
-  return val;
+  return await sharedPref.read(keyUserId);
 }
 
 destroyUserId(BuildContext context) async {
