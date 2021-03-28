@@ -1,30 +1,60 @@
-# label_storemax
+<p align="center">
+  <img width="200" height="125" src="https://woosignal.com/images/woosignal_logo_stripe_blue.png" alt="WooSignal logo">
+</p>
 
-LabelStoreMAX
-Created by Anthony Gordon.
+# WooCommerce App: Label StoreMax
 
-[Official WooSignal App Template](https://woosignal.com)
+### Label StoreMax - v4.0.0
 
-## Getting Started
 
-1. Connect your WooCommerce store
-Click connect above to link your WooCommerce store to our site, all you'll need to do is add your url to provide WooSignal access.
+[Official WooSignal WooCommerce App](https://woosignal.com)
 
-2. Generate an AppKey for the app
-Next go to [manage apps page](https://woosignal.com/dashboard/apps) and click "Generate new key" for your app and copy it to somewhere safe, it's important that you don't share is with anyone.
+![alt text](https://woosignal.com/images/woocommerce_app_preview_2.png "WooCommerce app checkout experience")
 
-3. Add the AppKey to the project
-Look for the labelconfig.dart file and change the AppKey to the one your generated.
+![alt text](https://woosignal.com/images/woocommerce_app_preview_3.png "WooCommerce app Login/Register for customers via WordPress")
 
-4. Build and run the app
-If you have done all of the above you should have a basic setup to get started, you'll see products from your WooCommerce store appearing in the app.
+![alt text](https://woosignal.com/images/woocommerce_app_preview_1.png "Full integration with WooCommerce")
 
-5. Uploading to the App Store/Google Play Store?
-Uploading your app release to IOS [IOS guide](https://flutter.dev/docs/deployment/ios)
+![alt text](https://woosignal.com/images/mock_dark_light_mode.png "Dark and light mode shopping")
 
-Uploading your app release to Android [Android guide](https://flutter.dev/docs/deployment/android)
+### About Label StoreMax
 
-## Need help uploading the app?
-Check out our YouTube series to help you with uploading the app and other tips
+Label StoreMax is an App Template for WooCommerce stores. Your customers will be able to browse products, make orders and login via WordPress. You can also customise the look and feel of the app in the WooSignal dashboard.
 
-[Support](https://woosignal.com/support)
+You can also upload the app to the IOS app store and Google play store using Flutter.
+
+### Requirements
+
+- WooCommerce Store 3.5+
+- Android Studio/VSCode (for running the app)
+- Flutter installed
+
+### Getting Started
+
+1. Download/Clone this repository
+2. Sign up for free on [WooSignal](https://woosignal.com) and link your WooCommerce store
+3. Add your app key into the **.env** file and hit play (with Android Studio) to build the app 🥳
+
+Full documentation this available [here](https://woosignal.com/docs/app/ios/label-storemax)
+
+## Some features integrated
+
+- App Store Ready
+- Simple configuration
+- Browse products, make orders, customer login (via WordPress)
+- Change app name, logo, customize default language, currency + more
+- Light and dark mode
+- Stripe, Cash On Delivery, RazorPay
+- Localized for en, es, pt, it, hi, fr
+- Orders show as normal in WooCommerce
+
+## Security Vulnerabilities
+If you discover a security vulnerability within WooSignal, please send an e-mail support@woosignal.com
+
+## Uploading to the app stores
+
+- [IOS - Deployment](https://flutter.dev/docs/deployment/ios)
+- [Android - Deployment](https://flutter.dev/docs/deployment/android)
+
+## Licence
+The Label StoreMax framework is open-sourced software licensed under the MIT license.

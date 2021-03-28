@@ -1,3 +1,15 @@
+## [4.0.0] - 2020-03-28
+
+* Major release
+* New config structure
+* Dark mode added
+* Menu drawer added
+* Project refactor to use Nylo Framework
+* Performance boost
+* Bug fixes
+* Dart code formatted
+* Pubspec.yaml dependency updates
+
 ## [3.0.0] - 2020-03-08
 
 * Major release
