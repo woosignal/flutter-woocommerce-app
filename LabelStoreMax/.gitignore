@@ -77,3 +77,5 @@
 /ios/Podfile
 
 .flutter-plugins-dependencies
+
+.env
