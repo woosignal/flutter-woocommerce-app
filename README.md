@@ -4,7 +4,7 @@
 
 # WooCommerce App: Label StoreMax
 
-### Label StoreMax - v4.0.0
+### Label StoreMax - v5.0.0
 
 
 [Official WooSignal WooCommerce App](https://woosignal.com)
@@ -44,7 +44,8 @@ Full documentation this available [here](https://woosignal.com/docs/app/ios/labe
 - Browse products, make orders, customer login (via WordPress)
 - Change app name, logo, customize default language, currency + more
 - Light and dark mode
-- Stripe, Cash On Delivery, RazorPay
+- Theme customization
+- Stripe, Cash On Delivery, RazorPay and PayPal
 - Localized for en, es, pt, it, hi, fr
 - Orders show as normal in WooCommerce
 
