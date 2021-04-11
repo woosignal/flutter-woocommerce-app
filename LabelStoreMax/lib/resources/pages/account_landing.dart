@@ -163,18 +163,19 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
     }
 
     if (email == "" || password == "") {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Invalid details"),
-          desc: trans(context, "The email and password field cannot be empty"),
-          style: EdgeAlertStyle.DANGER);
+          description:
+              trans(context, "The email and password field cannot be empty"),
+          style: ToastNotificationStyleType.DANGER);
       return;
     }
 
     if (!isEmail(email)) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Oops"),
-          desc: trans(context, "That email address is not valid"),
-          style: EdgeAlertStyle.DANGER);
+          description: trans(context, "That email address is not valid"),
+          style: ToastNotificationStyleType.DANGER);
       return;
     }
 
@@ -188,31 +189,34 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
         wpUserLoginResponse = await WPJsonAPI.instance.api(
             (request) => request.wpLogin(email: email, password: password));
       } on InvalidNonceException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Invalid details"),
-            desc: trans(
+            description: trans(
                 context, "Something went wrong, please contact our store"),
-            style: EdgeAlertStyle.DANGER);
+            style: ToastNotificationStyleType.DANGER);
       } on InvalidEmailException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Invalid details"),
-            desc: trans(context, "That email does not match our records"),
-            style: EdgeAlertStyle.DANGER);
+            description:
+                trans(context, "That email does not match our records"),
+            style: ToastNotificationStyleType.DANGER);
       } on InvalidUsernameException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Invalid details"),
-            desc: trans(context, "That username does not match our records"),
-            style: EdgeAlertStyle.DANGER);
+            description:
+                trans(context, "That username does not match our records"),
+            style: ToastNotificationStyleType.DANGER);
       } on IncorrectPasswordException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Invalid details"),
-            desc: trans(context, "That password does not match our records"),
-            style: EdgeAlertStyle.DANGER);
+            description:
+                trans(context, "That password does not match our records"),
+            style: ToastNotificationStyleType.DANGER);
       } on Exception catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, "Invalid login credentials"),
-            style: EdgeAlertStyle.DANGER,
+            description: trans(context, "Invalid login credentials"),
+            style: ToastNotificationStyleType.DANGER,
             icon: Icons.account_circle);
       } finally {
         setState(() {
@@ -226,10 +230,10 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
         User user = User.fromUserAuthResponse(token: token, userId: userId);
         user.save(SharedKey.authUser);
 
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Hello"),
-            desc: trans(context, "Welcome back"),
-            style: EdgeAlertStyle.SUCCESS,
+            description: trans(context, "Welcome back"),
+            style: ToastNotificationStyleType.SUCCESS,
             icon: Icons.account_circle);
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 1);

@@ -15,7 +15,6 @@ import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -50,11 +49,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
       tmpLineItem.variationId = cartItem.variationId;
     }
 
-    tmpLineItem.total =
-        (cartItem.quantity > 1 ? cartItem.getCartTotal() : cartItem.subtotal);
-    tmpLineItem.subtotal =
-        (parseWcPrice(cartItem.subtotal) * cartItem.quantity).toString();
-
+    tmpLineItem.subtotal = cartItem.subtotal;
     lineItems.add(tmpLineItem);
   });
 

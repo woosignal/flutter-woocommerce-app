@@ -140,10 +140,10 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
             request.wpUpdateUserInfo(userToken,
                 firstName: firstName, lastName: lastName));
       } on Exception catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Invalid details"),
-            desc: trans(context, "Please check your email and password"),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, "Please check your email and password"),
+            style: ToastNotificationStyleType.DANGER);
       } finally {
         setState(() {
           isLoading = false;
@@ -152,10 +152,10 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
 
       if (wpUserInfoUpdatedResponse != null &&
           wpUserInfoUpdatedResponse.status == 200) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Success"),
-            desc: trans(context, "Account updated"),
-            style: EdgeAlertStyle.SUCCESS);
+            description: trans(context, "Account updated"),
+            style: ToastNotificationStyleType.SUCCESS);
         Navigator.pop(context);
       }
     }

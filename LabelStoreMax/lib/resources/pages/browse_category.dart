@@ -18,12 +18,12 @@ import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/helpers/helper.dart';
 import 'package:nylo_framework/widgets/ny_state.dart';
-import 'package:nylo_framework/widgets/stateful_page_widget.dart';
+import 'package:nylo_framework/widgets/ny_stateful_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/products.dart' as WS;
 
-class BrowseCategoryPage extends StatefulPageWidget {
+class BrowseCategoryPage extends NyStatefulWidget {
   final BrowseCategoryController controller = BrowseCategoryController();
   BrowseCategoryPage({Key key}) : super(key: key);
 

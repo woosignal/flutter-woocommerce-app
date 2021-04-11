@@ -18,10 +18,10 @@ import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nylo_framework/helpers/helper.dart';
 import 'package:nylo_framework/widgets/ny_state.dart';
-import 'package:nylo_framework/widgets/stateful_page_widget.dart';
+import 'package:nylo_framework/widgets/ny_stateful_widget.dart';
 import 'package:woosignal/models/response/order.dart';
 
-class AccountOrderDetailPage extends StatefulPageWidget {
+class AccountOrderDetailPage extends NyStatefulWidget {
   final AccountOrderDetailController controller =
       AccountOrderDetailController();
   AccountOrderDetailPage({Key key}) : super(key: key);

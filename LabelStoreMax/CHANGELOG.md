@@ -1,3 +1,14 @@
+## [5.0.0] - 2020-04-11
+
+* Major release
+# Null safety libraries added
+# PayPal Payment Gateway Added
+# New theme customization
+# Fixed Drawer Widget when using Light/Dark mode
+# New config file for currency
+* Pubspec.yaml dependency updates
+# Bug fixes
+
 ## [4.0.0] - 2020-03-28
 
 * Major release

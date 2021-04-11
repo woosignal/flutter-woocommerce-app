@@ -47,7 +47,7 @@ class CartLineItem {
       this.metaData});
 
   String getCartTotal() {
-    return (quantity * parseWcPrice(subtotal)).toString();
+    return (quantity * parseWcPrice(subtotal)).toStringAsFixed(2);
   }
 
   CartLineItem.fromJson(Map<String, dynamic> json)

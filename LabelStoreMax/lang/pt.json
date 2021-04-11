@@ -176,5 +176,13 @@
   "Retry": "Tentar novamente",
   "Retry later": "Tentar mais tarde",
   "Light Mode": "Modo de luz",
-  "Dark Mode": "Modo escuro"
+  "Dark Mode": "Modo escuro",
+  "PayPal Checkout": "PayPal Checkout",
+  "Processing Payment": "Processando o pagamento",
+  "Please wait, your order is being processed and you will be redirected to the PayPal website.": "Aguarde, seu pedido está sendo processado e você será redirecionado para o site do PayPal.",
+  "If you are not automatically redirected to PayPal within 5 seconds": "Se você não for redirecionado automaticamente para o PayPal em 5 segundos",
+  "Payment Cancelled": "Pagamento Cancelado",
+  "The payment has been cancelled": "O pagamento foi cancelado",
+  "Must have": "Deve ter",
+  "Our selection of new items": "Nossa seleção de novos itens"
 }

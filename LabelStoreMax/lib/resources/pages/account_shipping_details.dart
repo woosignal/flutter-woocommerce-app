@@ -61,11 +61,11 @@ class _AccountShippingDetailsPageState
       wcCustomerInfoResponse = await WPJsonAPI.instance
           .api((request) => request.wcCustomerInfo(userToken));
     } on Exception catch (_) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Oops!"),
-        desc: trans(context, "Something went wrong"),
-        style: EdgeAlertStyle.DANGER,
+        description: trans(context, "Something went wrong"),
+        style: ToastNotificationStyleType.DANGER,
       );
       Navigator.pop(context);
       return;
@@ -246,10 +246,10 @@ class _AccountShippingDetailsPageState
         ),
       );
     } on Exception catch (_) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Oops!"),
-          desc: trans(context, "Something went wrong"),
-          style: EdgeAlertStyle.DANGER);
+          description: trans(context, "Something went wrong"),
+          style: ToastNotificationStyleType.DANGER);
     } finally {
       setState(() {
         _isUpdating = true;
@@ -258,10 +258,10 @@ class _AccountShippingDetailsPageState
 
     if (wcCustomerUpdatedResponse != null &&
         wcCustomerUpdatedResponse.status == 200) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Success"),
-          desc: trans(context, "Account updated"),
-          style: EdgeAlertStyle.SUCCESS);
+          description: trans(context, "Account updated"),
+          style: ToastNotificationStyleType.SUCCESS);
       Navigator.pop(context);
     }
   }

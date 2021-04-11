@@ -36,18 +36,13 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   _CheckoutShippingTypePageState();
 
   AppTheme _appTheme = AppTheme();
-  bool _isShippingSupported, _isLoading;
-  List<Map<String, dynamic>> _wsShippingOptions;
+  bool _isShippingSupported = true, _isLoading = true;
+  List<Map<String, dynamic>> _wsShippingOptions = [];
   WSShipping _shipping;
 
   @override
   void initState() {
     super.initState();
-
-    _isShippingSupported = true;
-    _wsShippingOptions = [];
-
-    _isLoading = true;
     _getShippingMethods();
   }
 
@@ -159,7 +154,6 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
             total += classTotal;
           }
         }
-
         break;
       default:
         break;
@@ -247,10 +241,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          trans(
-            context,
-            "Shipping Methods",
-          ),
+          trans(context, "Shipping Methods"),
           style: Theme.of(context).textTheme.headline6,
         ),
         automaticallyImplyLeading: false,

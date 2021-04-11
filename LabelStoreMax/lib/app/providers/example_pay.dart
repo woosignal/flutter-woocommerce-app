@@ -50,10 +50,10 @@ examplePay(context,
   if (order != null) {
     Navigator.pushNamed(context, "/checkout-status", arguments: order);
   } else {
-    showEdgeAlertWith(
+    showToastNotification(
       context,
       title: trans(context, "Error"),
-      desc: trans(context,
+      description: trans(context,
           trans(context, "Something went wrong, please contact our store")),
     );
     state.reloadState(showLoader: false);

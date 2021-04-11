@@ -176,5 +176,13 @@
   "Retry": "pun: prayaas karen",
   "Retry later": "baad mein pun: prayaas karen",
   "Light Mode": "lait mod",
-  "Dark Mode": "daark mod"
+  "Dark Mode": "daark mod",
+  "PayPal Checkout": "pepaal chekaut",
+  "Processing Payment": "sansaadhan sambandhee bhugataan",
+  "Please wait, your order is being processed and you will be redirected to the PayPal website.": "krpaya prateeksha karen, aapaka aadesh sansaadhit kiya ja raha hai aur aapako pepaal vebasait par punah nirdeshit kiya jaega.",
+  "If you are not automatically redirected to PayPal within 5 seconds": "yadi aap 5 sekand ke bheetar svachaalit roop se pepail par punarnirdeshit nahin hote hain",
+  "Payment Cancelled": "bhugataan radd kiya gaya",
+  "The payment has been cancelled": "bhugataan radd kar diya gaya hai",
+  "Must have": "hona aavashyak hai",
+  "Our selection of new items": "naee vastuon ka hamaara chayan"
 }

@@ -36,33 +36,33 @@ razorPay(context,
       razorPay.clear();
       Navigator.pushNamed(context, "/checkout-status", arguments: order);
     } else {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Error"),
-          desc: trans(
+          description: trans(
             context,
             trans(context, "Something went wrong, please contact our store"),
           ),
-          style: EdgeAlertStyle.WARNING);
+          style: ToastNotificationStyleType.WARNING);
       razorPay.clear();
       state.reloadState(showLoader: false);
     }
   });
 
   razorPay.on(Razorpay.EVENT_PAYMENT_ERROR, (PaymentFailureResponse response) {
-    showEdgeAlertWith(context,
+    showToastNotification(context,
         title: trans(context, "Error"),
-        desc: response.message,
-        style: EdgeAlertStyle.WARNING);
+        description: response.message,
+        style: ToastNotificationStyleType.WARNING);
     razorPay.clear();
     state.reloadState(showLoader: false);
   });
 
   razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET,
       (ExternalWalletResponse response) {
-    showEdgeAlertWith(context,
+    showToastNotification(context,
         title: trans(context, "Error"),
-        desc: trans(context, "Not supported, try a card payment"),
-        style: EdgeAlertStyle.WARNING);
+        description: trans(context, "Not supported, try a card payment"),
+        style: ToastNotificationStyleType.WARNING);
     razorPay.clear();
     state.reloadState(showLoader: false);
   });

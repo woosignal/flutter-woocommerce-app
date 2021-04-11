@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:nylo_framework/helpers/helper.dart';
@@ -36,7 +37,9 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     Navigator.pushNamed(context, "/product-search",
             arguments: _txtSearchController.text)
         .then((search) {
-      Navigator.pop(context);
+      if (AppHelper.instance.themeType != "notic") {
+        Navigator.pop(context);
+      }
     });
   }
 

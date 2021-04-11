@@ -87,14 +87,19 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 onTap: _actionPrivacy,
               ),
             ListTile(
-              title: Text(adaptiveTheme.isDark
-                  ? trans(context, "Light Mode")
-                  : trans(context, "Dark Mode")),
+              title: Text(
+                adaptiveTheme.isDark
+                    ? trans(context, "Light Mode")
+                    : trans(context, "Dark Mode"),
+              ),
               leading: Icon(Icons.brightness_4_rounded),
               onTap: () {
-                setState(() {
-                  AdaptiveTheme.of(context).toggleThemeMode();
-                });
+                if (adaptiveTheme.isDark) {
+                  AdaptiveTheme.of(context).setLight();
+                } else {
+                  AdaptiveTheme.of(context).setDark();
+                }
+                setState(() {});
               },
             ),
             ListTile(

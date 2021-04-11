@@ -148,28 +148,28 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
   }
 
   _signUpTapped() async {
-    String email = _tfEmailAddressController.text;
-    String password = _tfPasswordController.text;
-    String firstName = _tfFirstNameController.text;
-    String lastName = _tfLastNameController.text;
+    String email = _tfEmailAddressController.text,
+        password = _tfPasswordController.text,
+        firstName = _tfFirstNameController.text,
+        lastName = _tfLastNameController.text;
 
     if (email.isNotEmpty) {
       email = email.trim();
     }
 
     if (!isEmail(email)) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Oops"),
-          desc: trans(context, "That email address is not valid"),
-          style: EdgeAlertStyle.DANGER);
+          description: trans(context, "That email address is not valid"),
+          style: ToastNotificationStyleType.DANGER);
       return;
     }
 
     if (password.length <= 5) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Oops"),
-          desc: trans(context, "Password must be a min 6 characters"),
-          style: EdgeAlertStyle.DANGER);
+          description: trans(context, "Password must be a min 6 characters"),
+          style: ToastNotificationStyleType.DANGER);
       return;
     }
 
@@ -191,41 +191,41 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
           ),
         );
       } on UsernameTakenException catch (e) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, e.message),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, e.message),
+            style: ToastNotificationStyleType.DANGER);
       } on InvalidNonceException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Invalid details"),
-            desc: trans(
+            description: trans(
                 context, "Something went wrong, please contact our store"),
-            style: EdgeAlertStyle.DANGER);
+            style: ToastNotificationStyleType.DANGER);
       } on ExistingUserLoginException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, "A user already exists"),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, "A user already exists"),
+            style: ToastNotificationStyleType.DANGER);
       } on ExistingUserEmailException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, "That email is taken, try another"),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, "That email is taken, try another"),
+            style: ToastNotificationStyleType.DANGER);
       } on UserAlreadyExistException catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, "A user already exists"),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, "A user already exists"),
+            style: ToastNotificationStyleType.DANGER);
       } on EmptyUsernameException catch (e) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, e.message),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, e.message),
+            style: ToastNotificationStyleType.DANGER);
       } on Exception catch (_) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Oops!"),
-            desc: trans(context, "Something went wrong"),
-            style: EdgeAlertStyle.DANGER);
+            description: trans(context, "Something went wrong"),
+            style: ToastNotificationStyleType.DANGER);
       } finally {
         setState(() {
           _hasTappedRegister = false;
@@ -242,10 +242,10 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
         await WPJsonAPI.instance.api((request) => request
             .wpUpdateUserInfo(token, firstName: firstName, lastName: lastName));
 
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: "${trans(context, "Hello")} $firstName",
-            desc: trans(context, "you're now logged in"),
-            style: EdgeAlertStyle.SUCCESS,
+            description: trans(context, "you're now logged in"),
+            style: ToastNotificationStyleType.SUCCESS,
             icon: Icons.account_circle);
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 2);

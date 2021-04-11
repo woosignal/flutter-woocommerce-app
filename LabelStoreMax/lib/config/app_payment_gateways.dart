@@ -1,5 +1,6 @@
 import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/app/providers/cash_on_delivery.dart';
+import 'package:flutter_app/app/providers/paypal_pay.dart';
 import 'package:flutter_app/app/providers/razor_pay.dart';
 import 'package:flutter_app/app/providers/stripe_pay.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -13,7 +14,7 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 |--------------------------------------------------------------------------
 */
 
-const app_payment_gateways = ["Stripe"];
+const app_payment_gateways = ["Stripe", "CashOnDelivery", "PayPal"];
 // Available: "Stripe", "CashOnDelivery", "RazorPay"
 // e.g. app_payment_gateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
 
@@ -42,10 +43,18 @@ List<PaymentType> paymentTypeList = [
     pay: razorPay,
   ),
 
+  addPayment(
+    id: 4,
+    name: "PayPal",
+    desc: "Debit or Credit Card",
+    assetImage: "paypal_logo.png",
+    pay: payPalPay,
+  ),
+
   // e.g. add more here
 
   // addPayment(
-  //   id: 4,
+  //   id: 5,
   //   name: "MyNewPaymentMethod",
   //   desc: "Debit or Credit Card",
   //   assetImage: "add icon image to public/assets/images/myimage.png",

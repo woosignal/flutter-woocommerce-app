@@ -64,11 +64,12 @@ stripePay(context,
             ));
 
         if (rsp == null) {
-          showEdgeAlertWith(context,
+          showToastNotification(context,
               title: trans(context, "Oops!"),
-              desc: trans(context, "Something went wrong, please try again."),
+              description:
+                  trans(context, "Something went wrong, please try again."),
               icon: Icons.payment,
-              style: EdgeAlertStyle.WARNING);
+              style: ToastNotificationStyleType.WARNING);
           state.reloadState(showLoader: false);
           return;
         }
@@ -87,10 +88,10 @@ stripePay(context,
           if (order != null) {
             Navigator.pushNamed(context, "/checkout-status", arguments: order);
           } else {
-            showEdgeAlertWith(
+            showToastNotification(
               context,
               title: trans(context, "Error"),
-              desc: trans(
+              description: trans(
                   context,
                   trans(context,
                       "Something went wrong, please contact our store")),
@@ -101,10 +102,10 @@ stripePay(context,
           if (getEnv('APP_DEBUG', defaultValue: true)) {
             NyLogger.error(intentResponse.errorMessage);
           }
-          showEdgeAlertWith(
+          showToastNotification(
             context,
             title: trans(context, "Error"),
-            desc: intentResponse.errorMessage,
+            description: intentResponse.errorMessage,
           );
           state.reloadState(showLoader: false);
         } else {
@@ -115,12 +116,12 @@ stripePay(context,
       state.reloadState(showLoader: false);
     }
   } catch (ex) {
-    showEdgeAlertWith(
+    showToastNotification(
       context,
       title: trans(context, "Oops!"),
-      desc: trans(context, "Something went wrong, please try again."),
+      description: trans(context, "Something went wrong, please try again."),
       icon: Icons.payment,
-      style: EdgeAlertStyle.WARNING,
+      style: ToastNotificationStyleType.WARNING,
     );
     state.reloadState(showLoader: false);
   }

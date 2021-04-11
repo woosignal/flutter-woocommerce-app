@@ -165,9 +165,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     CustomerAddress shippingAddress =
         CheckoutSession.getInstance.billingDetails.shippingAddress;
     if (shippingAddress == null || shippingAddress.customerCountry == null) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Oops"),
-          desc: trans(context, "Add your shipping details first"),
+          description: trans(context, "Add your shipping details first"),
           icon: Icons.local_shipping);
       return;
     }
@@ -362,12 +362,12 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
   _handleCheckout() async {
     if (CheckoutSession.getInstance.billingDetails.billingAddress == null) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Oops"),
-        desc: trans(context,
+        description: trans(context,
             "Please select add your billing/shipping address to proceed"),
-        style: EdgeAlertStyle.WARNING,
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
       return;
@@ -375,11 +375,12 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
     if (CheckoutSession.getInstance.billingDetails.billingAddress
         .hasMissingFields()) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Oops"),
-        desc: trans(context, "Your billing/shipping details are incomplete"),
-        style: EdgeAlertStyle.WARNING,
+        description:
+            trans(context, "Your billing/shipping details are incomplete"),
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
       return;
@@ -387,22 +388,24 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
     if (_wooSignalApp.disableShipping == 1 &&
         CheckoutSession.getInstance.shippingType == null) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Oops"),
-        desc: trans(context, "Please select a shipping method to proceed"),
-        style: EdgeAlertStyle.WARNING,
+        description:
+            trans(context, "Please select a shipping method to proceed"),
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
       return;
     }
 
     if (CheckoutSession.getInstance.paymentType == null) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Oops"),
-        desc: trans(context, "Please select a payment method to proceed"),
-        style: EdgeAlertStyle.WARNING,
+        description:
+            trans(context, "Please select a payment method to proceed"),
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.payment,
       );
       return;
@@ -419,12 +422,12 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
           double.parse(CheckoutSession.getInstance.shippingType?.minimumValue);
 
       if (doubleTotal < doubleMinimumValue) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Sorry"),
-            desc:
+            description:
                 "${trans(context, "Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans(context, "for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
-            style: EdgeAlertStyle.INFO,
-            duration: 3);
+            style: ToastNotificationStyleType.INFO,
+            duration: Duration(seconds: 3));
         return;
       }
     }
@@ -432,11 +435,11 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     bool appStatus = await appWooSignal((api) => api.checkAppStatus());
 
     if (!appStatus) {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Sorry"),
-          desc: "${trans(context, "Retry later")}",
-          style: EdgeAlertStyle.INFO,
-          duration: 3);
+          description: "${trans(context, "Retry later")}",
+          style: ToastNotificationStyleType.INFO,
+          duration: Duration(seconds: 3));
       return;
     }
 

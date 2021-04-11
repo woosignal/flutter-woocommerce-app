@@ -320,15 +320,15 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
           customerCountry: _shippingCountry);
 
       if (customerShippingAddress.hasMissingFields()) {
-        showEdgeAlertWith(
+        showToastNotification(
           context,
           title: trans(context, "Oops"),
-          desc: trans(
+          description: trans(
             context,
             trans(context,
                 "Invalid shipping address, please check your shipping details"),
           ),
-          style: EdgeAlertStyle.WARNING,
+          style: ToastNotificationStyleType.WARNING,
         );
         return;
       }

@@ -23,12 +23,12 @@ import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/helpers/helper.dart';
 import 'package:nylo_framework/widgets/ny_state.dart';
-import 'package:nylo_framework/widgets/stateful_page_widget.dart';
+import 'package:nylo_framework/widgets/ny_stateful_widget.dart';
 import 'package:woosignal/models/response/product_variation.dart' as WS;
 import 'package:woosignal/models/response/products.dart' as WSProduct;
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-class ProductDetailPage extends StatefulPageWidget {
+class ProductDetailPage extends NyStatefulWidget {
   final ProductDetailController controller = ProductDetailController();
   ProductDetailPage({Key key}) : super(key: key);
 
@@ -205,29 +205,30 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                 action: () {
                   if (_product.attributes.length !=
                       _tmpAttributeObj.values.length) {
-                    showEdgeAlertWith(context,
+                    showToastNotification(context,
                         title: trans(context, "Oops"),
-                        desc:
+                        description:
                             trans(context, "Please select valid options first"),
-                        style: EdgeAlertStyle.WARNING);
+                        style: ToastNotificationStyleType.WARNING);
                     return;
                   }
 
                   WS.ProductVariation productVariation = findProductVariation();
                   if (productVariation == null) {
-                    showEdgeAlertWith(context,
+                    showToastNotification(context,
                         title: trans(context, "Oops"),
-                        desc:
+                        description:
                             trans(context, "Product variation does not exist"),
-                        style: EdgeAlertStyle.WARNING);
+                        style: ToastNotificationStyleType.WARNING);
                     return;
                   }
 
                   if (productVariation.stockStatus != "instock") {
-                    showEdgeAlertWith(context,
+                    showToastNotification(context,
                         title: trans(context, "Sorry"),
-                        desc: trans(context, "This item is not in stock"),
-                        style: EdgeAlertStyle.WARNING);
+                        description:
+                            trans(context, "This item is not in stock"),
+                        style: ToastNotificationStyleType.WARNING);
                     return;
                   }
 
@@ -551,10 +552,10 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
       return;
     }
     if (_product.stockStatus != "instock") {
-      showEdgeAlertWith(context,
+      showToastNotification(context,
           title: trans(context, "Sorry"),
-          desc: trans(context, "This item is out of stock"),
-          style: EdgeAlertStyle.WARNING,
+          description: trans(context, "This item is out of stock"),
+          style: ToastNotificationStyleType.WARNING,
           icon: Icons.local_shipping);
       return;
     }
@@ -580,11 +581,11 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   _addQuantityTapped() {
     if (_product.manageStock != null && _product.manageStock == true) {
       if (_quantityIndicator >= _product.stockQuantity) {
-        showEdgeAlertWith(context,
+        showToastNotification(context,
             title: trans(context, "Maximum quantity reached"),
-            desc:
+            description:
                 "${trans(context, "Sorry, only")} ${_product.stockQuantity} ${trans(context, "left")}",
-            style: EdgeAlertStyle.INFO);
+            style: ToastNotificationStyleType.INFO);
         return;
       }
     }

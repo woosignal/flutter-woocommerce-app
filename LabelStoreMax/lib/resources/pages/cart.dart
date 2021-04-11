@@ -81,11 +81,11 @@ class _CartPageState extends State<CartPage> {
     }
 
     if (cartLineItems.length <= 0) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Cart"),
-        desc: trans(context, "You need items in your cart to checkout"),
-        style: EdgeAlertStyle.WARNING,
+        description: trans(context, "You need items in your cart to checkout"),
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.shopping_cart,
       );
       return;
@@ -93,11 +93,11 @@ class _CartPageState extends State<CartPage> {
 
     if (!cartLineItems.every(
         (c) => c.stockStatus == 'instock' || c.stockStatus == 'onbackorder')) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Cart"),
-        desc: trans(context, "There is an item out of stock"),
-        style: EdgeAlertStyle.WARNING,
+        description: trans(context, "There is an item out of stock"),
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.shopping_cart,
       );
       return;
@@ -127,11 +127,11 @@ class _CartPageState extends State<CartPage> {
   actionIncrementQuantity({CartLineItem cartLineItem}) {
     if (cartLineItem.isManagedStock &&
         cartLineItem.quantity + 1 > cartLineItem.stockQuantity) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Cart"),
-        desc: trans(context, "Maximum stock reached"),
-        style: EdgeAlertStyle.WARNING,
+        description: trans(context, "Maximum stock reached"),
+        style: ToastNotificationStyleType.WARNING,
         icon: Icons.shopping_cart,
       );
       return;
@@ -155,11 +155,11 @@ class _CartPageState extends State<CartPage> {
   actionRemoveItem({int index}) {
     Cart.getInstance.removeCartItemForIndex(index: index);
     _cartLines.removeAt(index);
-    showEdgeAlertWith(
+    showToastNotification(
       context,
       title: trans(context, "Updated"),
-      desc: trans(context, "Item removed"),
-      style: EdgeAlertStyle.WARNING,
+      description: trans(context, "Item removed"),
+      style: ToastNotificationStyleType.WARNING,
       icon: Icons.remove_shopping_cart,
     );
     if (_cartLines.length == 0) {
@@ -171,10 +171,10 @@ class _CartPageState extends State<CartPage> {
   _clearCart() {
     Cart.getInstance.clear();
     _cartLines = [];
-    showEdgeAlertWith(context,
+    showToastNotification(context,
         title: trans(context, "Success"),
-        desc: trans(context, "Cart cleared"),
-        style: EdgeAlertStyle.SUCCESS,
+        description: trans(context, "Cart cleared"),
+        style: ToastNotificationStyleType.SUCCESS,
         icon: Icons.delete_outline);
     _isCartEmpty = true;
     setState(() {});

@@ -31,6 +31,7 @@ void main() async {
   if (wooSignalApp != null) {
     initialRoute = "/home";
     AppHelper.instance.appConfig = wooSignalApp;
+    AppHelper.instance.themeType = wooSignalApp.theme;
 
     if (wooSignalApp.wpLoginEnabled == 1) {
       WPJsonAPI.instance.initWith(

@@ -72,11 +72,11 @@ class _AccountDetailPageState extends State<AccountDetailPage>
       wcCustomerInfoResponse = await WPJsonAPI.instance
           .api((request) => request.wcCustomerInfo(userToken));
     } on Exception catch (_) {
-      showEdgeAlertWith(
+      showToastNotification(
         context,
         title: trans(context, "Oops!"),
-        desc: trans(context, "Something went wrong"),
-        style: EdgeAlertStyle.DANGER,
+        description: trans(context, "Something went wrong"),
+        style: ToastNotificationStyleType.DANGER,
       );
     } finally {
       setState(() {

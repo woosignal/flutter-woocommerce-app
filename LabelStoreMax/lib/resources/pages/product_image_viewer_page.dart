@@ -16,9 +16,9 @@ import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:nylo_framework/helpers/helper.dart';
 import 'package:nylo_framework/widgets/ny_state.dart';
-import 'package:nylo_framework/widgets/stateful_page_widget.dart';
+import 'package:nylo_framework/widgets/ny_stateful_widget.dart';
 
-class ProductImageViewerPage extends StatefulPageWidget {
+class ProductImageViewerPage extends NyStatefulWidget {
   final ProductImageViewerController controller =
       ProductImageViewerController();
   ProductImageViewerPage({Key key}) : super(key: key);

@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'dart:convert';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/app/models/billing_details.dart';
 import 'package:flutter_app/app/models/cart.dart';
@@ -18,18 +19,20 @@ import 'package:flutter_app/app/models/default_shipping.dart';
 import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
+import 'package:flutter_app/bootstrap/enums/symbol_position_enums.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
+import 'package:flutter_app/config/app_currency.dart';
 import 'package:flutter_app/config/app_payment_gateways.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:edge_alert/edge_alert.dart';
 import 'package:html/parser.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:money_formatter/money_formatter.dart';
 import 'package:nylo_framework/helpers/helper.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -79,60 +82,166 @@ showStatusAlert(context,
   );
 }
 
-class EdgeAlertStyle {
-  static const int SUCCESS = 1;
-  static const int WARNING = 2;
-  static const int INFO = 3;
-  static const int DANGER = 4;
+enum ToastNotificationStyleType {
+  SUCCESS,
+  WARNING,
+  INFO,
+  DANGER,
 }
 
-void showEdgeAlertWith(context,
-    {title = "",
-    desc = "",
-    int gravity = 1,
-    int style = 1,
-    IconData icon,
-    int duration}) {
-  switch (style) {
-    case 1: // SUCCESS
-      EdgeAlert.show(context,
-          title: title,
-          description: desc,
-          gravity: gravity,
-          backgroundColor: Colors.green,
-          icon: icon ?? Icons.check,
-          duration: duration ?? EdgeAlert.LENGTH_LONG);
-      break;
-    case 2: // WARNING
-      EdgeAlert.show(context,
-          title: title,
-          description: desc,
-          gravity: gravity,
-          backgroundColor: Colors.orange,
-          icon: icon ?? Icons.error_outline,
-          duration: duration ?? EdgeAlert.LENGTH_LONG);
-      break;
-    case 3: // INFO
-      EdgeAlert.show(context,
-          title: title,
-          description: desc,
-          gravity: gravity,
-          backgroundColor: Colors.teal,
-          icon: icon ?? Icons.info,
-          duration: duration ?? EdgeAlert.LENGTH_LONG);
-      break;
-    case 4: // DANGER
-      EdgeAlert.show(context,
-          title: title,
-          description: desc,
-          gravity: gravity,
-          backgroundColor: Colors.redAccent,
-          icon: icon ?? Icons.warning,
-          duration: duration ?? EdgeAlert.LENGTH_LONG);
-      break;
-    default:
-      break;
+class ToastNotificationStyleMetaHelper {
+  static ToastMeta getValue(ToastNotificationStyleType style) {
+    switch (style) {
+      case ToastNotificationStyleType.SUCCESS:
+        return ToastMeta.success(action: () {
+          ToastManager().dismissAll(showAnim: true);
+        });
+      case ToastNotificationStyleType.WARNING:
+        return ToastMeta.warning(action: () {
+          ToastManager().dismissAll(showAnim: true);
+        });
+      case ToastNotificationStyleType.INFO:
+        return ToastMeta.info(action: () {
+          ToastManager().dismissAll(showAnim: true);
+        });
+      case ToastNotificationStyleType.DANGER:
+        return ToastMeta.danger(action: () {
+          ToastManager().dismissAll(showAnim: true);
+        });
+      default:
+        return ToastMeta.success(action: () {
+          ToastManager().dismissAll(showAnim: true);
+        });
+    }
   }
+}
+
+class ToastMeta {
+  Widget icon;
+  String title;
+  String description;
+  Color color;
+  Function action;
+  Duration duration;
+  ToastMeta(
+      {this.icon,
+      this.title,
+      this.description,
+      this.color,
+      this.action,
+      this.duration = const Duration(seconds: 2)});
+
+  ToastMeta.success(
+      {this.icon = const Icon(Icons.check, color: Colors.white, size: 30),
+      this.title = "Success",
+      this.description = "",
+      this.color = Colors.green,
+      this.action,
+      this.duration = const Duration(seconds: 5)});
+  ToastMeta.info(
+      {this.icon = const Icon(Icons.info, color: Colors.white, size: 30),
+      this.title = "",
+      this.description = "",
+      this.color = Colors.teal,
+      this.action,
+      this.duration = const Duration(seconds: 5)});
+  ToastMeta.warning(
+      {this.icon =
+          const Icon(Icons.error_outline, color: Colors.white, size: 30),
+      this.title = "Oops!",
+      this.description = "",
+      this.color = Colors.orange,
+      this.action,
+      this.duration = const Duration(seconds: 6)});
+  ToastMeta.danger(
+      {this.icon = const Icon(Icons.warning, color: Colors.white, size: 30),
+      this.title = "Oops!",
+      this.description = "",
+      this.color = Colors.redAccent,
+      this.action,
+      this.duration = const Duration(seconds: 7)});
+}
+
+showToastNotification(BuildContext context,
+    {ToastNotificationStyleType style,
+    String title,
+    IconData icon,
+    String description = "",
+    Duration duration}) {
+  ToastMeta toastMeta = ToastNotificationStyleMetaHelper.getValue(style);
+  toastMeta.title = trans(context, toastMeta.title);
+  if (title != null) {
+    toastMeta.title = title;
+  }
+  toastMeta.description = description;
+
+  Widget _icon = toastMeta.icon;
+  if (icon != null) {
+    _icon = Icon(icon, color: Colors.white);
+  }
+
+  showToastWidget(
+    InkWell(
+      onTap: () => ToastManager().dismissAll(showAnim: true),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 18.0),
+        margin: EdgeInsets.symmetric(horizontal: 8.0),
+        height: 100,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          color: toastMeta.color,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Pulse(
+              child: Container(
+                child: Center(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: _icon,
+                    padding: EdgeInsets.only(right: 16),
+                  ),
+                ),
+              ),
+              infinite: true,
+              duration: Duration(milliseconds: 1500),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    toastMeta.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(color: Colors.white),
+                  ),
+                  Text(
+                    toastMeta.description,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    context: context,
+    isIgnoring: false,
+    position: StyledToastPosition.top,
+    animation: StyledToastAnimation.slideFromTopFade,
+    duration: duration ?? toastMeta.duration,
+  );
 }
 
 String parseHtmlString(String htmlString) {
@@ -141,30 +250,31 @@ String parseHtmlString(String htmlString) {
   return parsedString;
 }
 
-String formatDoubleCurrency({double total}) {
-  FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
-    amount: total,
+String moneyFormatter(double amount) {
+  MoneyFormatter fmf = MoneyFormatter(
+    amount: amount,
     settings: MoneyFormatterSettings(
       symbol: AppHelper.instance.appConfig.currencyMeta.symbolNative,
     ),
   );
+  if (app_currency_symbol_position == SymbolPositionType.left) {
+    return fmf.output.symbolOnLeft;
+  } else if (app_currency_symbol_position == SymbolPositionType.right) {
+    return fmf.output.symbolOnRight;
+  }
   return fmf.output.symbolOnLeft;
 }
 
+String formatDoubleCurrency({@required double total}) {
+  return moneyFormatter(total);
+}
+
 String formatStringCurrency({@required String total}) {
-  double tmpVal;
-  if (total == null || total == "") {
-    tmpVal = 0;
-  } else {
+  double tmpVal = 0;
+  if (total != null && total != "") {
     tmpVal = parseWcPrice(total);
   }
-  FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
-    amount: tmpVal,
-    settings: MoneyFormatterSettings(
-      symbol: AppHelper.instance.appConfig.currencyMeta.symbolNative,
-    ),
-  );
-  return fmf.output.symbolOnLeft;
+  return moneyFormatter(tmpVal);
 }
 
 String workoutSaleDiscount(
@@ -561,4 +671,8 @@ Future<List<DefaultShipping>> getDefaultShipping(BuildContext context) async {
     shipping.add(defaultShipping);
   });
   return shipping;
+}
+
+String truncateString(String data, int length) {
+  return (data.length >= length) ? '${data.substring(0, length)}...' : data;
 }

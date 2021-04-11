@@ -68,7 +68,8 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
       Navigator.pushNamed(context, "/home");
       return;
     }
-    showEdgeAlertWith(context,
-        title: trans(context, "Oops"), desc: trans(context, "Retry later"));
+    showToastNotification(context,
+        title: trans(context, "Oops"),
+        description: trans(context, "Retry later"));
   }
 }

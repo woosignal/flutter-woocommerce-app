@@ -20,8 +20,8 @@ class AppLoaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
     return SpinKitDoubleBounce(
-        color: adaptiveThemeMode.isLight
-            ? HexColor("#424242")
-            : HexColor("#c7c7c7"));
+      color:
+          adaptiveThemeMode.isLight ? HexColor("#424242") : HexColor("#c7c7c7"),
+    );
   }
 }
