@@ -1,3 +1,8 @@
+## [5.0.1] - 2020-04-13
+
+* Update to app_payment_gateways
+* Pubspec.yaml dependency updates
+
 ## [5.0.0] - 2020-04-11
 
 * Major release

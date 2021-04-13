@@ -14,8 +14,8 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 |--------------------------------------------------------------------------
 */
 
-const app_payment_gateways = ["Stripe", "CashOnDelivery", "PayPal"];
-// Available: "Stripe", "CashOnDelivery", "RazorPay"
+const app_payment_gateways = ["Stripe"];
+// Available: "Stripe", "CashOnDelivery", "RazorPay", "PayPal"
 // e.g. app_payment_gateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
 
 List<PaymentType> paymentTypeList = [
