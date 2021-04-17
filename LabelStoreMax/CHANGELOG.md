@@ -1,3 +1,9 @@
+## [5.0.2] - 2020-04-17
+
+* Fix issue with PayPal checkout when using different locales
+* Fix nested `trans` methods
+* PAYPAL_LOCALE added to .env file
+
 ## [5.0.1] - 2020-04-13
 
 * Update to app_payment_gateways

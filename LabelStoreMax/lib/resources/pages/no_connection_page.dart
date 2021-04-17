@@ -13,6 +13,7 @@ import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:nylo_framework/helpers/helper.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 
 class NoConnectionPage extends StatefulWidget {
   NoConnectionPage();
@@ -62,14 +63,17 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
   }
 
   _retry() async {
-    AppHelper.instance.appConfig = await appWooSignal((api) => api.getApp());
+    WooSignalApp wooSignalApp = await appWooSignal((api) => api.getApp());
 
-    if (AppHelper.instance.appConfig != null) {
-      Navigator.pushNamed(context, "/home");
+    if (wooSignalApp == null) {
+      showToastNotification(context,
+          title: trans(context, "Oops"),
+          description: trans(context, "Retry later"));
       return;
     }
-    showToastNotification(context,
-        title: trans(context, "Oops"),
-        description: trans(context, "Retry later"));
+
+    AppHelper.instance.appConfig = wooSignalApp;
+    AppHelper.instance.themeType = wooSignalApp.theme;
+    Navigator.pushNamed(context, "/home");
   }
 }

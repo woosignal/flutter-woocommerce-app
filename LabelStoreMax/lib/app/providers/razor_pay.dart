@@ -38,10 +38,7 @@ razorPay(context,
     } else {
       showToastNotification(context,
           title: trans(context, "Error"),
-          description: trans(
-            context,
-            trans(context, "Something went wrong, please contact our store"),
-          ),
+          description: trans(context, "Something went wrong, please contact our store"),
           style: ToastNotificationStyleType.WARNING);
       razorPay.clear();
       state.reloadState(showLoader: false);

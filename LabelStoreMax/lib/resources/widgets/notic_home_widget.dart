@@ -151,14 +151,17 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                           height: MediaQuery.of(context).size.height / 2.5,
                         ),
                         Container(
-                          height: 80,
+                          height: 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(trans(context, "Must have")),
-                              Text(
-                                trans(context, "Our selection of new items"),
-                                style: Theme.of(context).textTheme.headline4,
+                              Flexible(
+                                child: Text(
+                                  trans(context, "Our selection of new items"),
+                                  style: Theme.of(context).textTheme.headline4,
+                                  maxLines: 2, overflow: TextOverflow.ellipsis,
+                                ),
                               )
                             ],
                           ),

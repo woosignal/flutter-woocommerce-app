@@ -33,8 +33,7 @@ cashOnDeliveryPay(context,
       showToastNotification(
         context,
         title: trans(context, "Error"),
-        description: trans(context,
-            trans(context, "Something went wrong, please contact our store")),
+        description: trans(context, "Something went wrong, please contact our store"),
       );
       state.reloadState(showLoader: false);
     }
@@ -42,8 +41,7 @@ cashOnDeliveryPay(context,
     showToastNotification(
       context,
       title: trans(context, "Error"),
-      description: trans(context,
-          trans(context, "Something went wrong, please contact our store")),
+      description: trans(context, "Something went wrong, please contact our store"),
     );
     state.reloadState(showLoader: false);
   }

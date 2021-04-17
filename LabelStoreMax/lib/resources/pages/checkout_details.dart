@@ -323,11 +323,8 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         showToastNotification(
           context,
           title: trans(context, "Oops"),
-          description: trans(
-            context,
-            trans(context,
-                "Invalid shipping address, please check your shipping details"),
-          ),
+          description: trans(context,
+              "Invalid shipping address, please check your shipping details"),
           style: ToastNotificationStyleType.WARNING,
         );
         return;

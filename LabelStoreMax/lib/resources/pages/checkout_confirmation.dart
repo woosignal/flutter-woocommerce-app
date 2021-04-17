@@ -51,7 +51,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     _getTaxes();
   }
 
-  reloadState({bool showLoader}) {
+  reloadState({@required bool showLoader}) {
     setState(() {
       _showFullLoader = showLoader ?? false;
     });

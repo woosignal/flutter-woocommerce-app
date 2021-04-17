@@ -28,7 +28,7 @@ payPalPay(context,
   await checkout(taxRate, (total, billingDetails, cart) async {
     List<CartLineItem> cartLineItems = await cart.getCart();
     String description = await cart.cartShortDesc();
-    state.reloadState(showLoader: true);
+
     await Navigator.push(
         context,
         MaterialPageRoute(
@@ -36,43 +36,43 @@ payPalPay(context,
                 description: description,
                 amount: total,
                 cartLineItems: cartLineItems))).then((value) async {
-      if (value is Map<String, dynamic>) {
+      if (!(value is Map<String, dynamic>)) {
+        showToastNotification(
+          context,
+          title: trans(context, "Payment Cancelled"),
+          description:
+          trans(context, "The payment has been cancelled"),
+        );
+        state.reloadState(showLoader: false);
+        return;
+      }
+
+        state.reloadState(showLoader: true);
         if (value.containsKey("status") && value["status"] == "success") {
           OrderWC orderWC =
               await buildOrderWC(taxRate: taxRate, markPaid: true);
           Order order = await appWooSignal((api) => api.createOrder(orderWC));
 
-          if (order != null) {
-            Navigator.pushNamed(context, "/checkout-status", arguments: order);
-          } else {
+          if (order == null) {
             showToastNotification(
               context,
               title: trans(context, "Error"),
-              description: trans(
-                  context,
-                  trans(context,
-                      "Something went wrong, please contact our store")),
+              description: trans(context,
+                  "Something went wrong, please contact our store"),
             );
-            state.reloadState(showLoader: false);
+            return;
           }
+          Navigator.pushNamed(context, "/checkout-status", arguments: order);
+          return;
         } else {
           showToastNotification(
             context,
             title: trans(context, "Payment Cancelled"),
-            description: trans(
-                context, trans(context, "The payment has been cancelled")),
+            description: trans(context, "The payment has been cancelled"),
           );
-          state.reloadState(showLoader: false);
         }
-      } else {
-        showToastNotification(
-          context,
-          title: trans(context, "Payment Cancelled"),
-          description:
-              trans(context, trans(context, "The payment has been cancelled")),
-        );
-        state.reloadState(showLoader: false);
       }
-    });
+    );
+    state.reloadState(showLoader: false);
   });
 }

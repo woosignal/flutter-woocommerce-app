@@ -115,16 +115,21 @@ class WebViewState extends NyState<PayPalCheckout> {
   }
 
   String _loadHTML() {
+    final String strProcessingPayment = trans(context, "Processing Payment");
+    final String strPleaseWait = trans(context, "Please wait, your order is being processed and you will be redirected to the PayPal website.");
+    final String strRedirectMessage = trans(context, "If you are not automatically redirected to PayPal within 5 seconds");
+
     return '''
-      <html><head><title>${trans(context, "Processing Payment")}...</title></head>
+      <html><head><title>$strProcessingPayment...</title></head>
 <body onload="document.forms['paypal_form'].submit();">
 <div style="text-align:center;">
 <img src="https://woosignal.com/images/paypal_logo.png" height="50" />
 </div>
-<center><h4>${trans(context, "Please wait, your order is being processed and you will be redirected to the PayPal website.")}</h4></center>
+<center><h4>$strPleaseWait</h4></center>
 <form method="post" name="paypal_form" action="${getPayPalUrl()}">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="amount" value="${widget.amount}">
+<input type="hidden" name="lc" value="${getEnv('PAYPAL_LOCALE', defaultValue: 'en-GB')}">
 <input type="hidden" name="currency_code" value="${_wooSignalApp.currencyMeta.code}">
 <input type="hidden" name="business" value="${getEnv('PAYPAL_ACCOUNT_EMAIL')}">
 <input type="hidden" name="return" value="https://woosignal.com/paypal/payment~success">
@@ -133,10 +138,10 @@ class WebViewState extends NyState<PayPalCheckout> {
 <input type="hidden" name="custom" value="${getPayPalPaymentType()}">
 <input type="hidden" name="address_override" value="1">
 $formCheckoutShippingAddress
-<center><br><br>${trans(context, "If you are not automatically redirected to PayPal within 5 seconds")}...<br><br>
+<center><br><br>$strRedirectMessage...<br><br>
 <input type="submit" value="Click Here"></center>
 </form></body></html>
-''';
+'''.toString();
   }
 
   @override
