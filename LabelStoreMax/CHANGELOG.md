@@ -1,3 +1,9 @@
+## [5.0.3] - 2020-04-27
+
+* Fix issue account page when logged in for Notic theme
+* Small tweak to helpers.dart
+* Pubspec.yaml dependency updates
+
 ## [5.0.2] - 2020-04-17
 
 * Fix issue with PayPal checkout when using different locales

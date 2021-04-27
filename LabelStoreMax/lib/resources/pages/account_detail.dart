@@ -24,6 +24,8 @@ import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountDetailPage extends StatefulWidget {
+  final bool showLeadingBackButton;
+  const AccountDetailPage({this.showLeadingBackButton = true});
   @override
   _AccountDetailPageState createState() => _AccountDetailPageState();
 }
@@ -102,13 +104,13 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: Container(
+        leading: widget.showLeadingBackButton ? Container(
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context),
           ),
           margin: EdgeInsets.only(left: 0),
-        ),
+        ) : Container(),
         title: Text(
           trans(context, "Account"),
           style: Theme.of(context).textTheme.headline6,

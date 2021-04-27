@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
+import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
+import 'package:flutter_app/resources/pages/account_detail.dart';
 import 'package:flutter_app/resources/pages/account_landing.dart';
 import 'package:flutter_app/resources/pages/cart.dart';
 import 'package:flutter_app/resources/pages/home_search.dart';
@@ -62,13 +64,13 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
     );
   }
 
-  _onTabTapped(int i) {
+  _onTabTapped(int i) async {
     _currentIndex = i;
-    _changeMainWidget();
+   await _changeMainWidget();
     setState(() {});
   }
 
-  _changeMainWidget() {
+  _changeMainWidget() async {
     switch (_currentIndex) {
       case 0:
         {
@@ -87,7 +89,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
         }
       case 3:
         {
-          activeWidget = AccountLandingPage();
+          activeWidget = (await authCheck()) ? AccountDetailPage(showLeadingBackButton: false) : AccountLandingPage();
           break;
         }
     }
