@@ -412,7 +412,7 @@ packages:
       name: nylo_framework
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.2"
+    version: "0.8.5"
   octo_image:
     dependency: transitive
     description:
@@ -732,7 +732,7 @@ packages:
       name: woosignal_stripe
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   wp_json_api:
     dependency: "direct main"
     description:

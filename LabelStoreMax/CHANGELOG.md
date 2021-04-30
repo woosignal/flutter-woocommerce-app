@@ -1,3 +1,8 @@
+## [5.0.4] - 2020-04-30
+
+* Fix IOS build failing with Stripe
+* Pubspec.yaml dependency updates
+
 ## [5.0.3] - 2020-04-27
 
 * Fix issue account page when logged in for Notic theme
