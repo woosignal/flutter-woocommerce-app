@@ -1,3 +1,7 @@
+## [5.0.5] - 2020-05-03
+
+* Add NSCameraUsageDescription meta to plist for IOS
+
 ## [5.0.4] - 2020-04-30
 
 * Fix IOS build failing with Stripe
