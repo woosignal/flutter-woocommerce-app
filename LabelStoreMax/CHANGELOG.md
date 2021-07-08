@@ -1,3 +1,7 @@
+## [5.0.7] - 2020-07-08
+
+* Pubspec.yaml dependency updates
+
 ## [5.0.6] - 2020-07-08
 
 * Refactor project to use Nylo v1.0.0
