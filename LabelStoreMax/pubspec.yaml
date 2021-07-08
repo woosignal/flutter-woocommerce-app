@@ -31,6 +31,7 @@ dependencies:
   intl: ^0.17.0
   page_transition: ^2.0.2
   nylo_framework: ^1.0.0
+  nylo_support: ^1.0.0
   woosignal: ^2.0.2
   woosignal_stripe: ^1.1.0
   razorpay_flutter: ^1.2.5
