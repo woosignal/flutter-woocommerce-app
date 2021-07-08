@@ -14,7 +14,7 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_version_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_framework/helpers/helper.dart';
+import 'package:nylo_support/helpers/helper.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class HomeDrawerWidget extends StatefulWidget {

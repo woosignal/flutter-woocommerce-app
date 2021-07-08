@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:nylo_framework/helpers/helper.dart';
+import 'package:nylo_support/helpers/helper.dart';
 
 class User extends Storable {
   String userId;

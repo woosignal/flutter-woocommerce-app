@@ -15,10 +15,10 @@ import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:nylo_framework/widgets/ny_state.dart';
-import 'package:nylo_framework/widgets/ny_stateful_widget.dart';
+import 'package:nylo_support/widgets/ny_state.dart';
+import 'package:nylo_support/widgets/ny_stateful_widget.dart';
 import 'package:woosignal/models/response/order.dart' as WS;
-import 'package:nylo_framework/helpers/helper.dart';
+import 'package:nylo_support/helpers/helper.dart';
 
 import '../widgets/woosignal_ui.dart';
 

@@ -17,7 +17,7 @@ import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:nylo_framework/helpers/helper.dart';
+import 'package:nylo_support/helpers/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';

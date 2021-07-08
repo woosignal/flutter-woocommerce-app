@@ -9,8 +9,8 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'dart:async';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:nylo_framework/helpers/helper.dart';
-import 'package:nylo_framework/widgets/ny_state.dart';
+import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_support/widgets/ny_state.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class PayPalCheckout extends StatefulWidget {

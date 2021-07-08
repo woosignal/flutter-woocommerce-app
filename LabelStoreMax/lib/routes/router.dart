@@ -20,7 +20,7 @@ import 'package:flutter_app/resources/pages/no_connection_page.dart';
 import 'package:flutter_app/resources/pages/product_detail.dart';
 import 'package:flutter_app/resources/pages/product_image_viewer_page.dart';
 import 'package:flutter_app/resources/widgets/checkout_paypal.dart';
-import 'package:nylo_framework/router/router.dart';
+import 'package:nylo_support/router/router.dart';
 import 'package:page_transition/page_transition.dart';
 
 /*

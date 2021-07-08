@@ -1,3 +1,8 @@
+## [5.0.6] - 2020-07-08
+
+* Refactor project to use Nylo v1.0.0
+* Pubspec.yaml dependency updates
+
 ## [5.0.5] - 2020-05-03
 
 * Add NSCameraUsageDescription meta to plist for IOS

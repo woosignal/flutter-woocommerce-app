@@ -10,7 +10,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:nylo_framework/helpers/helper.dart';
+import 'package:nylo_support/helpers/helper.dart';
 
 class TopNavWidget extends StatelessWidget {
   const TopNavWidget({Key key, this.onPressBrowseCategories}) : super(key: key);

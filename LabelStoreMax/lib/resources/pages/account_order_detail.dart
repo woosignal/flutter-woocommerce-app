@@ -16,9 +16,9 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:nylo_framework/helpers/helper.dart';
-import 'package:nylo_framework/widgets/ny_state.dart';
-import 'package:nylo_framework/widgets/ny_stateful_widget.dart';
+import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_support/widgets/ny_state.dart';
+import 'package:nylo_support/widgets/ny_stateful_widget.dart';
 import 'package:woosignal/models/response/order.dart';
 
 class AccountOrderDetailPage extends NyStatefulWidget {

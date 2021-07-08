@@ -16,7 +16,7 @@ import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
-import 'package:nylo_framework/helpers/helper.dart';
+import 'package:nylo_support/helpers/helper.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
