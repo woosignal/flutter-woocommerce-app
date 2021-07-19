@@ -8,6 +8,7 @@ import 'package:flutter_app/resources/themes/dark_theme.dart';
 import 'package:flutter_app/resources/themes/default_theme.dart';
 import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/routes/router.dart';
+import 'package:nylo_support/helpers/helper.dart';
 import 'package:nylo_support/nylo.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:nylo_framework/theme/helper/theme_helper.dart';
@@ -27,6 +28,7 @@ void main() async {
 
   String initialRoute = '/no-connection';
   WooSignalApp wooSignalApp = await appWooSignal((api) => api.getApp());
+  Locale locale = app_locale;
 
   if (wooSignalApp != null) {
     initialRoute = "/home";
@@ -40,6 +42,14 @@ void main() async {
         wpJsonPath: wooSignalApp.wpLoginWpApiPath,
       );
     }
+
+    if (locale == null) {
+      if (wooSignalApp.locale != null) {
+        locale = Locale(wooSignalApp.locale);
+      } else {
+        locale = Locale(getEnv('DEFAULT_LOCALE', defaultValue: 'en'));
+      }
+    }
   }
 
   runApp(
@@ -48,7 +58,7 @@ void main() async {
       onGenerateRoute: nylo.router.generator(),
       themeData: CurrentTheme.instance.theme,
       darkTheme: darkTheme(appTheme),
-      locale: app_locale,
+      locale: locale,
       initialRoute: initialRoute,
       supportedLocales: app_locales_supported,
       debugShowCheckedModeBanner: false,

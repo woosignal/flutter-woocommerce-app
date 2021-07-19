@@ -11,7 +11,8 @@ import 'package:flutter/cupertino.dart';
 |--------------------------------------------------------------------------
 */
 
-const Locale app_locale = Locale('en');
+const Locale app_locale = null; // by default it will use the "DEFAULT_LOCALE" value from the /.env
+// const Locale app_locale = Locale('en'); // uncomment to change the locale here too.
 
 const List<Locale> app_locales_supported = [
   Locale('en'),
@@ -20,4 +21,5 @@ const List<Locale> app_locales_supported = [
   Locale('hi'),
   Locale('it'),
   Locale('pt'),
+  Locale('zh'),
 ];

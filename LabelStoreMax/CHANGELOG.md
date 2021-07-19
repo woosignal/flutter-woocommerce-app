@@ -1,3 +1,8 @@
+## [5.1.0] - 2020-07-19
+
+* Add support for simplified Chinese locale (zh)
+* Add ability to change language from WooSignal dashboard
+
 ## [5.0.7] - 2020-07-08
 
 * Pubspec.yaml dependency updates
