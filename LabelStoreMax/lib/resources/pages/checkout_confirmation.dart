@@ -386,7 +386,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (_wooSignalApp.disableShipping == 1 &&
+    if (_wooSignalApp.disableShipping == 0 &&
         CheckoutSession.getInstance.shippingType == null) {
       showToastNotification(
         context,
