@@ -1,4 +1,4 @@
-## [5.2.0] - 2020-10-11
+## [5.2.0] - 2020-10-12
 
 * Migrate to Nylo 2.1.0
 * Use flutter_stripe library for payments
