@@ -72,7 +72,7 @@ stripePay(context,
       return;
     }
 
-    Stripe.instance.initPaymentSheet(paymentSheetParameters: SetupPaymentSheetParameters(
+    await Stripe.instance.initPaymentSheet(paymentSheetParameters: SetupPaymentSheetParameters(
       applePay: false,
       googlePay: false,
       style: Theme.of(state.context).brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
@@ -102,8 +102,7 @@ stripePay(context,
 
     Navigator.pushNamed(context, "/checkout-status", arguments: order);
 
-  }
-  on StripeException catch(e) {
+  } on StripeException catch(e) {
     showToastNotification(
       context,
       title: trans(context, "Oops!"),
