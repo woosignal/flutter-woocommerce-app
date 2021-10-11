@@ -83,15 +83,13 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(trans(context, "Browse"),
                 style: Theme.of(context).textTheme.subtitle1),
-            Text(parseHtmlString(productCategory.name),
-                style: Theme.of(context).textTheme.headline6)
+            Text(parseHtmlString(productCategory.name))
           ],
         ),
         centerTitle: true,

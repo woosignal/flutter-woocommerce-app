@@ -47,7 +47,6 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: StoreLogo(height: 55),
         centerTitle: true,
       ),

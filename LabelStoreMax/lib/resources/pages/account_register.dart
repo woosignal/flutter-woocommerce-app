@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
@@ -54,17 +54,15 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveTheme = AdaptiveTheme.of(context).mode;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Register",
-          style: Theme.of(context).textTheme.headline6,
+          trans(context, "Register")
         ),
         centerTitle: true,
       ),
@@ -131,7 +129,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                     style: TextStyle(
-                        color: adaptiveTheme.isLight
+                        color: (Theme.of(context).brightness == Brightness.light)
                             ? Colors.black45
                             : Colors.white70),
                   ),

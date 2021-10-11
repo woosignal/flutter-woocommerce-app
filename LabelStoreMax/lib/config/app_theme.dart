@@ -1,62 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/resources/themes/styles/dark_theme_colors.dart';
+import 'package:flutter_app/resources/themes/styles/light_theme_colors.dart';
+import 'package:flutter_app/resources/themes/styles/theme_styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /*
 |--------------------------------------------------------------------------
-| APP THEME
+| Theme Font
 |
-| Change the font and colors for your themes.
+| Uses Google Fonts - https://pub.dev/packages/google_fonts
+|
+| e.g. updating the font from "montserrat" to "lato"
+| before: final TextStyle appThemeFont = GoogleFonts.montserrat();
+| after:  final TextStyle appThemeFont = GoogleFonts.lato();
 |--------------------------------------------------------------------------
 */
 
-// Theme main font
 final TextStyle appThemeFont = GoogleFonts.overpass();
 
-// Theme colors
-class AppColors {
-  // MAIN
-  Color _mainLightColor = Color(0xFF232c33);
-  Color _mainDarkColor = Color(0xFFFAFAFA);
+// e.g. custom font in pubspec.yaml - https://flutter.dev/docs/cookbook/design/fonts
+// final TextStyle appThemeFont = TextStyle(fontFamily: "ZenTokyoZoo");
 
-  // SECONDARY
-  Color _secondLightColor = Color(0xFF232c33);
-  Color _secondDarkColor = Color(0xFFF1F1F1);
+/*
+|--------------------------------------------------------------------------
+| Theme Colors
+|
+| Customize your theme's light and dark themes: /lib/config/styles/
+|--------------------------------------------------------------------------
+*/
 
-  // ACCENT
-  Color _accentLightColor = Color(0xFF465f81);
-  Color _accentDarkColor = Color(0xFF4a4a4a);
+class NyColors {
+  // Light Colors
+  static LightThemeColors light = LightThemeColors();
 
-  // SCAFFOLD
-  Color _scaffoldDarkColor = Color(0xFF2C2C2C);
-  Color _scaffoldLightColor = Color(0xFFFAFAFA);
-}
+  // Dark Colors
+  static DarkThemeColors dark = DarkThemeColors();
 
-class AppTheme extends AppColors {
-  Color mainColor(
-      {double opacity = 1, Brightness brightness = Brightness.light}) {
-    return (brightness == Brightness.light
-        ? _mainLightColor.withOpacity(opacity)
-        : _mainDarkColor.withOpacity(opacity));
-  }
-
-  Color secondColor(
-      {double opacity = 1, Brightness brightness = Brightness.light}) {
-    return (brightness == Brightness.light
-        ? _secondLightColor.withOpacity(opacity)
-        : _secondDarkColor.withOpacity(opacity));
-  }
-
-  Color accentColor(
-      {double opacity = 1, Brightness brightness = Brightness.light}) {
-    return (brightness == Brightness.light
-        ? _accentLightColor.withOpacity(opacity)
-        : _accentDarkColor.withOpacity(opacity));
-  }
-
-  Color scaffoldColor(
-      {double opacity = 1, Brightness brightness = Brightness.light}) {
-    return (brightness == Brightness.light
-        ? _scaffoldLightColor.withOpacity(opacity)
-        : _scaffoldDarkColor.withOpacity(opacity));
+  /// helper to find correct theme from the [context].
+  static BaseStyles of(BuildContext context) {
+    return ((Theme.of(context).brightness == Brightness.dark) ? dark : light);
   }
 }

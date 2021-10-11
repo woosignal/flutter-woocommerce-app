@@ -17,7 +17,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>NSCameraUsageDescription</key>
-        <string>$(PRODUCT_NAME) photo use</string>
+    <string>You can take photos of your payment details.</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
     <key>MinimumOSVersion</key>

@@ -8,7 +8,6 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
@@ -178,16 +178,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text(
-          trans(context, "Checkout"),
-          style: Theme.of(context)
-              .textTheme
-              .subtitle1
-              .copyWith(fontWeight: FontWeight.bold),
+          trans(context, "Checkout")
         ),
         centerTitle: true,
       ),
@@ -203,12 +197,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                     child: Container(
                       padding: EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(
-                        color: adaptiveThemeMode.isLight
-                            ? Colors.white
-                            : Colors.white54,
+                        color: NyColors.of(context).backgroundContainer,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow:
-                            adaptiveThemeMode.isLight ? wsBoxShadow() : null,
+                        (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
                       ),
                       margin: EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
@@ -217,7 +209,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                           children: <Widget>[
                             Container(
                                 decoration: BoxDecoration(
-                                  boxShadow: adaptiveThemeMode.isLight
+                                  boxShadow: (Theme.of(context).brightness == Brightness.light)
                                       ? wsBoxShadow(blurRadius: 10)
                                       : null,
                                   color: Colors.transparent,
@@ -258,13 +250,13 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                             (CheckoutSession.getInstance.paymentType != null
                                 ? wsCheckoutRow(context,
                                     heading: trans(context, "Payment method"),
-                                    leadImage: Image.asset(
-                                      getImageAsset(CheckoutSession
-                                          .getInstance.paymentType.assetImage),
-                                      width: 70,
-                                      color: adaptiveThemeMode.isLight
-                                          ? null
-                                          : Colors.white,
+                                    leadImage: Container(
+                                      color: Colors.white,
+                                      child: Image.asset(
+                                        getImageAsset(CheckoutSession
+                                            .getInstance.paymentType.assetImage),
+                                        width: 70,
+                                      ),
                                     ),
                                     leadTitle: CheckoutSession
                                         .getInstance.paymentType.desc,
@@ -411,7 +403,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (_wooSignalApp.disableShipping != 1 &&
+    if (_wooSignalApp.disableShipping == 0 &&
         CheckoutSession.getInstance.shippingType?.minimumValue != null) {
       String total = await Cart.getInstance.getTotal();
       if (total == null) {

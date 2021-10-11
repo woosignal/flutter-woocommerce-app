@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/config/app_theme.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:flutter_app/resources/themes/text_theme/default_text_theme.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 /*
 |--------------------------------------------------------------------------
@@ -10,111 +12,106 @@ import 'package:nylo_support/helpers/helper.dart';
 |--------------------------------------------------------------------------
 */
 
-TextTheme _defaultTextTheme(AppTheme appTheme) {
-  return TextTheme(
-    headline5: TextStyle(
-      fontSize: 22.0,
-      color: appTheme.secondColor(brightness: Brightness.dark),
+ThemeData darkTheme() {
+  TextTheme darkTheme =
+  getAppTextTheme(appThemeFont, defaultTextTheme.merge(_darkTextTheme()));
+  return ThemeData(
+    primaryColor: NyColors.light.primaryContent,
+    backgroundColor: NyColors.dark.background,
+    colorScheme: ColorScheme.dark(),
+    primaryColorLight: NyColors.light.primaryAccent,
+    primaryColorDark: NyColors.dark.primaryContent,
+    focusColor: NyColors.dark.primaryContent,
+    scaffoldBackgroundColor: NyColors.dark.background,
+    hintColor: NyColors.light.primaryAccent,
+    appBarTheme: AppBarTheme(
+        backgroundColor: NyColors.dark.appBarBackground,
+        titleTextStyle: darkTheme.headline6
+            .copyWith(color: NyColors.dark.appBarPrimaryContent),
+        iconTheme: IconThemeData(color: NyColors.dark.appBarPrimaryContent),
+        elevation: 1.0,
+        systemOverlayStyle: SystemUiOverlayStyle.light),
+    buttonTheme: ButtonThemeData(
+      buttonColor: NyColors.dark.primaryAccent,
+      colorScheme: ColorScheme.light(primary: NyColors.dark.buttonBackground),
     ),
-    headline4: TextStyle(
-      fontSize: 24.0,
-      fontWeight: FontWeight.w600,
-      color: appTheme.secondColor(brightness: Brightness.dark),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(primary: NyColors.dark.primaryContent),
     ),
-    headline3: TextStyle(
-      fontSize: 26.0,
-      fontWeight: FontWeight.w700,
-      color: appTheme.secondColor(brightness: Brightness.dark),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: TextButton.styleFrom(
+          primary: NyColors.dark.buttonPrimaryContent,
+          backgroundColor: NyColors.dark.buttonBackground),
     ),
-    headline2: TextStyle(
-      fontSize: 28.0,
-      fontWeight: FontWeight.w600,
-      color: appTheme.mainColor(brightness: Brightness.dark),
+    inputDecorationTheme: InputDecorationTheme(
+        focusedBorder:UnderlineInputBorder(
+            borderSide:BorderSide(color: Colors.black)
+        ),
     ),
-    headline1: TextStyle(
-      fontSize: 36.0,
-      fontWeight: FontWeight.w300,
-      color: appTheme.secondColor(brightness: Brightness.dark),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: NyColors.dark.bottomTabBarBackground,
+      unselectedIconTheme:
+      IconThemeData(color: NyColors.dark.bottomTabBarIconUnselected),
+      selectedIconTheme:
+      IconThemeData(color: NyColors.dark.bottomTabBarIconSelected),
+      unselectedLabelStyle:
+      TextStyle(color: NyColors.dark.bottomTabBarLabelUnselected),
+      selectedLabelStyle:
+      TextStyle(color: NyColors.dark.bottomTabBarLabelSelected),
+      selectedItemColor: NyColors.dark.bottomTabBarLabelSelected,
     ),
-    subtitle2: TextStyle(
-      fontSize: 14.0,
-      fontWeight: FontWeight.w500,
-      color: appTheme.secondColor(brightness: Brightness.dark),
-    ),
-    subtitle1: TextStyle(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w500,
-      color: Colors.white,
-    ),
-    overline: TextStyle(
-      fontSize: 10.0,
-      fontWeight: FontWeight.w400,
-      color: appTheme.secondColor(brightness: Brightness.dark),
-    ),
-    button: TextStyle(
-      color: Colors.white,
-    ),
-    headline6: TextStyle(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w600,
-      color: appTheme.mainColor(brightness: Brightness.dark),
-    ),
-    bodyText2: TextStyle(
-      fontSize: 14.0,
-      color: appTheme.secondColor(brightness: Brightness.dark),
-    ),
-    bodyText1: TextStyle(
-      fontSize: 16.0,
-      fontWeight: FontWeight.bold,
-      color: appTheme.secondColor(brightness: Brightness.dark),
-    ),
-    caption: TextStyle(
-      fontSize: 16.0,
-      fontWeight: FontWeight.bold,
-      color: appTheme.accentColor(brightness: Brightness.dark),
-    ),
+    textTheme: darkTheme,
+    textSelectionTheme: TextSelectionThemeData(cursorColor: NyColors.dark.inputPrimaryContent),
   );
 }
 
-ThemeData darkTheme(AppTheme appTheme) => ThemeData(
-      primaryColor: appTheme.mainColor(brightness: Brightness.dark),
-      backgroundColor: Colors.white,
-      brightness: Brightness.dark,
-      accentColor: appTheme.accentColor(brightness: Brightness.dark),
-      iconTheme: IconThemeData(
-          color: appTheme.secondColor(brightness: Brightness.dark)),
-      primaryColorLight: appTheme.accentColor(
-        brightness: Brightness.light,
-      ),
-      primaryColorDark: appTheme.accentColor(
-        brightness: Brightness.dark,
-      ),
-      primaryTextTheme: _defaultTextTheme(appTheme).copyWith(
-          bodyText2:
-              TextStyle(color: Colors.white70, fontWeight: FontWeight.bold),
-          bodyText1:
-              TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-      accentColorBrightness: Brightness.dark,
-      accentTextTheme: _defaultTextTheme(appTheme).apply(
-        bodyColor: appTheme.accentColor(brightness: Brightness.dark),
-        displayColor: appTheme.accentColor(brightness: Brightness.dark),
-      ),
-      focusColor: appTheme.accentColor(brightness: Brightness.dark),
-      scaffoldBackgroundColor:
-          appTheme.scaffoldColor(brightness: Brightness.dark),
-      hintColor: appTheme.secondColor(brightness: Brightness.dark),
-      appBarTheme: AppBarTheme(
-        textTheme: getAppTextTheme(appThemeFont, _defaultTextTheme(appTheme)),
-        color:
-            appTheme.scaffoldColor(brightness: Brightness.dark, opacity: 0.5),
-        iconTheme: IconThemeData(
-            color: appTheme.mainColor(brightness: Brightness.dark)),
-        elevation: 1.0,
-        brightness: Brightness.dark,
-      ),
-      buttonColor: Colors.white,
-      buttonTheme: ButtonThemeData(
-        buttonColor: appTheme.accentColor(),
-      ),
-      textTheme: getAppTextTheme(appThemeFont, _defaultTextTheme(appTheme)),
-    );
+/*
+|--------------------------------------------------------------------------
+| Dark Text Theme
+|--------------------------------------------------------------------------
+*/
+
+TextTheme _darkTextTheme() {
+  final Color darkPrimaryContent = NyColors.dark.primaryContent;
+  return TextTheme(
+    headline6: TextStyle(
+      color: darkPrimaryContent.withOpacity(0.8),
+    ),
+    headline5: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    headline4: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    headline3: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    headline2: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    headline1: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    subtitle2: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    subtitle1: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    overline: TextStyle(
+      color: darkPrimaryContent,
+    ),
+    button: TextStyle(
+      color: darkPrimaryContent.withOpacity(0.8),
+    ),
+    bodyText2: TextStyle(
+      color: darkPrimaryContent.withOpacity(0.8),
+    ),
+    bodyText1: TextStyle(
+      color: NyColors.dark.primaryContent,
+    ),
+    caption: TextStyle(
+      color: darkPrimaryContent.withOpacity(0.8),
+    ),
+  );
+}

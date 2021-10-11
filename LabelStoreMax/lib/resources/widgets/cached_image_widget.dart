@@ -21,6 +21,7 @@ class CachedImageWidget extends StatelessWidget {
       child: CircularProgressIndicator(
         strokeWidth: 2,
         backgroundColor: Colors.black12,
+          color: Colors.black54
       ),
     ),
     this.fit = BoxFit.contain,

@@ -77,15 +77,13 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(trans(context, "Search results for"),
                 style: Theme.of(context).textTheme.subtitle1),
-            Text("\"" + _search + "\"",
-                style: Theme.of(context).textTheme.headline6)
+            Text("\"" + _search + "\"")
           ],
         ),
         centerTitle: true,

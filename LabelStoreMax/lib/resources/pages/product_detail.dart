@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_app/app/controllers/product_detail_controller.dart';
@@ -42,7 +42,6 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   int _quantityIndicator = 1;
   List<WS.ProductVariation> _productVariations = [];
   Map<int, dynamic> _tmpAttributeObj = {};
-  AppTheme _appTheme = AppTheme();
 
   @override
   widgetDidLoad() async {
@@ -283,14 +282,12 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveTheme = AdaptiveTheme.of(context).mode;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         actions: <Widget>[
           CartIconWidget(),
         ],
-        title: StoreLogo(height: 55, showBgWhite: !adaptiveTheme.isLight),
+        title: StoreLogo(height: 55, showBgWhite: (Theme.of(context).brightness == Brightness.dark)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -309,7 +306,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                             child: Swiper(
                               itemBuilder: (BuildContext context, int index) =>
                                   CachedImageWidget(
-                                image: _product.images[index].src,
+                                image: _product.images.length != 0 ? _product.images[index].src : getEnv("PRODUCT_PLACEHOLDER_IMAGE"),
                               ),
                               itemCount: _product.images.length == 0
                                   ? 1
@@ -381,9 +378,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: adaptiveTheme.isLight
-                                ? Colors.white
-                                : Colors.black26,
+                            color: NyColors.of(context).background,
                             // boxShadow: wsBoxShadow(),
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -444,10 +439,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
-                      color: adaptiveTheme.isLight
-                          ? Colors.white
-                          : _appTheme.scaffoldColor(
-                              brightness: Brightness.dark),
+                      color: NyColors.of(context).background,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black12,

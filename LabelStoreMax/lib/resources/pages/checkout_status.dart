@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/checkout_status_controller.dart';
 import 'package:flutter_app/app/models/cart.dart';
@@ -43,7 +43,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -94,7 +94,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                         border: Border(
                           bottom: BorderSide(color: Colors.black12, width: 1.0),
                         ),
-                        color: adaptiveThemeMode.isLight ? Colors.white : null),
+                        color: (Theme.of(context).brightness == Brightness.light) ? Colors.white : null),
                     padding: EdgeInsets.only(bottom: 20),
                   ),
                   Container(
@@ -164,7 +164,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                           padding: EdgeInsets.all(16),
                           margin: EdgeInsets.all(8),
                           color:
-                              adaptiveThemeMode.isLight ? Colors.white : null);
+                          (Theme.of(context).brightness == Brightness.light) ? Colors.white : null);
                     }),
               ),
               Align(

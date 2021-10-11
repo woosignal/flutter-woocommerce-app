@@ -1,3 +1,12 @@
+## [5.2.0] - 2020-10-12
+
+* Migrate to Nylo 2.1.0
+* Use flutter_stripe library for payments
+* Remove RazorPay for build fails
+* Pubspec.yaml dependency updates
+* Android compileSdkVersion 30
+* Bug fixes
+
 ## [5.1.0] - 2020-07-19
 
 * Add support for simplified Chinese locale (zh)

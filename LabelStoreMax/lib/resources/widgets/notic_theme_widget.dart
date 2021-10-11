@@ -89,7 +89,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
         }
       case 3:
         {
-          activeWidget = (await authCheck()) ? AccountDetailPage(showLeadingBackButton: false) : AccountLandingPage();
+          activeWidget = (await authCheck()) ? AccountDetailPage(showLeadingBackButton: false) : AccountLandingPage(showBackButton: false,);
           break;
         }
     }

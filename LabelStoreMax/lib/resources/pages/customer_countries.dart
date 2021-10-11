@@ -44,10 +44,8 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text(
-          trans(context, "Select a country"),
-          style: Theme.of(context).textTheme.headline6,
+          trans(context, "Select a country")
         ),
         centerTitle: true,
       ),

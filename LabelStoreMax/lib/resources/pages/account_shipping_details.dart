@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -33,8 +33,6 @@ class AccountShippingDetailsPage extends StatefulWidget {
 class _AccountShippingDetailsPageState
     extends State<AccountShippingDetailsPage> {
   _AccountShippingDetailsPageState();
-
-  AppTheme _appTheme = AppTheme();
 
   // BILLING TEXT CONTROLLERS
   TextEditingController _txtShippingFirstName = TextEditingController(),
@@ -91,14 +89,12 @@ class _AccountShippingDetailsPageState
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveTheme = AdaptiveTheme.of(context).mode;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text(
-          trans(context, "Shipping Details"),
-          style: Theme.of(context).textTheme.headline6,
+          trans(context, "Shipping Details")
         ),
         centerTitle: true,
       ),
@@ -182,13 +178,12 @@ class _AccountShippingDetailsPageState
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: adaptiveTheme.isLight
-                                ? Colors.white
-                                : _appTheme.accentColor(
-                                    brightness: Brightness.dark),
+                            color: (Theme.of(context).brightness == Brightness.light)
+                                ? NyColors.light.background
+                                : NyColors.dark.primaryAccent,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow:
-                                adaptiveTheme.isLight ? wsBoxShadow() : null,
+                            (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
                           ),
                           padding: EdgeInsets.all(8),
                         ),

@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
@@ -237,7 +238,9 @@ class TextEditingRow extends StatelessWidget {
               child: Padding(
                 child: Text(
                   heading,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: NyColors.of(context).primaryContent
+                  ),
                 ),
                 padding: EdgeInsets.only(bottom: 2),
               ),
@@ -375,7 +378,9 @@ class ProductItemContainer extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 2, bottom: 2),
                   child: Text(
                     product.name,
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontSize: 15
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -438,7 +443,7 @@ class ProductItemContainer extends StatelessWidget {
 
 wsModalBottom(BuildContext context,
     {String title, Widget bodyWidget, Widget extraWidget}) {
-  AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
+
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -451,9 +456,7 @@ wsModalBottom(BuildContext context,
           child: new Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: new BoxDecoration(
-                color: adaptiveThemeMode.isLight
-                    ? Colors.white
-                    : Color(0xFF2C2C2C),
+                color: NyColors.of(context).background,
                 borderRadius: new BorderRadius.only(
                   topLeft: const Radius.circular(10.0),
                   topRight: const Radius.circular(10.0),
@@ -476,10 +479,8 @@ wsModalBottom(BuildContext context,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         boxShadow:
-                            adaptiveThemeMode.isLight ? wsBoxShadow() : null,
-                        color: adaptiveThemeMode.isLight
-                            ? Colors.white
-                            : Color(0xFF4a4a4a),
+                        (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                        color: NyColors.of(context).background,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: bodyWidget,
@@ -487,7 +488,8 @@ wsModalBottom(BuildContext context,
                   ),
                   extraWidget ?? null
                 ].where((t) => t != null).toList(),
-              )),
+              ),
+          ),
         ),
       );
     },

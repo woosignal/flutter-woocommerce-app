@@ -6,11 +6,11 @@ import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'dart:async';
-
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:nylo_support/widgets/ny_state.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class PayPalCheckout extends StatefulWidget {
@@ -25,7 +25,9 @@ class PayPalCheckout extends StatefulWidget {
 }
 
 class WebViewState extends NyState<PayPalCheckout> {
-  final flutterWebViewPlugin = new FlutterWebviewPlugin();
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
+
   String payerId = '';
   int intCount = 0;
   StreamSubscription<String> _onUrlChanged;
@@ -67,7 +69,7 @@ class WebViewState extends NyState<PayPalCheckout> {
   }
 
   String getPayPalItemName() {
-    return truncateString(widget.description, 124);
+    return truncateString(widget.description.replaceAll(new RegExp(r'[^\w\s]+'),''), 124);
   }
 
   String getPayPalPaymentType() {
@@ -84,33 +86,17 @@ class WebViewState extends NyState<PayPalCheckout> {
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     setCheckoutShippingAddress(
         CheckoutSession.getInstance.billingDetails.shippingAddress);
-
     setState(() {});
-
-    _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
-      if (intCount > 0) {
-        url = url.replaceAll("~", "_");
-      }
-
-      intCount = intCount + 1;
-      if (url.contains("payment_success")) {
-        var uri = Uri.dataFromString(url);
-        setState(() {
-          payerId = uri.queryParameters['PayerID'];
-        });
-        Navigator.pop(context, {"status": "success", "payerId": payerId});
-      } else if (url.contains("payment_failure")) {
-        Navigator.pop(context, {"status": "cancelled"});
-      }
-    });
   }
 
   @override
   void dispose() {
-    _onUrlChanged.cancel();
-    flutterWebViewPlugin.dispose();
+    if (_onUrlChanged != null) {
+      _onUrlChanged.cancel();
+    }
     super.dispose();
   }
 
@@ -146,14 +132,39 @@ $formCheckoutShippingAddress
 
   @override
   Widget build(BuildContext context) {
-    return WebviewScaffold(
-      url: Uri.dataFromString(_loadHTML(), mimeType: 'text/html').toString(),
-      appBar: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: Text(
-          trans(context, "PayPal Checkout"),
-          textAlign: TextAlign.center,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: WebView(
+          initialUrl: Uri.dataFromString(_loadHTML(), mimeType: 'text/html').toString(),
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller.complete(webViewController);
+          },
+          onProgress: (int progress) {
+          },
+          navigationDelegate: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+          onPageStarted: (String url) {
+          },
+          onPageFinished: (String url) {
+            if (intCount > 0) {
+              url = url.replaceAll("~", "_");
+            }
+
+            intCount = intCount + 1;
+            if (url.contains("payment_success")) {
+              var uri = Uri.dataFromString(url);
+              setState(() {
+                payerId = uri.queryParameters['PayerID'];
+              });
+              Navigator.pop(context, {"status": payerId == null ? "cancelled" : "success", "payerId": payerId});
+            } else if (url.contains("payment_failure")) {
+              Navigator.pop(context, {"status": "cancelled"});
+            }
+          },
+          gestureNavigationEnabled: false,
         ),
       ),
     );
