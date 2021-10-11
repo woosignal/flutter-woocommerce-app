@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/account_order_detail_controller.dart';
@@ -44,10 +44,9 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         leading: Container(
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -56,8 +55,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
           margin: EdgeInsets.only(left: 0),
         ),
         title: Text(
-          "${trans(context, "Order").capitalize()} #${_orderId.toString()}",
-          style: Theme.of(context).textTheme.headline6,
+          "${trans(context, "Order").capitalize()} #${_orderId.toString()}"
         ),
         centerTitle: true,
       ),
@@ -110,8 +108,8 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       boxShadow:
-                          adaptiveThemeMode.isLight ? wsBoxShadow() : null,
-                      color: adaptiveThemeMode.isLight
+                      (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                      color: (Theme.of(context).brightness == Brightness.light)
                           ? Colors.white
                           : Color(0xFF2C2C2C),
                     ),

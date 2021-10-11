@@ -1,14 +1,14 @@
 # Official WooSignal App Template for WooCommerce
 
 # Label StoreMax
-# Version: 5.1.0
+# Version: 5.2.0
 # Author: Anthony Gordon
 # Homepage: https://woosignal.com
 # Documentation: https://woosignal.com/docs/app/ios/label-storemax
 
 ### Change App Icon
 # 1 Replace: public/assets/icon/appicon.png (1024px1024px icon size)
-# 2 Run this command from the terminal: "flutter pub run flutter_launcher_icons:main"
+# 2 Run this command from the terminal: "flutter pub run nylo_framework:main appicons:build"
 
 ### Uploading the IOS/Android app
 # IOS https://flutter.dev/docs/deployment/ios
@@ -27,34 +27,30 @@ environment:
 dependencies:
   google_fonts: ^2.1.0
   analyzer: ^1.5.0
-  adaptive_theme: ^2.2.0
   intl: ^0.17.0
-  page_transition: ^2.0.2
-  nylo_framework: ^1.0.0
-  nylo_support: ^1.0.0
+  page_transition: ^2.0.4
+  nylo_framework: ^2.0.4
   woosignal: ^2.1.0
-  woosignal_stripe: ^1.1.0
-  razorpay_flutter: ^1.2.5
-  wp_json_api: ^3.0.0
+  flutter_stripe: ^2.0.0
+  wp_json_api: ^3.1.3
   cached_network_image: ^3.1.0
   package_info: ^2.0.2
   money_formatter: ^0.0.3
   platform_alert_dialog: ^1.0.0+2
-  flutter_web_browser: ^0.14.0
-  flutter_webview_plugin: ^0.4.0
+  flutter_web_browser: ^0.15.0
+  webview_flutter: ^2.1.1
   pull_to_refresh: 2.0.0
   flutter_swiper: ^1.1.6
   flutter_styled_toast: ^2.0.0
   animate_do: ^2.0.0
   bubble_tab_indicator: ^0.1.5
   status_alert: ^0.1.3
-  math_expressions: ^2.1.1
-  hexcolor: ^2.0.3
-  flutter_spinkit: ^5.0.0
-  flutter_launcher_icons: ^0.9.0
+  math_expressions: ^2.2.0
+  hexcolor: ^2.0.5
+  flutter_spinkit: ^5.1.0
   auto_size_text: ^2.1.0
   html: ^0.15.0
-  flutter_staggered_grid_view: ^0.4.0
+  flutter_staggered_grid_view: ^0.4.1
   flutter:
     sdk: flutter
   flutter_localizations:

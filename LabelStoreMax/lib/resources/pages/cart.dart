@@ -187,9 +187,7 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         title: Text(
           trans(context, "Shopping Cart"),
-          style: Theme.of(context).appBarTheme.textTheme.headline6,
         ),
-        textTheme: Theme.of(context).textTheme,
         elevation: 1,
         actions: <Widget>[
           InkWell(
@@ -199,7 +197,7 @@ class _CartPageState extends State<CartPage> {
               child: Padding(
                 child: Text(
                   trans(context, "Clear Cart"),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 padding: EdgeInsets.only(right: 8),
               ),

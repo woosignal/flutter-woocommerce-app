@@ -36,7 +36,7 @@ class TopNavWidget extends StatelessWidget {
               AutoSizeText(
                 trans(context, "Newest"),
                 style: Theme.of(context)
-                    .primaryTextTheme
+                    .textTheme
                     .bodyText2
                     .copyWith(fontWeight: FontWeight.bold),
                 maxLines: 1,

@@ -8,12 +8,13 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
+import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -100,10 +101,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
       new Tab(text: trans(context, "Orders")),
       new Tab(text: trans(context, "Settings")),
     ];
-    AdaptiveThemeMode adaptiveTheme = AdaptiveTheme.of(context).mode;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         leading: widget.showLeadingBackButton ? Container(
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -112,8 +112,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
           margin: EdgeInsets.only(left: 0),
         ) : Container(),
         title: Text(
-          trans(context, "Account"),
-          style: Theme.of(context).textTheme.headline6,
+          trans(context, "Account")
         ),
         centerTitle: true,
       ),
@@ -206,9 +205,8 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow: adaptiveTheme.isLight ? wsBoxShadow() : null,
-                      color:
-                          adaptiveTheme.isLight ? Colors.white : Colors.white70,
+                      boxShadow: (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                      color: NyColors.of(context).backgroundContainer,
                     ),
                   ),
                   Expanded(child: _activeBody),

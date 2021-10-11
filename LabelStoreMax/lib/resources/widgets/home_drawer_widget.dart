@@ -8,12 +8,14 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
+import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_version_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import 'package:nylo_framework/theme/helper/ny_theme.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
@@ -30,19 +32,17 @@ class HomeDrawerWidget extends StatefulWidget {
 class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveTheme = AdaptiveTheme.of(context).mode;
+    bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(
-        color: adaptiveTheme == AdaptiveThemeMode.light
-            ? Colors.white
-            : Color(0xFF2C2C2C),
+        color: NyColors.of(context).background,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               child: Center(child: StoreLogo()),
               decoration: BoxDecoration(
-                color: adaptiveTheme.isLight ? Colors.white : Colors.black87,
+                color: NyColors.of(context).background,
               ),
             ),
             Padding(
@@ -54,15 +54,20 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             ),
             if (widget.wooSignalApp.wpLoginEnabled == 1)
               ListTile(
-                title: Text(trans(context, "Profile")),
+                title: Text(trans(context, "Profile"), style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 16
+                ),),
                 leading: Icon(Icons.account_circle),
                 onTap: _actionProfile,
               ),
             ListTile(
-              title: Text(trans(context, "Cart")),
+              title: Text(trans(context, "Cart"), style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  fontSize: 16
+              ),),
               leading: Icon(Icons.shopping_cart),
               onTap: _actionCart,
             ),
+          if (widget.wooSignalApp.appTermslink != null && widget.wooSignalApp.appPrivacylink != null)
             Padding(
               child: Text(
                 trans(context, "About Us"),
@@ -73,7 +78,10 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             if (widget.wooSignalApp.appTermslink != null &&
                 widget.wooSignalApp.appTermslink.isNotEmpty)
               ListTile(
-                title: Text(trans(context, "Terms and conditions")),
+                title: Text(trans(context, "Terms and conditions"),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        fontSize: 16
+                    ),),
                 leading: Icon(Icons.menu_book_rounded),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 onTap: _actionTerms,
@@ -81,25 +89,25 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             if (widget.wooSignalApp.appPrivacylink != null &&
                 widget.wooSignalApp.appPrivacylink.isNotEmpty)
               ListTile(
-                title: Text(trans(context, "Privacy policy")),
+                title: Text(trans(context, "Privacy policy"), style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 16
+                ),),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 leading: Icon(Icons.account_balance),
                 onTap: _actionPrivacy,
               ),
             ListTile(
               title: Text(
-                adaptiveTheme.isDark
-                    ? trans(context, "Light Mode")
-                    : trans(context, "Dark Mode"),
+                  trans(context, (isDark ? "Light Mode" : "Dark Mode")),
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 16
+                  )
               ),
               leading: Icon(Icons.brightness_4_rounded),
               onTap: () {
-                if (adaptiveTheme.isDark) {
-                  AdaptiveTheme.of(context).setLight();
-                } else {
-                  AdaptiveTheme.of(context).setDark();
-                }
-                setState(() {});
+                setState(() {
+                  NyTheme.set(context, id: isDark ? "default_light_theme" : "default_dark_theme");
+                });
               },
             ),
             ListTile(

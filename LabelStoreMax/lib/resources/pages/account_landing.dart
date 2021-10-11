@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/user.dart';
@@ -27,7 +27,8 @@ import 'package:wp_json_api/models/responses/wp_user_login_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountLandingPage extends StatefulWidget {
-  AccountLandingPage();
+  final bool showBackButton;
+  AccountLandingPage({this.showBackButton = true});
 
   @override
   _AccountLandingPageState createState() => _AccountLandingPageState();
@@ -37,7 +38,6 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
   bool _hasTappedLogin = false;
   TextEditingController _tfEmailController = TextEditingController(),
       _tfPasswordController = TextEditingController();
-  AppTheme _appTheme = AppTheme();
 
   @override
   void initState() {
@@ -46,7 +46,6 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveTheme = AdaptiveTheme.of(context).mode;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -79,10 +78,8 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow: adaptiveTheme.isLight ? wsBoxShadow() : null,
-                      color: adaptiveTheme.isLight
-                          ? Colors.white
-                          : _appTheme.accentColor(brightness: Brightness.dark),
+                      boxShadow: (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                      color: NyColors.of(context).backgroundContainer,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     margin: EdgeInsets.symmetric(horizontal: 16),
@@ -117,7 +114,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   Icon(
                     Icons.account_circle,
                     color:
-                        adaptiveTheme.isLight ? Colors.black38 : Colors.white70,
+                    (Theme.of(context).brightness == Brightness.light) ? Colors.black38 : Colors.white70,
                   ),
                   Padding(
                     child: Text(
@@ -143,12 +140,17 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                         "No URL found for \"forgot password\".\nAdd your forgot password URL here https://woosignal.com/dashboard/apps");
                   }
                 }),
-            Divider(),
-            LinkButton(
-              title: trans(context, "Back"),
-              action: () => Navigator.pop(context),
-            ),
-          ],
+            widget.showBackButton ? Column(
+              children: [
+                Divider(),
+                LinkButton(
+                  title: trans(context, "Back"),
+                  action: () => Navigator.pop(context),
+                ),
+              ],
+            ) : Padding(padding: EdgeInsets.only(bottom: 20),)
+
+          ].where((element) => element != null).toList(),
         ),
       ),
     );

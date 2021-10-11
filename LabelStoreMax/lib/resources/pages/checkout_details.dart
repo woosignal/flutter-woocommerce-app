@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/billing_details.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
@@ -34,7 +34,6 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
 
   bool _hasDifferentShippingAddress = false, valRememberDetails = true;
   int activeTabIndex = 0;
-  AppTheme _appTheme = AppTheme();
 
   // TEXT CONTROLLERS
   TextEditingController
@@ -158,14 +157,11 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text(
           trans(context, "Billing & Shipping Details"),
-          style: Theme.of(context).textTheme.headline6,
         ),
         centerTitle: true,
       ),
@@ -229,13 +225,10 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       fit: FlexFit.tight,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: adaptiveThemeMode.isLight
-                              ? Colors.white
-                              : _appTheme.accentColor(
-                                  brightness: Brightness.dark),
+                          color: NyColors.of(context).backgroundContainer,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow:
-                              adaptiveThemeMode.isLight ? wsBoxShadow() : null,
+                          (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
                         ),
                         padding: EdgeInsets.only(left: 8, right: 8, top: 8),
                         child: (activeTab ?? tabBillingDetails()),

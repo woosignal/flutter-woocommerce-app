@@ -46,7 +46,7 @@ payPalPay(context,
         state.reloadState(showLoader: false);
         return;
       }
-
+print(value);
         state.reloadState(showLoader: true);
         if (value.containsKey("status") && value["status"] == "success") {
           OrderWC orderWC =

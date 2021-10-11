@@ -8,7 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
@@ -35,7 +35,6 @@ class CheckoutShippingTypePage extends StatefulWidget {
 class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   _CheckoutShippingTypePageState();
 
-  AppTheme _appTheme = AppTheme();
   bool _isShippingSupported = true, _isLoading = true;
   List<Map<String, dynamic>> _wsShippingOptions = [];
   WSShipping _shipping;
@@ -235,14 +234,11 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    AdaptiveThemeMode adaptiveThemeMode = AdaptiveTheme.of(context).mode;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text(
-          trans(context, "Shipping Methods"),
-          style: Theme.of(context).textTheme.headline6,
+          trans(context, "Shipping Methods")
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -261,7 +257,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                     child: Image.asset(
                       getImageAsset('shipping_icon.png'),
                       height: 100,
-                      color: adaptiveThemeMode.isLight ? null : Colors.white,
+                      color: (Theme.of(context).brightness == Brightness.light) ? null : Colors.white,
                       fit: BoxFit.fitHeight,
                     ),
                   ),
@@ -395,12 +391,10 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                       ],
                     ),
                     decoration: BoxDecoration(
-                      color: adaptiveThemeMode.isLight
-                          ? Colors.white
-                          : _appTheme.accentColor(brightness: Brightness.dark),
+                      color: NyColors.of(context).backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
-                          adaptiveThemeMode.isLight ? wsBoxShadow() : null,
+                      (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
                     ),
                     padding: EdgeInsets.all(8),
                   ),

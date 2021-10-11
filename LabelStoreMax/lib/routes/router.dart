@@ -29,7 +29,7 @@ import 'package:page_transition/page_transition.dart';
 |--------------------------------------------------------------------------
 */
 
-buildRouter() => nyCreateRoutes((router) {
+appRouter() => nyRoutes((router) {
       router.route("/home", (context) => HomePage());
 
       router.route("/cart", (context) => CartPage());

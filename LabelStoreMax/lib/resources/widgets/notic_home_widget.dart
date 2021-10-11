@@ -117,6 +117,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                 onTap: _modalBottomSheetMenu,
                 child: Text(
                   trans(context, "Categories"),
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
             ),
