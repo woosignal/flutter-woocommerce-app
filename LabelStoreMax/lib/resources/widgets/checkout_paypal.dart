@@ -38,32 +38,32 @@ class WebViewState extends NyState<PayPalCheckout> {
     String tmp = "";
     if (customerAddress.firstName != null) {
       tmp +=
-          '<input type="hidden" name="first_name" value="${customerAddress.firstName}">\n';
+          '<input type="hidden" name="first_name" value="${customerAddress.firstName.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     if (customerAddress.lastName != null) {
       tmp +=
-          '<input type="hidden" name="last_name" value="${customerAddress.lastName}">\n';
+          '<input type="hidden" name="last_name" value="${customerAddress.lastName.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     if (customerAddress.addressLine != null) {
       tmp +=
-          '<input type="hidden" name="address1" value="${customerAddress.addressLine}">\n';
+          '<input type="hidden" name="address1" value="${customerAddress.addressLine.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     if (customerAddress.city != null) {
       tmp +=
-          '<input type="hidden" name="city" value="${customerAddress.city}">\n';
+          '<input type="hidden" name="city" value="${customerAddress.city.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     if (customerAddress.customerCountry.hasState() &&
         customerAddress.customerCountry.state.name != null) {
       tmp +=
-          '<input type="hidden" name="state" value="${customerAddress.customerCountry.state.name}">\n';
+          '<input type="hidden" name="state" value="${customerAddress.customerCountry.state.name.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     if (customerAddress.postalCode != null) {
       tmp +=
-          '<input type="hidden" name="zip" value="${customerAddress.postalCode}">\n';
+          '<input type="hidden" name="zip" value="${customerAddress.postalCode.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     if (customerAddress.customerCountry.countryCode != null) {
       tmp +=
-          '<input type="hidden" name="country" value="${customerAddress.customerCountry.countryCode}">\n';
+          '<input type="hidden" name="country" value="${customerAddress.customerCountry.countryCode.replaceAll(new RegExp(r'[^\d\w\s,\-+]+'),'')}">\n';
     }
     formCheckoutShippingAddress = tmp;
   }
