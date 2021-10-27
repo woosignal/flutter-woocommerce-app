@@ -34,7 +34,7 @@ stripePay(context,
       : getEnv('STRIPE_LIVE_MODE', defaultValue: false);
 
   // CONFIGURE STRIPE
-  Stripe.stripeAccountId = getEnv('STRIPE_ACCOUNT');
+  Stripe.stripeAccountId = getEnv('STRIPE_ACCOUNT') == null ? wooSignalApp.stripeAccount : '';
   Stripe.publishableKey = liveMode ? "pk_live_IyS4Vt86L49jITSfaUShumzi" : "pk_test_0jMmpBntJ6UkizPkfiB8ZJxH"; // Don't change this value
 
   try {
