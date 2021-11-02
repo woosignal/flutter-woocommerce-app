@@ -148,6 +148,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   }
 
   _modalBottomSheetAttributes() {
+    WS.ProductVariation productVariation = findProductVariation();
     wsModalBottom(
       context,
       title: trans(context, "Options"),
@@ -182,18 +183,18 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
         child: Column(
           children: <Widget>[
             Text(
-              (findProductVariation() != null
-                  ? "${trans(context, "Price")}: ${formatStringCurrency(total: findProductVariation().price)}"
+              (productVariation != null
+                  ? "${trans(context, "Price")}: ${formatStringCurrency(total: productVariation.price)}"
                   : (((_product.attributes.length ==
                               _tmpAttributeObj.values.length) &&
-                          findProductVariation() == null)
+                          productVariation == null)
                       ? trans(context, "This variation is unavailable")
                       : trans(context, "Choose your options"))),
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Text(
-              (findProductVariation() != null
-                  ? findProductVariation().stockStatus != "instock"
+              (productVariation != null
+                  ? productVariation.stockStatus != "instock"
                       ? trans(context, "Out of stock")
                       : ""
                   : ""),
@@ -212,7 +213,6 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                     return;
                   }
 
-                  WS.ProductVariation productVariation = findProductVariation();
                   if (productVariation == null) {
                     showToastNotification(context,
                         title: trans(context, "Oops"),

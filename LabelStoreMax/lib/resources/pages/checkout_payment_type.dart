@@ -16,6 +16,7 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:nylo_support/helpers/helper.dart';
 
 class CheckoutPaymentTypePage extends StatefulWidget {
@@ -42,7 +43,10 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
 
   @override
   Widget build(BuildContext context) {
-
+    List<PaymentType> paymentTypes = getPaymentTypes();
+    if (paymentTypes.length == 0 && getEnv('APP_DEBUG', defaultValue: false) == true) {
+      NyLogger.info('You have no payment methods set. Visit the WooSignal dashboard (https://woosignal.com/dashboard) to set a payment method.');
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -75,11 +79,14 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Expanded(
-                          child: ListView.separated(
-                            itemCount: getPaymentTypes().length,
+                          child: paymentTypes.length == 0 ? Container(
+                            padding: EdgeInsets.only(top: 20),
+                            child: Text(trans(context, "No payment methods are available"), style: Theme.of(context).textTheme.bodyText1,),
+                          ) : ListView.separated(
+                            itemCount: paymentTypes.length,
                             itemBuilder: (BuildContext context, int index) {
                               PaymentType paymentType =
-                                  getPaymentTypes()[index];
+                                  paymentTypes[index];
                               return ListTile(
                                 contentPadding: EdgeInsets.only(
                                   top: 10,
