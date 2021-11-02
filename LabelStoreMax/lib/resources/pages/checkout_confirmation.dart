@@ -443,7 +443,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       _isProcessingPayment = true;
     });
 
-    CheckoutSession.getInstance.paymentType
+    await CheckoutSession.getInstance.paymentType
         .pay(context, state: this, taxRate: _taxRate);
 
     Future.delayed(Duration(milliseconds: 5000), () {

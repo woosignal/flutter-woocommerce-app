@@ -185,5 +185,6 @@
   "The payment has been cancelled": "The payment has been cancelled",
   "Must have": "Must have",
   "Our selection of new items": "Our selection of new items",
-  "Register": "Register"
+  "Register": "Register",
+  "No payment methods are available": "No payment methods are available"
 }

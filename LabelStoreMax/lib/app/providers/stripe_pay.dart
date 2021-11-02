@@ -34,8 +34,15 @@ stripePay(context,
       : getEnv('STRIPE_LIVE_MODE', defaultValue: false);
 
   // CONFIGURE STRIPE
-  Stripe.stripeAccountId = getEnv('STRIPE_ACCOUNT');
+  Stripe.stripeAccountId = getEnv('STRIPE_ACCOUNT') == null ? wooSignalApp.stripeAccount : getEnv('STRIPE_ACCOUNT');
+
   Stripe.publishableKey = liveMode ? "pk_live_IyS4Vt86L49jITSfaUShumzi" : "pk_test_0jMmpBntJ6UkizPkfiB8ZJxH"; // Don't change this value
+  await Stripe.instance.applySettings();
+
+  if (Stripe.stripeAccountId == '') {
+    NyLogger.error('You need to connect your Stripe account to WooSignal via the dashboard https://woosignal.com/dashboard');
+    return;
+  }
 
   try {
     dynamic rsp = {};
@@ -77,8 +84,8 @@ stripePay(context,
       googlePay: false,
       style: Theme.of(state.context).brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
       testEnv: liveMode,
-      merchantCountryCode: getEnv('STRIPE_COUNTRY_CODE', defaultValue: 'GB'),
-      merchantDisplayName: getEnv('APP_NAME'),
+      merchantCountryCode: envVal('STRIPE_COUNTRY_CODE', defaultValue: wooSignalApp.stripeCountryCode),
+      merchantDisplayName: envVal('APP_NAME', defaultValue: wooSignalApp.appName),
       paymentIntentClientSecret: rsp['client_secret'],
     ));
 
@@ -103,6 +110,9 @@ stripePay(context,
     Navigator.pushNamed(context, "/checkout-status", arguments: order);
 
   } on StripeException catch(e) {
+    if (getEnv('APP_DEBUG', defaultValue: true)) {
+      NyLogger.error(e.error.message);
+    }
     showToastNotification(
       context,
       title: trans(context, "Oops!"),

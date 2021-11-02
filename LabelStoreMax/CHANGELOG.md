@@ -1,8 +1,13 @@
-## [5.2.1] - 2020-10-13
+## [5.3.0] - 2021-11-02
+
+* Ability to update payment providers via WooSignal Dashboard
+* Pubspec.yaml dependency updates
+
+## [5.2.1] - 2021-10-13
 
 * Bug fixes
 
-## [5.2.0] - 2020-10-12
+## [5.2.0] - 2021-10-12
 
 * Migrate to Nylo 2.1.0
 * Use flutter_stripe library for payments
@@ -11,47 +16,47 @@
 * Android compileSdkVersion 30
 * Bug fixes
 
-## [5.1.0] - 2020-07-19
+## [5.1.0] - 2021-07-19
 
 * Add support for simplified Chinese locale (zh)
 * Add ability to change language from WooSignal dashboard
 
-## [5.0.7] - 2020-07-08
+## [5.0.7] - 2021-07-08
 
 * Pubspec.yaml dependency updates
 
-## [5.0.6] - 2020-07-08
+## [5.0.6] - 2021-07-08
 
 * Refactor project to use Nylo v1.0.0
 * Pubspec.yaml dependency updates
 
-## [5.0.5] - 2020-05-03
+## [5.0.5] - 2021-05-03
 
 * Add NSCameraUsageDescription meta to plist for IOS
 
-## [5.0.4] - 2020-04-30
+## [5.0.4] - 2021-04-30
 
 * Fix IOS build failing with Stripe
 * Pubspec.yaml dependency updates
 
-## [5.0.3] - 2020-04-27
+## [5.0.3] - 2021-04-27
 
 * Fix issue account page when logged in for Notic theme
 * Small tweak to helpers.dart
 * Pubspec.yaml dependency updates
 
-## [5.0.2] - 2020-04-17
+## [5.0.2] - 2021-04-17
 
 * Fix issue with PayPal checkout when using different locales
 * Fix nested `trans` methods
 * PAYPAL_LOCALE added to .env file
 
-## [5.0.1] - 2020-04-13
+## [5.0.1] - 2021-04-13
 
 * Update to app_payment_gateways
 * Pubspec.yaml dependency updates
 
-## [5.0.0] - 2020-04-11
+## [5.0.0] - 2021-04-11
 
 * Major release
 * Null safety libraries added
@@ -62,7 +67,7 @@
 * Pubspec.yaml dependency updates
 * Bug fixes
 
-## [4.0.0] - 2020-03-28
+## [4.0.0] - 2021-03-28
 
 * Major release
 * New config structure
@@ -74,7 +79,7 @@
 * Dart code formatted
 * Pubspec.yaml dependency updates
 
-## [3.0.0] - 2020-03-08
+## [3.0.0] - 2021-03-08
 
 * Major release
 * Flutter 2.0.0+ support
@@ -82,14 +87,14 @@
 * Code tidy up
 * Bug fixes
 
-## [2.6.0] - 2020-02-24
+## [2.6.0] - 2021-02-24
 
 * Ability to manage affiliate products
 * Refreshed design for checkout details screen
 * New logic to manage shipping better
 * Bug fixes
 
-## [2.5.1] - 2020-02-21
+## [2.5.1] - 2021-02-21
 
 * Pubspec.yaml dependency updates
 * Bug fixes

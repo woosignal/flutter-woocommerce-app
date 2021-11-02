@@ -4,7 +4,7 @@
 
 # WooCommerce App: Label StoreMax
 
-### Label StoreMax - v5.2.1
+### Label StoreMax - v5.3.0
 
 
 [Official WooSignal WooCommerce App](https://woosignal.com)
@@ -35,7 +35,7 @@ You can also upload the app to the IOS app store and Google play store using Flu
 2. Sign up for free on [WooSignal](https://woosignal.com) and link your WooCommerce store
 3. Add your app key into the **.env** file and hit play (with Android Studio) to build the app 🥳
 
-Full documentation this available [here](https://woosignal.com/docs/app/ios/label-storemax)
+Full documentation this available [here](https://woosignal.com/docs/app/label-storemax)
 
 ## Some features integrated
 

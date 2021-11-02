@@ -44,19 +44,19 @@ class _CartPageState extends State<CartPage> {
 
   _cartCheck() async {
     List<CartLineItem> cart = await Cart.getInstance.getCart();
-    if (cart.length <= 0) {
+    if (cart.length == 0) {
       setState(() {
         _isLoading = false;
-        _isCartEmpty = (cart.length <= 0) ? true : false;
+        _isCartEmpty = true;
       });
-      return [];
+      return;
     }
 
     List<Map<String, dynamic>> cartJSON = cart.map((c) => c.toJson()).toList();
 
     List<dynamic> cartRes =
         await appWooSignal((api) => api.cartCheck(cartJSON));
-    if (cartRes.length <= 0) {
+    if (cartRes.length == 0) {
       Cart.getInstance.saveCartToPref(cartLineItems: []);
       setState(() {
         _isCartEmpty = true;
@@ -80,7 +80,7 @@ class _CartPageState extends State<CartPage> {
       return;
     }
 
-    if (cartLineItems.length <= 0) {
+    if (cartLineItems.length == 0) {
       showToastNotification(
         context,
         title: trans(context, "Cart"),

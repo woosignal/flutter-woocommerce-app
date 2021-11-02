@@ -23,7 +23,7 @@ void main() async {
 
   String initialRoute = '/no-connection';
   WooSignalApp wooSignalApp = await appWooSignal((api) => api.getApp());
-  Locale locale = app_locale;
+  Locale locale;
 
   if (wooSignalApp != null) {
     initialRoute = "/home";
@@ -38,11 +38,7 @@ void main() async {
       );
     }
 
-    if (locale == null && wooSignalApp.locale != null) {
-      locale = Locale(wooSignalApp.locale);
-    } else {
-      locale = Locale(getEnv('DEFAULT_LOCALE', defaultValue: 'en'));
-    }
+    locale = Locale((getEnv('DEFAULT_LOCALE', defaultValue: null) == null && wooSignalApp.locale != null) ? wooSignalApp.locale : envVal('DEFAULT_LOCALE', defaultValue: 'en'));
   }
 
   runApp(

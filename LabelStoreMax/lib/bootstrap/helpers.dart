@@ -52,24 +52,41 @@ appWooSignal(Function(WooSignal) api) async {
   return await api(wooSignal);
 }
 
-List<PaymentType> getPaymentTypes() =>
-    paymentTypeList.where((v) => v != null).toList();
+List<PaymentType> getPaymentTypes() {
+  List<PaymentType> paymentTypes = [];
+  app_payment_gateways.forEach((element) {
+    if (paymentTypes.firstWhere((paymentType) => paymentType.name != element, orElse: () => null) == null) {
+      paymentTypes.add(paymentTypeList.firstWhere((paymentTypeList) => paymentTypeList.name == element, orElse: () => null));
+    }
+  });
+
+  if (!app_payment_gateways.contains('Stripe') && AppHelper.instance.appConfig.stripeEnabled == true) {
+    paymentTypes.add(paymentTypeList.firstWhere((element) => element.name == "Stripe", orElse: () => null));
+  }
+  if (!app_payment_gateways.contains('PayPal') && AppHelper.instance.appConfig.paypalEnabled == true) {
+    paymentTypes.add(paymentTypeList.firstWhere((element) => element.name == "PayPal", orElse: () => null));
+  }
+  if (!app_payment_gateways.contains('CashOnDelivery') && AppHelper.instance.appConfig.codEnabled == true) {
+    paymentTypes.add(paymentTypeList.firstWhere((element) => element.name == "CashOnDelivery", orElse: () => null));
+  }
+
+  return paymentTypes.where((v) => v != null).toList();
+}
+
+dynamic envVal(String envVal, {dynamic defaultValue}) => (getEnv(envVal) == null ? defaultValue : getEnv(envVal));
 
 PaymentType addPayment(
         {@required int id,
         @required String name,
         @required String desc,
         @required String assetImage,
-        @required Function pay}) =>
-    app_payment_gateways.contains(name)
-        ? PaymentType(
-            id: id,
-            name: name,
-            desc: desc,
-            assetImage: assetImage,
-            pay: pay,
-          )
-        : null;
+        @required Function pay}) => PaymentType(
+      id: id,
+      name: name,
+      desc: desc,
+      assetImage: assetImage,
+      pay: pay,
+    );
 
 showStatusAlert(context,
     {@required String title, String subtitle, IconData icon, int duration}) {

@@ -77,7 +77,7 @@ class WebViewState extends NyState<PayPalCheckout> {
   }
 
   String getPayPalUrl() {
-    bool liveMode = getEnv('PAYPAL_LIVE_MODE', defaultValue: false);
+    bool liveMode = envVal('PAYPAL_LIVE_MODE', defaultValue: _wooSignalApp.paypalLiveMode);
     return liveMode == true
         ? "https://www.paypal.com/cgi-bin/webscr"
         : "https://www.sandbox.paypal.com/cgi-bin/webscr";
@@ -115,9 +115,9 @@ class WebViewState extends NyState<PayPalCheckout> {
 <form method="post" name="paypal_form" action="${getPayPalUrl()}">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="amount" value="${widget.amount}">
-<input type="hidden" name="lc" value="${getEnv('PAYPAL_LOCALE', defaultValue: 'en-GB')}">
+<input type="hidden" name="lc" value="${envVal('PAYPAL_LOCALE', defaultValue: _wooSignalApp.paypalLocale)}">
 <input type="hidden" name="currency_code" value="${_wooSignalApp.currencyMeta.code}">
-<input type="hidden" name="business" value="${getEnv('PAYPAL_ACCOUNT_EMAIL')}">
+<input type="hidden" name="business" value="${envVal('PAYPAL_ACCOUNT_EMAIL', defaultValue: _wooSignalApp.paypalEmail)}">
 <input type="hidden" name="return" value="https://woosignal.com/paypal/payment~success">
 <input type="hidden" name="cancel_return" value="https://woosignal.com/paypal/payment~failure">
 <input type="hidden" name="item_name" value="${getPayPalItemName()}">

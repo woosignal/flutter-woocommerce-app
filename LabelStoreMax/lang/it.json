@@ -185,5 +185,6 @@
   "The payment has been cancelled": "Il pagamento è stato annullato",
   "Must have": "Deve avere",
   "Our selection of new items": "La nostra selezione di nuovi articoli",
-  "Register": "Registrati"
+  "Register": "Registrati",
+  "No payment methods are available": "Non sono disponibili metodi di pagamento"
 }

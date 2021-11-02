@@ -185,5 +185,6 @@
   "The payment has been cancelled": "付款已取消",
   "Must have": "一定有",
   "Our selection of new items": "我们精选的新品",
-  "Register": "登记"
+  "Register": "登记",
+  "No payment methods are available": "没有可用的付款方式"
 }

@@ -13,7 +13,7 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 |--------------------------------------------------------------------------
 */
 
-const app_payment_gateways = ["Stripe", "CashOnDelivery", "PayPal"];
+const app_payment_gateways = [];
 // Available: "Stripe", "CashOnDelivery", "PayPal"
 // e.g. app_payment_gateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
 
