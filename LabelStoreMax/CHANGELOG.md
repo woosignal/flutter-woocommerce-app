@@ -1,3 +1,9 @@
+## [5.3.1] - 2021-11-17
+
+* Fix shipping method not handling async call
+* Update UI for customer_countries page
+* Pubspec.yaml dependency updates
+
 ## [5.3.0] - 2021-11-02
 
 * Ability to update payment providers via WooSignal Dashboard

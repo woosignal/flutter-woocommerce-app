@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/default_shipping.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_support/helpers/helper.dart';
 
@@ -55,7 +56,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
           children: [
             Container(
               padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-              margin: EdgeInsets.only(bottom: 10),
+              margin: EdgeInsets.only(bottom: 10, top: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
@@ -66,6 +67,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
                     offset: Offset(0, 2),
                   ),
                 ],
+                color: NyColors.of(context).background
               ),
               height: 60,
               child: Row(
@@ -83,6 +85,15 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
                       onChanged: _handleOnChanged,
                       decoration: InputDecoration(
                         border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
