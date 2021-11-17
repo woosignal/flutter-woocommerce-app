@@ -98,12 +98,12 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       }
     }
 
-    _handleShippingZones(_shipping);
+    await _handleShippingZones(_shipping);
 
     if (_shipping == null) {
       WSShipping noZones = wsShipping
           .firstWhere((element) => element.parentId == 0, orElse: () => null);
-      _handleShippingZones(noZones);
+      await _handleShippingZones(noZones);
     }
     if (_wsShippingOptions.length == 0) {
       _isShippingSupported = false;
