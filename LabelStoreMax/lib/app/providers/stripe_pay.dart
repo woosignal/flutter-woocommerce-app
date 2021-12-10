@@ -11,7 +11,6 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:nylo_support/helpers/helper.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -70,9 +68,9 @@ stripePay(context,
 
     if (rsp == null) {
       showToastNotification(context,
-          title: trans(context, "Oops!"),
+          title: trans("Oops!"),
           description:
-          trans(context, "Something went wrong, please try again."),
+          trans("Something went wrong, please try again."),
           icon: Icons.payment,
           style: ToastNotificationStyleType.WARNING);
       state.reloadState(showLoader: false);
@@ -99,9 +97,8 @@ stripePay(context,
     if (order == null) {
       showToastNotification(
         context,
-        title: trans(context, "Error"),
-        description: trans(context,
-            "Something went wrong, please contact our store"),
+        title: trans("Error"),
+        description: trans("Something went wrong, please contact our store"),
       );
       state.reloadState(showLoader: false);
       return;
@@ -115,7 +112,7 @@ stripePay(context,
     }
     showToastNotification(
       context,
-      title: trans(context, "Oops!"),
+      title: trans("Oops!"),
       description: e.error.localizedMessage,
       icon: Icons.payment,
       style: ToastNotificationStyleType.WARNING,
@@ -127,8 +124,8 @@ stripePay(context,
     }
     showToastNotification(
       context,
-      title: trans(context, "Oops!"),
-      description: trans(context, "Something went wrong, please try again."),
+      title: trans("Oops!"),
+      description: trans("Something went wrong, please try again."),
       icon: Icons.payment,
       style: ToastNotificationStyleType.WARNING,
     );

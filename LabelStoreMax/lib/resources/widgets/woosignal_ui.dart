@@ -12,13 +12,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
@@ -62,15 +60,15 @@ class RefreshableScrollContainer extends StatelessWidget {
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
             if (mode == LoadStatus.idle) {
-              body = Text(trans(context, "pull up load"));
+              body = Text(trans("pull up load"));
             } else if (mode == LoadStatus.loading) {
               body = CupertinoActivityIndicator();
             } else if (mode == LoadStatus.failed) {
-              body = Text(trans(context, "Load Failed! Click retry!"));
+              body = Text(trans("Load Failed! Click retry!"));
             } else if (mode == LoadStatus.canLoading) {
-              body = Text(trans(context, "release to load more"));
+              body = Text(trans("release to load more"));
             } else {
-              body = Text(trans(context, "No more products"));
+              body = Text(trans("No more products"));
             }
             return Container(
               height: 55.0,
@@ -239,7 +237,7 @@ class TextEditingRow extends StatelessWidget {
                 child: Text(
                   heading,
                   style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: NyColors.of(context).primaryContent
+                    color: ThemeColor.get(context).primaryContent
                   ),
                 ),
                 padding: EdgeInsets.only(bottom: 2),
@@ -356,7 +354,7 @@ class ProductItemContainer extends StatelessWidget {
                                     children: <TextSpan>[
                                       TextSpan(
                                         text:
-                                            "${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans(context, "off")}",
+                                            "${workoutSaleDiscount(salePrice: product.salePrice, priceBefore: product.regularPrice)}% ${trans("off")}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText1
@@ -404,7 +402,7 @@ class ProductItemContainer extends StatelessWidget {
                             ? RichText(
                                 text: TextSpan(children: [
                                   TextSpan(
-                                    text: '${trans(context, "Was")}: ',
+                                    text: '${trans("Was")}: ',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
@@ -456,7 +454,7 @@ wsModalBottom(BuildContext context,
           child: new Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: new BoxDecoration(
-                color: NyColors.of(context).background,
+                color: ThemeColor.get(context).background,
                 borderRadius: new BorderRadius.only(
                   topLeft: const Radius.circular(10.0),
                   topRight: const Radius.circular(10.0),
@@ -480,7 +478,7 @@ wsModalBottom(BuildContext context,
                       decoration: BoxDecoration(
                         boxShadow:
                         (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
-                        color: NyColors.of(context).background,
+                        color: ThemeColor.get(context).background,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: bodyWidget,
@@ -508,7 +506,7 @@ FutureBuilder getTotalWidget() => FutureBuilder<String>(
             else
               return new Padding(
                 child: TextRowWidget(
-                  title: trans(context, "Total"),
+                  title: trans("Total"),
                   text: snapshot.data,
                 ),
                 padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -555,7 +553,7 @@ FutureBuilder wsCheckoutTaxAmountWidgetFB({TaxRate taxRate}) {
                 : Padding(
                     child: widgetCheckoutMeta(
                       context,
-                      title: trans(context, "Tax"),
+                      title: trans("Tax"),
                       amount: formatStringCurrency(total: snapshot.data),
                     ),
                     padding: EdgeInsets.only(bottom: 0, top: 0),
@@ -688,8 +686,8 @@ class CartItemContainer extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               (cartLineItem.stockStatus == "outofstock"
-                                  ? trans(context, "Out of stock")
-                                  : trans(context, "In Stock")),
+                                  ? trans("Out of stock")
+                                  : trans("In Stock")),
                               style: (cartLineItem.stockStatus == "outofstock"
                                   ? Theme.of(context).textTheme.caption
                                   : Theme.of(context).textTheme.bodyText2),

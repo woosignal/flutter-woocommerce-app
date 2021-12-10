@@ -15,12 +15,13 @@ import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/customer_address_input.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/switch_address_tab.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
+import 'package:validated/validated.dart' as validate;
 
 class CheckoutDetailsPage extends StatefulWidget {
   CheckoutDetailsPage();
@@ -161,12 +162,11 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          trans(context, "Billing & Shipping Details"),
+          trans("Billing & Shipping Details"),
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
           child: Column(
@@ -195,7 +195,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                                     children: <Widget>[
                                       SwitchAddressTab(
                                           title:
-                                              trans(context, "Billing Details"),
+                                              trans("Billing Details"),
                                           currentTabIndex: activeTabIndex,
                                           type: "billing",
                                           onTapAction: () => setState(() {
@@ -203,8 +203,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                                                 activeTab = tabBillingDetails();
                                               })),
                                       SwitchAddressTab(
-                                          title: trans(
-                                              context, "Shipping Address"),
+                                          title: trans("Shipping Address"),
                                           currentTabIndex: activeTabIndex,
                                           type: "shipping",
                                           onTapAction: () => setState(() {
@@ -225,7 +224,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       fit: FlexFit.tight,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: NyColors.of(context).backgroundContainer,
+                          color: ThemeColor.get(context).backgroundContainer,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow:
                           (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
@@ -246,7 +245,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          trans(context, "Ship to a different address?"),
+                          trans("Ship to a different address?"),
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Checkbox(
@@ -260,7 +259,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          trans(context, "Remember my details"),
+                          trans("Remember my details"),
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Checkbox(
@@ -274,7 +273,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                       ],
                     ),
                     PrimaryButton(
-                      title: trans(context, "USE DETAILS"),
+                      title: trans("USE DETAILS"),
                       action: () => _useDetailsTapped(),
                     ),
                   ],
@@ -315,9 +314,31 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       if (customerShippingAddress.hasMissingFields()) {
         showToastNotification(
           context,
-          title: trans(context, "Oops"),
-          description: trans(context,
-              "Invalid shipping address, please check your shipping details"),
+          title: trans("Oops"),
+          description: trans("Invalid shipping address, please check your shipping details"),
+          style: ToastNotificationStyleType.WARNING,
+        );
+        return;
+      }
+
+      // Email validation
+      String billingEmail = _txtBillingEmailAddress.text;
+      String shippingEmail = _txtShippingEmailAddress.text;
+      if (billingEmail.length > 0 && !validate.isEmail(billingEmail)) {
+        showToastNotification(
+          context,
+          title: trans("Oops"),
+          description: trans("Please enter a valid billing email"),
+          style: ToastNotificationStyleType.WARNING,
+        );
+        return;
+      }
+
+      if (shippingEmail.length > 0 && !validate.isEmail(shippingEmail)) {
+        showToastNotification(
+          context,
+          title: trans("Oops"),
+          description: trans("Please enter a valid shipping email"),
           style: ToastNotificationStyleType.WARNING,
         );
         return;

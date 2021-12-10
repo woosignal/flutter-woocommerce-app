@@ -8,16 +8,14 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/models/responses/wc_customer_updated_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
@@ -61,8 +59,8 @@ class _AccountShippingDetailsPageState
     } on Exception catch (_) {
       showToastNotification(
         context,
-        title: trans(context, "Oops!"),
-        description: trans(context, "Something went wrong"),
+        title: trans("Oops!"),
+        description: trans("Something went wrong"),
         style: ToastNotificationStyleType.DANGER,
       );
       Navigator.pop(context);
@@ -94,12 +92,11 @@ class _AccountShippingDetailsPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          trans(context, "Shipping Details")
+          trans("Shipping Details")
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
@@ -122,14 +119,14 @@ class _AccountShippingDetailsPageState
                                 children: <Widget>[
                                   Flexible(
                                     child: TextEditingRow(
-                                      heading: trans(context, "First Name"),
+                                      heading: trans("First Name"),
                                       controller: _txtShippingFirstName,
                                       shouldAutoFocus: true,
                                     ),
                                   ),
                                   Flexible(
                                     child: TextEditingRow(
-                                      heading: trans(context, "Last Name"),
+                                      heading: trans("Last Name"),
                                       controller: _txtShippingLastName,
                                     ),
                                   ),
@@ -139,19 +136,19 @@ class _AccountShippingDetailsPageState
                                     MainAxisAlignment.spaceEvenly,
                               ),
                               TextEditingRow(
-                                heading: trans(context, "Address Line"),
+                                heading: trans("Address Line"),
                                 controller: _txtShippingAddressLine,
                               ),
                               Row(children: <Widget>[
                                 Flexible(
                                   child: TextEditingRow(
-                                    heading: trans(context, "City"),
+                                    heading: trans("City"),
                                     controller: _txtShippingCity,
                                   ),
                                 ),
                                 Flexible(
                                   child: TextEditingRow(
-                                    heading: trans(context, "State"),
+                                    heading: trans("State"),
                                     controller: _txtShippingState,
                                   ),
                                 ),
@@ -160,13 +157,13 @@ class _AccountShippingDetailsPageState
                                 children: <Widget>[
                                   Flexible(
                                     child: TextEditingRow(
-                                      heading: trans(context, "Postal code"),
+                                      heading: trans("Postal code"),
                                       controller: _txtShippingPostalCode,
                                     ),
                                   ),
                                   Flexible(
                                     child: TextEditingRow(
-                                      heading: trans(context, "Country"),
+                                      heading: trans("Country"),
                                       controller: _txtShippingCountry,
                                     ),
                                   ),
@@ -178,9 +175,10 @@ class _AccountShippingDetailsPageState
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: (Theme.of(context).brightness == Brightness.light)
-                                ? NyColors.light.background
-                                : NyColors.dark.primaryAccent,
+                            color: ThemeColor.get(context).surfaceBackground,
+                              // (Theme.of(context).brightness == Brightness.light)
+                              //   ? NyColors.light.background
+                              //   : NyColors.dark.primaryAccent,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow:
                             (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
@@ -194,7 +192,7 @@ class _AccountShippingDetailsPageState
                       Column(
                         children: <Widget>[
                           PrimaryButton(
-                              title: trans(context, "UPDATE DETAILS"),
+                              title: trans("UPDATE DETAILS"),
                               action:
                                   _isUpdating ? () {} : _updateShippingDetails),
                         ],
@@ -242,8 +240,8 @@ class _AccountShippingDetailsPageState
       );
     } on Exception catch (_) {
       showToastNotification(context,
-          title: trans(context, "Oops!"),
-          description: trans(context, "Something went wrong"),
+          title: trans("Oops!"),
+          description: trans("Something went wrong"),
           style: ToastNotificationStyleType.DANGER);
     } finally {
       setState(() {
@@ -254,8 +252,8 @@ class _AccountShippingDetailsPageState
     if (wcCustomerUpdatedResponse != null &&
         wcCustomerUpdatedResponse.status == 200) {
       showToastNotification(context,
-          title: trans(context, "Success"),
-          description: trans(context, "Account updated"),
+          title: trans("Success"),
+          description: trans("Account updated"),
           style: ToastNotificationStyleType.SUCCESS);
       Navigator.pop(context);
     }

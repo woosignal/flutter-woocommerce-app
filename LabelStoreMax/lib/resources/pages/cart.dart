@@ -8,7 +8,6 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
@@ -19,9 +18,10 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/text_row_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class CartPage extends StatefulWidget {
   CartPage();
@@ -83,8 +83,8 @@ class _CartPageState extends State<CartPage> {
     if (cartLineItems.length == 0) {
       showToastNotification(
         context,
-        title: trans(context, "Cart"),
-        description: trans(context, "You need items in your cart to checkout"),
+        title: trans("Cart"),
+        description: trans("You need items in your cart to checkout"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.shopping_cart,
       );
@@ -95,8 +95,8 @@ class _CartPageState extends State<CartPage> {
         (c) => c.stockStatus == 'instock' || c.stockStatus == 'onbackorder')) {
       showToastNotification(
         context,
-        title: trans(context, "Cart"),
-        description: trans(context, "There is an item out of stock"),
+        title: trans("Cart"),
+        description: trans("There is an item out of stock"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.shopping_cart,
       );
@@ -129,8 +129,8 @@ class _CartPageState extends State<CartPage> {
         cartLineItem.quantity + 1 > cartLineItem.stockQuantity) {
       showToastNotification(
         context,
-        title: trans(context, "Cart"),
-        description: trans(context, "Maximum stock reached"),
+        title: trans("Cart"),
+        description: trans("Maximum stock reached"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.shopping_cart,
       );
@@ -157,8 +157,8 @@ class _CartPageState extends State<CartPage> {
     _cartLines.removeAt(index);
     showToastNotification(
       context,
-      title: trans(context, "Updated"),
-      description: trans(context, "Item removed"),
+      title: trans("Updated"),
+      description: trans("Item removed"),
       style: ToastNotificationStyleType.WARNING,
       icon: Icons.remove_shopping_cart,
     );
@@ -172,8 +172,8 @@ class _CartPageState extends State<CartPage> {
     Cart.getInstance.clear();
     _cartLines = [];
     showToastNotification(context,
-        title: trans(context, "Success"),
-        description: trans(context, "Cart cleared"),
+        title: trans("Success"),
+        description: trans("Cart cleared"),
         style: ToastNotificationStyleType.SUCCESS,
         icon: Icons.delete_outline);
     _isCartEmpty = true;
@@ -186,7 +186,7 @@ class _CartPageState extends State<CartPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          trans(context, "Shopping Cart"),
+          trans("Shopping Cart"),
         ),
         elevation: 1,
         actions: <Widget>[
@@ -196,7 +196,7 @@ class _CartPageState extends State<CartPage> {
             child: Align(
               child: Padding(
                 child: Text(
-                  trans(context, "Clear Cart"),
+                  trans("Clear Cart"),
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 padding: EdgeInsets.only(right: 8),
@@ -208,8 +208,7 @@ class _CartPageState extends State<CartPage> {
         ],
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +227,7 @@ class _CartPageState extends State<CartPage> {
                           ),
                           Padding(
                             child: Text(
-                              trans(context, "Empty Basket"),
+                              trans("Empty Basket"),
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
                             padding: EdgeInsets.only(top: 10),
@@ -278,7 +277,7 @@ class _CartPageState extends State<CartPage> {
                     else
                       return new Padding(
                         child: TextRowWidget(
-                          title: trans(context, "Total"),
+                          title: trans("Total"),
                           text: (_isLoading ? "" : snapshot.data),
                         ),
                         padding: EdgeInsets.only(bottom: 15, top: 15),
@@ -287,7 +286,7 @@ class _CartPageState extends State<CartPage> {
               },
             ),
             PrimaryButton(
-              title: trans(context, "PROCEED TO CHECKOUT"),
+              title: trans("PROCEED TO CHECKOUT"),
               action: _actionProceedToCheckout,
             ),
           ],

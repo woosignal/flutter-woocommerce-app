@@ -15,8 +15,9 @@ import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/helpers/shared_pref.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:wp_json_api/exceptions/empty_username_exception.dart';
@@ -62,13 +63,12 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          trans(context, "Register")
+          trans("Register")
         ),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: Column(
           children: <Widget>[
             Container(
@@ -77,7 +77,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                   children: <Widget>[
                     Flexible(
                       child: TextEditingRow(
-                        heading: trans(context, "First Name"),
+                        heading: trans("First Name"),
                         controller: _tfFirstNameController,
                         shouldAutoFocus: true,
                         keyboardType: TextInputType.text,
@@ -85,7 +85,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                     ),
                     Flexible(
                       child: TextEditingRow(
-                        heading: trans(context, "Last Name"),
+                        heading: trans("Last Name"),
                         controller: _tfLastNameController,
                         shouldAutoFocus: false,
                         keyboardType: TextInputType.text,
@@ -94,20 +94,20 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                   ],
                 )),
             TextEditingRow(
-              heading: trans(context, "Email address"),
+              heading: trans("Email address"),
               controller: _tfEmailAddressController,
               shouldAutoFocus: false,
               keyboardType: TextInputType.emailAddress,
             ),
             TextEditingRow(
-              heading: trans(context, "Password"),
+              heading: trans("Password"),
               controller: _tfPasswordController,
               shouldAutoFocus: true,
               obscureText: true,
             ),
             Padding(
               child: PrimaryButton(
-                  title: trans(context, "Sign up"),
+                  title: trans("Sign up"),
                   action: _hasTappedRegister ? () {} : _signUpTapped),
               padding: EdgeInsets.only(top: 10),
             ),
@@ -115,17 +115,16 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
               child: InkWell(
                 child: RichText(
                   text: TextSpan(
-                    text: trans(
-                            context, "By tapping \"Register\" you agree to ") +
+                    text: trans("By tapping \"Register\" you agree to ") +
                         AppHelper.instance.appConfig.appName +
                         '\'s ',
                     children: <TextSpan>[
                       TextSpan(
-                          text: trans(context, "terms and conditions"),
+                          text: trans("terms and conditions"),
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '  ' + trans(context, "and") + '  '),
+                      TextSpan(text: '  ' + trans("and") + '  '),
                       TextSpan(
-                          text: trans(context, "privacy policy"),
+                          text: trans("privacy policy"),
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                     style: TextStyle(
@@ -157,16 +156,16 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
 
     if (!isEmail(email)) {
       showToastNotification(context,
-          title: trans(context, "Oops"),
-          description: trans(context, "That email address is not valid"),
+          title: trans("Oops"),
+          description: trans("That email address is not valid"),
           style: ToastNotificationStyleType.DANGER);
       return;
     }
 
     if (password.length <= 5) {
       showToastNotification(context,
-          title: trans(context, "Oops"),
-          description: trans(context, "Password must be a min 6 characters"),
+          title: trans("Oops"),
+          description: trans("Password must be a min 6 characters"),
           style: ToastNotificationStyleType.DANGER);
       return;
     }
@@ -190,39 +189,38 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
         );
       } on UsernameTakenException catch (e) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, e.message),
+            title: trans("Oops!"),
+            description: trans(e.message),
             style: ToastNotificationStyleType.DANGER);
       } on InvalidNonceException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Invalid details"),
-            description: trans(
-                context, "Something went wrong, please contact our store"),
+            title: trans("Invalid details"),
+            description: trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.DANGER);
       } on ExistingUserLoginException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, "A user already exists"),
+            title: trans("Oops!"),
+            description: trans("A user already exists"),
             style: ToastNotificationStyleType.DANGER);
       } on ExistingUserEmailException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, "That email is taken, try another"),
+            title: trans("Oops!"),
+            description: trans("That email is taken, try another"),
             style: ToastNotificationStyleType.DANGER);
       } on UserAlreadyExistException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, "A user already exists"),
+            title: trans("Oops!"),
+            description: trans("A user already exists"),
             style: ToastNotificationStyleType.DANGER);
       } on EmptyUsernameException catch (e) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, e.message),
+            title: trans("Oops!"),
+            description: trans(e.message),
             style: ToastNotificationStyleType.DANGER);
       } on Exception catch (_) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, "Something went wrong"),
+            title: trans("Oops!"),
+            description: trans("Something went wrong"),
             style: ToastNotificationStyleType.DANGER);
       } finally {
         setState(() {
@@ -241,8 +239,8 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             .wpUpdateUserInfo(token, firstName: firstName, lastName: lastName));
 
         showToastNotification(context,
-            title: "${trans(context, "Hello")} $firstName",
-            description: trans(context, "you're now logged in"),
+            title: "${trans("Hello")} $firstName",
+            description: trans("you're now logged in"),
             style: ToastNotificationStyleType.SUCCESS,
             icon: Icons.account_circle);
         navigatorPush(context,
@@ -254,14 +252,14 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
   _viewTOSModal() {
     showPlatformAlertDialog(
       context,
-      title: trans(context, "Actions"),
-      subtitle: trans(context, "View Terms and Conditions or Privacy policy"),
+      title: trans("Actions"),
+      subtitle: trans("View Terms and Conditions or Privacy policy"),
       actions: [
         dialogAction(context,
-            title: trans(context, "Terms and Conditions"),
+            title: trans("Terms and Conditions"),
             action: _viewTermsConditions),
         dialogAction(context,
-            title: trans(context, "Privacy Policy"),
+            title: trans("Privacy Policy"),
             action: _viewPrivacyPolicy),
       ],
     );

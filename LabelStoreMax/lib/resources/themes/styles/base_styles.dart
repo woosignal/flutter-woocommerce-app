@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 /// Interface for your base styles.
 /// Add more styles here and then implement in
 /// light_theme_colors.dart and dark_theme_colors.dart.
-abstract class BaseStyles {
+abstract class BaseColorStyles {
   // general
   Color get background;
   Color get backgroundContainer;
   Color get primaryContent;
   Color get primaryAccent;
+
+  Color get surfaceBackground;
+  Color get surfaceContent;
 
   // app bar
   Color get appBarBackground;

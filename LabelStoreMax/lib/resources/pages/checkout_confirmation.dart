@@ -15,11 +15,11 @@ import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
@@ -166,8 +166,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
         CheckoutSession.getInstance.billingDetails.shippingAddress;
     if (shippingAddress == null || shippingAddress.customerCountry == null) {
       showToastNotification(context,
-          title: trans(context, "Oops"),
-          description: trans(context, "Add your shipping details first"),
+          title: trans("Oops"),
+          description: trans("Add your shipping details first"),
           icon: Icons.local_shipping);
       return;
     }
@@ -181,13 +181,12 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          trans(context, "Checkout")
+          trans("Checkout")
         ),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: !_showFullLoader
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -197,7 +196,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                     child: Container(
                       padding: EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(
-                        color: NyColors.of(context).backgroundContainer,
+                        color: ThemeColor.get(context).backgroundContainer,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow:
                         (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
@@ -225,16 +224,14 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                             .billingAddress !=
                                         null)
                                 ? wsCheckoutRow(context,
-                                    heading: trans(
-                                        context, "Billing/shipping details"),
+                                    heading: trans("Billing/shipping details"),
                                     leadImage: Icon(Icons.home),
                                     leadTitle:
                                         (CheckoutSession.getInstance.billingDetails == null ||
                                                 CheckoutSession.getInstance
                                                     .billingDetails.billingAddress
                                                     .hasMissingFields()
-                                            ? trans(
-                                                context, "Billing address is incomplete")
+                                            ? trans("Billing address is incomplete")
                                             : CheckoutSession.getInstance
                                                 .billingDetails.billingAddress
                                                 .addressFull()),
@@ -242,14 +239,14 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                     showBorderBottom: true)
                                 : wsCheckoutRow(context,
                                     heading:
-                                        trans(context, "Billing/shipping details"),
+                                        trans("Billing/shipping details"),
                                     leadImage: Icon(Icons.home),
-                                    leadTitle: trans(context, "Add billing & shipping details"),
+                                    leadTitle: trans("Add billing & shipping details"),
                                     action: _actionCheckoutDetails,
                                     showBorderBottom: true)),
                             (CheckoutSession.getInstance.paymentType != null
                                 ? wsCheckoutRow(context,
-                                    heading: trans(context, "Payment method"),
+                                    heading: trans("Payment method"),
                                     leadImage: Container(
                                       color: Colors.white,
                                       child: Image.asset(
@@ -263,10 +260,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                     action: _actionPayWith,
                                     showBorderBottom: true)
                                 : wsCheckoutRow(context,
-                                    heading: trans(context, "Pay with"),
+                                    heading: trans("Pay with"),
                                     leadImage: Icon(Icons.payment),
-                                    leadTitle: trans(
-                                        context, "Select a payment method"),
+                                    leadTitle: trans("Select a payment method"),
                                     action: _actionPayWith,
                                     showBorderBottom: true)),
                             _wooSignalApp.disableShipping == 1
@@ -275,7 +271,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                         null
                                     ? wsCheckoutRow(context,
                                         heading:
-                                            trans(context, "Shipping selected"),
+                                            trans("Shipping selected"),
                                         leadImage: Icon(Icons.local_shipping),
                                         leadTitle: CheckoutSession
                                             .getInstance.shippingType
@@ -284,10 +280,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                                     : wsCheckoutRow(
                                         context,
                                         heading:
-                                            trans(context, "Select shipping"),
+                                            trans("Select shipping"),
                                         leadImage: Icon(Icons.local_shipping),
-                                        leadTitle: trans(context,
-                                            "Select a shipping option"),
+                                        leadTitle: trans("Select a shipping option"),
                                         action: _actionSelectShipping,
                                       )),
                           ].where((e) => e != null).toList()),
@@ -302,23 +297,23 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                         thickness: 1,
                       ),
                       wsCheckoutSubtotalWidgetFB(
-                        title: trans(context, "Subtotal"),
+                        title: trans("Subtotal"),
                       ),
                       _wooSignalApp.disableShipping == 1
                           ? null
                           : widgetCheckoutMeta(context,
-                              title: trans(context, "Shipping fee"),
+                              title: trans("Shipping fee"),
                               amount:
                                   CheckoutSession.getInstance.shippingType ==
                                           null
-                                      ? trans(context, "Select shipping")
+                                      ? trans("Select shipping")
                                       : CheckoutSession.getInstance.shippingType
                                           .getTotal(withFormatting: true)),
                       (_taxRate != null
                           ? wsCheckoutTaxAmountWidgetFB(taxRate: _taxRate)
                           : null),
                       wsCheckoutTotalWidgetFB(
-                          title: trans(context, "Total"), taxRate: _taxRate),
+                          title: trans("Total"), taxRate: _taxRate),
                       Divider(
                         color: Colors.black12,
                         thickness: 1,
@@ -327,8 +322,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                   ),
                   PrimaryButton(
                     title: _isProcessingPayment
-                        ? "PROCESSING..."
-                        : trans(context, "CHECKOUT"),
+                        ? "${trans("PROCESSING")}..."
+                        : trans("CHECKOUT"),
                     action: _isProcessingPayment ? null : _handleCheckout,
                   ),
                 ],
@@ -341,7 +336,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        "${trans(context, "One moment")}...",
+                        "${trans("One moment")}...",
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                     )
@@ -356,9 +351,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     if (CheckoutSession.getInstance.billingDetails.billingAddress == null) {
       showToastNotification(
         context,
-        title: trans(context, "Oops"),
-        description: trans(context,
-            "Please select add your billing/shipping address to proceed"),
+        title: trans("Oops"),
+        description: trans("Please select add your billing/shipping address to proceed"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
@@ -369,9 +363,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
         .hasMissingFields()) {
       showToastNotification(
         context,
-        title: trans(context, "Oops"),
+        title: trans("Oops"),
         description:
-            trans(context, "Your billing/shipping details are incomplete"),
+            trans("Your billing/shipping details are incomplete"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
@@ -382,9 +376,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
         CheckoutSession.getInstance.shippingType == null) {
       showToastNotification(
         context,
-        title: trans(context, "Oops"),
+        title: trans("Oops"),
         description:
-            trans(context, "Please select a shipping method to proceed"),
+            trans("Please select a shipping method to proceed"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
@@ -394,9 +388,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     if (CheckoutSession.getInstance.paymentType == null) {
       showToastNotification(
         context,
-        title: trans(context, "Oops"),
+        title: trans("Oops"),
         description:
-            trans(context, "Please select a payment method to proceed"),
+            trans("Please select a payment method to proceed"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.payment,
       );
@@ -415,9 +409,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
       if (doubleTotal < doubleMinimumValue) {
         showToastNotification(context,
-            title: trans(context, "Sorry"),
+            title: trans("Sorry"),
             description:
-                "${trans(context, "Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans(context, "for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
+                "${trans("Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans("for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
             style: ToastNotificationStyleType.INFO,
             duration: Duration(seconds: 3));
         return;
@@ -428,8 +422,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
     if (!appStatus) {
       showToastNotification(context,
-          title: trans(context, "Sorry"),
-          description: "${trans(context, "Retry later")}",
+          title: trans("Sorry"),
+          description: "${trans("Retry later")}",
           style: ToastNotificationStyleType.INFO,
           duration: Duration(seconds: 3));
       return;

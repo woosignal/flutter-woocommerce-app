@@ -18,7 +18,7 @@ class NoResultsForProductsWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           Text(
-            trans(context, "No results"),
+            trans("No results"),
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ],

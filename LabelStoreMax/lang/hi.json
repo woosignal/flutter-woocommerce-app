@@ -186,5 +186,9 @@
   "Must have": "hona aavashyak hai",
   "Our selection of new items": "naee vastuon ka hamaara chayan",
   "Register": "rajistar karen",
-  "No payment methods are available": "koee bhugataan vidhiyaan upalabdh nahin hain"
+  "No payment methods are available": "koee bhugataan vidhiyaan upalabdh nahin hain",
+  "Please enter a valid billing email": "krpaya ek maany biling eemel darj karen",
+  "Please enter a valid shipping email": "krpaya ek maany shiping eemel darj karen",
+  "Free postage": "mupht daak",
+  "PROCESSING": "prasanskaran"
 }

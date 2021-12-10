@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/resources/themes/styles/theme_styles.dart';
+import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 
 /*
 |--------------------------------------------------------------------------
@@ -7,13 +7,16 @@ import 'package:flutter_app/resources/themes/styles/theme_styles.dart';
 |--------------------------------------------------------------------------
 */
 
-class DarkThemeColors implements BaseStyles {
+class DarkThemeColors implements BaseColorStyles {
   // general
   Color get background => const Color(0xFF212121);
   Color get backgroundContainer => const Color(0xFF4a4a4a);
 
   Color get primaryContent => const Color(0xFFE1E1E1);
   Color get primaryAccent => const Color(0xFF818181);
+
+  Color get surfaceBackground => Color(0xFF818181);
+  Color get surfaceContent => Colors.black;
 
   // app bar
   Color get appBarBackground => const Color(0xFF2C2C2C);

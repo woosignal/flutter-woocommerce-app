@@ -9,7 +9,6 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'dart:convert';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/app/models/billing_details.dart';
 import 'package:flutter_app/app/models/cart.dart';
@@ -23,17 +22,18 @@ import 'package:flutter_app/bootstrap/enums/symbol_position_enums.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
 import 'package:flutter_app/config/app_currency.dart';
 import 'package:flutter_app/config/app_payment_gateways.dart';
+import 'package:flutter_app/config/app_theme.dart';
+import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:money_formatter/money_formatter.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:status_alert/status_alert.dart';
@@ -50,6 +50,20 @@ appWooSignal(Function(WooSignal) api) async {
     "debugMode": getEnv('APP_DEBUG', defaultValue: true)
   });
   return await api(wooSignal);
+}
+
+/// helper to find correct color from the [context].
+class ThemeColor {
+  static BaseColorStyles get(BuildContext context) {
+    return ((Theme.of(context).brightness == Brightness.light) ? ThemeConfig.light().colors : ThemeConfig.dark().colors);
+  }
+}
+
+/// helper to set colors on TextStyle
+extension ColorsHelper on TextStyle {
+  TextStyle setColor(BuildContext context, Color Function(BaseColorStyles color) newColor) {
+    return this.copyWith(color: newColor(ThemeColor.get(context)));
+  }
 }
 
 List<PaymentType> getPaymentTypes() {
@@ -99,168 +113,6 @@ showStatusAlert(context,
   );
 }
 
-enum ToastNotificationStyleType {
-  SUCCESS,
-  WARNING,
-  INFO,
-  DANGER,
-}
-
-class ToastNotificationStyleMetaHelper {
-  static ToastMeta getValue(ToastNotificationStyleType style) {
-    switch (style) {
-      case ToastNotificationStyleType.SUCCESS:
-        return ToastMeta.success(action: () {
-          ToastManager().dismissAll(showAnim: true);
-        });
-      case ToastNotificationStyleType.WARNING:
-        return ToastMeta.warning(action: () {
-          ToastManager().dismissAll(showAnim: true);
-        });
-      case ToastNotificationStyleType.INFO:
-        return ToastMeta.info(action: () {
-          ToastManager().dismissAll(showAnim: true);
-        });
-      case ToastNotificationStyleType.DANGER:
-        return ToastMeta.danger(action: () {
-          ToastManager().dismissAll(showAnim: true);
-        });
-      default:
-        return ToastMeta.success(action: () {
-          ToastManager().dismissAll(showAnim: true);
-        });
-    }
-  }
-}
-
-class ToastMeta {
-  Widget icon;
-  String title;
-  String description;
-  Color color;
-  Function action;
-  Duration duration;
-  ToastMeta(
-      {this.icon,
-      this.title,
-      this.description,
-      this.color,
-      this.action,
-      this.duration = const Duration(seconds: 2)});
-
-  ToastMeta.success(
-      {this.icon = const Icon(Icons.check, color: Colors.white, size: 30),
-      this.title = "Success",
-      this.description = "",
-      this.color = Colors.green,
-      this.action,
-      this.duration = const Duration(seconds: 5)});
-  ToastMeta.info(
-      {this.icon = const Icon(Icons.info, color: Colors.white, size: 30),
-      this.title = "",
-      this.description = "",
-      this.color = Colors.teal,
-      this.action,
-      this.duration = const Duration(seconds: 5)});
-  ToastMeta.warning(
-      {this.icon =
-          const Icon(Icons.error_outline, color: Colors.white, size: 30),
-      this.title = "Oops!",
-      this.description = "",
-      this.color = Colors.orange,
-      this.action,
-      this.duration = const Duration(seconds: 6)});
-  ToastMeta.danger(
-      {this.icon = const Icon(Icons.warning, color: Colors.white, size: 30),
-      this.title = "Oops!",
-      this.description = "",
-      this.color = Colors.redAccent,
-      this.action,
-      this.duration = const Duration(seconds: 7)});
-}
-
-showToastNotification(BuildContext context,
-    {ToastNotificationStyleType style,
-    String title,
-    IconData icon,
-    String description = "",
-    Duration duration}) {
-  ToastMeta toastMeta = ToastNotificationStyleMetaHelper.getValue(style);
-  toastMeta.title = trans(context, toastMeta.title);
-  if (title != null) {
-    toastMeta.title = title;
-  }
-  toastMeta.description = description;
-
-  Widget _icon = toastMeta.icon;
-  if (icon != null) {
-    _icon = Icon(icon, color: Colors.white);
-  }
-
-  showToastWidget(
-    InkWell(
-      onTap: () => ToastManager().dismissAll(showAnim: true),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 18.0),
-        margin: EdgeInsets.symmetric(horizontal: 8.0),
-        height: 100,
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          color: toastMeta.color,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Pulse(
-              child: Container(
-                child: Center(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: _icon,
-                    padding: EdgeInsets.only(right: 16),
-                  ),
-                ),
-              ),
-              infinite: true,
-              duration: Duration(milliseconds: 1500),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    toastMeta.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        .copyWith(color: Colors.white),
-                  ),
-                  Text(
-                    toastMeta.description,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-    context: context,
-    isIgnoring: false,
-    position: StyledToastPosition.top,
-    animation: StyledToastAnimation.slideFromTopFade,
-    duration: duration ?? toastMeta.duration,
-  );
-}
-
 String parseHtmlString(String htmlString) {
   var document = parse(htmlString);
   return parse(document.body.text).documentElement.text;
@@ -306,8 +158,6 @@ openBrowserTab({@required String url}) async {
       url: url,
       customTabsOptions: CustomTabsOptions(toolbarColor: Colors.white70));
 }
-
-EdgeInsets safeAreaDefault() => EdgeInsets.only(left: 16, right: 16, bottom: 8);
 
 bool isNumeric(String str) {
   if (str == null) {
@@ -546,7 +396,7 @@ showPlatformAlertDialog(BuildContext context,
     bool showDoneAction = true}) {
   if (showDoneAction) {
     actions
-        .add(dialogAction(context, title: trans(context, "Done"), action: () {
+        .add(dialogAction(context, title: trans("Done"), action: () {
       Navigator.of(context).pop();
     }));
   }
@@ -602,7 +452,7 @@ String formatForDateTime(FormatType formatType) {
   }
 }
 
-double parseWcPrice(String price) => (double.tryParse(price) ?? 0);
+double parseWcPrice(String price) => (double.tryParse(price ?? "0") ?? 0);
 
 void appLogOutput(dynamic message) =>
     (getEnv('APP_DEBUG', defaultValue: true) ? NyLogger.debug(message) : null);
@@ -621,15 +471,15 @@ Widget refreshableScroll(context,
       builder: (BuildContext context, LoadStatus mode) {
         Widget body;
         if (mode == LoadStatus.idle) {
-          body = Text(trans(context, "pull up load"));
+          body = Text(trans("pull up load"));
         } else if (mode == LoadStatus.loading) {
           body = CupertinoActivityIndicator();
         } else if (mode == LoadStatus.failed) {
-          body = Text(trans(context, "Load Failed! Click retry!"));
+          body = Text(trans("Load Failed! Click retry!"));
         } else if (mode == LoadStatus.canLoading) {
-          body = Text(trans(context, "release to load more"));
+          body = Text(trans("release to load more"));
         } else {
-          body = Text(trans(context, "No more products"));
+          body = Text(trans("No more products"));
         }
         return Container(
           height: 55.0,

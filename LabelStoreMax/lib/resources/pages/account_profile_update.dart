@@ -8,14 +8,12 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_updated_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
@@ -64,7 +62,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          trans(context, "Update Details"),
+          trans("Update Details"),
           style: TextStyle(
             fontSize: 20,
           ),
@@ -88,14 +86,14 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                               children: <Widget>[
                                 Flexible(
                                   child: TextEditingRow(
-                                    heading: trans(context, "First Name"),
+                                    heading: trans("First Name"),
                                     controller: _tfFirstName,
                                     keyboardType: TextInputType.text,
                                   ),
                                 ),
                                 Flexible(
                                   child: TextEditingRow(
-                                    heading: trans(context, "Last Name"),
+                                    heading: trans("Last Name"),
                                     controller: _tfLastName,
                                     keyboardType: TextInputType.text,
                                   ),
@@ -110,7 +108,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                             padding: EdgeInsets.only(top: 10),
                           ),
                           PrimaryButton(
-                              title: trans(context, "Update details"),
+                              title: trans("Update details"),
                               action: _updateDetails)
                         ],
                       ),
@@ -141,8 +139,8 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                 firstName: firstName, lastName: lastName));
       } on Exception catch (_) {
         showToastNotification(context,
-            title: trans(context, "Invalid details"),
-            description: trans(context, "Please check your email and password"),
+            title: trans("Invalid details"),
+            description: trans("Please check your email and password"),
             style: ToastNotificationStyleType.DANGER);
       } finally {
         setState(() {
@@ -153,8 +151,8 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
       if (wpUserInfoUpdatedResponse != null &&
           wpUserInfoUpdatedResponse.status == 200) {
         showToastNotification(context,
-            title: trans(context, "Success"),
-            description: trans(context, "Account updated"),
+            title: trans("Success"),
+            description: trans("Account updated"),
             style: ToastNotificationStyleType.SUCCESS);
         Navigator.pop(context);
       }

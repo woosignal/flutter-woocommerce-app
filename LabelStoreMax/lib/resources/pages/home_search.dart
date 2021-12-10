@@ -10,8 +10,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:nylo_support/helpers/helper.dart';
 
 import '../widgets/woosignal_ui.dart';
@@ -50,8 +50,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
         title: StoreLogo(height: 55),
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +70,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: PrimaryButton(
-                title: trans(context, "Search"),
+                title: trans("Search"),
                 action: _actionSearch,
               ),
             )

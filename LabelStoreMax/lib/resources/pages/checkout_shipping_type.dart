@@ -17,9 +17,9 @@ import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/app/models/shipping_type.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
@@ -238,13 +238,12 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          trans(context, "Shipping Methods")
+          trans("Shipping Methods")
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
           child: LayoutBuilder(
@@ -254,8 +253,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
               children: <Widget>[
                 Padding(
                   child: Center(
-                    child: Image.asset(
-                      getImageAsset('shipping_icon.png'),
+                    child: Image.asset(getImageAsset('shipping_icon.png'),
                       height: 100,
                       color: (Theme.of(context).brightness == Brightness.light) ? null : Colors.white,
                       fit: BoxFit.fitHeight,
@@ -328,17 +326,17 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                                   is FreeShipping
                                                               ? TextSpan(
                                                                   text:
-                                                                      "Free postage",
+                                                                      trans("Free postage"),
                                                                 )
                                                               : TextSpan(
                                                                   text:
-                                                                      "${trans(context, "Price")}: ${formatStringCurrency(total: snapshot.data)}",
+                                                                      "${trans("Price")}: ${formatStringCurrency(total: snapshot.data)}",
                                                                 )),
                                                           if (shippingOption[
                                                                   "min_amount"] !=
                                                               null)
                                                             TextSpan(
-                                                                text: "\nSpend a minimum of " +
+                                                                text: "\n${trans("Spend a minimum of")} " +
                                                                     formatStringCurrency(
                                                                         total: shippingOption[
                                                                             "min_amount"]),
@@ -378,20 +376,19 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                     ),
                                   )
                                 : Text(
-                                    trans(context,
-                                        "Shipping is not supported for your country, sorry"),
+                                    trans("Shipping is not supported for your country, sorry"),
                                     style:
                                         Theme.of(context).textTheme.headline6,
                                     textAlign: TextAlign.center,
                                   ))),
                         LinkButton(
-                          title: trans(context, "CANCEL"),
+                          title: trans("CANCEL"),
                           action: () => Navigator.pop(context),
                         ),
                       ],
                     ),
                     decoration: BoxDecoration(
-                      color: NyColors.of(context).backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
                       (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,

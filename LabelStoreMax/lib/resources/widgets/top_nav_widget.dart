@@ -26,7 +26,7 @@ class TopNavWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                "${(trans(context, "Shop").capitalize())} / ",
+                "${(trans("Shop").capitalize())} / ",
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1
@@ -34,7 +34,7 @@ class TopNavWidget extends StatelessWidget {
                 maxLines: 1,
               ),
               AutoSizeText(
-                trans(context, "Newest"),
+                trans("Newest"),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
@@ -48,7 +48,7 @@ class TopNavWidget extends StatelessWidget {
               minWidth: 100,
               height: 60,
               child: AutoSizeText(
-                trans(context, "Browse categories"),
+                trans("Browse categories"),
                 style: Theme.of(context).textTheme.bodyText1,
                 maxLines: 1,
                 textAlign: TextAlign.right,

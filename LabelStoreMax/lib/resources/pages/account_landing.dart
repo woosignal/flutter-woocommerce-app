@@ -8,17 +8,14 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/exceptions/incorrect_password_exception.dart';
 import 'package:wp_json_api/exceptions/invalid_email_exception.dart';
 import 'package:wp_json_api/exceptions/invalid_nonce_exception.dart';
@@ -66,7 +63,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        trans(context, "Login"),
+                        trans("Login"),
                         textAlign: TextAlign.left,
                         style: Theme.of(context).textTheme.headline4.copyWith(
                               fontSize: 24,
@@ -79,7 +76,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
-                      color: NyColors.of(context).backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     margin: EdgeInsets.symmetric(horizontal: 16),
@@ -88,16 +85,16 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         TextEditingRow(
-                            heading: trans(context, "Email"),
+                            heading: trans("Email"),
                             controller: _tfEmailController,
                             keyboardType: TextInputType.emailAddress),
                         TextEditingRow(
-                            heading: trans(context, "Password"),
+                            heading: trans("Password"),
                             controller: _tfPasswordController,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: true),
                         PrimaryButton(
-                          title: trans(context, "Login"),
+                          title: trans("Login"),
                           action: _hasTappedLogin == true ? () {} : _loginUser,
                         ),
                       ],
@@ -118,7 +115,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   ),
                   Padding(
                     child: Text(
-                      trans(context, "Create an account"),
+                      trans("Create an account"),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     padding: EdgeInsets.only(left: 8),
@@ -129,7 +126,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   Navigator.pushNamed(context, "/account-register"),
             ),
             LinkButton(
-                title: trans(context, "Forgot Password"),
+                title: trans("Forgot Password"),
                 action: () {
                   String forgotPasswordUrl =
                       AppHelper.instance.appConfig.wpLoginForgotPasswordUrl;
@@ -144,7 +141,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
               children: [
                 Divider(),
                 LinkButton(
-                  title: trans(context, "Back"),
+                  title: trans("Back"),
                   action: () => Navigator.pop(context),
                 ),
               ],
@@ -166,17 +163,17 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
 
     if (email == "" || password == "") {
       showToastNotification(context,
-          title: trans(context, "Invalid details"),
+          title: trans("Invalid details"),
           description:
-              trans(context, "The email and password field cannot be empty"),
+              trans("The email and password field cannot be empty"),
           style: ToastNotificationStyleType.DANGER);
       return;
     }
 
     if (!isEmail(email)) {
       showToastNotification(context,
-          title: trans(context, "Oops"),
-          description: trans(context, "That email address is not valid"),
+          title: trans("Oops"),
+          description: trans("That email address is not valid"),
           style: ToastNotificationStyleType.DANGER);
       return;
     }
@@ -192,32 +189,31 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
             (request) => request.wpLogin(email: email, password: password));
       } on InvalidNonceException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Invalid details"),
-            description: trans(
-                context, "Something went wrong, please contact our store"),
+            title: trans("Invalid details"),
+            description: trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.DANGER);
       } on InvalidEmailException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Invalid details"),
+            title: trans("Invalid details"),
             description:
-                trans(context, "That email does not match our records"),
+                trans("That email does not match our records"),
             style: ToastNotificationStyleType.DANGER);
       } on InvalidUsernameException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Invalid details"),
+            title: trans("Invalid details"),
             description:
-                trans(context, "That username does not match our records"),
+                trans("That username does not match our records"),
             style: ToastNotificationStyleType.DANGER);
       } on IncorrectPasswordException catch (_) {
         showToastNotification(context,
-            title: trans(context, "Invalid details"),
+            title: trans("Invalid details"),
             description:
-                trans(context, "That password does not match our records"),
+                trans("That password does not match our records"),
             style: ToastNotificationStyleType.DANGER);
       } on Exception catch (_) {
         showToastNotification(context,
-            title: trans(context, "Oops!"),
-            description: trans(context, "Invalid login credentials"),
+            title: trans("Oops!"),
+            description: trans("Invalid login credentials"),
             style: ToastNotificationStyleType.DANGER,
             icon: Icons.account_circle);
       } finally {
@@ -233,8 +229,8 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
         user.save(SharedKey.authUser);
 
         showToastNotification(context,
-            title: trans(context, "Hello"),
-            description: trans(context, "Welcome back"),
+            title: trans("Hello"),
+            description: trans("Welcome back"),
             style: ToastNotificationStyleType.SUCCESS,
             icon: Icons.account_circle);
         navigatorPush(context,

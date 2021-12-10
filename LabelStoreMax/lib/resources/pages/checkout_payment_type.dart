@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:nylo_support/helpers/helper.dart';
@@ -51,13 +51,12 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          trans(context, "Payment Method")
+          trans("Payment Method")
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
           child: LayoutBuilder(
@@ -81,7 +80,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                         Expanded(
                           child: paymentTypes.length == 0 ? Container(
                             padding: EdgeInsets.only(top: 20),
-                            child: Text(trans(context, "No payment methods are available"), style: Theme.of(context).textTheme.bodyText1,),
+                            child: Text(trans("No payment methods are available"), style: Theme.of(context).textTheme.bodyText1,),
                           ) : ListView.separated(
                             itemCount: paymentTypes.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -128,13 +127,13 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                           ),
                         ),
                         LinkButton(
-                          title: trans(context, "CANCEL"),
+                          title: trans("CANCEL"),
                           action: () => Navigator.pop(context),
                         ),
                       ],
                     ),
                     decoration: BoxDecoration(
-                      color: NyColors.of(context).backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
                       (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
