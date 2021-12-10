@@ -14,11 +14,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
@@ -77,8 +77,8 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     } on Exception catch (_) {
       showToastNotification(
         context,
-        title: trans(context, "Oops!"),
-        description: trans(context, "Something went wrong"),
+        title: trans("Oops!"),
+        description: trans("Something went wrong"),
         style: ToastNotificationStyleType.DANGER,
       );
     } finally {
@@ -98,8 +98,8 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   @override
   Widget build(BuildContext context) {
     _tabs = [
-      new Tab(text: trans(context, "Orders")),
-      new Tab(text: trans(context, "Settings")),
+      new Tab(text: trans("Orders")),
+      new Tab(text: trans("Settings")),
     ];
 
     return Scaffold(
@@ -112,13 +112,12 @@ class _AccountDetailPageState extends State<AccountDetailPage>
           margin: EdgeInsets.only(left: 0),
         ) : Container(),
         title: Text(
-          trans(context, "Account")
+          trans("Account")
         ),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: _isLoading
             ? AppLoaderWidget()
             : Column(
@@ -206,7 +205,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
-                      color: NyColors.of(context).backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                     ),
                   ),
                   Expanded(child: _activeBody),
@@ -239,7 +238,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         Card(
           child: ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text(trans(context, "Update details")),
+            title: Text(trans("Update details")),
             onTap: () =>
                 Navigator.pushNamed(context, "/account-update").then((onValue) {
               setState(() {
@@ -252,7 +251,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         Card(
           child: ListTile(
             leading: Icon(Icons.local_shipping),
-            title: Text(trans(context, "Shipping Details")),
+            title: Text(trans("Shipping Details")),
             onTap: () =>
                 Navigator.pushNamed(context, "/account-shipping-details"),
           ),
@@ -260,7 +259,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         Card(
           child: ListTile(
             leading: Icon(Icons.credit_card),
-            title: Text(trans(context, "Billing Details")),
+            title: Text(trans("Billing Details")),
             onTap: () =>
                 Navigator.pushNamed(context, "/account-billing-details"),
           ),
@@ -268,7 +267,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
         Card(
           child: ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: Text(trans(context, "Logout")),
+            title: Text(trans("Logout")),
             onTap: () => authLogout(context),
           ),
         ),
@@ -317,15 +316,15 @@ class _AccountDetailPageState extends State<AccountDetailPage>
               builder: (BuildContext context, LoadStatus mode) {
                 Widget body;
                 if (mode == LoadStatus.idle) {
-                  body = Text(trans(context, "pull up load"));
+                  body = Text(trans("pull up load"));
                 } else if (mode == LoadStatus.loading) {
                   body = CupertinoActivityIndicator();
                 } else if (mode == LoadStatus.failed) {
-                  body = Text(trans(context, "Load Failed! Click retry!"));
+                  body = Text(trans("Load Failed! Click retry!"));
                 } else if (mode == LoadStatus.canLoading) {
-                  body = Text(trans(context, "release to load more"));
+                  body = Text(trans("release to load more"));
                 } else {
-                  body = Text(trans(context, "No more orders"));
+                  body = Text(trans("No more orders"));
                 }
                 return Container(
                   height: 55.0,
@@ -392,7 +391,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                     Text(
                                       _orders[i].lineItems.length.toString() +
                                           " " +
-                                          trans(context, "items"),
+                                          trans("items"),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText1
@@ -448,7 +447,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           size: 40,
                         ),
                         Text(
-                          trans(context, "No orders found"),
+                          trans("No orders found"),
                         ),
                       ],
                     ),

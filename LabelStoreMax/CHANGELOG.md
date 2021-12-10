@@ -1,3 +1,10 @@
+## [5.4.0] - 2021-12-10
+
+* New localization keys added
+* Refactor as per Dart Analysis
+* Upgrade to latest Nylo version
+* Pubspec.yaml dependency updates
+
 ## [5.3.1] - 2021-11-17
 
 * Fix shipping method not handling async call

@@ -8,12 +8,11 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/account_order_detail_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nylo_support/helpers/helper.dart';
@@ -55,20 +54,19 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
           margin: EdgeInsets.only(left: 0),
         ),
         title: Text(
-          "${trans(context, "Order").capitalize()} #${_orderId.toString()}"
+          "${trans("Order").capitalize()} #${_orderId.toString()}"
         ),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: _isLoading
             ? AppLoaderWidget()
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("${trans(context, "Date Ordered").capitalize()}: " +
+                  Text("${trans("Date Ordered").capitalize()}: " +
                       dateFormatted(
                           date: _order.dateCreated,
                           formatType: formatForDateTime(FormatType.Date))),
@@ -81,7 +79,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                       children: <Widget>[
                         Flexible(
                           child: Text(
-                              "${trans(context, "Ships to").capitalize()}:"),
+                              "${trans("Ships to").capitalize()}:"),
                         ),
                         Flexible(
                           child: Text(

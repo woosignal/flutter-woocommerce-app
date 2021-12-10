@@ -12,7 +12,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_version_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/theme/helper/ny_theme.dart';
@@ -35,33 +34,33 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(
-        color: NyColors.of(context).background,
+        color: ThemeColor.get(context).background,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               child: Center(child: StoreLogo()),
               decoration: BoxDecoration(
-                color: NyColors.of(context).background,
+                color: ThemeColor.get(context).background,
               ),
             ),
             Padding(
               child: Text(
-                trans(context, "Menu"),
+                trans("Menu"),
                 style: Theme.of(context).textTheme.subtitle2,
               ),
               padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
             ),
             if (widget.wooSignalApp.wpLoginEnabled == 1)
               ListTile(
-                title: Text(trans(context, "Profile"), style: Theme.of(context).textTheme.bodyText2.copyWith(
+                title: Text(trans("Profile"), style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 16
                 ),),
                 leading: Icon(Icons.account_circle),
                 onTap: _actionProfile,
               ),
             ListTile(
-              title: Text(trans(context, "Cart"), style: Theme.of(context).textTheme.bodyText2.copyWith(
+              title: Text(trans("Cart"), style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 16
               ),),
               leading: Icon(Icons.shopping_cart),
@@ -70,7 +69,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
           if (widget.wooSignalApp.appTermslink != null && widget.wooSignalApp.appPrivacylink != null)
             Padding(
               child: Text(
-                trans(context, "About Us"),
+                trans("About Us"),
                 style: Theme.of(context).textTheme.subtitle2,
               ),
               padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
@@ -78,7 +77,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             if (widget.wooSignalApp.appTermslink != null &&
                 widget.wooSignalApp.appTermslink.isNotEmpty)
               ListTile(
-                title: Text(trans(context, "Terms and conditions"),
+                title: Text(trans("Terms and conditions"),
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 16
                     ),),
@@ -89,7 +88,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             if (widget.wooSignalApp.appPrivacylink != null &&
                 widget.wooSignalApp.appPrivacylink.isNotEmpty)
               ListTile(
-                title: Text(trans(context, "Privacy policy"), style: Theme.of(context).textTheme.bodyText2.copyWith(
+                title: Text(trans("Privacy policy"), style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 16
                 ),),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -98,7 +97,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
               ),
             ListTile(
               title: Text(
-                  trans(context, (isDark ? "Light Mode" : "Dark Mode")),
+                  trans((isDark ? "Light Mode" : "Dark Mode")),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 16
                   )

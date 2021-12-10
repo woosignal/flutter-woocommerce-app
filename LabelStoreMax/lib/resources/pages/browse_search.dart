@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/browse_search_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:nylo_support/widgets/ny_state.dart';
 import 'package:nylo_support/widgets/ny_stateful_widget.dart';
@@ -81,15 +82,14 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(trans(context, "Search results for"),
+            Text(trans("Search results for"),
                 style: Theme.of(context).textTheme.subtitle1),
             Text("\"" + _search + "\"")
           ],
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: _isLoading
             ? Center(
                 child: AppLoaderWidget(),

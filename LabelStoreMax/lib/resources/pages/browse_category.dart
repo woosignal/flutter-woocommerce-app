@@ -8,13 +8,13 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/browse_category_controller.dart';
 import 'package:flutter_app/bootstrap/enums/sort_enums.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:nylo_support/widgets/ny_state.dart';
@@ -87,7 +87,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(trans(context, "Browse"),
+            Text(trans("Browse"),
                 style: Theme.of(context).textTheme.subtitle1),
             Text(parseHtmlString(productCategory.name))
           ],
@@ -100,8 +100,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           )
         ],
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: _isLoading
             ? Center(
                 child: AppLoaderWidget(),
@@ -171,38 +170,38 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
   _modalSheetTune() {
     wsModalBottom(
       context,
-      title: trans(context, "Sort results"),
+      title: trans("Sort results"),
       bodyWidget: ListView(
         children: <Widget>[
           LinkButton(
-            title: trans(context, "Sort: Low to high"),
+            title: trans("Sort: Low to high"),
             action: () => _sortProducts(by: SortByType.LowToHigh),
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
-            title: trans(context, "Sort: High to low"),
+            title: trans("Sort: High to low"),
             action: () => _sortProducts(by: SortByType.HighToLow),
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
-            title: trans(context, "Sort: Name A-Z"),
+            title: trans("Sort: Name A-Z"),
             action: () => _sortProducts(by: SortByType.NameAZ),
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
-            title: trans(context, "Sort: Name Z-A"),
+            title: trans("Sort: Name Z-A"),
             action: () => _sortProducts(by: SortByType.NameZA),
           ),
           Divider(
             height: 0,
           ),
-          LinkButton(title: trans(context, "Cancel"), action: _dismissModal)
+          LinkButton(title: trans("Cancel"), action: _dismissModal)
         ],
       ),
     );

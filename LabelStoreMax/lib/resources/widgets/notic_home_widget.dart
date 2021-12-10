@@ -5,6 +5,7 @@ import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -83,7 +84,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   _modalBottomSheetMenu() {
     wsModalBottom(
       context,
-      title: trans(context, "Categories"),
+      title: trans("Categories"),
       bodyWidget: ListView.separated(
         itemCount: _categories.length,
         separatorBuilder: (cxt, i) => Divider(),
@@ -116,7 +117,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                 highlightColor: Colors.transparent,
                 onTap: _modalBottomSheetMenu,
                 child: Text(
-                  trans(context, "Categories"),
+                  trans("Categories"),
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
@@ -124,8 +125,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
           ),
         ],
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,10 +156,10 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(trans(context, "Must have")),
+                              Text(trans("Must have")),
                               Flexible(
                                 child: Text(
-                                  trans(context, "Our selection of new items"),
+                                  trans("Our selection of new items"),
                                   style: Theme.of(context).textTheme.headline4,
                                   maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
@@ -176,18 +176,17 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                               builder: (BuildContext context, LoadStatus mode) {
                                 Widget body;
                                 if (mode == LoadStatus.idle) {
-                                  body = Text(trans(context, "pull up load"));
+                                  body = Text(trans("pull up load"));
                                 } else if (mode == LoadStatus.loading) {
                                   body = CupertinoActivityIndicator();
                                 } else if (mode == LoadStatus.failed) {
-                                  body = Text(trans(
-                                      context, "Load Failed! Click retry!"));
+                                  body = Text(trans("Load Failed! Click retry!"));
                                 } else if (mode == LoadStatus.canLoading) {
                                   body = Text(
-                                      trans(context, "release to load more"));
+                                      trans("release to load more"));
                                 } else {
                                   body =
-                                      Text(trans(context, "No more products"));
+                                      Text(trans("No more products"));
                                 }
                                 return Container(
                                   height: 55.0,

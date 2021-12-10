@@ -186,5 +186,9 @@
   "Must have": "Must have",
   "Our selection of new items": "Our selection of new items",
   "Register": "Register",
-  "No payment methods are available": "No payment methods are available"
+  "No payment methods are available": "No payment methods are available",
+  "Please enter a valid billing email": "Please enter a valid billing email",
+  "Please enter a valid shipping email": "Please enter a valid shipping email",
+  "Free postage": "Free postage",
+  "PROCESSING": "PROCESSING"
 }

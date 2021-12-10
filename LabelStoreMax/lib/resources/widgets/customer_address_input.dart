@@ -8,7 +8,6 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
@@ -49,14 +48,14 @@ class CustomerAddressInput extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: TextEditingRow(
-                  heading: trans(context, "First Name"),
+                  heading: trans("First Name"),
                   controller: txtControllerFirstName,
                   shouldAutoFocus: true,
                 ),
               ),
               Flexible(
                 child: TextEditingRow(
-                  heading: trans(context, "Last Name"),
+                  heading: trans("Last Name"),
                   controller: txtControllerLastName,
                 ),
               ),
@@ -70,13 +69,13 @@ class CustomerAddressInput extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: TextEditingRow(
-                  heading: trans(context, "Address Line"),
+                  heading: trans("Address Line"),
                   controller: txtControllerAddressLine,
                 ),
               ),
               Flexible(
                 child: TextEditingRow(
-                  heading: trans(context, "City"),
+                  heading: trans("City"),
                   controller: txtControllerCity,
                 ),
               ),
@@ -88,13 +87,13 @@ class CustomerAddressInput extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: TextEditingRow(
-                  heading: trans(context, "Postal code"),
+                  heading: trans("Postal code"),
                   controller: txtControllerPostalCode,
                 ),
               ),
               Flexible(
                 child: TextEditingRow(
-                    heading: trans(context, "Email address"),
+                    heading: trans("Email address"),
                     keyboardType: TextInputType.emailAddress,
                     controller: txtControllerEmailAddress),
               ),
@@ -113,7 +112,7 @@ class CustomerAddressInput extends StatelessWidget {
                         Container(
                           height: 23,
                           child: Text(
-                            trans(context, "State"),
+                            trans("State"),
                             style: Theme.of(context).textTheme.bodyText1,
                             textAlign: TextAlign.left,
                           ),
@@ -123,7 +122,7 @@ class CustomerAddressInput extends StatelessWidget {
                           child: SecondaryButton(
                             title: (customerCountry.state != null
                                 ? (customerCountry?.state?.name ?? "")
-                                : trans(context, "Select state")),
+                                : trans("Select state")),
                             action: onTapCountry,
                           ),
                           padding: EdgeInsets.all(8),
@@ -137,7 +136,7 @@ class CustomerAddressInput extends StatelessWidget {
                       Container(
                         height: 23,
                         child: Text(
-                          trans(context, "Country"),
+                          trans("Country"),
                           style: Theme.of(context).textTheme.bodyText1,
                           textAlign: TextAlign.left,
                         ),
@@ -148,7 +147,7 @@ class CustomerAddressInput extends StatelessWidget {
                           title: (customerCountry != null &&
                                   (customerCountry?.name ?? "").isNotEmpty
                               ? customerCountry.name
-                              : trans(context, "Select country")),
+                              : trans("Select country")),
                           action: onTapCountry,
                         ),
                         padding: EdgeInsets.all(8),

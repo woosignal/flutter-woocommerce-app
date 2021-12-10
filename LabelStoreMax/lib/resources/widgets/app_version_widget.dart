@@ -30,7 +30,7 @@ class AppVersionWidget extends StatelessWidget {
             if (snapshot.hasError) return Text("");
             return Padding(
               child: Text(
-                  "${trans(context, "Version")}: ${snapshot.data.version}",
+                  "${trans("Version")}: ${snapshot.data.version}",
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2

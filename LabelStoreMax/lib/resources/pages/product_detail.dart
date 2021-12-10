@@ -10,20 +10,16 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_app/app/controllers/product_detail_controller.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
-import 'package:nylo_support/widgets/ny_state.dart';
-import 'package:nylo_support/widgets/ny_stateful_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_variation.dart' as WS;
 import 'package:woosignal/models/response/products.dart' as WSProduct;
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -106,7 +102,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     wsModalBottom(
       context,
       title:
-          "${trans(context, "Select a")} ${_product.attributes[attributeIndex].name}",
+          "${trans("Select a")} ${_product.attributes[attributeIndex].name}",
       bodyWidget: ListView.separated(
         itemCount: _product.attributes[attributeIndex].options.length,
         separatorBuilder: (BuildContext context, int index) => Divider(),
@@ -140,8 +136,8 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   _itemAddToCart({CartLineItem cartLineItem}) async {
     await Cart.getInstance.addToCart(cartLineItem: cartLineItem);
     showStatusAlert(context,
-        title: trans(context, "Success"),
-        subtitle: trans(context, "Added to cart"),
+        title: trans("Success"),
+        subtitle: trans("Added to cart"),
         duration: 1,
         icon: Icons.add_shopping_cart);
     setState(() {});
@@ -151,7 +147,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     WS.ProductVariation productVariation = findProductVariation();
     wsModalBottom(
       context,
-      title: trans(context, "Options"),
+      title: trans("Options"),
       bodyWidget: ListView.separated(
         itemCount: _product.attributes.length,
         separatorBuilder: (BuildContext context, int index) => Divider(
@@ -167,7 +163,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                 ? Text(_tmpAttributeObj[index]["value"],
                     style: Theme.of(context).textTheme.bodyText1)
                 : Text(
-                    "${trans(context, "Select a")} ${_product.attributes[index].name}"),
+                    "${trans("Select a")} ${_product.attributes[index].name}"),
             trailing: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(index))
                 ? Icon(Icons.check, color: Colors.blueAccent)
@@ -184,49 +180,49 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
           children: <Widget>[
             Text(
               (productVariation != null
-                  ? "${trans(context, "Price")}: ${formatStringCurrency(total: productVariation.price)}"
+                  ? "${trans("Price")}: ${formatStringCurrency(total: productVariation.price)}"
                   : (((_product.attributes.length ==
                               _tmpAttributeObj.values.length) &&
                           productVariation == null)
-                      ? trans(context, "This variation is unavailable")
-                      : trans(context, "Choose your options"))),
+                      ? trans("This variation is unavailable")
+                      : trans("Choose your options"))),
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Text(
               (productVariation != null
                   ? productVariation.stockStatus != "instock"
-                      ? trans(context, "Out of stock")
+                      ? trans("Out of stock")
                       : ""
                   : ""),
               style: Theme.of(context).textTheme.subtitle1,
             ),
             PrimaryButton(
-                title: trans(context, "Add to cart"),
+                title: trans("Add to cart"),
                 action: () {
                   if (_product.attributes.length !=
                       _tmpAttributeObj.values.length) {
                     showToastNotification(context,
-                        title: trans(context, "Oops"),
+                        title: trans("Oops"),
                         description:
-                            trans(context, "Please select valid options first"),
+                            trans("Please select valid options first"),
                         style: ToastNotificationStyleType.WARNING);
                     return;
                   }
 
                   if (productVariation == null) {
                     showToastNotification(context,
-                        title: trans(context, "Oops"),
+                        title: trans("Oops"),
                         description:
-                            trans(context, "Product variation does not exist"),
+                            trans("Product variation does not exist"),
                         style: ToastNotificationStyleType.WARNING);
                     return;
                   }
 
                   if (productVariation.stockStatus != "instock") {
                     showToastNotification(context,
-                        title: trans(context, "Sorry"),
+                        title: trans("Sorry"),
                         description:
-                            trans(context, "This item is not in stock"),
+                            trans("This item is not in stock"),
                         style: ToastNotificationStyleType.WARNING);
                     return;
                   }
@@ -271,7 +267,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   _modalBottomSheetMenu() {
     wsModalBottom(
       context,
-      title: trans(context, "Description"),
+      title: trans("Description"),
       bodyWidget: SingleChildScrollView(
         child: Text(
           parseHtmlString(_product.description),
@@ -378,7 +374,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: NyColors.of(context).background,
+                            color: ThemeColor.get(context).background,
                             // boxShadow: wsBoxShadow(),
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -395,7 +391,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    trans(context, "Description"),
+                                    trans("Description"),
                                     style: Theme.of(context)
                                         .textTheme
                                         .caption
@@ -404,7 +400,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                                   ),
                                   MaterialButton(
                                     child: Text(
-                                      trans(context, "Full description"),
+                                      trans("Full description"),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2
@@ -439,7 +435,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
-                      color: NyColors.of(context).background,
+                      color: ThemeColor.get(context).background,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black12,
@@ -463,7 +459,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    trans(context, "Quantity"),
+                                    trans("Quantity"),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
@@ -515,14 +511,14 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                             _product.type == "external"
                                 ? Flexible(
                                     child: PrimaryButton(
-                                      title: trans(context, "Buy Product"),
+                                      title: trans("Buy Product"),
                                       action: () => widget.controller
                                           .viewExternalProduct(_product),
                                     ),
                                   )
                                 : Flexible(
                                     child: PrimaryButton(
-                                      title: trans(context, "Add to cart"),
+                                      title: trans("Add to cart"),
                                       action: () => _addItemToCart(),
                                     ),
                                   ),
@@ -545,8 +541,8 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     }
     if (_product.stockStatus != "instock") {
       showToastNotification(context,
-          title: trans(context, "Sorry"),
-          description: trans(context, "This item is out of stock"),
+          title: trans("Sorry"),
+          description: trans("This item is out of stock"),
           style: ToastNotificationStyleType.WARNING,
           icon: Icons.local_shipping);
       return;
@@ -574,9 +570,9 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     if (_product.manageStock != null && _product.manageStock == true) {
       if (_quantityIndicator >= _product.stockQuantity) {
         showToastNotification(context,
-            title: trans(context, "Maximum quantity reached"),
+            title: trans("Maximum quantity reached"),
             description:
-                "${trans(context, "Sorry, only")} ${_product.stockQuantity} ${trans(context, "left")}",
+                "${trans("Sorry, only")} ${_product.stockQuantity} ${trans("left")}",
             style: ToastNotificationStyleType.INFO);
         return;
       }

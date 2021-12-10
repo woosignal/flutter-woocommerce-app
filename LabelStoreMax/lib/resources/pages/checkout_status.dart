@@ -67,23 +67,23 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                       children: <Widget>[
                         Padding(
                           child: Text(
-                            trans(context, "Order Status"),
+                            trans("Order Status"),
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                           padding: EdgeInsets.only(bottom: 15),
                         ),
                         Text(
-                          trans(context, "Thank You!"),
+                          trans("Thank You!"),
                           style: Theme.of(context).textTheme.headline6,
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          trans(context, "Your transaction details"),
+                          trans("Your transaction details"),
                           style: Theme.of(context).textTheme.bodyText2,
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          "${trans(context, "Order Ref")}. #${_order.id.toString()}",
+                          "${trans("Order Ref")}. #${_order.id.toString()}",
                           style: Theme.of(context).textTheme.bodyText1,
                           textAlign: TextAlign.left,
                         ),
@@ -112,7 +112,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
               Align(
                 child: Padding(
                   child: Text(
-                    trans(context, "Items"),
+                    trans("Items"),
                     style: Theme.of(context).textTheme.subtitle1,
                     textAlign: TextAlign.left,
                   ),
@@ -169,7 +169,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
               ),
               Align(
                 child: LinkButton(
-                  title: trans(context, "Back to Home"),
+                  title: trans("Back to Home"),
                   action: () => Navigator.pushNamed(context, "/home"),
                 ),
                 alignment: Alignment.bottomCenter,

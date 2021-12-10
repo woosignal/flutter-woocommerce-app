@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class NoConnectionPage extends StatefulWidget {
@@ -34,8 +35,7 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,12 +49,12 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  trans(context, "Oops, something went wrong"),
+                  trans("Oops, something went wrong"),
                   style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.center,
                 ),
               ),
-              LinkButton(title: trans(context, "Retry"), action: _retry),
+              LinkButton(title: trans("Retry"), action: _retry),
             ],
           ),
         ),
@@ -67,8 +67,8 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
 
     if (wooSignalApp == null) {
       showToastNotification(context,
-          title: trans(context, "Oops"),
-          description: trans(context, "Retry later"));
+          title: trans("Oops"),
+          description: trans("Retry later"));
       return;
     }
 

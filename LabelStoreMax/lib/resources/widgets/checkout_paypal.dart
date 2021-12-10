@@ -8,8 +8,6 @@ import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'dart:async';
-import 'package:nylo_support/helpers/helper.dart';
-import 'package:nylo_support/widgets/ny_state.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
@@ -101,9 +99,9 @@ class WebViewState extends NyState<PayPalCheckout> {
   }
 
   String _loadHTML() {
-    final String strProcessingPayment = trans(context, "Processing Payment");
-    final String strPleaseWait = trans(context, "Please wait, your order is being processed and you will be redirected to the PayPal website.");
-    final String strRedirectMessage = trans(context, "If you are not automatically redirected to PayPal within 5 seconds");
+    final String strProcessingPayment = trans("Processing Payment");
+    final String strPleaseWait = trans("Please wait, your order is being processed and you will be redirected to the PayPal website.");
+    final String strRedirectMessage = trans("If you are not automatically redirected to PayPal within 5 seconds");
 
     return '''
       <html><head><title>$strProcessingPayment...</title></head>

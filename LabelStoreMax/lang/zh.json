@@ -186,5 +186,9 @@
   "Must have": "一定有",
   "Our selection of new items": "我们精选的新品",
   "Register": "登记",
-  "No payment methods are available": "没有可用的付款方式"
+  "No payment methods are available": "没有可用的付款方式",
+  "Please enter a valid billing email": "请输入有效的结算电子邮件",
+  "Please enter a valid shipping email": "请输入有效的送货电子邮件",
+  "Free postage": "免邮费",
+  "PROCESSING": "加工"
 }

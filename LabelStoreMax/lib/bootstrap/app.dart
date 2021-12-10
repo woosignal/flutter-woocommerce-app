@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_app/config/app_theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 // ignore: must_be_immutable
@@ -60,54 +60,43 @@ class AppBuild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
-      themes: [
-        AppTheme(
-            id: "default_light_theme",
-            data: this.lightTheme ?? ThemeData.fallback(),
-            description: 'Light theme'),
-        AppTheme(
-            id: "default_dark_theme",
-            data: this.darkTheme ?? ThemeData.fallback(),
-            description: 'Dark theme'),
-      ],
-      child: ThemeConsumer(
-        child: Builder(
-          builder: (themeContext) => ValueListenableBuilder(
-            valueListenable: ValueNotifier(locale),
-            builder: (context, Locale locale, _) => MaterialApp(
-              navigatorKey: navigatorKey,
-              themeMode: themeMode,
-              onGenerateTitle: onGenerateTitle,
-              onGenerateInitialRoutes: onGenerateInitialRoutes,
-              onUnknownRoute: onUnknownRoute,
-              builder: builder,
-              navigatorObservers: navigatorObservers,
-              color: color,
-              supportedLocales: supportedLocales,
-              debugShowMaterialGrid: debugShowMaterialGrid,
-              showPerformanceOverlay: showPerformanceOverlay,
-              checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-              checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-              showSemanticsDebugger: showSemanticsDebugger,
-              debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-              shortcuts: shortcuts,
-              actions: actions,
-              title: title ?? "",
-              darkTheme: darkTheme,
-              initialRoute: initialRoute,
-              onGenerateRoute: this.onGenerateRoute,
-              locale: locale,
-              theme: themeData ?? ThemeProvider.themeOf(themeContext).data,
-              localizationsDelegates: [
-                AppLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate
-              ],
-              localeResolutionCallback:
-                  (Locale locale, Iterable<Locale> supportedLocales) {
-                return locale;
-              },
+    return LocalizedApp(
+      child: ThemeProvider(
+        themes: appThemes.map((appTheme) => appTheme.toAppTheme(defaultTheme: appTheme.theme.brightness == Brightness.light ? lightTheme : darkTheme)).toList(),
+        child: ThemeConsumer(
+          child: Builder(
+            builder: (themeContext) => ValueListenableBuilder(
+              valueListenable: ValueNotifier(locale),
+              builder: (context, Locale locale, _) => MaterialApp(
+                navigatorKey: navigatorKey,
+                themeMode: themeMode,
+                onGenerateTitle: onGenerateTitle,
+                onGenerateInitialRoutes: onGenerateInitialRoutes,
+                onUnknownRoute: onUnknownRoute,
+                builder: builder,
+                navigatorObservers: navigatorObservers,
+                color: color,
+                debugShowMaterialGrid: debugShowMaterialGrid,
+                showPerformanceOverlay: showPerformanceOverlay,
+                checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+                checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+                showSemanticsDebugger: showSemanticsDebugger,
+                debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+                shortcuts: shortcuts,
+                actions: actions,
+                title: title ?? "",
+                initialRoute: initialRoute,
+                onGenerateRoute: this.onGenerateRoute,
+                darkTheme: this.darkTheme == null ? ThemeConfig.dark().theme : this.darkTheme,
+                theme: themeData ?? ThemeProvider.themeOf(context).data,
+                localeResolutionCallback:
+                    (Locale locale, Iterable<Locale> supportedLocales) {
+                  return locale;
+                },
+                localizationsDelegates: NyLocalization.instance.delegates,
+                locale: NyLocalization.instance.locale,
+                supportedLocales: supportedLocales ?? NyLocalization.instance.locals(),
+              ),
             ),
           ),
         ),

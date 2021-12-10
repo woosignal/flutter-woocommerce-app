@@ -186,5 +186,9 @@
   "Must have": "Doit avoir",
   "Our selection of new items": "Notre sélection de nouveautés",
   "Register": "S'inscrire",
-  "No payment methods are available": "Aucun mode de paiement n'est disponible"
+  "No payment methods are available": "Aucun mode de paiement n'est disponible",
+  "Please enter a valid billing email": "Veuillez saisir une adresse e-mail de facturation valide",
+  "Please enter a valid shipping email": "Veuillez saisir un e-mail de livraison valide",
+  "Free postage": "Sans frais de port",
+  "PROCESSING": "EN TRAITEMENT"
 }

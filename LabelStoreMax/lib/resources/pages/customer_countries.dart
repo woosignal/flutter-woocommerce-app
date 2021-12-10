@@ -11,7 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/default_shipping.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/config/app_theme.dart';
+import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_support/helpers/helper.dart';
 
@@ -46,12 +46,11 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          trans(context, "Select a country")
+          trans("Select a country")
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        minimum: safeAreaDefault(),
+      body: SafeAreaWidget(
         child: Column(
           children: [
             Container(
@@ -67,7 +66,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
                     offset: Offset(0, 2),
                   ),
                 ],
-                color: NyColors.of(context).background
+                color: ThemeColor.get(context).background
               ),
               height: 60,
               child: Row(
@@ -146,7 +145,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
     FocusScope.of(context).unfocus();
     wsModalBottom(
       context,
-      title: trans(context, "Select a state"),
+      title: trans("Select a state"),
       bodyWidget: ListView.separated(
         itemCount: defaultShipping.states.length,
         itemBuilder: (BuildContext context, int index) {
