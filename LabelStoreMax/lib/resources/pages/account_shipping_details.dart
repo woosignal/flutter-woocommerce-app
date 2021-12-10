@@ -176,9 +176,6 @@ class _AccountShippingDetailsPageState
                           ),
                           decoration: BoxDecoration(
                             color: ThemeColor.get(context).surfaceBackground,
-                              // (Theme.of(context).brightness == Brightness.light)
-                              //   ? NyColors.light.background
-                              //   : NyColors.dark.primaryAccent,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow:
                             (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
