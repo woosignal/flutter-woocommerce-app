@@ -1,3 +1,12 @@
+## [5.5.0] - 2021-12-17
+
+* Change font from WooSignal dashboard
+* Change font colors from WooSignal dashboard
+* Add social media links from WooSignal dashboard
+* Notification stubs added to boot.dart
+* Upgrade WooSignal API to v3.0.0
+* Pubspec.yaml dependency updates
+
 ## [5.4.0] - 2021-12-10
 
 * New localization keys added

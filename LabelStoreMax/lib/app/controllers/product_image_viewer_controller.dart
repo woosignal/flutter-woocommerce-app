@@ -13,5 +13,7 @@ import 'package:flutter/widgets.dart';
 
 class ProductImageViewerController extends Controller {
   @override
-  construct(BuildContext context) {}
+  construct(BuildContext context) {
+    super.construct(context);
+  }
 }

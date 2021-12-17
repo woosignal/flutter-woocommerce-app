@@ -13,7 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 |--------------------------------------------------------------------------
 */
 
-final TextStyle appFont = GoogleFonts.poppins();
+TextStyle appFont = GoogleFonts.poppins();
 
 // e.g. custom font in pubspec.yaml - https://flutter.dev/docs/cookbook/design/fonts
 // final TextStyle appThemeFont = TextStyle(fontFamily: "ZenTokyoZoo");

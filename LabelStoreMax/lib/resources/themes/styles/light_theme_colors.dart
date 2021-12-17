@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 
 /*
@@ -9,23 +10,24 @@ import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 
 class LightThemeColors implements BaseColorStyles {
   // general
-  Color get background => const Color(0xFFFFFFFF);
+
+  Color get background => Color(int.parse(AppHelper.instance.appConfig.themeColors['light']['background']));
   Color get backgroundContainer => Colors.white;
-  Color get primaryContent => const Color(0xFF000000);
+  Color get primaryContent => Color(int.parse(AppHelper.instance.appConfig.themeColors['light']['primary_text']));
   Color get primaryAccent => const Color(0xFF87c694);
 
   Color get surfaceBackground => Colors.white;
   Color get surfaceContent => Colors.black;
 
   // app bar
-  Color get appBarBackground => Colors.white;
-  Color get appBarPrimaryContent => const Color(0xFF3a3d40);
+  Color get appBarBackground => Color(int.parse(AppHelper.instance.appConfig.themeColors['light']['app_bar_background']));
+  Color get appBarPrimaryContent => Color(int.parse(AppHelper.instance.appConfig.themeColors['light']['app_bar_text']));
 
   Color get inputPrimaryContent => Colors.black;
 
   // buttons
-  Color get buttonBackground => const Color(0xFF529cda);
-  Color get buttonPrimaryContent => Colors.white;
+  Color get buttonBackground => Color(int.parse(AppHelper.instance.appConfig.themeColors['light']['button_background']));
+  Color get buttonPrimaryContent => Color(int.parse(AppHelper.instance.appConfig.themeColors['light']['button_text']));
 
   // bottom tab bar
   Color get bottomTabBarBackground => Colors.white;

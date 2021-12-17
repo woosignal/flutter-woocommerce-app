@@ -3,7 +3,7 @@
 | CURRENCY
 |
 | Configure which currency you want to use.
-| Docs here: https://woosignal.com/docs/app/ios/label-storemax
+| Docs here: https://woosignal.com/docs/app/label-storemax
 |--------------------------------------------------------------------------
 */
 
