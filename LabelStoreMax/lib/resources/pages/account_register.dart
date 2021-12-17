@@ -9,6 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
@@ -18,7 +20,6 @@ import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:woosignal/helpers/shared_pref.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:wp_json_api/exceptions/empty_username_exception.dart';
 import 'package:wp_json_api/exceptions/existing_user_email_exception.dart';
@@ -176,7 +177,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       });
 
       String username =
-          (email.replaceAll(new RegExp(r'([@.])'), "")) + randomStr(4);
+          (email.replaceAll(new RegExp(r'([@.])'), "")) + _randomStr(4);
 
       WPUserRegisterResponse wpUserRegisterResponse;
       try {
@@ -265,13 +266,23 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
     );
   }
 
+  String _randomStr(int strLen) {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    Random rnd = Random(DateTime.now().millisecondsSinceEpoch);
+    String result = "";
+    for (var i = 0; i < strLen; i++) {
+      result += chars[rnd.nextInt(chars.length)];
+    }
+    return result;
+  }
+
   void _viewTermsConditions() {
     Navigator.pop(context);
-    openBrowserTab(url: _wooSignalApp.appTermslink);
+    openBrowserTab(url: _wooSignalApp.appTermsLink);
   }
 
   void _viewPrivacyPolicy() {
     Navigator.pop(context);
-    openBrowserTab(url: _wooSignalApp.appPrivacylink);
+    openBrowserTab(url: _wooSignalApp.appPrivacyLink);
   }
 }

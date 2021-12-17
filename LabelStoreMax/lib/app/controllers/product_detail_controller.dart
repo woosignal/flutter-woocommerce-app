@@ -16,7 +16,9 @@ import 'package:flutter/widgets.dart';
 
 class ProductDetailController extends Controller {
   @override
-  construct(BuildContext context) {}
+  construct(BuildContext context) {
+    super.construct(context);
+  }
 
   viewExternalProduct(Product product) {
     if (product.externalUrl != null && product.externalUrl.isNotEmpty) {

@@ -34,7 +34,7 @@ class AppBuild extends StatelessWidget {
     Key key,
     this.initialRoute,
     this.title,
-    @required this.locale,
+    this.locale,
     this.themeData,
     @required this.onGenerateRoute,
     this.navigatorKey,
@@ -66,7 +66,7 @@ class AppBuild extends StatelessWidget {
         child: ThemeConsumer(
           child: Builder(
             builder: (themeContext) => ValueListenableBuilder(
-              valueListenable: ValueNotifier(locale),
+              valueListenable: ValueNotifier(locale ?? NyLocalization.instance.locale),
               builder: (context, Locale locale, _) => MaterialApp(
                 navigatorKey: navigatorKey,
                 themeMode: themeMode,

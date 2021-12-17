@@ -190,5 +190,6 @@
   "Please enter a valid billing email": "Por favor, insira um e-mail de faturamento válido",
   "Please enter a valid shipping email": "Por favor, insira um e-mail de envio válido",
   "Free postage": "Postagem grátis",
-  "PROCESSING": "EM PROCESSAMENTO"
+  "PROCESSING": "EM PROCESSAMENTO",
+  "Social": "Social"
 }

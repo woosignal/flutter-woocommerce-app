@@ -45,11 +45,7 @@ Future<User> getUser() async =>
     (await NyStorage.read<User>(SharedKey.authUser, model: User()));
 
 appWooSignal(Function(WooSignal) api) async {
-  WooSignal wooSignal = await WooSignal.getInstance(config: {
-    "appKey": getEnv('APP_KEY'),
-    "debugMode": getEnv('APP_DEBUG', defaultValue: true)
-  });
-  return await api(wooSignal);
+  return await api(WooSignal.instance);
 }
 
 /// helper to find correct color from the [context].
