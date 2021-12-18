@@ -54,10 +54,7 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
   }
 
   _fetchMoreProducts() async {
-    if (_shouldStopRequests) {
-      return;
-    }
-    if (waitForNextRequest) {
+    if (waitForNextRequest || _shouldStopRequests) {
       return;
     }
     waitForNextRequest = true;
@@ -67,14 +64,17 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
             perPage: 50,
             page: _page,
             status: "publish",
-            stockStatus: "instock"));
-    _page = _page + 1;
+            stockStatus: "instock"),
+    );
     if (products.length == 0) {
       _shouldStopRequests = true;
+      setState(() {});
+      return;
     }
+    _page = _page + 1;
     waitForNextRequest = false;
     setState(() {
-      _products.addAll(products.toList());
+      _products.addAll(products);
     });
   }
 
@@ -125,21 +125,19 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            (_isLoading
-                ? Expanded(child: AppLoaderWidget())
-                : Expanded(
-                    child: RefreshableScrollContainer(
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      products: _products,
-                      onTap: _showProduct,
-                      bannerHeight: MediaQuery.of(context).size.height / 3.5,
-                      bannerImages: bannerImages,
-                      modalBottomSheetMenu: _modalBottomSheetMenu,
-                    ),
-                    flex: 1,
-                  )),
+            Expanded(
+              child: _isLoading ? AppLoaderWidget() : RefreshableScrollContainer(
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                products: _products,
+                onTap: _showProduct,
+                bannerHeight: MediaQuery.of(context).size.height / 3.5,
+                bannerImages: bannerImages,
+                modalBottomSheetMenu: _modalBottomSheetMenu,
+              ),
+              flex: 1,
+            ),
           ],
         ),
       ),

@@ -43,6 +43,27 @@ Future<void> boot() async {
   ///   AppHelper.instance.fcmToken = token;
   /// }
 
+  AppHelper?.instance?.appConfig = WooSignalApp();
+  AppHelper.instance.appConfig.themeFont = "Poppins";
+  AppHelper.instance.appConfig.themeColors = {
+    'light': {
+      'background': '0xFFFFFFFF',
+      'primary_text': '0xFF000000',
+      'button_background': '0xFF529cda',
+      'button_text': '0xFFFFFFFF',
+      'app_bar_background': '0xFFFFFFFF',
+      'app_bar_text': '0xFF3a3d40',
+    },
+    'dark': {
+      'background': '0xFF212121',
+      'primary_text': '0xFFE1E1E1',
+      'button_background': '0xFFFFFFFF',
+      'button_text': '0xFF232c33',
+      'app_bar_background': '0xFF2C2C2C',
+      'app_bar_text': '0xFFFFFFFF',
+    }
+  };
+
   // WooSignal Setup
   WooSignalApp wooSignalApp = await appWooSignal((api) => api.getApp());
   Locale locale = Locale('en');

@@ -46,7 +46,11 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
   }
 
   _fetchProductsForSearch() async {
+    if (waitForNextRequest || _shouldStopRequests) {
+      return;
+    }
     waitForNextRequest = true;
+
     List<WS.Product> products = await appWooSignal(
       (api) => api.getProducts(
         perPage: 100,
@@ -56,14 +60,19 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
         stockStatus: "instock",
       ),
     );
-    _products.addAll(products);
+
+    if (products.length == 0) {
+      _shouldStopRequests = true;
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    } else {
+      _products.addAll(products);
+    }
     waitForNextRequest = false;
     _page = _page + 1;
 
-    waitForNextRequest = false;
-    if (products.length == 0) {
-      _shouldStopRequests = true;
-    }
     setState(() {
       _isLoading = false;
     });

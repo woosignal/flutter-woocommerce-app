@@ -73,7 +73,6 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
     }
 
     AppHelper.instance.appConfig = wooSignalApp;
-    AppHelper.instance.themeType = wooSignalApp.theme;
     Navigator.pushNamed(context, "/home");
   }
 }
