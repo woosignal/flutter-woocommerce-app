@@ -67,6 +67,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
 
     if (products.length == 0) {
       _shouldStopRequests = true;
+      _isLoading = false;
       setState(() {});
       return;
     } else {

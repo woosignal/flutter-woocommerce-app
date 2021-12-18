@@ -1,3 +1,9 @@
+## [5.5.2] - 2021-12-18
+
+* Fix continuous loading on categories screen
+* Add theme color to buttons
+* Add theme color to buttons
+
 ## [5.5.1] - 2021-12-18
 
 * Fix bug if store connection fails

@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -29,8 +30,8 @@ class PrimaryButton extends StatelessWidget {
         textStyle: Theme.of(context)
             .textTheme
             .button
-            .copyWith(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-        bgColor: HexColor("#529cda"),
+            .copyWith(fontSize: 16, fontWeight: FontWeight.bold, color: ThemeColor.get(context).buttonPrimaryContent),
+    bgColor: ThemeColor.get(context).buttonBackground,
       );
 }
 
