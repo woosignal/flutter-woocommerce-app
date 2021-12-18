@@ -37,7 +37,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     Navigator.pushNamed(context, "/product-search",
             arguments: _txtSearchController.text)
         .then((search) {
-      if (AppHelper.instance.themeType != "notic") {
+      if (AppHelper.instance.appConfig.theme != "notic") {
         Navigator.pop(context);
       }
     });

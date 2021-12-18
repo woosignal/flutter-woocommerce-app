@@ -57,10 +57,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   }
 
   _fetchMoreProducts() async {
-    if (_shouldStopRequests) {
-      return;
-    }
-    if (waitForNextRequest) {
+    if (waitForNextRequest || _shouldStopRequests) {
       return;
     }
     waitForNextRequest = true;
@@ -70,15 +67,19 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
             perPage: 50,
             page: _page,
             status: "publish",
-            stockStatus: "instock"));
-    _page = _page + 1;
+            stockStatus: "instock"),
+    );
+
     if (products.length == 0) {
       _shouldStopRequests = true;
+      setState(() {});
+      return;
+    } else  {
+      _products.addAll(products);
     }
+    _page = _page + 1;
     waitForNextRequest = false;
-    setState(() {
-      _products.addAll(products.toList());
-    });
+    setState(() {});
   }
 
   _modalBottomSheetMenu() {

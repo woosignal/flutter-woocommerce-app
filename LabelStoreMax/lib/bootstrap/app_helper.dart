@@ -13,7 +13,6 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 class AppHelper {
   AppHelper._privateConstructor();
 
-  String themeType;
   static final AppHelper instance = AppHelper._privateConstructor();
 
   WooSignalApp appConfig;

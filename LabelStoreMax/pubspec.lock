@@ -907,7 +907,7 @@ packages:
       name: woosignal
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1"
   wp_json_api:
     dependency: "direct main"
     description:

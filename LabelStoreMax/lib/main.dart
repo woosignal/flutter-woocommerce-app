@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Nylo nylo = await Nylo.init(router: appRouter(), setup: boot);
 
-  String initialRoute = AppHelper.instance.appConfig != null ? '/home' : '/no-connection';
+  String initialRoute = AppHelper.instance.appConfig.appStatus != null ? '/home' : '/no-connection';
 
   runApp(
     AppBuild(

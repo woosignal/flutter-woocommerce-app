@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Widget theme =
         MelloThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
-    if (AppHelper.instance.themeType == "notic") {
+    if (AppHelper.instance.appConfig.theme == "notic") {
       theme = NoticThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
     }
     return theme;

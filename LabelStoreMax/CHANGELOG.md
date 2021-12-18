@@ -1,3 +1,9 @@
+## [5.5.1] - 2021-12-18
+
+* Fix bug if store connection fails
+* Minify default_shipping.json
+* Pubspec.yaml dependency updates
+
 ## [5.5.0] - 2021-12-17
 
 * Change font from WooSignal dashboard
