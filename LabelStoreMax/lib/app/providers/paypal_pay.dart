@@ -3,7 +3,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -39,38 +39,36 @@ payPalPay(context,
         showToastNotification(
           context,
           title: trans("Payment Cancelled"),
-          description:
-          trans("The payment has been cancelled"),
+          description: trans("The payment has been cancelled"),
         );
         state.reloadState(showLoader: false);
         return;
       }
 
-        state.reloadState(showLoader: true);
-        if (value.containsKey("status") && value["status"] == "success") {
-          OrderWC orderWC =
-              await buildOrderWC(taxRate: taxRate, markPaid: true);
-          Order order = await appWooSignal((api) => api.createOrder(orderWC));
+      state.reloadState(showLoader: true);
+      if (value.containsKey("status") && value["status"] == "success") {
+        OrderWC orderWC = await buildOrderWC(taxRate: taxRate, markPaid: true);
+        Order order = await appWooSignal((api) => api.createOrder(orderWC));
 
-          if (order == null) {
-            showToastNotification(
-              context,
-              title: trans("Error"),
-              description: trans("Something went wrong, please contact our store"),
-            );
-            return;
-          }
-          Navigator.pushNamed(context, "/checkout-status", arguments: order);
-          return;
-        } else {
+        if (order == null) {
           showToastNotification(
             context,
-            title: trans("Payment Cancelled"),
-            description: trans("The payment has been cancelled"),
+            title: trans("Error"),
+            description:
+                trans("Something went wrong, please contact our store"),
           );
+          return;
         }
+        Navigator.pushNamed(context, "/checkout-status", arguments: order);
+        return;
+      } else {
+        showToastNotification(
+          context,
+          title: trans("Payment Cancelled"),
+          description: trans("The payment has been cancelled"),
+        );
       }
-    );
+    });
     state.reloadState(showLoader: false);
   });
 }

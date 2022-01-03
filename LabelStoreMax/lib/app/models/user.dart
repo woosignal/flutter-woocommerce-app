@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -18,11 +18,11 @@ class User extends Storable {
   User.fromUserAuthResponse({this.userId, this.token});
 
   @override
-  toStorage() => {"token": this.token, "user_id": this.userId};
+  toStorage() => {"token": token, "user_id": userId};
 
   @override
   fromStorage(dynamic data) {
-    this.token = data['token'];
-    this.userId = data['user_id'];
+    token = data['token'];
+    userId = data['user_id'];
   }
 }

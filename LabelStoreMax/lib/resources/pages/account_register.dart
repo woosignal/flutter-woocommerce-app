@@ -1,13 +1,12 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
 
 import 'dart:math';
 
@@ -42,12 +41,13 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
   _AccountRegistrationPageState();
 
   bool _hasTappedRegister = false;
-  TextEditingController _tfEmailAddressController = TextEditingController(),
+  final TextEditingController _tfEmailAddressController =
+          TextEditingController(),
       _tfPasswordController = TextEditingController(),
       _tfFirstNameController = TextEditingController(),
       _tfLastNameController = TextEditingController();
 
-  WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
+  final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   void initState() {
@@ -56,16 +56,13 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          trans("Register")
-        ),
+        title: Text(trans("Register")),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
@@ -129,9 +126,10 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                     style: TextStyle(
-                        color: (Theme.of(context).brightness == Brightness.light)
-                            ? Colors.black45
-                            : Colors.white70),
+                        color:
+                            (Theme.of(context).brightness == Brightness.light)
+                                ? Colors.black45
+                                : Colors.white70),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -177,7 +175,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       });
 
       String username =
-          (email.replaceAll(new RegExp(r'([@.])'), "")) + _randomStr(4);
+          (email.replaceAll(RegExp(r'([@.])'), "")) + _randomStr(4);
 
       WPUserRegisterResponse wpUserRegisterResponse;
       try {
@@ -196,7 +194,8 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       } on InvalidNonceException catch (_) {
         showToastNotification(context,
             title: trans("Invalid details"),
-            description: trans("Something went wrong, please contact our store"),
+            description:
+                trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.DANGER);
       } on ExistingUserLoginException catch (_) {
         showToastNotification(context,
@@ -257,11 +256,9 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       subtitle: trans("View Terms and Conditions or Privacy policy"),
       actions: [
         dialogAction(context,
-            title: trans("Terms and Conditions"),
-            action: _viewTermsConditions),
+            title: trans("Terms and Conditions"), action: _viewTermsConditions),
         dialogAction(context,
-            title: trans("Privacy Policy"),
-            action: _viewPrivacyPolicy),
+            title: trans("Privacy Policy"), action: _viewPrivacyPolicy),
       ],
     );
   }

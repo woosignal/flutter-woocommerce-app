@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -25,14 +25,14 @@ class DefaultShippingState {
   DefaultShippingState({@required this.code, @required this.name});
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['code'] = code;
     data['name'] = name;
     return data;
   }
 
   DefaultShippingState.fromJson(Map<String, dynamic> json) {
-    this.code = json['code'];
-    this.name = json['name'];
+    code = json['code'];
+    name = json['name'];
   }
 }

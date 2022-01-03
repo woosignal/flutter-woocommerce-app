@@ -1,13 +1,12 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +19,6 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
-import 'package:flutter_app/resources/widgets/text_row_widget.dart';
 import 'package:flutter_app/resources/widgets/top_nav_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -79,13 +77,13 @@ class RefreshableScrollContainer extends StatelessWidget {
         controller: controller,
         onRefresh: onRefresh,
         onLoading: onLoading,
-        child: (products.length != null && products.length > 0
+        child: (products.length != null && products.isNotEmpty
             ? StaggeredGridView.countBuilder(
                 crossAxisCount: 2,
                 itemCount:
-                    (products.length + (bannerImages.length > 0 ? 2 : 0)),
+                    ((products.length + 1) + (bannerImages.isNotEmpty ? 1 : 0)),
                 itemBuilder: (BuildContext context, int index) {
-                  if (bannerImages.length > 0 && index == 0) {
+                  if (bannerImages.isNotEmpty && index == 0) {
                     return Container(
                       child: Swiper(
                         itemBuilder: (BuildContext context, int index) {
@@ -101,35 +99,39 @@ class RefreshableScrollContainer extends StatelessWidget {
                       height: bannerHeight,
                     );
                   }
-                  if (bannerImages.length > 0 && index == 1 ||
-                      bannerImages.length == 0 && index == 0) {
+                  if (bannerImages.isNotEmpty && index == 1 ||
+                      bannerImages.isEmpty && index == 0) {
                     return TopNavWidget(
                       onPressBrowseCategories: modalBottomSheetMenu,
                     );
                   }
                   int productIndex =
-                      (index - (bannerImages.length > 0 ? 2 : 0));
+                      ((index - 1) - (bannerImages.isNotEmpty ? 1 : 0));
 
                   return Container(
                     height: 200,
                     child: ProductItemContainer(
-                      index: productIndex,
+                      // index: productIndex,
                       product: products[productIndex],
                       onTap: onTap,
                     ),
                   );
                 },
                 staggeredTileBuilder: (int index) {
-                  if (index == 0) {
-                    return new StaggeredTile.fit(2);
+                  // When there's banners and we need to display the [TopNavWidget] widget
+                  if (bannerImages.isNotEmpty && index == 1) {
+                    return StaggeredTile.fit(2);
                   }
-                  if (bannerImages.length == 0) {
-                    return new StaggeredTile.fit(1);
+                  // When there's banners and we need to display the banner
+                  if (bannerImages.isNotEmpty && index == 0) {
+                    return StaggeredTile.fit(2);
                   }
-                  if (bannerImages.length > 0 && index == 0 || index == 1) {
-                    return new StaggeredTile.fit(2);
+                  // When there's no banners but we need to display the [TopNavWidget] widget
+                  if (bannerImages.isEmpty && index == 0) {
+                    return StaggeredTile.fit(2);
                   }
-                  return new StaggeredTile.fit(1);
+                  // display products
+                  return StaggeredTile.fit(1);
                 },
                 mainAxisSpacing: 4.0,
                 crossAxisSpacing: 4.0,
@@ -138,76 +140,87 @@ class RefreshableScrollContainer extends StatelessWidget {
       );
 }
 
-Widget wsCheckoutRow(BuildContext context,
-    {heading: String,
-    Widget leadImage,
-    String leadTitle,
-    void Function() action,
-    bool showBorderBottom}) {
-  return Flexible(
-    child: InkWell(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              child: Text(
-                heading,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              padding: EdgeInsets.only(bottom: 8),
-            ),
-            Flexible(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        leadImage,
-                        Expanded(
-                          child: Container(
-                            child: Text(
-                              leadTitle,
-                              style: Theme.of(context).textTheme.subtitle1,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: false,
-                            ),
-                            padding: EdgeInsets.only(left: 15),
-                            margin: EdgeInsets.only(right: 10),
-                          ),
-                        ),
-                      ],
-                    ),
+class CheckoutRowLine extends StatelessWidget {
+  const CheckoutRowLine(
+      {Key key,
+      @required this.heading,
+      @required this.leadImage,
+      @required this.leadTitle,
+      @required this.action,
+      this.showBorderBottom = true})
+      : super(key: key);
+
+  final String heading;
+  final String leadTitle;
+  final Widget leadImage;
+  final Function() action;
+  final bool showBorderBottom;
+
+  @override
+  Widget build(BuildContext context) => Flexible(
+        child: InkWell(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  child: Text(
+                    heading,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  Icon(Icons.arrow_forward_ios),
-                ],
-              ),
-            )
-          ],
-        ),
-        padding: EdgeInsets.all(8),
-        decoration: showBorderBottom == true
-            ? BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.black12, width: 1),
+                  padding: EdgeInsets.only(bottom: 8),
                 ),
-              )
-            : BoxDecoration(),
-      ),
-      onTap: action,
-      borderRadius: BorderRadius.circular(8),
-    ),
-    flex: 3,
-  );
+                Flexible(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            leadImage,
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                  leadTitle,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: false,
+                                ),
+                                padding: EdgeInsets.only(left: 15),
+                                margin: EdgeInsets.only(right: 10),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            padding: EdgeInsets.all(8),
+            decoration: showBorderBottom == true
+                ? BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.black12, width: 1),
+                    ),
+                  )
+                : BoxDecoration(),
+          ),
+          onTap: action,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        flex: 3,
+      );
 }
 
 class TextEditingRow extends StatelessWidget {
@@ -236,9 +249,10 @@ class TextEditingRow extends StatelessWidget {
               child: Padding(
                 child: Text(
                   heading,
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: ThemeColor.get(context).primaryContent
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: ThemeColor.get(context).primaryContent),
                 ),
                 padding: EdgeInsets.only(bottom: 2),
               ),
@@ -261,25 +275,30 @@ class TextEditingRow extends StatelessWidget {
       );
 }
 
-Widget widgetCheckoutMeta(BuildContext context, {String title, String amount}) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Flexible(
-        child: Container(
-          child: Text(title, style: Theme.of(context).textTheme.bodyText2),
-        ),
-        flex: 3,
-      ),
-      Flexible(
-        child: Container(
-          child: Text(amount, style: Theme.of(context).textTheme.bodyText1),
-        ),
-        flex: 3,
-      )
-    ],
-  );
+class CheckoutMetaLine extends StatelessWidget {
+  const CheckoutMetaLine({Key key, this.title, this.amount}) : super(key: key);
+
+  final String title, amount;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Flexible(
+            child: Container(
+              child: Text(title, style: Theme.of(context).textTheme.bodyText2),
+            ),
+            flex: 3,
+          ),
+          Flexible(
+            child: Container(
+              child: Text(amount, style: Theme.of(context).textTheme.bodyText1),
+            ),
+            flex: 3,
+          )
+        ],
+      );
 }
 
 List<BoxShadow> wsBoxShadow({double blurRadius}) => [
@@ -297,12 +316,10 @@ List<BoxShadow> wsBoxShadow({double blurRadius}) => [
 class ProductItemContainer extends StatelessWidget {
   const ProductItemContainer({
     Key key,
-    this.index,
     this.product,
     this.onTap,
   }) : super(key: key);
 
-  final int index;
   final Product product;
   final Function onTap;
 
@@ -327,7 +344,7 @@ class ProductItemContainer extends StatelessWidget {
                         width: double.infinity,
                       ),
                       CachedImageWidget(
-                        image: (product.images.length > 0
+                        image: (product.images.isNotEmpty
                             ? product.images.first.src
                             : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
                         fit: BoxFit.contain,
@@ -376,9 +393,10 @@ class ProductItemContainer extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 2, bottom: 2),
                   child: Text(
                     product.name,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 15
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontSize: 15),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -441,7 +459,6 @@ class ProductItemContainer extends StatelessWidget {
 
 wsModalBottom(BuildContext context,
     {String title, Widget bodyWidget, Widget extraWidget}) {
-
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -451,42 +468,43 @@ wsModalBottom(BuildContext context,
           height: double.infinity,
           width: double.infinity,
           color: Colors.transparent,
-          child: new Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: new BoxDecoration(
-                color: ThemeColor.get(context).background,
-                borderRadius: new BorderRadius.only(
-                  topLeft: const Radius.circular(10.0),
-                  topRight: const Radius.circular(10.0),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: ThemeColor.get(context).background,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0),
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.headline4,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Text(
-                      title,
-                      style: Theme.of(context).textTheme.headline4,
-                      textAlign: TextAlign.left,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      boxShadow:
+                          (Theme.of(context).brightness == Brightness.light)
+                              ? wsBoxShadow()
+                              : null,
+                      color: ThemeColor.get(context).background,
+                      borderRadius: BorderRadius.circular(8),
                     ),
+                    child: bodyWidget,
                   ),
-                  Expanded(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow:
-                        (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
-                        color: ThemeColor.get(context).background,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: bodyWidget,
-                    ),
-                  ),
-                  extraWidget ?? null
-                ].where((t) => t != null).toList(),
-              ),
+                ),
+                extraWidget
+              ].where((t) => t != null).toList(),
+            ),
           ),
         ),
       );
@@ -494,128 +512,92 @@ wsModalBottom(BuildContext context,
   );
 }
 
-FutureBuilder getTotalWidget() => FutureBuilder<String>(
-      future: Cart.getInstance.getTotal(withFormat: true),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return AppLoaderWidget();
-          default:
-            if (snapshot.hasError)
-              return Text("");
-            else
-              return new Padding(
-                child: TextRowWidget(
-                  title: trans("Total"),
-                  text: snapshot.data,
-                ),
-                padding: EdgeInsets.only(bottom: 15, top: 15),
-              );
-        }
-      },
-    );
+class CheckoutTotal extends StatelessWidget {
+  const CheckoutTotal({Key key, this.title, this.taxRate}) : super(key: key);
 
-FutureBuilder wsCheckoutTotalWidgetFB({String title, TaxRate taxRate}) {
-  return FutureBuilder<String>(
-    future:
-        CheckoutSession.getInstance.total(withFormat: true, taxRate: taxRate),
-    builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.waiting:
-          return AppLoaderWidget();
-        default:
-          if (snapshot.hasError)
-            return Text("");
-          else
-            return new Padding(
-              child: widgetCheckoutMeta(context,
-                  title: title, amount: snapshot.data),
-              padding: EdgeInsets.only(bottom: 0, top: 15),
-            );
-      }
-    },
-  );
+  final String title;
+  final TaxRate taxRate;
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<String>(
+        future: CheckoutSession.getInstance
+            .total(withFormat: true, taxRate: taxRate),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return AppLoaderWidget();
+            default:
+              if (snapshot.hasError) {
+                return Text("");
+              } else {
+                return Padding(
+                  child: CheckoutMetaLine(title: title, amount: snapshot.data),
+                  padding: EdgeInsets.only(bottom: 0, top: 15),
+                );
+              }
+          }
+        },
+      );
 }
 
-FutureBuilder wsCheckoutTaxAmountWidgetFB({TaxRate taxRate}) {
-  return FutureBuilder<String>(
-    future: Cart.getInstance.taxAmount(taxRate),
-    builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.waiting:
-          return AppLoaderWidget();
-        default:
-          if (snapshot.hasError)
-            return Text("");
-          else
-            return (snapshot.data == "0"
-                ? Container()
-                : Padding(
-                    child: widgetCheckoutMeta(
-                      context,
-                      title: trans("Tax"),
-                      amount: formatStringCurrency(total: snapshot.data),
-                    ),
-                    padding: EdgeInsets.only(bottom: 0, top: 0),
-                  ));
-      }
-    },
-  );
+class CheckoutTaxTotal extends StatelessWidget {
+  const CheckoutTaxTotal({Key key, this.taxRate}) : super(key: key);
+
+  final TaxRate taxRate;
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<String>(
+        future: Cart.getInstance.taxAmount(taxRate),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return AppLoaderWidget();
+            default:
+              if (snapshot.hasError) {
+                return Text("");
+              } else {
+                return (snapshot.data == "0"
+                    ? Container()
+                    : Padding(
+                        child: CheckoutMetaLine(
+                          title: trans("Tax"),
+                          amount: formatStringCurrency(total: snapshot.data),
+                        ),
+                        padding: EdgeInsets.only(bottom: 0, top: 0),
+                      ));
+              }
+          }
+        },
+      );
 }
 
-FutureBuilder wsCheckoutSubtotalWidgetFB({String title}) {
-  return FutureBuilder<String>(
-    future: Cart.getInstance.getSubtotal(withFormat: true),
-    builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.waiting:
-          return AppLoaderWidget();
-        default:
-          if (snapshot.hasError)
-            return Text("");
-          else
-            return new Padding(
-              child: widgetCheckoutMeta(
-                context,
-                title: title,
-                amount: snapshot.data,
-              ),
-              padding: EdgeInsets.only(bottom: 0, top: 0),
-            );
-      }
-    },
-  );
-}
+class CheckoutSubtotal extends StatelessWidget {
+  const CheckoutSubtotal({Key key, this.title}) : super(key: key);
 
-FutureBuilder wsWidgetCartItemsFB(
-    {void Function() actionIncrementQuantity,
-    void Function() actionDecrementQuantity,
-    void Function() actionRemoveItem}) {
-  return FutureBuilder<List<CartLineItem>>(
-    future: Cart.getInstance.getCart(),
-    builder:
-        (BuildContext context, AsyncSnapshot<List<CartLineItem>> snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.waiting:
-          return AppLoaderWidget();
-        default:
-          if (snapshot.hasError)
-            return Text("");
-          else
-            return ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  CartLineItem cartLineItem = snapshot.data[index];
-                  return CartItemContainer(
-                      cartLineItem: cartLineItem,
-                      actionIncrementQuantity: actionIncrementQuantity,
-                      actionDecrementQuantity: actionDecrementQuantity,
-                      actionRemoveItem: actionRemoveItem);
-                });
-      }
-    },
-  );
+  final String title;
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<String>(
+        future: Cart.getInstance.getSubtotal(withFormat: true),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return AppLoaderWidget();
+            default:
+              if (snapshot.hasError) {
+                return Text("");
+              } else {
+                return Padding(
+                  child: CheckoutMetaLine(
+                    title: title,
+                    amount: snapshot.data,
+                  ),
+                  padding: EdgeInsets.only(bottom: 0, top: 0),
+                );
+              }
+          }
+        },
+      );
 }
 
 class CartItemContainer extends StatelessWidget {
@@ -721,15 +703,15 @@ class CartItemContainer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.add_circle_outline),
-                      onPressed: actionIncrementQuantity,
+                      icon: Icon(Icons.remove_circle_outline),
+                      onPressed: actionDecrementQuantity,
                       highlightColor: Colors.transparent,
                     ),
                     Text(cartLineItem.quantity.toString(),
                         style: Theme.of(context).textTheme.headline6),
                     IconButton(
-                      icon: Icon(Icons.remove_circle_outline),
-                      onPressed: actionDecrementQuantity,
+                      icon: Icon(Icons.add_circle_outline),
+                      onPressed: actionIncrementQuantity,
                       highlightColor: Colors.transparent,
                     ),
                   ],
@@ -768,7 +750,7 @@ class StoreLogo extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         decoration: BoxDecoration(
             color: showBgWhite ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(3)),
+            borderRadius: BorderRadius.circular(5)),
         child: CachedImageWidget(
           image: AppHelper.instance.appConfig.appLogo,
           height: height,

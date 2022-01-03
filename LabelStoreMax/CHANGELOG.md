@@ -1,3 +1,15 @@
+## [5.6.0] - 2022-01-03
+
+* Fix bug with banner in Mello theme
+* Support new languages - Dutch (nl) and Turkish (tr)
+* Refactor as per dart analysis
+* Ability to add coupons
+* Wishlist
+* New theme "Compo"
+* Analysis options added
+* Code cleanup
+* Pubspec.yaml dependency updates
+
 ## [5.5.2] - 2021-12-18
 
 * Fix continuous loading on categories screen

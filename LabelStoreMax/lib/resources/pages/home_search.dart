@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -26,7 +26,7 @@ class HomeSearchPage extends StatefulWidget {
 class _HomeSearchPageState extends State<HomeSearchPage> {
   _HomeSearchPageState();
 
-  TextEditingController _txtSearchController = TextEditingController();
+  final TextEditingController _txtSearchController = TextEditingController();
 
   @override
   void initState() {
@@ -37,7 +37,8 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     Navigator.pushNamed(context, "/product-search",
             arguments: _txtSearchController.text)
         .then((search) {
-      if (AppHelper.instance.appConfig.theme != "notic") {
+      if (["notic", "compo"].contains(AppHelper.instance.appConfig.theme) ==
+          false) {
         Navigator.pop(context);
       }
     });

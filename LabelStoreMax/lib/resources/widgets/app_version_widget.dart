@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -29,8 +29,7 @@ class AppVersionWidget extends StatelessWidget {
           case ConnectionState.done:
             if (snapshot.hasError) return Text("");
             return Padding(
-              child: Text(
-                  "${trans("Version")}: ${snapshot.data.version}",
+              child: Text("${trans("Version")}: ${snapshot.data.version}",
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2

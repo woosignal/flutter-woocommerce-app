@@ -1,17 +1,17 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/controllers/customer_orders_loader_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
@@ -33,15 +33,14 @@ class AccountDetailPage extends StatefulWidget {
 
 class _AccountDetailPageState extends State<AccountDetailPage>
     with SingleTickerProviderStateMixin {
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  bool _shouldStopRequests = false,
-      waitForNextRequest = false,
-      _isLoading = true,
-      _isLoadingOrders = true;
+  final CustomerOrdersLoaderController _customerOrdersLoaderController =
+      CustomerOrdersLoaderController();
 
-  int _page = 1, _currentTabIndex = 0;
-  List<Order> _orders = [];
+  bool _shouldStopRequests = false, _isLoading = true, _isLoadingOrders = true;
+
+  int _currentTabIndex = 0;
   WCCustomerInfoResponse _wcCustomerInfoResponse;
   Widget _activeBody;
 
@@ -51,20 +50,18 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   @override
   void initState() {
     super.initState();
-    _page = 1;
-    _orders = [];
     _tabs = [
-      new Tab(text: ""),
-      new Tab(text: ""),
+      Tab(text: ""),
+      Tab(text: ""),
     ];
     _tabController = TabController(vsync: this, length: _tabs.length);
     _activeBody = AppLoaderWidget();
-    this.init();
+    init();
   }
 
   init() async {
     await _fetchWpUserData();
-    await _fetchOrders();
+    await fetchOrders();
   }
 
   _fetchWpUserData() async {
@@ -98,22 +95,22 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   @override
   Widget build(BuildContext context) {
     _tabs = [
-      new Tab(text: trans("Orders")),
-      new Tab(text: trans("Settings")),
+      Tab(text: trans("Orders")),
+      Tab(text: trans("Settings")),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        leading: widget.showLeadingBackButton ? Container(
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pop(context),
-          ),
-          margin: EdgeInsets.only(left: 0),
-        ) : Container(),
-        title: Text(
-          trans("Account")
-        ),
+        leading: widget.showLeadingBackButton
+            ? Container(
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                margin: EdgeInsets.only(left: 0),
+              )
+            : Container(),
+        title: Text(trans("Account")),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
@@ -191,7 +188,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                             indicatorSize: TabBarIndicatorSize.tab,
                             labelColor: Colors.white,
                             unselectedLabelColor: Colors.black87,
-                            indicator: new BubbleTabIndicator(
+                            indicator: BubbleTabIndicator(
                               indicatorHeight: 25.0,
                               indicatorColor: Colors.black87,
                               tabBarIndicatorSize: TabBarIndicatorSize.tab,
@@ -204,7 +201,10 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow: (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                      boxShadow:
+                          (Theme.of(context).brightness == Brightness.light)
+                              ? wsBoxShadow()
+                              : null,
                       color: ThemeColor.get(context).backgroundContainer,
                     ),
                   ),
@@ -275,38 +275,34 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     );
   }
 
-  _fetchOrders() async {
+  fetchOrders() async {
     String userId = await readUserId();
-
-    if (userId == null || _shouldStopRequests == true) {
+    if (userId == null) {
       setState(() {
         _isLoadingOrders = false;
         _activeBody = _widgetOrders();
       });
       return;
     }
-
-    List<Order> orders = await appWooSignal((api) =>
-        api.getOrders(customer: int.parse(userId), page: _page, perPage: 50));
-
-    if (orders.length <= 0) {
-      setState(() {
-        _isLoadingOrders = false;
-        _shouldStopRequests = true;
-        _activeBody = _widgetOrders();
-      });
-      return;
-    }
-
-    setState(() {
-      _page += 1;
-      _orders.addAll(orders);
-      _isLoadingOrders = false;
-      _activeBody = _widgetOrders();
-    });
+    await _customerOrdersLoaderController.loadOrders(
+        hasResults: (result) {
+          if (result == false) {
+            _isLoadingOrders = false;
+            _shouldStopRequests = true;
+            _activeBody = _widgetOrders();
+            return false;
+          }
+          return true;
+        },
+        didFinish: () => setState(() {
+              _isLoadingOrders = false;
+              _activeBody = _widgetOrders();
+            }),
+        userId: userId);
   }
 
   Widget _widgetOrders() {
+    List<Order> orders = _customerOrdersLoaderController.getResults();
     return _isLoadingOrders
         ? AppLoaderWidget()
         : SmartRefresher(
@@ -335,9 +331,10 @@ class _AccountDetailPageState extends State<AccountDetailPage>
             controller: _refreshController,
             onRefresh: _onRefresh,
             onLoading: _onLoading,
-            child: (_orders.length > 0
+            child: (orders.isNotEmpty
                 ? ListView.builder(
                     itemBuilder: (cxt, i) {
+                      Order order = orders[i];
                       return Card(
                         child: ListTile(
                           contentPadding: EdgeInsets.only(
@@ -356,12 +353,12 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  "#${_orders[i].id.toString()}",
+                                  "#${order.id.toString()}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  _orders[i].status.capitalize(),
+                                  order.status.capitalize(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -379,8 +376,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      formatStringCurrency(
-                                          total: _orders[i].total),
+                                      formatStringCurrency(total: order.total),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2
@@ -389,7 +385,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
-                                      _orders[i].lineItems.length.toString() +
+                                      order.lineItems.length.toString() +
                                           " " +
                                           trans("items"),
                                       style: Theme.of(context)
@@ -403,15 +399,15 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                 ),
                                 Text(
                                   dateFormatted(
-                                        date: _orders[i].dateCreated,
+                                        date: order.dateCreated,
                                         formatType:
-                                            formatForDateTime(FormatType.Date),
+                                            formatForDateTime(FormatType.date),
                                       ) +
                                       "\n" +
                                       dateFormatted(
-                                        date: _orders[i].dateCreated,
+                                        date: order.dateCreated,
                                         formatType:
-                                            formatForDateTime(FormatType.Time),
+                                            formatForDateTime(FormatType.time),
                                       ),
                                   textAlign: TextAlign.right,
                                   style: Theme.of(context)
@@ -434,7 +430,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                         ),
                       );
                     },
-                    itemCount: _orders.length,
+                    itemCount: orders.length,
                   )
                 : Center(
                     child: Column(
@@ -456,16 +452,15 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   }
 
   void _onRefresh() async {
-    _orders = [];
-    _page = 1;
+    _customerOrdersLoaderController.clear();
     _shouldStopRequests = false;
-    waitForNextRequest = false;
-    await _fetchOrders();
+
+    await fetchOrders();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    await _fetchOrders();
+    await fetchOrders();
 
     if (mounted) {
       setState(() {});
@@ -480,6 +475,6 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   _viewProfileDetail(int i) => Navigator.pushNamed(
         context,
         "/account-order-detail",
-        arguments: _orders[i].id,
+        arguments: _customerOrdersLoaderController.getResults()[i].id,
       );
 }

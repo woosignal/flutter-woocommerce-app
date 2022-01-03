@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -40,7 +40,7 @@ class SwitchAddressTab extends StatelessWidget {
         child: Container(
           width: double.infinity,
           child: Text(
-            this.title,
+            title,
             style: Theme.of(context).textTheme.subtitle1.copyWith(
                   color: isActive ? Colors.white : Colors.black,
                 ),

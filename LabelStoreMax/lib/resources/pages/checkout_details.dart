@@ -1,13 +1,12 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/billing_details.dart';
@@ -37,7 +36,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
   int activeTabIndex = 0;
 
   // TEXT CONTROLLERS
-  TextEditingController
+  final TextEditingController
       // billing
       _txtBillingFirstName = TextEditingController(),
       _txtBillingLastName = TextEditingController(),
@@ -168,7 +167,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       ),
       body: SafeAreaWidget(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,8 +193,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       SwitchAddressTab(
-                                          title:
-                                              trans("Billing Details"),
+                                          title: trans("Billing Details"),
                                           currentTabIndex: activeTabIndex,
                                           type: "billing",
                                           onTapAction: () => setState(() {
@@ -227,7 +225,9 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                           color: ThemeColor.get(context).backgroundContainer,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow:
-                          (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                              (Theme.of(context).brightness == Brightness.light)
+                                  ? wsBoxShadow()
+                                  : null,
                         ),
                         padding: EdgeInsets.only(left: 8, right: 8, top: 8),
                         child: (activeTab ?? tabBillingDetails()),
@@ -315,7 +315,8 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         showToastNotification(
           context,
           title: trans("Oops"),
-          description: trans("Invalid shipping address, please check your shipping details"),
+          description: trans(
+              "Invalid shipping address, please check your shipping details"),
           style: ToastNotificationStyleType.WARNING,
         );
         return;
@@ -324,7 +325,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       // Email validation
       String billingEmail = _txtBillingEmailAddress.text;
       String shippingEmail = _txtShippingEmailAddress.text;
-      if (billingEmail.length > 0 && !validate.isEmail(billingEmail)) {
+      if (billingEmail.isNotEmpty && !validate.isEmail(billingEmail)) {
         showToastNotification(
           context,
           title: trans("Oops"),
@@ -334,7 +335,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         return;
       }
 
-      if (shippingEmail.length > 0 && !validate.isEmail(shippingEmail)) {
+      if (shippingEmail.isNotEmpty && !validate.isEmail(shippingEmail)) {
         showToastNotification(
           context,
           title: trans("Oops"),
@@ -380,7 +381,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
           city: "",
           postalCode: "",
           emailAddress: "",
-          customerCountry: new CustomerCountry());
+          customerCountry: CustomerCountry());
     }
     setState(() {});
   }
@@ -393,7 +394,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       @required String postalCode,
       @required String emailAddress,
       @required CustomerCountry customerCountry}) {
-    CustomerAddress customerShippingAddress = new CustomerAddress();
+    CustomerAddress customerShippingAddress = CustomerAddress();
     customerShippingAddress.firstName = firstName;
     customerShippingAddress.lastName = lastName;
     customerShippingAddress.addressLine = addressLine;

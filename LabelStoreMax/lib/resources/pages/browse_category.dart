@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/controllers/product_category_search_loader_controller.dart';
 import 'package:flutter_app/app/controllers/browse_category_controller.dart';
 import 'package:flutter_app/bootstrap/enums/sort_enums.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -21,7 +22,7 @@ import 'package:nylo_support/widgets/ny_state.dart';
 import 'package:nylo_support/widgets/ny_stateful_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/product_category.dart';
-import 'package:woosignal/models/response/products.dart' as WS;
+import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class BrowseCategoryPage extends NyStatefulWidget {
   final BrowseCategoryController controller = BrowseCategoryController();
@@ -35,51 +36,20 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
   ProductCategory productCategory;
   _BrowseCategoryPageState();
 
-  List<WS.Product> _products = [];
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  final ProductCategorySearchLoaderController
+      _productCategorySearchLoaderController =
+      ProductCategorySearchLoaderController();
 
-  int _page = 1;
-  bool _shouldStopRequests = false,
-      waitForNextRequest = false,
-      _isLoading = true;
+  bool _shouldStopRequests = false;
+  bool _isLoading = true;
 
   @override
   widgetDidLoad() async {
     super.widgetDidLoad();
-    this.productCategory = widget.controller.data();
-    await _fetchMoreProducts();
-  }
-
-  _fetchMoreProducts() async {
-    if (waitForNextRequest || _shouldStopRequests) {
-      return;
-    }
-    waitForNextRequest = true;
-    List<WS.Product> products = await appWooSignal(
-      (api) => api.getProducts(
-          perPage: 50,
-          category: productCategory.id.toString(),
-          page: _page,
-          status: "publish",
-          stockStatus: "instock"),
-    );
-
-    if (products.length == 0) {
-      _shouldStopRequests = true;
-      _isLoading = false;
-      setState(() {});
-      return;
-    } else {
-      _products.addAll(products);
-    }
-
-    waitForNextRequest = false;
-    _page = _page + 1;
-
-    setState(() {
-      _isLoading = false;
-    });
+    productCategory = widget.controller.data();
+    await fetchProducts();
   }
 
   @override
@@ -95,8 +65,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(trans("Browse"),
-                style: Theme.of(context).textTheme.subtitle1),
+            Text(trans("Browse"), style: Theme.of(context).textTheme.subtitle1),
             Text(parseHtmlString(productCategory.name))
           ],
         ),
@@ -117,23 +86,22 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
                 refreshController: _refreshController,
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
-                products: _products,
+                products: _productCategorySearchLoaderController.getResults(),
                 onTap: _showProduct),
       ),
     );
   }
 
   void _onRefresh() async {
-    _products = [];
-    _page = 1;
+    _productCategorySearchLoaderController.clear();
     _shouldStopRequests = false;
-    waitForNextRequest = false;
-    await _fetchMoreProducts();
+
+    await fetchProducts();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    await _fetchMoreProducts();
+    await fetchProducts();
 
     if (mounted) {
       setState(() {});
@@ -146,26 +114,28 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
   }
 
   _sortProducts({@required SortByType by}) {
+    List<ws_product.Product> products =
+        _productCategorySearchLoaderController.getResults();
     switch (by) {
-      case SortByType.LowToHigh:
-        _products.sort(
+      case SortByType.lowToHigh:
+        products.sort(
           (product1, product2) => (parseWcPrice(product1.price))
               .compareTo((parseWcPrice(product2.price))),
         );
         break;
-      case SortByType.HighToLow:
-        _products.sort(
+      case SortByType.highToLow:
+        products.sort(
           (product1, product2) => (parseWcPrice(product2.price))
               .compareTo((parseWcPrice(product1.price))),
         );
         break;
-      case SortByType.NameAZ:
-        _products.sort(
+      case SortByType.nameAZ:
+        products.sort(
           (product1, product2) => product1.name.compareTo(product2.name),
         );
         break;
-      case SortByType.NameZA:
-        _products.sort(
+      case SortByType.nameZA:
+        products.sort(
           (product1, product2) => product2.name.compareTo(product1.name),
         );
         break;
@@ -183,28 +153,28 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
         children: <Widget>[
           LinkButton(
             title: trans("Sort: Low to high"),
-            action: () => _sortProducts(by: SortByType.LowToHigh),
+            action: () => _sortProducts(by: SortByType.lowToHigh),
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
             title: trans("Sort: High to low"),
-            action: () => _sortProducts(by: SortByType.HighToLow),
+            action: () => _sortProducts(by: SortByType.highToLow),
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
             title: trans("Sort: Name A-Z"),
-            action: () => _sortProducts(by: SortByType.NameAZ),
+            action: () => _sortProducts(by: SortByType.nameAZ),
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
             title: trans("Sort: Name Z-A"),
-            action: () => _sortProducts(by: SortByType.NameZA),
+            action: () => _sortProducts(by: SortByType.nameZA),
           ),
           Divider(
             height: 0,
@@ -215,11 +185,28 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
     );
   }
 
-  _dismissModal() {
-    Navigator.pop(context);
+  Future fetchProducts() async {
+    await _productCategorySearchLoaderController.loadProducts(
+      hasResults: (result) {
+        if (result == false) {
+          setState(() {
+            _isLoading = false;
+            _shouldStopRequests = true;
+          });
+          return false;
+        }
+        return true;
+      },
+      didFinish: () => setState(() {
+        _isLoading = false;
+      }),
+      productCategory: productCategory,
+    );
   }
 
-  _showProduct(WS.Product product) {
+  _dismissModal() => Navigator.pop(context);
+
+  _showProduct(ws_product.Product product) {
     Navigator.pushNamed(context, "/product-detail", arguments: product);
   }
 }

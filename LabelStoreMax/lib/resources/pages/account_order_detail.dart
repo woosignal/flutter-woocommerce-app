@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -43,7 +43,6 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         leading: Container(
@@ -53,9 +52,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
           ),
           margin: EdgeInsets.only(left: 0),
         ),
-        title: Text(
-          "${trans("Order").capitalize()} #${_orderId.toString()}"
-        ),
+        title: Text("${trans("Order").capitalize()} #${_orderId.toString()}"),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
@@ -66,10 +63,13 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("${trans("Date Ordered").capitalize()}: " +
-                      dateFormatted(
+                  Text(
+                    "${trans("Date Ordered").capitalize()}: " +
+                        dateFormatted(
                           date: _order.dateCreated,
-                          formatType: formatForDateTime(FormatType.Date))),
+                          formatType: formatForDateTime(FormatType.date),
+                        ),
+                  ),
                   Container(
                     margin: EdgeInsets.only(top: 10, bottom: 10),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -78,8 +78,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Flexible(
-                          child: Text(
-                              "${trans("Ships to").capitalize()}:"),
+                          child: Text("${trans("Ships to").capitalize()}:"),
                         ),
                         Flexible(
                           child: Text(
@@ -106,7 +105,9 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       boxShadow:
-                      (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                          (Theme.of(context).brightness == Brightness.light)
+                              ? wsBoxShadow()
+                              : null,
                       color: (Theme.of(context).brightness == Brightness.light)
                           ? Colors.white
                           : Color(0xFF2C2C2C),

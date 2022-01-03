@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -40,11 +40,12 @@ class _CartPageState extends State<CartPage> {
   void initState() {
     super.initState();
     _cartCheck();
+    CheckoutSession.getInstance.coupon = null;
   }
 
   _cartCheck() async {
     List<CartLineItem> cart = await Cart.getInstance.getCart();
-    if (cart.length == 0) {
+    if (cart.isEmpty) {
       setState(() {
         _isLoading = false;
         _isCartEmpty = true;
@@ -56,7 +57,7 @@ class _CartPageState extends State<CartPage> {
 
     List<dynamic> cartRes =
         await appWooSignal((api) => api.cartCheck(cartJSON));
-    if (cartRes.length == 0) {
+    if (cartRes.isEmpty) {
       Cart.getInstance.saveCartToPref(cartLineItems: []);
       setState(() {
         _isCartEmpty = true;
@@ -65,7 +66,7 @@ class _CartPageState extends State<CartPage> {
       return;
     }
     _cartLines = cartRes.map((json) => CartLineItem.fromJson(json)).toList();
-    if (_cartLines.length > 0) {
+    if (_cartLines.isNotEmpty) {
       Cart.getInstance.saveCartToPref(cartLineItems: _cartLines);
     }
     setState(() {
@@ -80,7 +81,7 @@ class _CartPageState extends State<CartPage> {
       return;
     }
 
-    if (cartLineItems.length == 0) {
+    if (cartLineItems.isEmpty) {
       showToastNotification(
         context,
         title: trans("Cart"),
@@ -162,7 +163,7 @@ class _CartPageState extends State<CartPage> {
       style: ToastNotificationStyleType.WARNING,
       icon: Icons.remove_shopping_cart,
     );
-    if (_cartLines.length == 0) {
+    if (_cartLines.isEmpty) {
       _isCartEmpty = true;
     }
     setState(() {});
@@ -272,16 +273,17 @@ class _CartPageState extends State<CartPage> {
                   case ConnectionState.waiting:
                     return Text("");
                   default:
-                    if (snapshot.hasError)
+                    if (snapshot.hasError) {
                       return Text("");
-                    else
-                      return new Padding(
+                    } else {
+                      return Padding(
                         child: TextRowWidget(
                           title: trans("Total"),
                           text: (_isLoading ? "" : snapshot.data),
                         ),
                         padding: EdgeInsets.only(bottom: 15, top: 15),
                       );
+                    }
                 }
               },
             ),

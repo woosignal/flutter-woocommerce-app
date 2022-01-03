@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -70,9 +70,15 @@ class Cart {
   Future<String> getTotal({bool withFormat = false}) async {
     List<CartLineItem> cartLineItems = await getCart();
     double total = 0;
-    cartLineItems.forEach((cartItem) {
+    for (var cartItem in cartLineItems) {
       total += (parseWcPrice(cartItem.total) * cartItem.quantity);
-    });
+    }
+
+    CheckoutSession checkoutSession = CheckoutSession.getInstance;
+    if (checkoutSession.coupon != null) {
+      String discountAmount = await Cart.getInstance.couponDiscountAmount();
+      total = total - double.parse(discountAmount);
+    }
 
     if (withFormat != null && withFormat == true) {
       return formatDoubleCurrency(total: total);
@@ -83,9 +89,9 @@ class Cart {
   Future<String> getSubtotal({bool withFormat = false}) async {
     List<CartLineItem> cartLineItems = await getCart();
     double subtotal = 0;
-    cartLineItems.forEach((cartItem) {
+    for (var cartItem in cartLineItems) {
       subtotal += (parseWcPrice(cartItem.subtotal) * cartItem.quantity);
-    });
+    }
     if (withFormat != null && withFormat == true) {
       return formatDoubleCurrency(total: subtotal);
     }
@@ -97,7 +103,7 @@ class Cart {
       @required int incrementQuantity}) async {
     List<CartLineItem> cartLineItems = await getCart();
     List<CartLineItem> tmpCartItem = [];
-    cartLineItems.forEach((cartItem) {
+    for (var cartItem in cartLineItems) {
       if (cartItem.variationId == cartLineItem.variationId &&
           cartItem.productId == cartLineItem.productId) {
         if ((cartItem.quantity + incrementQuantity) > 0) {
@@ -105,7 +111,7 @@ class Cart {
         }
       }
       tmpCartItem.add(cartItem);
-    });
+    }
     await saveCartToPref(cartLineItems: tmpCartItem);
   }
 
@@ -145,10 +151,14 @@ class Cart {
     double cartSubtotal = 0;
 
     if (AppHelper.instance.appConfig.productPricesIncludeTax == 1 &&
-        taxableCartLines.length > 0) {
+        taxableCartLines.isNotEmpty) {
       cartSubtotal = taxableCartLines
           .map<double>((m) => parseWcPrice(m.subtotal) * m.quantity)
           .reduce((a, b) => a + b);
+      if (CheckoutSession.getInstance.coupon != null) {
+        String discountAmount = await Cart.getInstance.couponDiscountAmount();
+        cartSubtotal = cartSubtotal - double.parse(discountAmount);
+      }
     }
 
     subtotal = cartSubtotal;
@@ -188,5 +198,87 @@ class Cart {
       total += ((parseWcPrice(taxRate.rate) * shippingTotal) / 100);
     }
     return (total).toStringAsFixed(2);
+  }
+
+  Future<String> couponDiscountAmount() async {
+    CheckoutSession checkoutSession = CheckoutSession.getInstance;
+
+    if (checkoutSession.coupon == null) {
+      return "0";
+    }
+
+    List<CartLineItem> cartLineItems = await getCart();
+    List<CartLineItem> eligibleCartLineItems = [];
+    double subtotal = 0;
+    for (var cartItem in cartLineItems) {
+      bool canContinue = true;
+
+      if (checkoutSession.coupon.excludedProductCategories.isNotEmpty) {
+        for (var excludedProductCategory
+            in checkoutSession.coupon.excludedProductCategories) {
+          if (cartItem.categories
+              .map((category) => category.id)
+              .contains(excludedProductCategory)) {
+            canContinue = false;
+            break;
+          }
+        }
+      }
+
+      if (checkoutSession.coupon.productCategories.isNotEmpty) {
+        for (var productCategories
+            in checkoutSession.coupon.productCategories) {
+          if (cartItem.categories
+                  .map((category) => category.id)
+                  .contains(productCategories) ==
+              false) {
+            canContinue = false;
+            break;
+          }
+        }
+      }
+
+      if (canContinue == false) {
+        continue;
+      }
+
+      if (checkoutSession.coupon.excludeSaleItems == true &&
+          cartItem.onSale == true) {
+        continue;
+      }
+
+      if (checkoutSession.coupon.excludedProductIds.isNotEmpty &&
+          checkoutSession.coupon.excludedProductIds
+              .contains(cartItem.productId)) {
+        continue;
+      }
+
+      if (checkoutSession.coupon.productIds.isNotEmpty &&
+          !checkoutSession.coupon.productIds.contains(cartItem.productId)) {
+        continue;
+      }
+      subtotal += (parseWcPrice(cartItem.subtotal) * cartItem.quantity);
+      eligibleCartLineItems.add(cartItem);
+    }
+
+    String discountType = checkoutSession.coupon.discountType;
+    String amount = checkoutSession.coupon.amount;
+
+    // Percentage
+    if (discountType == 'percent') {
+      return ((subtotal * double.parse(amount)) / 100).toStringAsFixed(2);
+    }
+
+    // Fixed cart
+    if (discountType == 'fixed_cart') {
+      return (double.parse(amount)).toStringAsFixed(2);
+    }
+
+    // Fixed product
+    if (discountType == 'fixed_product') {
+      return (eligibleCartLineItems.length * double.parse(amount))
+          .toStringAsFixed(2);
+    }
+    return "0";
   }
 }

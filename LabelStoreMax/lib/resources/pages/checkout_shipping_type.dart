@@ -1,13 +1,12 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
@@ -36,7 +35,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
   _CheckoutShippingTypePageState();
 
   bool _isShippingSupported = true, _isLoading = true;
-  List<Map<String, dynamic>> _wsShippingOptions = [];
+  final List<Map<String, dynamic>> _wsShippingOptions = [];
   WSShipping _shipping;
 
   @override
@@ -105,7 +104,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
           .firstWhere((element) => element.parentId == 0, orElse: () => null);
       await _handleShippingZones(noZones);
     }
-    if (_wsShippingOptions.length == 0) {
+    if (_wsShippingOptions.isEmpty) {
       _isShippingSupported = false;
     }
 
@@ -237,15 +236,13 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
-          trans("Shipping Methods")
-        ),
+        title: Text(trans("Shipping Methods")),
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
       body: SafeAreaWidget(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: LayoutBuilder(
             builder: (context, constraints) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,9 +250,12 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
               children: <Widget>[
                 Padding(
                   child: Center(
-                    child: Image.asset(getImageAsset('shipping_icon.png'),
+                    child: Image.asset(
+                      getImageAsset('shipping_icon.png'),
                       height: 100,
-                      color: (Theme.of(context).brightness == Brightness.light) ? null : Colors.white,
+                      color: (Theme.of(context).brightness == Brightness.light)
+                          ? null
+                          : Colors.white,
                       fit: BoxFit.fitHeight,
                     ),
                   ),
@@ -325,8 +325,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                                       "object"]
                                                                   is FreeShipping
                                                               ? TextSpan(
-                                                                  text:
-                                                                      trans("Free postage"),
+                                                                  text: trans(
+                                                                      "Free postage"),
                                                                 )
                                                               : TextSpan(
                                                                   text:
@@ -376,7 +376,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                     ),
                                   )
                                 : Text(
-                                    trans("Shipping is not supported for your country, sorry"),
+                                    trans(
+                                        "Shipping is not supported for your country, sorry"),
                                     style:
                                         Theme.of(context).textTheme.headline6,
                                     textAlign: TextAlign.center,
@@ -391,7 +392,9 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                       color: ThemeColor.get(context).backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
-                      (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                          (Theme.of(context).brightness == Brightness.light)
+                              ? wsBoxShadow()
+                              : null,
                     ),
                     padding: EdgeInsets.all(8),
                   ),

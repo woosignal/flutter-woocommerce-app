@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
+import 'package:flutter_app/resources/widgets/compo_theme_widget.dart';
 import 'package:flutter_app/resources/widgets/mello_theme_widget.dart';
 import 'package:flutter_app/resources/widgets/notic_theme_widget.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -33,6 +34,9 @@ class _HomePageState extends State<HomePage> {
         MelloThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
     if (AppHelper.instance.appConfig.theme == "notic") {
       theme = NoticThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
+    }
+    if (AppHelper.instance.appConfig.theme == "compo") {
+      theme = CompoThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
     }
     return theme;
   }

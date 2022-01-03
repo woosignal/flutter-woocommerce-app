@@ -1,13 +1,12 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
@@ -31,18 +30,19 @@ class HomeDrawerWidget extends StatefulWidget {
 }
 
 class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
-
   Map<String, dynamic> _socialLinks = {};
-
+  String _themeType;
 
   @override
   void initState() {
     super.initState();
     _socialLinks = AppHelper.instance.appConfig.socialLinks ?? {};
+    _themeType = AppHelper.instance.appConfig.theme;
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.wooSignalApp.wishlistEnabled);
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(
@@ -56,29 +56,55 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 color: ThemeColor.get(context).background,
               ),
             ),
-            Padding(
-              child: Text(
-                trans("Menu"),
-                style: Theme.of(context).textTheme.subtitle2,
+            if (["compo"].contains(_themeType) == false)
+              Column(
+                children: [
+                  Padding(
+                    child: Text(
+                      trans("Menu"),
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                  ),
+                  if (widget.wooSignalApp.wpLoginEnabled == 1)
+                    ListTile(
+                      title: Text(
+                        trans("Profile"),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(fontSize: 16),
+                      ),
+                      leading: Icon(Icons.account_circle),
+                      onTap: _actionProfile,
+                    ),
+                  if (widget.wooSignalApp.wishlistEnabled == true)
+                    ListTile(
+                      title: Text(
+                        trans("Wishlist"),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(fontSize: 16),
+                      ),
+                      leading: Icon(Icons.favorite_border),
+                      onTap: _actionWishlist,
+                    ),
+                  ListTile(
+                    title: Text(
+                      trans("Cart"),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 16),
+                    ),
+                    leading: Icon(Icons.shopping_cart),
+                    onTap: _actionCart,
+                  ),
+                ],
               ),
-              padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-            ),
-            if (widget.wooSignalApp.wpLoginEnabled == 1)
-              ListTile(
-                title: Text(trans("Profile"), style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 16
-                ),),
-                leading: Icon(Icons.account_circle),
-                onTap: _actionProfile,
-              ),
-            ListTile(
-              title: Text(trans("Cart"), style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontSize: 16
-              ),),
-              leading: Icon(Icons.shopping_cart),
-              onTap: _actionCart,
-            ),
-            if (widget.wooSignalApp.appTermsLink != null && widget.wooSignalApp.appPrivacyLink != null)
+            if (widget.wooSignalApp.appTermsLink != null &&
+                widget.wooSignalApp.appPrivacyLink != null)
               Padding(
                 child: Text(
                   trans("About Us"),
@@ -89,10 +115,13 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             if (widget.wooSignalApp.appTermsLink != null &&
                 widget.wooSignalApp.appTermsLink.isNotEmpty)
               ListTile(
-                title: Text(trans("Terms and conditions"),
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 16
-                  ),),
+                title: Text(
+                  trans("Terms and conditions"),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 16),
+                ),
                 leading: Icon(Icons.menu_book_rounded),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 onTap: _actionTerms,
@@ -100,47 +129,58 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             if (widget.wooSignalApp.appPrivacyLink != null &&
                 widget.wooSignalApp.appPrivacyLink.isNotEmpty)
               ListTile(
-                title: Text(trans("Privacy policy"), style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontSize: 16
-                ),),
+                title: Text(
+                  trans("Privacy policy"),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 16),
+                ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 leading: Icon(Icons.account_balance),
                 onTap: _actionPrivacy,
               ),
             ListTile(
-              title: Text(
-                  trans((isDark ? "Light Mode" : "Dark Mode")),
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 16
-                  )
-              ),
+              title: Text(trans((isDark ? "Light Mode" : "Dark Mode")),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 16)),
               leading: Icon(Icons.brightness_4_rounded),
               onTap: () {
                 setState(() {
-                  NyTheme.set(context, id: isDark ? "default_light_theme" : "default_dark_theme");
+                  NyTheme.set(context,
+                      id: isDark
+                          ? "default_light_theme"
+                          : "default_dark_theme");
                 });
               },
             ),
             if (_socialLinks.isNotEmpty)
-            Padding(
-              child: Text(
-                trans("Social"),
-                style: Theme.of(context).textTheme.subtitle2,
+              Padding(
+                child: Text(
+                  trans("Social"),
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+                padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
               ),
-              padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-            ),
-            ..._socialLinks.entries.where((element) => element != null && element.value != "").map((socialLink) => ListTile(
-              title: Text(
-                  capitalize(socialLink.key),
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 16
-                  )
-              ),
-              leading: Image.asset(getImageAsset(socialLink.key) + '.png', height: 25, width: 25),
-              onTap: () async {
-                await launch(socialLink.value);
-              },
-            )).toList(),
+            ..._socialLinks.entries
+                .where((element) => element != null && element.value != "")
+                .map((socialLink) => ListTile(
+                      title: Text(capitalize(socialLink.key),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(fontSize: 16)),
+                      leading: Image.asset(
+                          getImageAsset(socialLink.key) + '.png',
+                          height: 25,
+                          width: 25),
+                      onTap: () async {
+                        await launch(socialLink.value);
+                      },
+                    ))
+                .toList(),
             ListTile(
               title: AppVersionWidget(),
             ),
@@ -162,6 +202,11 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
       return;
     }
     Navigator.pushNamed(context, "/account-detail");
+  }
+
+  _actionWishlist() async {
+    Navigator.pop(context);
+    Navigator.pushNamed(context, "/wishlist");
   }
 
   _actionCart() {

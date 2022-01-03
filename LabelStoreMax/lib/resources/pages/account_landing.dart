@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -33,7 +33,7 @@ class AccountLandingPage extends StatefulWidget {
 
 class _AccountLandingPageState extends State<AccountLandingPage> {
   bool _hasTappedLogin = false;
-  TextEditingController _tfEmailController = TextEditingController(),
+  final TextEditingController _tfEmailController = TextEditingController(),
       _tfPasswordController = TextEditingController();
 
   @override
@@ -75,7 +75,10 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow: (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                      boxShadow:
+                          (Theme.of(context).brightness == Brightness.light)
+                              ? wsBoxShadow()
+                              : null,
                       color: ThemeColor.get(context).backgroundContainer,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
@@ -110,8 +113,9 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                 children: <Widget>[
                   Icon(
                     Icons.account_circle,
-                    color:
-                    (Theme.of(context).brightness == Brightness.light) ? Colors.black38 : Colors.white70,
+                    color: (Theme.of(context).brightness == Brightness.light)
+                        ? Colors.black38
+                        : Colors.white70,
                   ),
                   Padding(
                     child: Text(
@@ -137,16 +141,19 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                         "No URL found for \"forgot password\".\nAdd your forgot password URL here https://woosignal.com/dashboard/apps");
                   }
                 }),
-            widget.showBackButton ? Column(
-              children: [
-                Divider(),
-                LinkButton(
-                  title: trans("Back"),
-                  action: () => Navigator.pop(context),
-                ),
-              ],
-            ) : Padding(padding: EdgeInsets.only(bottom: 20),)
-
+            widget.showBackButton
+                ? Column(
+                    children: [
+                      Divider(),
+                      LinkButton(
+                        title: trans("Back"),
+                        action: () => Navigator.pop(context),
+                      ),
+                    ],
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(bottom: 20),
+                  )
           ].where((element) => element != null).toList(),
         ),
       ),
@@ -164,8 +171,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
     if (email == "" || password == "") {
       showToastNotification(context,
           title: trans("Invalid details"),
-          description:
-              trans("The email and password field cannot be empty"),
+          description: trans("The email and password field cannot be empty"),
           style: ToastNotificationStyleType.DANGER);
       return;
     }
@@ -190,25 +196,23 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
       } on InvalidNonceException catch (_) {
         showToastNotification(context,
             title: trans("Invalid details"),
-            description: trans("Something went wrong, please contact our store"),
+            description:
+                trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.DANGER);
       } on InvalidEmailException catch (_) {
         showToastNotification(context,
             title: trans("Invalid details"),
-            description:
-                trans("That email does not match our records"),
+            description: trans("That email does not match our records"),
             style: ToastNotificationStyleType.DANGER);
       } on InvalidUsernameException catch (_) {
         showToastNotification(context,
             title: trans("Invalid details"),
-            description:
-                trans("That username does not match our records"),
+            description: trans("That username does not match our records"),
             style: ToastNotificationStyleType.DANGER);
       } on IncorrectPasswordException catch (_) {
         showToastNotification(context,
             title: trans("Invalid details"),
-            description:
-                trans("That password does not match our records"),
+            description: trans("That password does not match our records"),
             style: ToastNotificationStyleType.DANGER);
       } on Exception catch (_) {
         showToastNotification(context,

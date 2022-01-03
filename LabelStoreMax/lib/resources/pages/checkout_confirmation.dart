@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,12 +11,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
+import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/checkout_coupon_amount_widget.dart';
+import 'package:flutter_app/resources/widgets/checkout_payment_type_widget.dart';
+import 'package:flutter_app/resources/widgets/checkout_select_coupon_widget.dart';
+import 'package:flutter_app/resources/widgets/checkout_shipping_type_widget.dart';
+import 'package:flutter_app/resources/widgets/checkout_store_heading_widget.dart';
+import 'package:flutter_app/resources/widgets/checkout_user_details_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -36,17 +42,18 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
   bool _showFullLoader = true, _isProcessingPayment = false;
 
-  List<TaxRate> _taxRates = [];
+  final List<TaxRate> _taxRates = [];
   TaxRate _taxRate;
   final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   void initState() {
     super.initState();
-
+    CheckoutSession.getInstance.coupon = null;
+    List<PaymentType> paymentTypes = getPaymentTypes();
     if (CheckoutSession.getInstance.paymentType == null &&
-        getPaymentTypes().length > 0) {
-      CheckoutSession.getInstance.paymentType = getPaymentTypes().first;
+        paymentTypes.isNotEmpty) {
+      CheckoutSession.getInstance.paymentType = paymentTypes.first;
     }
     _getTaxes();
   }
@@ -64,7 +71,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       List<TaxRate> tmpTaxRates = await appWooSignal(
           (api) => api.getTaxRates(page: pageIndex, perPage: 100));
 
-      if (tmpTaxRates != null && tmpTaxRates.length > 0) {
+      if (tmpTaxRates != null && tmpTaxRates.isNotEmpty) {
         _taxRates.addAll(tmpTaxRates);
       }
       if (tmpTaxRates.length >= 100) {
@@ -74,7 +81,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       }
     }
 
-    if (_taxRates == null || _taxRates.length == 0) {
+    if (_taxRates == null || _taxRates.isEmpty) {
       setState(() {
         _showFullLoader = false;
       });
@@ -131,12 +138,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
         orElse: () => null,
       );
 
-      if (taxRate == null) {
-        taxRate = _taxRates.firstWhere(
-          (t) => t.country == shippingCountry.countryCode,
-          orElse: () => null,
-        );
-      }
+      taxRate ??= _taxRates.firstWhere(
+        (t) => t.country == shippingCountry.countryCode,
+        orElse: () => null,
+      );
     }
 
     if (taxRate != null) {
@@ -147,225 +152,154 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     });
   }
 
-  _actionCheckoutDetails() {
-    Navigator.pushNamed(context, "/checkout-details").then((e) {
-      setState(() {
-        _showFullLoader = true;
-      });
-      _getTaxes();
-    });
-  }
-
-  _actionPayWith() {
-    Navigator.pushNamed(context, "/checkout-payment-type")
-        .then((value) => setState(() {}));
-  }
-
-  _actionSelectShipping() {
-    CustomerAddress shippingAddress =
-        CheckoutSession.getInstance.billingDetails.shippingAddress;
-    if (shippingAddress == null || shippingAddress.customerCountry == null) {
-      showToastNotification(context,
-          title: trans("Oops"),
-          description: trans("Add your shipping details first"),
-          icon: Icons.local_shipping);
-      return;
-    }
-    Navigator.pushNamed(context, "/checkout-shipping-type").then((value) {
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    CheckoutSession checkoutSession = CheckoutSession.getInstance;
+
+    if (_showFullLoader == true) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            AppLoaderWidget(),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Text(
+                "${trans("One moment")}...",
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          trans("Checkout")
-        ),
+        title: Text(trans("Checkout")),
         centerTitle: true,
+        leading: Container(
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              CheckoutSession.getInstance.coupon = null;
+              Navigator.pop(context);
+            },
+          ),
+          margin: EdgeInsets.only(left: 0),
+        ),
       ),
       resizeToAvoidBottomInset: false,
       body: SafeAreaWidget(
-        child: !_showFullLoader
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10, right: 10),
-                      decoration: BoxDecoration(
-                        color: ThemeColor.get(context).backgroundContainer,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow:
-                        (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
-                      ),
-                      margin: EdgeInsets.only(top: 5, bottom: 5),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: (Theme.of(context).brightness == Brightness.light)
-                                      ? wsBoxShadow(blurRadius: 10)
-                                      : null,
-                                  color: Colors.transparent,
-                                ),
-                                padding: EdgeInsets.all(2),
-                                margin: EdgeInsets.only(top: 16),
-                                child: ClipRRect(
-                                  child: StoreLogo(height: 65),
-                                  borderRadius: BorderRadius.circular(8),
-                                )),
-                            ((CheckoutSession.getInstance.billingDetails != null &&
-                                    CheckoutSession.getInstance.billingDetails
-                                            .billingAddress !=
-                                        null)
-                                ? wsCheckoutRow(context,
-                                    heading: trans("Billing/shipping details"),
-                                    leadImage: Icon(Icons.home),
-                                    leadTitle:
-                                        (CheckoutSession.getInstance.billingDetails == null ||
-                                                CheckoutSession.getInstance
-                                                    .billingDetails.billingAddress
-                                                    .hasMissingFields()
-                                            ? trans("Billing address is incomplete")
-                                            : CheckoutSession.getInstance
-                                                .billingDetails.billingAddress
-                                                .addressFull()),
-                                    action: _actionCheckoutDetails,
-                                    showBorderBottom: true)
-                                : wsCheckoutRow(context,
-                                    heading:
-                                        trans("Billing/shipping details"),
-                                    leadImage: Icon(Icons.home),
-                                    leadTitle: trans("Add billing & shipping details"),
-                                    action: _actionCheckoutDetails,
-                                    showBorderBottom: true)),
-                            (CheckoutSession.getInstance.paymentType != null
-                                ? wsCheckoutRow(context,
-                                    heading: trans("Payment method"),
-                                    leadImage: Container(
-                                      color: Colors.white,
-                                      child: Image.asset(
-                                        getImageAsset(CheckoutSession
-                                            .getInstance.paymentType.assetImage),
-                                        width: 70,
-                                      ),
-                                    ),
-                                    leadTitle: CheckoutSession
-                                        .getInstance.paymentType.desc,
-                                    action: _actionPayWith,
-                                    showBorderBottom: true)
-                                : wsCheckoutRow(context,
-                                    heading: trans("Pay with"),
-                                    leadImage: Icon(Icons.payment),
-                                    leadTitle: trans("Select a payment method"),
-                                    action: _actionPayWith,
-                                    showBorderBottom: true)),
-                            _wooSignalApp.disableShipping == 1
-                                ? null
-                                : (CheckoutSession.getInstance.shippingType !=
-                                        null
-                                    ? wsCheckoutRow(context,
-                                        heading:
-                                            trans("Shipping selected"),
-                                        leadImage: Icon(Icons.local_shipping),
-                                        leadTitle: CheckoutSession
-                                            .getInstance.shippingType
-                                            .getTitle(),
-                                        action: _actionSelectShipping)
-                                    : wsCheckoutRow(
-                                        context,
-                                        heading:
-                                            trans("Select shipping"),
-                                        leadImage: Icon(Icons.local_shipping),
-                                        leadTitle: trans("Select a shipping option"),
-                                        action: _actionSelectShipping,
-                                      )),
-                          ].where((e) => e != null).toList()),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Divider(
-                        color: Colors.black12,
-                        thickness: 1,
-                      ),
-                      wsCheckoutSubtotalWidgetFB(
-                        title: trans("Subtotal"),
-                      ),
-                      _wooSignalApp.disableShipping == 1
-                          ? null
-                          : widgetCheckoutMeta(context,
-                              title: trans("Shipping fee"),
-                              amount:
-                                  CheckoutSession.getInstance.shippingType ==
-                                          null
-                                      ? trans("Select shipping")
-                                      : CheckoutSession.getInstance.shippingType
-                                          .getTotal(withFormatting: true)),
-                      (_taxRate != null
-                          ? wsCheckoutTaxAmountWidgetFB(taxRate: _taxRate)
-                          : null),
-                      wsCheckoutTotalWidgetFB(
-                          title: trans("Total"), taxRate: _taxRate),
-                      Divider(
-                        color: Colors.black12,
-                        thickness: 1,
-                      ),
-                    ].where((e) => e != null).toList(),
-                  ),
-                  PrimaryButton(
-                    title: _isProcessingPayment
-                        ? "${trans("PROCESSING")}..."
-                        : trans("CHECKOUT"),
-                    action: _isProcessingPayment ? null : _handleCheckout,
-                  ),
-                ],
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    AppLoaderWidget(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Text(
-                        "${trans("One moment")}...",
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                    )
-                  ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                decoration: BoxDecoration(
+                  color: ThemeColor.get(context).backgroundContainer,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: (Theme.of(context).brightness == Brightness.light)
+                      ? wsBoxShadow()
+                      : null,
                 ),
+                margin: EdgeInsets.only(top: 5, bottom: 5),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      CheckoutStoreHeadingWidget(),
+                      CheckoutUserDetailsWidget(
+                        context: context,
+                        checkoutSession: checkoutSession,
+                        resetState: () {
+                          setState(() {
+                            _showFullLoader = true;
+                          });
+                          _getTaxes();
+                        },
+                      ),
+                      CheckoutPaymentTypeWidget(
+                        context: context,
+                        checkoutSession: checkoutSession,
+                        resetState: () => setState(() {}),
+                      ),
+                      CheckoutShippingTypeWidget(
+                        context: context,
+                        checkoutSession: checkoutSession,
+                        resetState: () => setState(() {}),
+                        wooSignalApp: _wooSignalApp,
+                      ),
+                    ].where((e) => e != null).toList()),
               ),
+            ),
+            if (_wooSignalApp.couponEnabled == true)
+              CheckoutSelectCouponWidget(
+                context: context,
+                checkoutSession: checkoutSession,
+                resetState: () => setState(() {}),
+              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Divider(
+                  color: Colors.black12,
+                  thickness: 1,
+                ),
+                CheckoutSubtotal(
+                  title: trans("Subtotal"),
+                ),
+                CheckoutCouponAmountWidget(checkoutSession: checkoutSession),
+                _wooSignalApp.disableShipping == 1
+                    ? null
+                    : CheckoutMetaLine(
+                        title: trans("Shipping fee"),
+                        amount: CheckoutSession.getInstance.shippingType == null
+                            ? trans("Select shipping")
+                            : CheckoutSession.getInstance.shippingType
+                                .getTotal(withFormatting: true)),
+                (_taxRate != null ? CheckoutTaxTotal(taxRate: _taxRate) : null),
+                CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
+                Divider(
+                  color: Colors.black12,
+                  thickness: 1,
+                ),
+              ].where((e) => e != null).toList(),
+            ),
+            PrimaryButton(
+              title: _isProcessingPayment
+                  ? "${trans("PROCESSING")}..."
+                  : trans("CHECKOUT"),
+              action: _isProcessingPayment ? null : _handleCheckout,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   _handleCheckout() async {
-    if (CheckoutSession.getInstance.billingDetails.billingAddress == null) {
+    CheckoutSession checkoutSession = CheckoutSession.getInstance;
+    if (checkoutSession.billingDetails.billingAddress == null) {
       showToastNotification(
         context,
         title: trans("Oops"),
-        description: trans("Please select add your billing/shipping address to proceed"),
+        description:
+            trans("Please select add your billing/shipping address to proceed"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
       return;
     }
 
-    if (CheckoutSession.getInstance.billingDetails.billingAddress
-        .hasMissingFields()) {
+    if (checkoutSession.billingDetails.billingAddress.hasMissingFields()) {
       showToastNotification(
         context,
         title: trans("Oops"),
-        description:
-            trans("Your billing/shipping details are incomplete"),
+        description: trans("Your billing/shipping details are incomplete"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
@@ -373,24 +307,22 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     }
 
     if (_wooSignalApp.disableShipping == 0 &&
-        CheckoutSession.getInstance.shippingType == null) {
+        checkoutSession.shippingType == null) {
       showToastNotification(
         context,
         title: trans("Oops"),
-        description:
-            trans("Please select a shipping method to proceed"),
+        description: trans("Please select a shipping method to proceed"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.local_shipping,
       );
       return;
     }
 
-    if (CheckoutSession.getInstance.paymentType == null) {
+    if (checkoutSession.paymentType == null) {
       showToastNotification(
         context,
         title: trans("Oops"),
-        description:
-            trans("Please select a payment method to proceed"),
+        description: trans("Please select a payment method to proceed"),
         style: ToastNotificationStyleType.WARNING,
         icon: Icons.payment,
       );
@@ -398,20 +330,20 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     }
 
     if (_wooSignalApp.disableShipping == 0 &&
-        CheckoutSession.getInstance.shippingType?.minimumValue != null) {
+        checkoutSession.shippingType?.minimumValue != null) {
       String total = await Cart.getInstance.getTotal();
       if (total == null) {
         return;
       }
       double doubleTotal = double.parse(total);
       double doubleMinimumValue =
-          double.parse(CheckoutSession.getInstance.shippingType?.minimumValue);
+          double.parse(checkoutSession.shippingType?.minimumValue);
 
       if (doubleTotal < doubleMinimumValue) {
         showToastNotification(context,
             title: trans("Sorry"),
             description:
-                "${trans("Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans("for")} ${CheckoutSession.getInstance.shippingType.getTitle()}",
+                "${trans("Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans("for")} ${checkoutSession.shippingType.getTitle()}",
             style: ToastNotificationStyleType.INFO,
             duration: Duration(seconds: 3));
         return;
@@ -423,7 +355,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     if (!appStatus) {
       showToastNotification(context,
           title: trans("Sorry"),
-          description: "${trans("Retry later")}",
+          description: trans("Retry later"),
           style: ToastNotificationStyleType.INFO,
           duration: Duration(seconds: 3));
       return;
@@ -437,13 +369,11 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       _isProcessingPayment = true;
     });
 
-    await CheckoutSession.getInstance.paymentType
+    await checkoutSession.paymentType
         .pay(context, state: this, taxRate: _taxRate);
 
-    Future.delayed(Duration(milliseconds: 5000), () {
-      setState(() {
-        _isProcessingPayment = false;
-      });
+    setState(() {
+      _isProcessingPayment = false;
     });
   }
 }

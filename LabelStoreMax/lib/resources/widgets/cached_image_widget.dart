@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -19,10 +19,9 @@ class CachedImageWidget extends StatelessWidget {
     this.width = 70,
     this.placeholder = const Center(
       child: CircularProgressIndicator(
-        strokeWidth: 2,
-        backgroundColor: Colors.black12,
-          color: Colors.black54
-      ),
+          strokeWidth: 2,
+          backgroundColor: Colors.black12,
+          color: Colors.black54),
     ),
     this.fit = BoxFit.contain,
   }) : super(key: key);
@@ -37,7 +36,7 @@ class CachedImageWidget extends StatelessWidget {
   Widget build(BuildContext context) => CachedNetworkImage(
         imageUrl: image,
         placeholder: (context, url) => placeholder,
-        errorWidget: (context, url, error) => new Icon(Icons.error),
+        errorWidget: (context, url, error) => Icon(Icons.error),
         height: height,
         width: width,
         alignment: Alignment.center,

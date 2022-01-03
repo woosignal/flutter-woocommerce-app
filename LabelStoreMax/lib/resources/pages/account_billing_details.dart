@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -32,7 +32,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
   _AccountBillingDetailsPageState();
 
   // BILLING TEXT CONTROLLERS
-  TextEditingController _txtShippingFirstName = TextEditingController(),
+  final TextEditingController _txtShippingFirstName = TextEditingController(),
       _txtShippingLastName = TextEditingController(),
       _txtShippingAddressLine = TextEditingController(),
       _txtShippingCity = TextEditingController(),
@@ -71,18 +71,15 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
-          trans("Billing Details")
-        ),
+        title: Text(trans("Billing Details")),
         centerTitle: true,
       ),
       body: SafeAreaWidget(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: _isLoading
               ? AppLoaderWidget()
               : LayoutBuilder(
@@ -160,8 +157,10 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                           decoration: BoxDecoration(
                             color: ThemeColor.get(context).surfaceBackground,
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow:
-                            (Theme.of(context).brightness == Brightness.light) ? wsBoxShadow() : null,
+                            boxShadow: (Theme.of(context).brightness ==
+                                    Brightness.light)
+                                ? wsBoxShadow()
+                                : null,
                           ),
                           padding: EdgeInsets.all(8),
                         ),

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,8 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 enum SortByType {
-  LowToHigh,
-  HighToLow,
-  NameAZ,
-  NameZA,
+  lowToHigh,
+  highToLow,
+  nameAZ,
+  nameZA,
 }
