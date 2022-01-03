@@ -17,15 +17,16 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 ThemeData lightTheme(BaseColorStyles lightColors) {
   try {
-    appFont = GoogleFonts.getFont(AppHelper.instance.appConfig.themeFont ?? "Poppins");
-  } on Exception catch(e) {
+    appFont = GoogleFonts.getFont(
+        AppHelper.instance.appConfig.themeFont ?? "Poppins");
+  } on Exception catch (e) {
     if (getEnv('APP_DEBUG') == true) {
       NyLogger.error(e.toString());
     }
   }
 
-  TextTheme lightTheme =
-  getAppTextTheme(appFont, defaultTextTheme.merge(_lightTextTheme(lightColors)));
+  TextTheme lightTheme = getAppTextTheme(
+      appFont, defaultTextTheme.merge(_lightTextTheme(lightColors)));
 
   return ThemeData(
     primaryColor: lightColors.primaryContent,
@@ -58,13 +59,13 @@ ThemeData lightTheme(BaseColorStyles lightColors) {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: lightColors.bottomTabBarBackground,
       unselectedIconTheme:
-      IconThemeData(color: lightColors.bottomTabBarIconUnselected),
+          IconThemeData(color: lightColors.bottomTabBarIconUnselected),
       selectedIconTheme:
-      IconThemeData(color: lightColors.bottomTabBarIconSelected),
+          IconThemeData(color: lightColors.bottomTabBarIconSelected),
       unselectedLabelStyle:
-      TextStyle(color: lightColors.bottomTabBarLabelUnselected),
+          TextStyle(color: lightColors.bottomTabBarLabelUnselected),
       selectedLabelStyle:
-      TextStyle(color: lightColors.bottomTabBarLabelSelected),
+          TextStyle(color: lightColors.bottomTabBarLabelSelected),
       selectedItemColor: lightColors.bottomTabBarLabelSelected,
     ),
     textTheme: lightTheme,

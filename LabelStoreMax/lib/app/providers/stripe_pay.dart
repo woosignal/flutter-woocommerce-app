@@ -3,7 +3,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -32,13 +32,17 @@ stripePay(context,
       : getEnv('STRIPE_LIVE_MODE', defaultValue: false);
 
   // CONFIGURE STRIPE
-  Stripe.stripeAccountId = getEnv('STRIPE_ACCOUNT') == null ? wooSignalApp.stripeAccount : getEnv('STRIPE_ACCOUNT');
+  Stripe.stripeAccountId =
+      getEnv('STRIPE_ACCOUNT') ?? wooSignalApp.stripeAccount;
 
-  Stripe.publishableKey = liveMode ? "pk_live_IyS4Vt86L49jITSfaUShumzi" : "pk_test_0jMmpBntJ6UkizPkfiB8ZJxH"; // Don't change this value
+  Stripe.publishableKey = liveMode
+      ? "pk_live_IyS4Vt86L49jITSfaUShumzi"
+      : "pk_test_0jMmpBntJ6UkizPkfiB8ZJxH"; // Don't change this value
   await Stripe.instance.applySettings();
 
   if (Stripe.stripeAccountId == '') {
-    NyLogger.error('You need to connect your Stripe account to WooSignal via the dashboard https://woosignal.com/dashboard');
+    NyLogger.error(
+        'You need to connect your Stripe account to WooSignal via the dashboard https://woosignal.com/dashboard');
     return;
   }
 
@@ -51,14 +55,12 @@ stripePay(context,
         "line1": billingDetails.shippingAddress.addressLine,
         "city": billingDetails.shippingAddress.city,
         "postal_code": billingDetails.shippingAddress.postalCode,
-        "country":
-        (billingDetails.shippingAddress?.customerCountry?.name ?? "")
+        "country": (billingDetails.shippingAddress?.customerCountry?.name ?? "")
       };
 
       String cartShortDesc = await cart.cartShortDesc();
 
-      rsp = await appWooSignal((api) =>
-          api.stripePaymentIntent(
+      rsp = await appWooSignal((api) => api.stripePaymentIntent(
             amount: total,
             email: billingDetails.billingAddress.emailAddress,
             desc: cartShortDesc,
@@ -69,21 +71,25 @@ stripePay(context,
     if (rsp == null) {
       showToastNotification(context,
           title: trans("Oops!"),
-          description:
-          trans("Something went wrong, please try again."),
+          description: trans("Something went wrong, please try again."),
           icon: Icons.payment,
           style: ToastNotificationStyleType.WARNING);
       state.reloadState(showLoader: false);
       return;
     }
 
-    await Stripe.instance.initPaymentSheet(paymentSheetParameters: SetupPaymentSheetParameters(
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
       applePay: false,
       googlePay: false,
-      style: Theme.of(state.context).brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
+      style: Theme.of(state.context).brightness == Brightness.light
+          ? ThemeMode.light
+          : ThemeMode.dark,
       testEnv: liveMode,
-      merchantCountryCode: envVal('STRIPE_COUNTRY_CODE', defaultValue: wooSignalApp.stripeCountryCode),
-      merchantDisplayName: envVal('APP_NAME', defaultValue: wooSignalApp.appName),
+      merchantCountryCode: envVal('STRIPE_COUNTRY_CODE',
+          defaultValue: wooSignalApp.stripeCountryCode),
+      merchantDisplayName:
+          envVal('APP_NAME', defaultValue: wooSignalApp.appName),
       paymentIntentClientSecret: rsp['client_secret'],
     ));
 
@@ -105,8 +111,7 @@ stripePay(context,
     }
 
     Navigator.pushNamed(context, "/checkout-status", arguments: order);
-
-  } on StripeException catch(e) {
+  } on StripeException catch (e) {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
       NyLogger.error(e.error.message);
     }

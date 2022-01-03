@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -21,10 +21,11 @@ import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
+  CheckoutSession checkoutSession = CheckoutSession.getInstance;
   OrderWC orderWC = OrderWC();
   WooSignalApp wooSignalApp = AppHelper.instance.appConfig;
 
-  String paymentMethodName = CheckoutSession.getInstance.paymentType.name ?? "";
+  String paymentMethodName = checkoutSession.paymentType.name ?? "";
 
   orderWC.paymentMethod = Platform.isAndroid
       ? "$paymentMethodName - Android App"
@@ -40,7 +41,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
   List<LineItems> lineItems = [];
   List<CartLineItem> cartItems = await Cart.getInstance.getCart();
-  cartItems.forEach((cartItem) {
+  for (var cartItem in cartItems) {
     LineItems tmpLineItem = LineItems();
     tmpLineItem.quantity = cartItem.quantity;
     tmpLineItem.name = cartItem.name;
@@ -51,11 +52,11 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
     tmpLineItem.subtotal = cartItem.subtotal;
     lineItems.add(tmpLineItem);
-  });
+  }
 
   orderWC.lineItems = lineItems;
 
-  BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails;
+  BillingDetails billingDetails = checkoutSession.billingDetails;
 
   Billing billing = Billing();
   billing.firstName = billingDetails.billingAddress.firstName;
@@ -88,7 +89,7 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   orderWC.shippingLines = [];
   if (wooSignalApp.disableShipping != 1) {
     Map<String, dynamic> shippingLineFeeObj =
-        CheckoutSession.getInstance.shippingType.toShippingLineFee();
+        checkoutSession.shippingType.toShippingLineFee();
     if (shippingLineFeeObj != null) {
       ShippingLines shippingLine = ShippingLines();
       shippingLine.methodId = shippingLineFeeObj['method_id'];
@@ -106,6 +107,12 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
     feeLines.taxClass = "";
     feeLines.taxStatus = "taxable";
     orderWC.feeLines.add(feeLines);
+  }
+
+  if (checkoutSession.coupon != null) {
+    orderWC.couponLines = [];
+    CouponLines couponLine = CouponLines(code: checkoutSession.coupon.code);
+    orderWC.couponLines.add(couponLine);
   }
 
   return orderWC;

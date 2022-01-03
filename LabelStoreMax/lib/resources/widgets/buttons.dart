@@ -1,13 +1,14 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -27,11 +28,11 @@ class PrimaryButton extends StatelessWidget {
         key: key,
         title: title,
         action: action,
-        textStyle: Theme.of(context)
-            .textTheme
-            .button
-            .copyWith(fontSize: 16, fontWeight: FontWeight.bold, color: ThemeColor.get(context).buttonPrimaryContent),
-    bgColor: ThemeColor.get(context).buttonBackground,
+        textStyle: Theme.of(context).textTheme.button.copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: ThemeColor.get(context).buttonPrimaryContent),
+        bgColor: ThemeColor.get(context).buttonBackground,
       );
 }
 
@@ -109,14 +110,14 @@ class WooSignalButton extends StatelessWidget {
             elevation: 0,
             primary: bgColor,
             shadowColor: Colors.transparent),
-        child: Text(
+        child: AutoSizeText(
           title,
           style: textStyle,
           maxLines: (screenWidth >= 385 ? 2 : 1),
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
         ),
-        onPressed: action ?? null,
+        onPressed: action,
       ),
     );
   }

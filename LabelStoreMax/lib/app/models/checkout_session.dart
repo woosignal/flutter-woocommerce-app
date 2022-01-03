@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -17,6 +17,7 @@ import 'package:flutter_app/app/models/shipping_type.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
 import 'package:nylo_support/helpers/helper.dart';
+import 'package:woosignal/models/response/coupon.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
 class CheckoutSession {
@@ -29,6 +30,7 @@ class CheckoutSession {
   BillingDetails billingDetails;
   ShippingType shippingType;
   PaymentType paymentType;
+  Coupon coupon;
 
   void initSession() {
     billingDetails = BillingDetails();
@@ -39,6 +41,7 @@ class CheckoutSession {
     billingDetails = null;
     shippingType = null;
     paymentType = null;
+    coupon = null;
   }
 
   void saveBillingAddress() async {

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -26,7 +26,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
   _CustomerCountriesPageState();
 
   List<DefaultShipping> _defaultShipping = [], _activeShippingResults = [];
-  TextEditingController _tfSearchCountry = TextEditingController();
+  final TextEditingController _tfSearchCountry = TextEditingController();
 
   @override
   void initState() {
@@ -45,9 +45,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
-          trans("Select a country")
-        ),
+        title: Text(trans("Select a country")),
         centerTitle: true,
       ),
       body: SafeAreaWidget(
@@ -57,17 +55,16 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
               padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               margin: EdgeInsets.only(bottom: 10, top: 10),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-                color: ThemeColor.get(context).background
-              ),
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 3,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                  color: ThemeColor.get(context).background),
               height: 60,
               child: Row(
                 children: [

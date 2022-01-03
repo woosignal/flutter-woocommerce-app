@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -48,7 +48,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
                         List<int> cartItems =
                             snapshot.data.map((e) => e.quantity).toList();
                         String cartValue = "0";
-                        if (cartItems.length > 0) {
+                        if (cartItems.isNotEmpty) {
                           cartValue = cartItems
                               .reduce((value, element) => value + element)
                               .toString();

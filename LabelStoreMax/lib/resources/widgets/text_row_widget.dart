@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -14,8 +14,7 @@ class TextRowWidget extends StatelessWidget {
   const TextRowWidget({Key key, @required this.title, @required this.text})
       : super(key: key);
 
-  final String title;
-  final String text;
+  final String title, text;
 
   @override
   Widget build(BuildContext context) {

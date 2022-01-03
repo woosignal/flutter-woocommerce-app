@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -44,53 +44,70 @@ import 'package:woosignal/woosignal.dart';
 Future<User> getUser() async =>
     (await NyStorage.read<User>(SharedKey.authUser, model: User()));
 
-appWooSignal(Function(WooSignal) api) async {
+Future appWooSignal(Function(WooSignal) api) async {
   return await api(WooSignal.instance);
 }
 
 /// helper to find correct color from the [context].
 class ThemeColor {
   static BaseColorStyles get(BuildContext context) {
-    return ((Theme.of(context).brightness == Brightness.light) ? ThemeConfig.light().colors : ThemeConfig.dark().colors);
+    return ((Theme.of(context).brightness == Brightness.light)
+        ? ThemeConfig.light().colors
+        : ThemeConfig.dark().colors);
   }
 }
 
 /// helper to set colors on TextStyle
 extension ColorsHelper on TextStyle {
-  TextStyle setColor(BuildContext context, Color Function(BaseColorStyles color) newColor) {
-    return this.copyWith(color: newColor(ThemeColor.get(context)));
+  TextStyle setColor(
+      BuildContext context, Color Function(BaseColorStyles color) newColor) {
+    return copyWith(color: newColor(ThemeColor.get(context)));
   }
 }
 
 List<PaymentType> getPaymentTypes() {
   List<PaymentType> paymentTypes = [];
-  app_payment_gateways.forEach((element) {
-    if (paymentTypes.firstWhere((paymentType) => paymentType.name != element, orElse: () => null) == null) {
-      paymentTypes.add(paymentTypeList.firstWhere((paymentTypeList) => paymentTypeList.name == element, orElse: () => null));
+  for (var appPaymentGateway in app_payment_gateways) {
+    if (paymentTypes.firstWhere(
+            (paymentType) => paymentType.name != appPaymentGateway,
+            orElse: () => null) ==
+        null) {
+      paymentTypes.add(paymentTypeList.firstWhere(
+          (paymentTypeList) => paymentTypeList.name == appPaymentGateway,
+          orElse: () => null));
     }
-  });
+  }
 
-  if (!app_payment_gateways.contains('Stripe') && AppHelper.instance.appConfig.stripeEnabled == true) {
-    paymentTypes.add(paymentTypeList.firstWhere((element) => element.name == "Stripe", orElse: () => null));
+  if (!app_payment_gateways.contains('Stripe') &&
+      AppHelper.instance.appConfig.stripeEnabled == true) {
+    paymentTypes.add(paymentTypeList
+        .firstWhere((element) => element.name == "Stripe", orElse: () => null));
   }
-  if (!app_payment_gateways.contains('PayPal') && AppHelper.instance.appConfig.paypalEnabled == true) {
-    paymentTypes.add(paymentTypeList.firstWhere((element) => element.name == "PayPal", orElse: () => null));
+  if (!app_payment_gateways.contains('PayPal') &&
+      AppHelper.instance.appConfig.paypalEnabled == true) {
+    paymentTypes.add(paymentTypeList
+        .firstWhere((element) => element.name == "PayPal", orElse: () => null));
   }
-  if (!app_payment_gateways.contains('CashOnDelivery') && AppHelper.instance.appConfig.codEnabled == true) {
-    paymentTypes.add(paymentTypeList.firstWhere((element) => element.name == "CashOnDelivery", orElse: () => null));
+  if (!app_payment_gateways.contains('CashOnDelivery') &&
+      AppHelper.instance.appConfig.codEnabled == true) {
+    paymentTypes.add(paymentTypeList.firstWhere(
+        (element) => element.name == "CashOnDelivery",
+        orElse: () => null));
   }
 
   return paymentTypes.where((v) => v != null).toList();
 }
 
-dynamic envVal(String envVal, {dynamic defaultValue}) => (getEnv(envVal) == null ? defaultValue : getEnv(envVal));
+dynamic envVal(String envVal, {dynamic defaultValue}) =>
+    (getEnv(envVal) == null ? defaultValue : getEnv(envVal));
 
 PaymentType addPayment(
         {@required int id,
         @required String name,
         @required String desc,
         @required String assetImage,
-        @required Function pay}) => PaymentType(
+        @required Function pay}) =>
+    PaymentType(
       id: id,
       name: name,
       desc: desc,
@@ -333,7 +350,7 @@ RegExp defaultRegex(
   String pattern, {
   bool strict,
 }) {
-  return new RegExp(
+  return RegExp(
     pattern,
     caseSensitive: strict ?? false,
     multiLine: false,
@@ -343,15 +360,8 @@ RegExp defaultRegex(
 bool isEmail(String em) {
   String p =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-  RegExp regExp = new RegExp(p);
+  RegExp regExp = RegExp(p);
   return regExp.hasMatch(em);
-}
-
-// 6 LENGTH, 1 DIGIT
-bool validPassword(String pw) {
-  String p = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$';
-  RegExp regExp = new RegExp(p);
-  return regExp.hasMatch(pw);
 }
 
 navigatorPush(BuildContext context,
@@ -391,8 +401,7 @@ showPlatformAlertDialog(BuildContext context,
     List<PlatformDialogAction> actions,
     bool showDoneAction = true}) {
   if (showDoneAction) {
-    actions
-        .add(dialogAction(context, title: trans("Done"), action: () {
+    actions.add(dialogAction(context, title: trans("Done"), action: () {
       Navigator.of(context).pop();
     }));
   }
@@ -422,22 +431,22 @@ String dateFormatted({@required String date, @required String formatType}) =>
     formatDateTime(formatType).format(parseDateTime(date));
 
 enum FormatType {
-  DateTime,
-  Date,
-  Time,
+  dateTime,
+  date,
+  time,
 }
 
 String formatForDateTime(FormatType formatType) {
   switch (formatType) {
-    case FormatType.Date:
+    case FormatType.date:
       {
         return "yyyy-MM-dd";
       }
-    case FormatType.DateTime:
+    case FormatType.dateTime:
       {
         return "dd-MM-yyyy hh:mm a";
       }
-    case FormatType.Time:
+    case FormatType.time:
       {
         return "hh:mm a";
       }
@@ -449,9 +458,6 @@ String formatForDateTime(FormatType formatType) {
 }
 
 double parseWcPrice(String price) => (double.tryParse(price ?? "0") ?? 0);
-
-void appLogOutput(dynamic message) =>
-    (getEnv('APP_DEBUG', defaultValue: true) ? NyLogger.debug(message) : null);
 
 Widget refreshableScroll(context,
     {@required refreshController,
@@ -486,7 +492,7 @@ Widget refreshableScroll(context,
     controller: refreshController,
     onRefresh: onRefresh,
     onLoading: onLoading,
-    child: (products.length != null && products.length > 0
+    child: (products.length != null && products.isNotEmpty
         ? StaggeredGridView.countBuilder(
             crossAxisCount: 2,
             itemCount: products.length,
@@ -494,13 +500,12 @@ Widget refreshableScroll(context,
               return Container(
                 height: 200,
                 child: ProductItemContainer(
-                  index: (index),
                   product: products[index],
                   onTap: onTap,
                 ),
               );
             },
-            staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
+            staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,
           )
@@ -537,4 +542,32 @@ Future<List<DefaultShipping>> getDefaultShipping(BuildContext context) async {
 
 String truncateString(String data, int length) {
   return (data.length >= length) ? '${data.substring(0, length)}...' : data;
+}
+
+Future<List<dynamic>> getWishlistProducts() async {
+  List<dynamic> favouriteProducts = [];
+  String currentProductsJSON = await NyStorage.read(SharedKey.wishlistProducts);
+  if (currentProductsJSON != null) {
+    favouriteProducts =
+        (jsonDecode(currentProductsJSON) as List<dynamic>).toList();
+  }
+  return favouriteProducts;
+}
+
+saveWishlistProduct({@required Product product}) async {
+  List<dynamic> products = await getWishlistProducts();
+  if (products.any((wishListProduct) => wishListProduct['id'] == product.id) ==
+      false) {
+    products.add({"id": product.id});
+  }
+  String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
+  await NyStorage.store(SharedKey.wishlistProducts, json);
+}
+
+removeWishlistProduct({@required Product product}) async {
+  List<dynamic> products = await getWishlistProducts();
+  products.removeWhere((element) => element['id'] == product.id);
+
+  String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
+  await NyStorage.store(SharedKey.wishlistProducts, json);
 }

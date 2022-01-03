@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/controllers/product_loader_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
@@ -12,8 +13,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
-import 'package:woosignal/models/response/product_category.dart' as WS;
-import 'package:woosignal/models/response/products.dart' as WSProduct;
+import 'package:woosignal/models/response/product_category.dart' as ws_category;
+import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class NoticHomeWidget extends StatefulWidget {
   NoticHomeWidget({Key key, @required this.wooSignalApp}) : super(key: key);
@@ -26,16 +27,14 @@ class NoticHomeWidget extends StatefulWidget {
 
 class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   Widget activeWidget;
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  List<WSProduct.Product> _products = [];
-  List<WS.ProductCategory> _categories = [];
+  final ProductLoaderController _productLoaderController =
+      ProductLoaderController();
+  List<ws_category.ProductCategory> _categories = [];
 
-  int _page = 1;
-  bool _shouldStopRequests = false,
-      waitForNextRequest = false,
-      _isLoading = true;
+  bool _shouldStopRequests = false, _isLoading = true;
 
   @override
   void initState() {
@@ -44,7 +43,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   }
 
   _home() async {
-    await _fetchMoreProducts();
+    await fetchProducts();
     await _fetchCategories();
     setState(() {
       _isLoading = false;
@@ -54,32 +53,6 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   _fetchCategories() async {
     _categories =
         await appWooSignal((api) => api.getProductCategories(perPage: 100));
-  }
-
-  _fetchMoreProducts() async {
-    if (waitForNextRequest || _shouldStopRequests) {
-      return;
-    }
-    waitForNextRequest = true;
-
-    List<WSProduct.Product> products = await appWooSignal((api) =>
-        api.getProducts(
-            perPage: 50,
-            page: _page,
-            status: "publish",
-            stockStatus: "instock"),
-    );
-
-    if (products.length == 0) {
-      _shouldStopRequests = true;
-      setState(() {});
-      return;
-    } else  {
-      _products.addAll(products);
-    }
-    _page = _page + 1;
-    waitForNextRequest = false;
-    setState(() {});
   }
 
   _modalBottomSheetMenu() {
@@ -104,6 +77,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<ws_product.Product> products = _productLoaderController.getResults();
     return Scaffold(
       drawer: HomeDrawerWidget(wooSignalApp: widget.wooSignalApp),
       appBar: AppBar(
@@ -162,7 +136,8 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                 child: Text(
                                   trans("Our selection of new items"),
                                   style: Theme.of(context).textTheme.headline4,
-                                  maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               )
                             ],
@@ -181,13 +156,12 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                 } else if (mode == LoadStatus.loading) {
                                   body = CupertinoActivityIndicator();
                                 } else if (mode == LoadStatus.failed) {
-                                  body = Text(trans("Load Failed! Click retry!"));
-                                } else if (mode == LoadStatus.canLoading) {
-                                  body = Text(
-                                      trans("release to load more"));
-                                } else {
                                   body =
-                                      Text(trans("No more products"));
+                                      Text(trans("Load Failed! Click retry!"));
+                                } else if (mode == LoadStatus.canLoading) {
+                                  body = Text(trans("release to load more"));
+                                } else {
+                                  body = Text(trans("No more products"));
                                 }
                                 return Container(
                                   height: 55.0,
@@ -198,30 +172,29 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                             controller: _refreshController,
                             onRefresh: _onRefresh,
                             onLoading: _onLoading,
-                            child: (_products.length != null &&
-                                    _products.length > 0
-                                ? StaggeredGridView.countBuilder(
-                                    crossAxisCount: 2,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: _products.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        height: 250,
-                                        child: ProductItemContainer(
-                                          index: index,
-                                          product: _products[index],
-                                          onTap: _showProduct,
-                                        ),
-                                      );
-                                    },
-                                    staggeredTileBuilder: (int index) {
-                                      return new StaggeredTile.fit(2);
-                                    },
-                                    mainAxisSpacing: 4.0,
-                                    crossAxisSpacing: 4.0,
-                                  )
-                                : NoResultsForProductsWidget()),
+                            child:
+                                (products.length != null && products.isNotEmpty
+                                    ? StaggeredGridView.countBuilder(
+                                        crossAxisCount: 2,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: products.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Container(
+                                            height: 250,
+                                            child: ProductItemContainer(
+                                              product: products[index],
+                                              onTap: _showProduct,
+                                            ),
+                                          );
+                                        },
+                                        staggeredTileBuilder: (int index) {
+                                          return StaggeredTile.fit(2);
+                                        },
+                                        mainAxisSpacing: 4.0,
+                                        crossAxisSpacing: 4.0,
+                                      )
+                                    : NoResultsForProductsWidget()),
                           ),
                         )
                       ],
@@ -235,16 +208,15 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   }
 
   _onRefresh() async {
-    _products = [];
-    _page = 1;
+    _productLoaderController.clear();
     _shouldStopRequests = false;
-    waitForNextRequest = false;
-    await _fetchMoreProducts();
+
+    await fetchProducts();
     _refreshController.refreshCompleted();
   }
 
   _onLoading() async {
-    await _fetchMoreProducts();
+    await fetchProducts();
 
     if (mounted) {
       setState(() {});
@@ -256,6 +228,20 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
     }
   }
 
-  _showProduct(WSProduct.Product product) =>
+  Future fetchProducts() async {
+    await _productLoaderController.loadProducts(
+        hasResults: (result) {
+          if (result == false) {
+            setState(() {
+              _shouldStopRequests = true;
+            });
+            return false;
+          }
+          return true;
+        },
+        didFinish: () => setState(() {}));
+  }
+
+  _showProduct(ws_product.Product product) =>
       Navigator.pushNamed(context, "/product-detail", arguments: product);
 }

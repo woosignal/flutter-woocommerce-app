@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -32,20 +32,20 @@ class ShippingType {
       };
 
   String getTotal({bool withFormatting = false}) {
-    if (this.object != null) {
-      switch (this.methodId) {
+    if (object != null) {
+      switch (methodId) {
         case "flat_rate":
-          FlatRate flatRate = (this.object as FlatRate);
+          FlatRate flatRate = (object as FlatRate);
           return (withFormatting == true
               ? formatStringCurrency(total: cost)
               : flatRate.cost);
         case "free_shipping":
-          FreeShipping freeShipping = (this.object as FreeShipping);
+          FreeShipping freeShipping = (object as FreeShipping);
           return (withFormatting == true
               ? formatStringCurrency(total: cost)
               : freeShipping.cost);
         case "local_pickup":
-          LocalPickup localPickup = (this.object as LocalPickup);
+          LocalPickup localPickup = (object as LocalPickup);
           return (withFormatting == true
               ? formatStringCurrency(total: cost)
               : localPickup.cost);
@@ -57,16 +57,16 @@ class ShippingType {
   }
 
   String getTitle() {
-    if (this.object != null) {
-      switch (this.methodId) {
+    if (object != null) {
+      switch (methodId) {
         case "flat_rate":
-          FlatRate flatRate = (this.object as FlatRate);
+          FlatRate flatRate = (object as FlatRate);
           return flatRate.title;
         case "free_shipping":
-          FreeShipping freeShipping = (this.object as FreeShipping);
+          FreeShipping freeShipping = (object as FreeShipping);
           return freeShipping.title;
         case "local_pickup":
-          LocalPickup localPickup = (this.object as LocalPickup);
+          LocalPickup localPickup = (object as LocalPickup);
           return localPickup.title;
         default:
           return "";
@@ -76,27 +76,27 @@ class ShippingType {
   }
 
   Map<String, dynamic> toShippingLineFee() {
-    if (this.object != null) {
+    if (object != null) {
       Map<String, dynamic> tmpShippingLinesObj = {};
 
-      switch (this.methodId) {
+      switch (methodId) {
         case "flat_rate":
-          FlatRate flatRate = (this.object as FlatRate);
+          FlatRate flatRate = (object as FlatRate);
           tmpShippingLinesObj["method_title"] = flatRate.title;
           tmpShippingLinesObj["method_id"] = flatRate.methodId;
-          tmpShippingLinesObj["total"] = this.cost;
+          tmpShippingLinesObj["total"] = cost;
           break;
         case "free_shipping":
-          FreeShipping freeShipping = (this.object as FreeShipping);
+          FreeShipping freeShipping = (object as FreeShipping);
           tmpShippingLinesObj["method_title"] = freeShipping.title;
           tmpShippingLinesObj["method_id"] = freeShipping.methodId;
-          tmpShippingLinesObj["total"] = this.cost;
+          tmpShippingLinesObj["total"] = cost;
           break;
         case "local_pickup":
-          LocalPickup localPickup = (this.object as LocalPickup);
+          LocalPickup localPickup = (object as LocalPickup);
           tmpShippingLinesObj["method_title"] = localPickup.title;
           tmpShippingLinesObj["method_id"] = localPickup.methodId;
-          tmpShippingLinesObj["total"] = this.cost;
+          tmpShippingLinesObj["total"] = cost;
           break;
         default:
           return null;

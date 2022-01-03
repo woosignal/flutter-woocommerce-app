@@ -3,7 +3,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -17,6 +17,7 @@ import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/pages/account_detail.dart';
 import 'package:flutter_app/resources/pages/account_landing.dart';
 import 'package:flutter_app/resources/pages/cart.dart';
+import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
 import 'package:flutter_app/resources/pages/home_search.dart';
 import 'package:flutter_app/resources/widgets/notic_home_widget.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -68,7 +69,13 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Cart'),
+            icon: Icon(Icons.favorite_border),
+            label: 'Favourites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
           if (AppHelper.instance.appConfig.wpLoginEnabled == 1)
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
@@ -78,11 +85,15 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
 
   _onTabTapped(int i) async {
     _currentIndex = i;
-   await _changeMainWidget();
+    await _changeMainWidget();
     setState(() {});
   }
 
   _changeMainWidget() async {
+    if (_currentIndex == 2) {
+      activeWidget = WishListPageWidget();
+      return;
+    }
     switch (_currentIndex) {
       case 0:
         {
@@ -101,7 +112,11 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
         }
       case 3:
         {
-          activeWidget = (await authCheck()) ? AccountDetailPage(showLeadingBackButton: false) : AccountLandingPage(showBackButton: false,);
+          activeWidget = (await authCheck())
+              ? AccountDetailPage(showLeadingBackButton: false)
+              : AccountLandingPage(
+                  showBackButton: false,
+                );
           break;
         }
     }

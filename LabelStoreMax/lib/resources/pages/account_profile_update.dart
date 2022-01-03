@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -30,7 +30,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
   _AccountProfileUpdatePageState();
 
   bool isLoading = true;
-  TextEditingController _tfFirstName = TextEditingController(),
+  final TextEditingController _tfFirstName = TextEditingController(),
       _tfLastName = TextEditingController();
 
   @override

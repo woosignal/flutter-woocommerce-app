@@ -1,7 +1,7 @@
 //  StoreMob
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -29,7 +29,9 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
   @override
   void initState() {
     super.initState();
-    print('WooCommerce site is not connected');
+    if (getEnv('APP_DEBUG') == true) {
+      NyLogger.error('WooCommerce site is not connected');
+    }
   }
 
   @override
@@ -67,8 +69,7 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
 
     if (wooSignalApp == null) {
       showToastNotification(context,
-          title: trans("Oops"),
-          description: trans("Retry later"));
+          title: trans("Oops"), description: trans("Retry later"));
       return;
     }
 

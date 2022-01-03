@@ -17,20 +17,22 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 ThemeData darkTheme(BaseColorStyles darkColors) {
   try {
-    appFont = GoogleFonts.getFont(AppHelper.instance.appConfig.themeFont ?? "Poppins");
-  } on Exception catch(e) {
+    appFont = GoogleFonts.getFont(
+        AppHelper.instance.appConfig.themeFont ?? "Poppins");
+  } on Exception catch (e) {
     if (getEnv('APP_DEBUG') == true) {
       NyLogger.error(e.toString());
     }
   }
 
-  TextTheme darkTheme =
-  getAppTextTheme(appFont, defaultTextTheme.merge(_darkTextTheme(darkColors)));
+  TextTheme darkTheme = getAppTextTheme(
+      appFont, defaultTextTheme.merge(_darkTextTheme(darkColors)));
   return ThemeData(
     primaryColor: darkColors.primaryContent,
     backgroundColor: darkColors.background,
     colorScheme: ColorScheme.dark(),
     primaryColorDark: darkColors.primaryContent,
+    brightness: Brightness.dark,
     focusColor: darkColors.primaryContent,
     scaffoldBackgroundColor: darkColors.background,
     appBarTheme: AppBarTheme(
@@ -55,13 +57,13 @@ ThemeData darkTheme(BaseColorStyles darkColors) {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: darkColors.bottomTabBarBackground,
       unselectedIconTheme:
-      IconThemeData(color: darkColors.bottomTabBarIconUnselected),
+          IconThemeData(color: darkColors.bottomTabBarIconUnselected),
       selectedIconTheme:
-      IconThemeData(color: darkColors.bottomTabBarIconSelected),
+          IconThemeData(color: darkColors.bottomTabBarIconSelected),
       unselectedLabelStyle:
-      TextStyle(color: darkColors.bottomTabBarLabelUnselected),
+          TextStyle(color: darkColors.bottomTabBarLabelUnselected),
       selectedLabelStyle:
-      TextStyle(color: darkColors.bottomTabBarLabelSelected),
+          TextStyle(color: darkColors.bottomTabBarLabelSelected),
       selectedItemColor: darkColors.bottomTabBarLabelSelected,
     ),
     textTheme: darkTheme,

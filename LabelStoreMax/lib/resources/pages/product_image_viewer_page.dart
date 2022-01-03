@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -33,8 +33,8 @@ class _ProductImageViewerPageState extends NyState<ProductImageViewerPage> {
   @override
   void initState() {
     Map<String, dynamic> imageData = widget.controller.data();
-    this._initialIndex = imageData['index'];
-    this._arrImageSrc = imageData['images'];
+    _initialIndex = imageData['index'];
+    _arrImageSrc = imageData['images'];
     super.initState();
   }
 
@@ -49,11 +49,11 @@ class _ProductImageViewerPageState extends NyState<ProductImageViewerPage> {
                 index: _initialIndex,
                 itemBuilder: (BuildContext context, int index) =>
                     CachedImageWidget(
-                  image: (_arrImageSrc.length == 0
+                  image: (_arrImageSrc.isEmpty
                       ? getEnv("PRODUCT_PLACEHOLDER_IMAGE")
                       : _arrImageSrc[index]),
                 ),
-                itemCount: _arrImageSrc.length == 0 ? 1 : _arrImageSrc.length,
+                itemCount: _arrImageSrc.isEmpty ? 1 : _arrImageSrc.length,
                 viewportFraction: 0.9,
                 scale: 0.95,
               ),

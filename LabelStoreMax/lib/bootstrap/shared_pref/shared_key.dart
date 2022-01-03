@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,4 +13,5 @@ class SharedKey {
   static const String cart = "CART_SESSION";
   static const String customerBillingDetails = "CS_BILLING_DETAILS";
   static const String customerShippingDetails = "CS_SHIPPING_DETAILS";
+  static const String wishlistProducts = "CS_WISHLIST_PRODUCTS";
 }

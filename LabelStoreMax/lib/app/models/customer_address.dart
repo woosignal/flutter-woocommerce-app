@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -39,13 +39,13 @@ class CustomerAddress {
   }
 
   bool hasMissingFields() =>
-      (this.firstName.isEmpty ||
-          this.lastName.isEmpty ||
-          this.addressLine.isEmpty ||
-          this.city.isEmpty ||
-          this.postalCode.isEmpty) ||
-      (this.customerCountry.hasState() == true
-          ? (this.customerCountry?.state?.name ?? "").isEmpty
+      (firstName.isEmpty ||
+          lastName.isEmpty ||
+          addressLine.isEmpty ||
+          city.isEmpty ||
+          postalCode.isEmpty) ||
+      (customerCountry.hasState() == true
+          ? (customerCountry?.state?.name ?? "").isEmpty
           : false);
 
   String addressFull() {
@@ -59,12 +59,11 @@ class CustomerAddress {
     if (postalCode != null && postalCode != "") {
       tmpArrAddress.add(postalCode);
     }
-    if (this.customerCountry != null &&
-        this.customerCountry?.state?.name != null) {
-      tmpArrAddress.add(this.customerCountry?.state?.name);
+    if (customerCountry != null && customerCountry?.state?.name != null) {
+      tmpArrAddress.add(customerCountry?.state?.name);
     }
-    if (this.customerCountry != null && this.customerCountry?.name != null) {
-      tmpArrAddress.add(this.customerCountry.name);
+    if (customerCountry != null && customerCountry?.name != null) {
+      tmpArrAddress.add(customerCountry.name);
     }
     return tmpArrAddress.join(", ");
   }
@@ -86,23 +85,23 @@ class CustomerAddress {
     addressLine = json['address_line'];
     city = json['city'];
     postalCode = json['postal_code'];
-    this.customerCountry = CustomerCountry.fromJson(json['customer_country']);
+    customerCountry = CustomerCountry.fromJson(json['customer_country']);
     emailAddress = json['email_address'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['address_line'] = this.addressLine;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
-    data['state'] = this.customerCountry.state;
-    data['country'] = this.customerCountry.name;
-    data['email_address'] = this.emailAddress;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['address_line'] = addressLine;
+    data['city'] = city;
+    data['postal_code'] = postalCode;
+    data['state'] = customerCountry.state;
+    data['country'] = customerCountry.name;
+    data['email_address'] = emailAddress;
     data['customer_country'] = null;
-    if (this.customerCountry != null) {
-      data['customer_country'] = this.customerCountry.toJson();
+    if (customerCountry != null) {
+      data['customer_country'] = customerCountry.toJson();
     }
     return data;
   }

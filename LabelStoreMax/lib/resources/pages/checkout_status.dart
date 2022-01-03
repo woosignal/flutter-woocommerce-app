@@ -1,13 +1,12 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/checkout_status_controller.dart';
@@ -17,7 +16,7 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:nylo_support/widgets/ny_state.dart';
 import 'package:nylo_support/widgets/ny_stateful_widget.dart';
-import 'package:woosignal/models/response/order.dart' as WS;
+import 'package:woosignal/models/response/order.dart' as ws_order;
 import 'package:nylo_support/helpers/helper.dart';
 
 import '../widgets/woosignal_ui.dart';
@@ -31,7 +30,7 @@ class CheckoutStatusPage extends NyStatefulWidget {
 }
 
 class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
-  WS.Order _order;
+  ws_order.Order _order;
 
   @override
   widgetDidLoad() async {
@@ -43,7 +42,6 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -94,7 +92,10 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                         border: Border(
                           bottom: BorderSide(color: Colors.black12, width: 1.0),
                         ),
-                        color: (Theme.of(context).brightness == Brightness.light) ? Colors.white : null),
+                        color:
+                            (Theme.of(context).brightness == Brightness.light)
+                                ? Colors.white
+                                : null),
                     padding: EdgeInsets.only(bottom: 20),
                   ),
                   Container(
@@ -121,11 +122,11 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                 alignment: Alignment.center,
               ),
               Expanded(
-                child: new ListView.builder(
+                child: ListView.builder(
                     itemCount:
                         _order.lineItems == null ? 0 : _order.lineItems.length,
                     itemBuilder: (BuildContext context, int index) {
-                      WS.LineItems lineItem = _order.lineItems[index];
+                      ws_order.LineItems lineItem = _order.lineItems[index];
                       return Container(
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,13 +165,16 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                           padding: EdgeInsets.all(16),
                           margin: EdgeInsets.all(8),
                           color:
-                          (Theme.of(context).brightness == Brightness.light) ? Colors.white : null);
+                              (Theme.of(context).brightness == Brightness.light)
+                                  ? Colors.white
+                                  : null);
                     }),
               ),
               Align(
                 child: LinkButton(
                   title: trans("Back to Home"),
-                  action: () => Navigator.pushNamed(context, "/home"),
+                  action: () =>
+                      Navigator.pushReplacementNamed(context, "/home"),
                 ),
                 alignment: Alignment.bottomCenter,
               ),

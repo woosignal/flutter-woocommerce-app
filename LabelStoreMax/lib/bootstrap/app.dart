@@ -62,11 +62,17 @@ class AppBuild extends StatelessWidget {
   Widget build(BuildContext context) {
     return LocalizedApp(
       child: ThemeProvider(
-        themes: appThemes.map((appTheme) => appTheme.toAppTheme(defaultTheme: appTheme.theme.brightness == Brightness.light ? lightTheme : darkTheme)).toList(),
+        themes: appThemes
+            .map((appTheme) => appTheme.toAppTheme(
+                defaultTheme: appTheme.theme.brightness == Brightness.light
+                    ? lightTheme
+                    : darkTheme))
+            .toList(),
         child: ThemeConsumer(
           child: Builder(
             builder: (themeContext) => ValueListenableBuilder(
-              valueListenable: ValueNotifier(locale ?? NyLocalization.instance.locale),
+              valueListenable:
+                  ValueNotifier(locale ?? NyLocalization.instance.locale),
               builder: (context, Locale locale, _) => MaterialApp(
                 navigatorKey: navigatorKey,
                 themeMode: themeMode,
@@ -86,8 +92,8 @@ class AppBuild extends StatelessWidget {
                 actions: actions,
                 title: title ?? "",
                 initialRoute: initialRoute,
-                onGenerateRoute: this.onGenerateRoute,
-                darkTheme: this.darkTheme == null ? ThemeConfig.dark().theme : this.darkTheme,
+                onGenerateRoute: onGenerateRoute,
+                darkTheme: darkTheme ?? ThemeConfig.dark().theme,
                 theme: themeData ?? ThemeProvider.themeOf(context).data,
                 localeResolutionCallback:
                     (Locale locale, Iterable<Locale> supportedLocales) {
@@ -95,7 +101,8 @@ class AppBuild extends StatelessWidget {
                 },
                 localizationsDelegates: NyLocalization.instance.delegates,
                 locale: NyLocalization.instance.locale,
-                supportedLocales: supportedLocales ?? NyLocalization.instance.locals(),
+                supportedLocales:
+                    supportedLocales ?? NyLocalization.instance.locals(),
               ),
             ),
           ),

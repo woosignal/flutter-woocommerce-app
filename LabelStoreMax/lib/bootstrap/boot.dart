@@ -12,12 +12,12 @@ import 'package:wp_json_api/wp_json_api.dart';
 
 /// boot application
 Future<void> boot() async {
-
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
 
-  await WooSignal.instance.init(appKey: getEnv('APP_KEY'), debugMode: getEnv('APP_DEBUG'));
+  await WooSignal.instance
+      .init(appKey: getEnv('APP_KEY'), debugMode: getEnv('APP_DEBUG'));
 
   // Notifications
   /// await Firebase.initializeApp(
@@ -78,7 +78,8 @@ Future<void> boot() async {
       );
     }
 
-    if (getEnv('DEFAULT_LOCALE', defaultValue: null) == null && wooSignalApp.locale != null) {
+    if (getEnv('DEFAULT_LOCALE', defaultValue: null) == null &&
+        wooSignalApp.locale != null) {
       locale = Locale(wooSignalApp.locale);
     } else {
       locale = Locale(envVal('DEFAULT_LOCALE', defaultValue: 'en'));
@@ -91,6 +92,5 @@ Future<void> boot() async {
       languageCode: locale.languageCode,
       languagesList: languagesList,
       assetsDirectory: assetsDirectory,
-      valuesAsMap: valuesAsMap
-  );
+      valuesAsMap: valuesAsMap);
 }

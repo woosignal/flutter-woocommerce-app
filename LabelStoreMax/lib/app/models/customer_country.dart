@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2021, WooSignal Ltd. All rights reserved.
+//  2022, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -40,16 +40,15 @@ class CustomerCountry {
     }
   }
 
-  bool hasState() =>
-      (this.state != null && this.state.name != null ? true : false);
+  bool hasState() => (state != null && state.name != null ? true : false);
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country_code'] = this.countryCode;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country_code'] = countryCode;
+    data['name'] = name;
     data['state'] = null;
-    if (this.state != null) {
-      data['state'] = this.state.toJson();
+    if (state != null) {
+      data['state'] = state.toJson();
     }
     return data;
   }
