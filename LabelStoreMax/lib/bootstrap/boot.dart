@@ -39,7 +39,6 @@ Future<void> boot() async {
   /// if (settings.authorizationStatus == AuthorizationStatus.authorized) {
   ///   String token = await messaging.getToken();
   ///   WooSignal.instance.setFcmToken(token);
-  ///   AppHelper.instance.fcmToken = token;
   /// }
 
   AppHelper?.instance?.appConfig = WooSignalApp();

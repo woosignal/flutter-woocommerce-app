@@ -1,3 +1,7 @@
+## [5.6.1] - 2022-01-05
+
+* Fix bug with bottom navigation bar in Notic theme
+
 ## [5.6.0] - 2022-01-03
 
 * Fix bug with banner in Mello theme
