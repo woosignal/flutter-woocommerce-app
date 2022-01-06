@@ -8,7 +8,7 @@
 
 ### Change App Icon
 # 1 Replace: public/assets/icon/appicon.png (1024px1024px icon size)
-# 2 Run this command from the terminal: "flutter pub run nylo_framework:main appicons:build"
+# 2 Run this command from the terminal: "flutter pub run flutter_launcher_icons:main"
 
 ### Uploading the IOS/Android app
 # IOS https://flutter.dev/docs/deployment/ios
