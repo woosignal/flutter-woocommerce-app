@@ -42,7 +42,6 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.wooSignalApp.wishlistEnabled);
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(

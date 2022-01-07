@@ -58,6 +58,7 @@ class CcompoThemeWidgetState extends State<CompoThemeWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: activeWidget,
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: allNavWidgets == null
           ? AppLoaderWidget()
           : BottomNavigationBar(

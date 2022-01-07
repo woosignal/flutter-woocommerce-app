@@ -161,7 +161,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                 } else if (mode == LoadStatus.canLoading) {
                                   body = Text(trans("release to load more"));
                                 } else {
-                                  body = Text(trans("No more products"));
+                                  return Container();
                                 }
                                 return Container(
                                   height: 55.0,
