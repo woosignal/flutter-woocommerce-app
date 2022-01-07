@@ -58,6 +58,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: activeWidget,
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: allNavWidgets == null
           ? AppLoaderWidget() : BottomNavigationBar(
         onTap: (currentIndex) =>
