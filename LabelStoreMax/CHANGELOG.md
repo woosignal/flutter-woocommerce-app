@@ -5,7 +5,7 @@
 
 ## [5.6.1] - 2022-01-05
 
-* Fix bug with bottom navigation bar in Notic theme
+* Fix bug with bottom navigation bar in Notic themes
 
 ## [5.6.0] - 2022-01-03
 
