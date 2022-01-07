@@ -23,7 +23,7 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasDisableShipping = wooSignalApp.disableShipping == 1;
     if (hasDisableShipping == true) {
-      return null;
+      return Container();
     }
     bool hasSelectedShippingType = checkoutSession.shippingType != null;
     return CheckoutRowLine(
