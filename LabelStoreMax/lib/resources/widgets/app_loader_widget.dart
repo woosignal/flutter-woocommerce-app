@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class AppLoaderWidget extends StatelessWidget {
   const AppLoaderWidget({Key key}) : super(key: key);
@@ -19,6 +18,6 @@ class AppLoaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return SpinKitDoubleBounce(
-        color: HexColor(!isDark ? "#424242" : "#c7c7c7"));
+        color: Color(!isDark ? 0xFF424242 : 0xFFC7C7C7));
   }
 }

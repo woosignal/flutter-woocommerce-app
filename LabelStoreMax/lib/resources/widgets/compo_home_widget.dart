@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
@@ -29,16 +30,18 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
 
   _loadHome() async {
     categories = await appWooSignal((api) =>
-        api.getProductCategories(parent: 0, perPage: 20, hideEmpty: true));
+        api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true));
     categories.sort((category1, category2) =>
         category1.menuOrder.compareTo(category2.menuOrder));
 
     for (var category in categories) {
-      List<Product> products = await appWooSignal((api) => api.getProducts(
-          perPage: 10,
-          category: category.id.toString(),
-          status: "publish",
-          stockStatus: "instock"));
+      List<Product> products = await appWooSignal(
+        (api) => api.getProducts(
+            perPage: 10,
+            category: category.id.toString(),
+            status: "publish",
+            stockStatus: "instock"),
+      );
       if (products.isNotEmpty) {
         categoryAndProducts.addAll({category: products});
         setState(() {});
@@ -106,7 +109,8 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.cover,
                                   ),
-                                  onTap: () => _showCategory(catProds.key))
+                                  onTap: () => _showCategory(catProds.key),
+                                )
                               : null,
                           ConstrainedBox(
                             constraints: BoxConstraints(
@@ -123,7 +127,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: Text(
+                                    child: AutoSizeText(
                                       catProds.key.name,
                                       style: Theme.of(context)
                                           .textTheme
@@ -131,6 +135,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                                           .copyWith(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 22),
+                                      maxLines: 1,
                                     ),
                                   ),
                                   Flexible(

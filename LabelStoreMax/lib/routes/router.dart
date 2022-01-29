@@ -17,9 +17,11 @@ import 'package:flutter_app/resources/pages/coupon_page.dart';
 import 'package:flutter_app/resources/pages/customer_countries.dart';
 import 'package:flutter_app/resources/pages/home.dart';
 import 'package:flutter_app/resources/pages/home_search.dart';
+import 'package:flutter_app/resources/pages/leave_review_page.dart';
 import 'package:flutter_app/resources/pages/no_connection_page.dart';
 import 'package:flutter_app/resources/pages/product_detail.dart';
 import 'package:flutter_app/resources/pages/product_image_viewer_page.dart';
+import 'package:flutter_app/resources/pages/product_reviews_page.dart';
 import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
 import 'package:flutter_app/resources/widgets/checkout_paypal.dart';
 import 'package:nylo_support/router/router.dart';
@@ -45,6 +47,12 @@ appRouter() => nyRoutes((router) {
           transition: PageTransitionType.fade);
 
       router.route("/product-detail", (context) => ProductDetailPage(),
+          transition: PageTransitionType.rightToLeftWithFade);
+
+      router.route("/product-reviews", (context) => ProductReviewsPage(),
+          transition: PageTransitionType.rightToLeftWithFade);
+
+      router.route("/product-leave-review", (context) => LeaveReviewPage(),
           transition: PageTransitionType.rightToLeftWithFade);
 
       router.route("/product-images", (context) => ProductImageViewerPage(),

@@ -17,7 +17,6 @@ import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/order.dart';
@@ -343,7 +342,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: HexColor("#fcfcfc"),
+                                  color: Color(0xFFFCFCFC),
                                   width: 1,
                                 ),
                               ),

@@ -60,21 +60,22 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
       body: activeWidget,
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: allNavWidgets == null
-          ? AppLoaderWidget() : BottomNavigationBar(
-        onTap: (currentIndex) =>
-            _changeMainWidget(currentIndex, allNavWidgets),
-        currentIndex: _currentIndex,
-        unselectedItemColor: Colors.black54,
-        fixedColor: Colors.black87,
-        selectedLabelStyle: TextStyle(color: Colors.black),
-        unselectedLabelStyle: TextStyle(
-          color: Colors.black87,
-        ),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items:
-        allNavWidgets.map((e) => e.bottomNavigationBarItem).toList(),
-      ),
+          ? AppLoaderWidget()
+          : BottomNavigationBar(
+              onTap: (currentIndex) =>
+                  _changeMainWidget(currentIndex, allNavWidgets),
+              currentIndex: _currentIndex,
+              unselectedItemColor: Colors.black54,
+              fixedColor: Colors.black87,
+              selectedLabelStyle: TextStyle(color: Colors.black),
+              unselectedLabelStyle: TextStyle(
+                color: Colors.black87,
+              ),
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              items:
+                  allNavWidgets.map((e) => e.bottomNavigationBarItem).toList(),
+            ),
     );
   }
 
@@ -122,12 +123,12 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
       items.add(BottomNavItem(
         id: 5,
         bottomNavigationBarItem:
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         tabWidget: (await authCheck())
             ? AccountDetailPage(showLeadingBackButton: false)
             : AccountLandingPage(
-          showBackButton: false,
-        ),
+                showBackButton: false,
+              ),
       ));
     }
     return items;

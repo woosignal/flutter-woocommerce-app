@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "Ce produit a été supprimé de votre liste de souhaits",
   "This product has been added to your wishlist": "Ce produit a été ajouté à votre liste de souhaits",
   "Spend a minimum of minimumAmount to redeem": "Dépensez un minimum de {{minimumAmount}} de racheter",
-  "Spend less than maximumAmount to redeem": "Dépensez moins de {{maximumAmount}} de racheter"
+  "Spend less than maximumAmount to redeem": "Dépensez moins de {{maximumAmount}} de racheter",
+  "Related products": "Produits connexes",
+  "Reviews": "Commentaires",
+  "There are no reviews yet.": "Il n'y a pas encore de critiques.",
+  "More": "Suite",
+  "You may also like": "Tu pourrais aussi aimer",
+  "Leave a review": "Laisser un commentaire",
+  "How would you rate": "Comment évalueriez-vous",
+  "Submit": "Soumettre",
+  "Your review has been submitted": "Votre avis a été soumis"
 }

@@ -25,7 +25,7 @@ class CheckoutCouponAmountWidget extends StatelessWidget {
               return Text("");
             } else {
               if (checkoutSession.coupon == null) {
-                return Container();
+                return SizedBox.shrink();
               }
               return Padding(
                 child: CheckoutMetaLine(

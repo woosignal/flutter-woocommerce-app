@@ -14,7 +14,6 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:nylo_support/widgets/ny_state.dart';
 import 'package:nylo_support/widgets/ny_stateful_widget.dart';
@@ -63,12 +62,15 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    "${trans("Date Ordered").capitalize()}: " +
-                        dateFormatted(
-                          date: _order.dateCreated,
-                          formatType: formatForDateTime(FormatType.date),
-                        ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: Text(
+                      "${trans("Date Ordered").capitalize()}: " +
+                          dateFormatted(
+                            date: _order.dateCreated,
+                            formatType: formatForDateTime(FormatType.date),
+                          ),
+                    ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 10, bottom: 10),
@@ -116,6 +118,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                   Expanded(
                     child: ListView.builder(
                       itemBuilder: (cxt, i) {
+                        LineItems lineItem = _order.lineItems[i];
                         return Card(
                           child: ListTile(
                             contentPadding: EdgeInsets.only(
@@ -124,7 +127,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                      color: HexColor("#fcfcfc"), width: 1),
+                                      color: Color(0xFFFCFCFC), width: 1),
                                 ),
                               ),
                               child: Row(
@@ -134,14 +137,13 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                 children: <Widget>[
                                   Flexible(
                                     child: Text(
-                                      _order.lineItems[i].name,
+                                      lineItem.name,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Text(
-                                    formatStringCurrency(
-                                            total: _order.lineItems[i].price)
+                                    formatStringCurrency(total: lineItem.price)
                                         .capitalize(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -163,7 +165,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                     children: <Widget>[
                                       Text(
                                         formatStringCurrency(
-                                          total: _order.lineItems[i].total,
+                                          total: lineItem.total,
                                         ),
                                         style: Theme.of(context)
                                             .textTheme
@@ -174,7 +176,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        "x${_order.lineItems[i].quantity.toString()}",
+                                        "x${lineItem.quantity.toString()}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText1,

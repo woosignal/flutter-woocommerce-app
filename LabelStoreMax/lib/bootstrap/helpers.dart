@@ -99,7 +99,7 @@ List<PaymentType> getPaymentTypes() {
 }
 
 dynamic envVal(String envVal, {dynamic defaultValue}) =>
-    (getEnv(envVal) == null ? defaultValue : getEnv(envVal));
+    (getEnv(envVal) ?? defaultValue);
 
 PaymentType addPayment(
         {@required int id,
@@ -372,7 +372,7 @@ navigatorPush(BuildContext context,
   if (forgetAll) {
     Navigator.of(context).pushNamedAndRemoveUntil(
         routeName, (Route<dynamic> route) => false,
-        arguments: arguments ?? null);
+        arguments: arguments);
   }
   if (forgetLast != null) {
     int count = 0;
@@ -380,7 +380,7 @@ navigatorPush(BuildContext context,
       return count++ == forgetLast;
     });
   }
-  Navigator.of(context).pushNamed(routeName, arguments: arguments ?? null);
+  Navigator.of(context).pushNamed(routeName, arguments: arguments);
 }
 
 PlatformDialogAction dialogAction(BuildContext context,
@@ -552,6 +552,16 @@ Future<List<dynamic>> getWishlistProducts() async {
         (jsonDecode(currentProductsJSON) as List<dynamic>).toList();
   }
   return favouriteProducts;
+}
+
+hasAddedWishlistProduct(int productId) async {
+  List<dynamic> favouriteProducts = await getWishlistProducts();
+  List<int> productIds =
+  favouriteProducts.map((e) => e['id']).cast<int>().toList();
+  if (productIds.isEmpty) {
+   return false;
+  }
+  return productIds.contains(productId);
 }
 
 saveWishlistProduct({@required Product product}) async {

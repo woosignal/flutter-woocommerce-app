@@ -57,6 +57,8 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
             ),
             if (["compo"].contains(_themeType) == false)
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     child: Text(

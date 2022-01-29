@@ -11,7 +11,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -54,7 +53,7 @@ class SecondaryButton extends StatelessWidget {
         textStyle: Theme.of(context).textTheme.bodyText1.copyWith(
               color: Colors.black87,
             ),
-        bgColor: HexColor("#f6f6f9"),
+        bgColor: Color(0xFFF6F6F9),
       );
 }
 

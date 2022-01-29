@@ -1,3 +1,13 @@
+## [5.7.0] - 2022-01-29
+
+* Refactor product detail page
+* View HTML in description on the product detail page
+* Allow upsell products to be viewed on the Product detail page (if enabled)
+* Allow related products to be viewed on the Product detail page (if enabled)
+* Allow product reviews to be view on the product page (if enabled)
+* Flutter format in /resources
+* Pubspec.yaml dependency updates
+
 ## [5.6.2] - 2022-01-07
 
 * Fix null return in CheckoutShippingTypeWidget

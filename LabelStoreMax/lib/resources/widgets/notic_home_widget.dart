@@ -161,7 +161,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                 } else if (mode == LoadStatus.canLoading) {
                                   body = Text(trans("release to load more"));
                                 } else {
-                                  return Container();
+                                  return SizedBox.shrink();
                                 }
                                 return Container(
                                   height: 55.0,

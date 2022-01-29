@@ -22,7 +22,6 @@ import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dar
 import 'package:flutter_app/resources/widgets/top_nav_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:nylo_support/helpers/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/products.dart';
@@ -303,7 +302,7 @@ class CheckoutMetaLine extends StatelessWidget {
 
 List<BoxShadow> wsBoxShadow({double blurRadius}) => [
       BoxShadow(
-        color: HexColor("#e8e8e8"),
+        color: Color(0xFFE8E8E8),
         blurRadius: blurRadius ?? 15.0,
         spreadRadius: 0,
         offset: Offset(
@@ -452,7 +451,10 @@ class ProductItemContainer extends StatelessWidget {
               ].where((e) => e != null).toList(),
             ),
           ),
-          onTap: () => onTap(product),
+          onTap: () => onTap != null
+              ? onTap(product)
+              : Navigator.pushNamed(context, "/product-detail",
+                  arguments: product),
         ),
       );
 }

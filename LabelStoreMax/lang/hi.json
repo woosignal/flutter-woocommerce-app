@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "yah utpaad aapakee ichchha soochee se hata diya gaya hai",
   "This product has been added to your wishlist": "is utpaad ko aapakee vish - list mein jod diya gaya hai",
   "Spend a minimum of minimumAmount to redeem": "kam se kam kharch karen {{minimumAmount}} ke evaj mein lena",
-  "Spend less than maximumAmount to redeem": "se kam kharch karen {{maximumAmount}} ke evaj mein lena"
+  "Spend less than maximumAmount to redeem": "se kam kharch karen {{maximumAmount}} ke evaj mein lena",
+  "Related products": "sambandhit utpaad",
+  "Reviews": "sameeksha",
+  "There are no reviews yet.": "abhee tak koee sameeksha nahin.",
+  "More": "adhik",
+  "You may also like": "aapako yah bhee pasand aa sakata hain",
+  "Leave a review": "sameeksha likhen",
+  "How would you rate": "aap ise kya ret karate hain",
+  "Submit": "prastut karana",
+  "Your review has been submitted": "aapakee sameeksha jama ho chukee hai"
 }
