@@ -23,7 +23,7 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasDisableShipping = wooSignalApp.disableShipping == 1;
     if (hasDisableShipping == true) {
-      return Container();
+      return SizedBox.shrink();
     }
     bool hasSelectedShippingType = checkoutSession.shippingType != null;
     return CheckoutRowLine(
@@ -42,10 +42,12 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
     CustomerAddress shippingAddress =
         checkoutSession.billingDetails.shippingAddress;
     if (shippingAddress == null || shippingAddress.customerCountry == null) {
-      showToastNotification(context,
-          title: trans("Oops"),
-          description: trans("Add your shipping details first"),
-          icon: Icons.local_shipping);
+      showToastNotification(
+        context,
+        title: trans("Oops"),
+        description: trans("Add your shipping details first"),
+        icon: Icons.local_shipping,
+      );
       return;
     }
     Navigator.pushNamed(context, "/checkout-shipping-type")

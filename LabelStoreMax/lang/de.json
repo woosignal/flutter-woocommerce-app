@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "Dieses Produkt wurde von Ihrer Wunschliste entfernt",
   "This product has been added to your wishlist": "Dieses Produkt wurde Ihrer Wunschliste hinzugefügt",
   "Spend a minimum of minimumAmount to redeem": "Verbringen Sie mindestens {{minimumAmount}} einlösen",
-  "Spend less than maximumAmount to redeem": "Geben Sie weniger aus als {{maximumAmount}} einlösen"
+  "Spend less than maximumAmount to redeem": "Geben Sie weniger aus als {{maximumAmount}} einlösen",
+  "Related products": "Verwandte Produkte",
+  "Reviews": "Bewertungen",
+  "There are no reviews yet.": "Es gibt noch keine Bewertungen.",
+  "More": "Mehr",
+  "You may also like": "Sie können auch mögen",
+  "Leave a review": "Hinterlassen Sie eine Bewertung",
+  "How would you rate": "Wie beurteilen Sie",
+  "Submit": "einreichen",
+  "Your review has been submitted": "Ihre Bewertung wurde übermittelt"
 }

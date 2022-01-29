@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "Bu ürün istek listenizden kaldırıldı",
   "This product has been added to your wishlist": "Bu ürün istek listenize eklendi",
   "Spend a minimum of minimumAmount to redeem": "Minimum harcamak {{minimumAmount}} rehinden kurtarmak",
-  "Spend less than maximumAmount to redeem": "Şundan daha az harcayın: {{maximumAmount}} rehinden kurtarmak"
+  "Spend less than maximumAmount to redeem": "Şundan daha az harcayın: {{maximumAmount}} rehinden kurtarmak",
+  "Related products": "İlgili ürünler",
+  "Reviews": "incelemeler",
+  "There are no reviews yet.": "Henüz yorum yok.",
+  "More": "Daha",
+  "You may also like": "Şunlar da hoşunuza gidebilir",
+  "Leave a review": "İnceleme bırak",
+  "How would you rate": "Nasıl değerlendirirsiniz",
+  "Submit": "Göndermek",
+  "Your review has been submitted": "İncelemeniz gönderildi"
 }

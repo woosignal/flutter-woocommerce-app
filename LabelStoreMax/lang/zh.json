@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "该产品已从您的愿望清单中删除",
   "This product has been added to your wishlist": "本产品已经被加入你的心愿单",
   "Spend a minimum of minimumAmount to redeem": "至少花费 {{minimumAmount}} 赎回",
-  "Spend less than maximumAmount to redeem": "花费少于 {{maximumAmount}} 赎回"
+  "Spend less than maximumAmount to redeem": "花费少于 {{maximumAmount}} 赎回",
+  "Related products": "相关产品",
+  "Reviews": "评论",
+  "There are no reviews yet.": "还没有评论。",
+  "More": "更多的",
+  "You may also like": "你可能也会喜欢",
+  "Leave a review": "发表评论",
+  "How would you rate": "你如何评价",
+  "Submit": "提交",
+  "Your review has been submitted": "您的评论已提交"
 }

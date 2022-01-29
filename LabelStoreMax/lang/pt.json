@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "Este produto foi removido da sua lista de desejos",
   "This product has been added to your wishlist": "Este produto foi adicionado à sua lista de desejos",
   "Spend a minimum of minimumAmount to redeem": "Gaste um mínimo de {{minimumAmount}} redimir",
-  "Spend less than maximumAmount to redeem": "Gaste menos que {{maximumAmount}} redimir"
+  "Spend less than maximumAmount to redeem": "Gaste menos que {{maximumAmount}} redimir",
+  "Related products": "Produtos relacionados",
+  "Reviews": "Avaliações",
+  "There are no reviews yet.": "Não há comentários ainda.",
+  "More": "Mais",
+  "You may also like": "você pode gostar",
+  "Leave a review": "Deixe um comentário",
+  "How would you rate": "Como você avaliaria",
+  "Submit": "Enviar",
+  "Your review has been submitted": "Sua avaliação foi enviada"
 }

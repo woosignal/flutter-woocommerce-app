@@ -131,7 +131,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
   }
 
   _handleCountryTapped(DefaultShipping defaultShipping) {
-    if (defaultShipping.states.length > 0) {
+    if (defaultShipping.states.isNotEmpty) {
       _handleStates(defaultShipping);
       return;
     }

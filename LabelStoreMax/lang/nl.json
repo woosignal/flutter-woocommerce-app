@@ -210,5 +210,14 @@
   "This product has been removed from your wishlist": "Dit product is van je verlanglijst verwijderd",
   "This product has been added to your wishlist": "Dit product is toegevoegd aan je verlanglijst",
   "Spend a minimum of minimumAmount to redeem": "Besteed minimaal € {{minimumAmount}} verlossen",
-  "Spend less than maximumAmount to redeem": "Minder uitgeven dan {{maximumAmount}} verlossen"
+  "Spend less than maximumAmount to redeem": "Minder uitgeven dan {{maximumAmount}} verlossen",
+  "Related products": "Gerelateerde producten",
+  "Reviews": "Beoordelingen",
+  "There are no reviews yet.": "Er zijn nog geen beoordelingen.",
+  "More": "Meer",
+  "You may also like": "Dit vind je misschien ook leuk",
+  "Leave a review": "Laat je mening achter",
+  "How would you rate": "Hoe zou jij beoordelen",
+  "Submit": "Indienen",
+  "Your review has been submitted": "Uw beoordeling is verzonden"
 }
