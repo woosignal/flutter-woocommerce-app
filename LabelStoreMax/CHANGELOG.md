@@ -11,7 +11,7 @@
 ## [5.6.2] - 2022-01-07
 
 * Fix null return in CheckoutShippingTypeWidget
-* Add resizeToAvoidBottomInset: false to notic and compo theme
+* Add resizeToAvoidBottomInset: false to notic and compo themes
 
 ## [5.6.1] - 2022-01-05
 
