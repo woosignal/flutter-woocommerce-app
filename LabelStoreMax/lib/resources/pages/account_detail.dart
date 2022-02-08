@@ -98,9 +98,16 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     if (activeBody == null) {
       return SizedBox.shrink();
     }
-    if (_wcCustomerInfoResponse != null) {
-      print('here');
-      print(_wcCustomerInfoResponse.data.avatar);
+    String userAvatar;
+    String userFirstName = "";
+    String userLastName = "";
+    if (_wcCustomerInfoResponse != null && _wcCustomerInfoResponse.data != null) {
+      userAvatar = _wcCustomerInfoResponse.data.avatar;
+
+      userFirstName = _wcCustomerInfoResponse
+          .data.firstName;
+      userLastName = _wcCustomerInfoResponse
+          .data.lastName;
     }
     return Scaffold(
       appBar: AppBar(
@@ -135,10 +142,8 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(top: 10),
-                              child: _wcCustomerInfoResponse != null ? CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  _wcCustomerInfoResponse.data.avatar,
-                                ),
+                              child: userAvatar != null ? CircleAvatar(
+                                backgroundImage: NetworkImage(userAvatar),
                               ) : Icon(Icons.account_circle_rounded, size: 65,),
                               height: 90,
                               width: 90,
@@ -156,18 +161,13 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                           MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Text(
-                                          (_wcCustomerInfoResponse == null
-                                              ? ""
-                                              : [
-                                                  _wcCustomerInfoResponse
-                                                      .data.firstName,
-                                                  _wcCustomerInfoResponse
-                                                      .data.lastName
-                                                ]
-                                                  .where((t) =>
-                                                      (t != null || t != ""))
-                                                  .toList()
-                                                  .join(" ")),
+                                          [
+                                            userFirstName,
+                                            userLastName
+                                          ].where((t) =>
+                                          (t != null || t != ""))
+                                              .toList()
+                                              .join(" "),
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
