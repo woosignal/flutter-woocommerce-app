@@ -1,3 +1,11 @@
+## [5.7.1] - 2022-02-07
+
+* Refactor account order detail page
+* Fix continuous loading if users has no orders
+* New styling for tabs in the account order detail page
+* Small refactor to controller loading
+* Pubspec.yaml dependency updates
+
 ## [5.7.0] - 2022-01-29
 
 * Refactor product detail page

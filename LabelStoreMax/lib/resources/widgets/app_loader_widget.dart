@@ -18,6 +18,7 @@ class AppLoaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return SpinKitDoubleBounce(
-        color: Color(!isDark ? 0xFF424242 : 0xFFC7C7C7));
+      color: Color(!isDark ? 0xFF424242 : 0xFFC7C7C7),
+    );
   }
 }

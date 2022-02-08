@@ -83,10 +83,12 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
 
   void _onRefresh() async {
     _productSearchLoaderController.clear();
-    _shouldStopRequests = false;
-
     await fetchProducts();
-    _refreshController.refreshCompleted();
+
+    setState(() {
+      _shouldStopRequests = false;
+      _refreshController.refreshCompleted(resetFooterState: true);
+    });
   }
 
   void _onLoading() async {

@@ -94,10 +94,12 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
 
   void _onRefresh() async {
     _productCategorySearchLoaderController.clear();
-    _shouldStopRequests = false;
-
     await fetchProducts();
-    _refreshController.refreshCompleted();
+
+    setState(() {
+      _shouldStopRequests = false;
+      _refreshController.refreshCompleted(resetFooterState: true);
+    });
   }
 
   void _onLoading() async {

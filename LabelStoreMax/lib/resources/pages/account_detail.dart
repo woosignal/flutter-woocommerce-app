@@ -9,17 +9,15 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/customer_orders_loader_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
+import 'package:flutter_app/resources/widgets/account_detail_orders_widget.dart';
+import 'package:flutter_app/resources/widgets/account_detail_settings_widget.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:woosignal/models/response/order.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -32,35 +30,16 @@ class AccountDetailPage extends StatefulWidget {
 
 class _AccountDetailPageState extends State<AccountDetailPage>
     with SingleTickerProviderStateMixin {
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-  final CustomerOrdersLoaderController _customerOrdersLoaderController =
-      CustomerOrdersLoaderController();
-
-  bool _shouldStopRequests = false, _isLoading = true, _isLoadingOrders = true;
-
+  TabController _tabController;
+  bool _isLoading = true;
   int _currentTabIndex = 0;
   WCCustomerInfoResponse _wcCustomerInfoResponse;
-  Widget _activeBody;
-
-  TabController _tabController;
-  List<Tab> _tabs = [];
 
   @override
   void initState() {
     super.initState();
-    _tabs = [
-      Tab(text: ""),
-      Tab(text: ""),
-    ];
-    _tabController = TabController(vsync: this, length: _tabs.length);
-    _activeBody = AppLoaderWidget();
-    init();
-  }
-
-  init() async {
-    await _fetchWpUserData();
-    await fetchOrders();
+    _tabController = TabController(vsync: this, length: 2);
+    _fetchWpUserData();
   }
 
   _fetchWpUserData() async {
@@ -93,10 +72,23 @@ class _AccountDetailPageState extends State<AccountDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    _tabs = [
-      Tab(text: trans("Orders")),
-      Tab(text: trans("Settings")),
-    ];
+    Widget activeBody;
+    if (_currentTabIndex == 0) {
+      activeBody = AccountDetailOrdersWidget();
+    } else if (_currentTabIndex == 1) {
+      activeBody = AccountDetailSettingsWidget(
+        refreshAccount: () {
+          setState(() {
+            _isLoading = true;
+          });
+          _fetchWpUserData();
+        },
+      );
+    }
+
+    if (activeBody == null) {
+      return SizedBox.shrink();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -182,13 +174,17 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                         ),
                         Padding(
                           child: TabBar(
-                            tabs: _tabs,
+                            tabs: [
+                              Tab(text: trans("Orders")),
+                              Tab(text: trans("Settings")),
+                            ],
                             controller: _tabController,
                             indicatorSize: TabBarIndicatorSize.tab,
                             labelColor: Colors.white,
                             unselectedLabelColor: Colors.black87,
                             indicator: BubbleTabIndicator(
-                              indicatorHeight: 25.0,
+                              indicatorHeight: 30.0,
+                              indicatorRadius: 5,
                               indicatorColor: Colors.black87,
                               tabBarIndicatorSize: TabBarIndicatorSize.tab,
                             ),
@@ -207,7 +203,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                       color: ThemeColor.get(context).backgroundContainer,
                     ),
                   ),
-                  Expanded(child: _activeBody),
+                  Expanded(child: activeBody),
                 ],
               ),
       ),
@@ -221,259 +217,8 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   }
 
   _tabsTapped(int i) {
-    _currentTabIndex = i;
     setState(() {
-      if (_currentTabIndex == 0) {
-        _activeBody = _widgetOrders();
-      } else {
-        _activeBody = _widgetSettings();
-      }
+      _currentTabIndex = i;
     });
   }
-
-  ListView _widgetSettings() {
-    return ListView(
-      children: <Widget>[
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text(trans("Update details")),
-            onTap: () =>
-                Navigator.pushNamed(context, "/account-update").then((onValue) {
-              setState(() {
-                _isLoading = true;
-              });
-              _fetchWpUserData();
-            }),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.local_shipping),
-            title: Text(trans("Shipping Details")),
-            onTap: () =>
-                Navigator.pushNamed(context, "/account-shipping-details"),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.credit_card),
-            title: Text(trans("Billing Details")),
-            onTap: () =>
-                Navigator.pushNamed(context, "/account-billing-details"),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text(trans("Logout")),
-            onTap: () => authLogout(context),
-          ),
-        ),
-      ],
-    );
-  }
-
-  fetchOrders() async {
-    String userId = await readUserId();
-    if (userId == null) {
-      setState(() {
-        _isLoadingOrders = false;
-        _activeBody = _widgetOrders();
-      });
-      return;
-    }
-    await _customerOrdersLoaderController.loadOrders(
-        hasResults: (result) {
-          if (result == false) {
-            _isLoadingOrders = false;
-            _shouldStopRequests = true;
-            _activeBody = _widgetOrders();
-            return false;
-          }
-          return true;
-        },
-        didFinish: () => setState(() {
-              _isLoadingOrders = false;
-              _activeBody = _widgetOrders();
-            }),
-        userId: userId);
-  }
-
-  Widget _widgetOrders() {
-    List<Order> orders = _customerOrdersLoaderController.getResults();
-    return _isLoadingOrders
-        ? AppLoaderWidget()
-        : SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            footer: CustomFooter(
-              builder: (BuildContext context, LoadStatus mode) {
-                Widget body;
-                if (mode == LoadStatus.idle) {
-                  body = Text(trans("pull up load"));
-                } else if (mode == LoadStatus.loading) {
-                  body = CupertinoActivityIndicator();
-                } else if (mode == LoadStatus.failed) {
-                  body = Text(trans("Load Failed! Click retry!"));
-                } else if (mode == LoadStatus.canLoading) {
-                  body = Text(trans("release to load more"));
-                } else {
-                  body = Text(trans("No more orders"));
-                }
-                return Container(
-                  height: 55.0,
-                  child: Center(child: body),
-                );
-              },
-            ),
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            child: (orders.isNotEmpty
-                ? ListView.builder(
-                    itemBuilder: (cxt, i) {
-                      Order order = orders[i];
-                      return Card(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.only(
-                              top: 5, bottom: 5, left: 8, right: 6),
-                          title: Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xFFFCFCFC),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "#${order.id.toString()}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  order.status.capitalize(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      formatStringCurrency(total: order.total),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2
-                                          .copyWith(
-                                              fontWeight: FontWeight.w600),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    Text(
-                                      order.lineItems.length.toString() +
-                                          " " +
-                                          trans("items"),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith(
-                                              fontWeight: FontWeight.w600),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  dateFormatted(
-                                        date: order.dateCreated,
-                                        formatType:
-                                            formatForDateTime(FormatType.date),
-                                      ) +
-                                      "\n" +
-                                      dateFormatted(
-                                        date: order.dateCreated,
-                                        formatType:
-                                            formatForDateTime(FormatType.time),
-                                      ),
-                                  textAlign: TextAlign.right,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1
-                                      .copyWith(
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          trailing: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(Icons.chevron_right),
-                            ],
-                          ),
-                          onTap: () => _viewProfileDetail(i),
-                        ),
-                      );
-                    },
-                    itemCount: orders.length,
-                  )
-                : Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.shopping_cart,
-                          color: Colors.black54,
-                          size: 40,
-                        ),
-                        Text(
-                          trans("No orders found"),
-                        ),
-                      ],
-                    ),
-                  )),
-          );
-  }
-
-  void _onRefresh() async {
-    _customerOrdersLoaderController.clear();
-    _shouldStopRequests = false;
-
-    await fetchOrders();
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async {
-    await fetchOrders();
-
-    if (mounted) {
-      setState(() {});
-      if (_shouldStopRequests) {
-        _refreshController.loadNoData();
-      } else {
-        _refreshController.loadComplete();
-      }
-    }
-  }
-
-  _viewProfileDetail(int i) => Navigator.pushNamed(
-        context,
-        "/account-order-detail",
-        arguments: _customerOrdersLoaderController.getResults()[i].id,
-      );
 }
