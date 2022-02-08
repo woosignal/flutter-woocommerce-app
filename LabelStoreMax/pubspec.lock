@@ -377,7 +377,7 @@ packages:
       name: flutter_widget_from_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.4"
+    version: "0.8.5"
   flutter_widget_from_html_core:
     dependency: transitive
     description:
@@ -447,7 +447,7 @@ packages:
       name: fwfh_webview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.2+1"
+    version: "0.6.2+2"
   glob:
     dependency: transitive
     description:

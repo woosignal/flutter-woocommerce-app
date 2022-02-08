@@ -29,6 +29,8 @@ class ProductCategorySearchLoaderController
             category: productCategory.id.toString(),
             page: page,
             status: "publish",
-            stockStatus: "instock"));
+            stockStatus: "instock",
+        ),
+    );
   }
 }

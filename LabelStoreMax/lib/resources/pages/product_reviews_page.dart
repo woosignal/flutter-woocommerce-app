@@ -175,10 +175,12 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
 
   _onRefresh() async {
     _productReviewsLoaderController.clear();
-    _shouldStopRequests = false;
-
     await fetchProductReviews();
-    _refreshController.refreshCompleted();
+
+    setState(() {
+      _shouldStopRequests = false;
+      _refreshController.refreshCompleted(resetFooterState: true);
+    });
   }
 
   _onLoading() async {

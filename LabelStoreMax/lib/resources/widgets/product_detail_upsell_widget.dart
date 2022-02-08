@@ -132,10 +132,12 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
 
   _onRefresh() async {
     _productLoaderController.clear();
-    _shouldStopRequests = false;
-
     await fetchProducts();
-    _refreshControllerUpsell.refreshCompleted();
+
+    setState(() {
+      _shouldStopRequests = false;
+      _refreshControllerUpsell.refreshCompleted(resetFooterState: true);
+    });
   }
 
   _onLoading() async {

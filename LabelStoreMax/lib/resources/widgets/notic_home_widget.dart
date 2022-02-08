@@ -209,10 +209,12 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
 
   _onRefresh() async {
     _productLoaderController.clear();
-    _shouldStopRequests = false;
-
     await fetchProducts();
-    _refreshController.refreshCompleted();
+
+    setState(() {
+      _shouldStopRequests = false;
+      _refreshController.refreshCompleted(resetFooterState: true);
+    });
   }
 
   _onLoading() async {
