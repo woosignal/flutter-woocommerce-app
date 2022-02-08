@@ -18,6 +18,7 @@ import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:wp_json_api/exceptions/invalid_user_token_exception.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -49,6 +50,14 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     try {
       wcCustomerInfoResponse = await WPJsonAPI.instance
           .api((request) => request.wcCustomerInfo(userToken));
+    } on InvalidUserTokenException catch (_) {
+      showToastNotification(
+        context,
+        title: trans("Oops!"),
+        description: trans("Something went wrong"),
+        style: ToastNotificationStyleType.DANGER,
+      );
+      await authLogout(context);
     } on Exception catch (_) {
       showToastNotification(
         context,
@@ -89,7 +98,10 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     if (activeBody == null) {
       return SizedBox.shrink();
     }
-
+    if (_wcCustomerInfoResponse != null) {
+      print('here');
+      print(_wcCustomerInfoResponse.data.avatar);
+    }
     return Scaffold(
       appBar: AppBar(
         leading: widget.showLeadingBackButton
@@ -123,13 +135,11 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(top: 10),
-                              child: CircleAvatar(
+                              child: _wcCustomerInfoResponse != null ? CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  _wcCustomerInfoResponse != null
-                                      ? _wcCustomerInfoResponse.data.avatar
-                                      : "",
+                                  _wcCustomerInfoResponse.data.avatar,
                                 ),
-                              ),
+                              ) : Icon(Icons.account_circle_rounded, size: 65,),
                               height: 90,
                               width: 90,
                             ),
