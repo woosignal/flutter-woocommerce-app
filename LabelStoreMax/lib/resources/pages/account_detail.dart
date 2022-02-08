@@ -18,6 +18,7 @@ import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:wp_json_api/exceptions/invalid_user_token_exception.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -49,6 +50,14 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     try {
       wcCustomerInfoResponse = await WPJsonAPI.instance
           .api((request) => request.wcCustomerInfo(userToken));
+    } on InvalidUserTokenException catch (_) {
+      showToastNotification(
+        context,
+        title: trans("Oops!"),
+        description: trans("Something went wrong"),
+        style: ToastNotificationStyleType.DANGER,
+      );
+      await authLogout(context);
     } on Exception catch (_) {
       showToastNotification(
         context,
@@ -89,7 +98,17 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     if (activeBody == null) {
       return SizedBox.shrink();
     }
+    String userAvatar;
+    String userFirstName = "";
+    String userLastName = "";
+    if (_wcCustomerInfoResponse != null && _wcCustomerInfoResponse.data != null) {
+      userAvatar = _wcCustomerInfoResponse.data.avatar;
 
+      userFirstName = _wcCustomerInfoResponse
+          .data.firstName;
+      userLastName = _wcCustomerInfoResponse
+          .data.lastName;
+    }
     return Scaffold(
       appBar: AppBar(
         leading: widget.showLeadingBackButton
@@ -123,13 +142,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(top: 10),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  _wcCustomerInfoResponse != null
-                                      ? _wcCustomerInfoResponse.data.avatar
-                                      : "",
-                                ),
-                              ),
+                              child: userAvatar != null ? CircleAvatar(
+                                backgroundImage: NetworkImage(userAvatar),
+                              ) : Icon(Icons.account_circle_rounded, size: 65,),
                               height: 90,
                               width: 90,
                             ),
@@ -146,18 +161,13 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                           MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Text(
-                                          (_wcCustomerInfoResponse == null
-                                              ? ""
-                                              : [
-                                                  _wcCustomerInfoResponse
-                                                      .data.firstName,
-                                                  _wcCustomerInfoResponse
-                                                      .data.lastName
-                                                ]
-                                                  .where((t) =>
-                                                      (t != null || t != ""))
-                                                  .toList()
-                                                  .join(" ")),
+                                          [
+                                            userFirstName,
+                                            userLastName
+                                          ].where((t) =>
+                                          (t != null || t != ""))
+                                              .toList()
+                                              .join(" "),
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
