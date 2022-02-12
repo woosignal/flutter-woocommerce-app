@@ -106,7 +106,9 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             Padding(
               child: PrimaryButton(
                   title: trans("Sign up"),
-                  action: _hasTappedRegister ? () {} : _signUpTapped),
+                  isLoading: _hasTappedRegister,
+                  action: _signUpTapped,
+              ),
               padding: EdgeInsets.only(top: 10),
             ),
             Padding(

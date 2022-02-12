@@ -189,8 +189,9 @@ class _AccountShippingDetailsPageState
                         children: <Widget>[
                           PrimaryButton(
                               title: trans("UPDATE DETAILS"),
-                              action:
-                                  _isUpdating ? () {} : _updateShippingDetails),
+                              isLoading: _isUpdating,
+                              action: _updateShippingDetails,
+                          ),
                         ],
                       ),
                     ],

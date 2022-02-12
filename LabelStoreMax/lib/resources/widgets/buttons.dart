@@ -11,22 +11,26 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     Key key,
     this.title,
     this.action,
+    this.isLoading = false
   }) : super(key: key);
 
   final String title;
   final void Function() action;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) => WooSignalButton(
         key: key,
         title: title,
         action: action,
+        isLoading: isLoading,
         textStyle: Theme.of(context).textTheme.button.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -68,13 +72,20 @@ class LinkButton extends StatelessWidget {
   final void Function() action;
 
   @override
-  Widget build(BuildContext context) => WooSignalButton(
-        key: key,
-        title: title,
-        action: action,
-        textStyle: Theme.of(context).textTheme.bodyText1,
-        bgColor: Colors.transparent,
-      );
+  Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    return InkWell(
+      key: key,
+      child:  Container(
+        height: (screenWidth >= 385 ? 55 : 49),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Center(child: Text(title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1,)),),
+      onTap: action,
+    );
+  }
 }
 
 class WooSignalButton extends StatelessWidget {
@@ -83,6 +94,7 @@ class WooSignalButton extends StatelessWidget {
     this.title,
     this.action,
     this.textStyle,
+    this.isLoading = false,
     this.bgColor,
   }) : super(key: key);
 
@@ -90,6 +102,7 @@ class WooSignalButton extends StatelessWidget {
   final void Function() action;
   final TextStyle textStyle;
   final Color bgColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -108,15 +121,16 @@ class WooSignalButton extends StatelessWidget {
             padding: EdgeInsets.all(8),
             elevation: 0,
             primary: bgColor,
-            shadowColor: Colors.transparent),
-        child: AutoSizeText(
+            shadowColor: Colors.transparent,
+        ),
+        child: isLoading ? AppLoaderWidget() : AutoSizeText(
           title,
           style: textStyle,
           maxLines: (screenWidth >= 385 ? 2 : 1),
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
         ),
-        onPressed: action,
+        onPressed: isLoading == true ? () {} : action,
       ),
     );
   }

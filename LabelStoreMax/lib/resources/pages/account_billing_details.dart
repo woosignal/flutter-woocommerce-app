@@ -172,8 +172,9 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                         children: <Widget>[
                           PrimaryButton(
                               title: trans("UPDATE DETAILS"),
-                              action:
-                                  _isUpdating ? () {} : _updateBillingDetails),
+                              isLoading: _isUpdating,
+                              action: _updateBillingDetails,
+                          ),
                         ],
                       ),
                     ],

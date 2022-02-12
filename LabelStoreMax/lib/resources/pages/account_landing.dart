@@ -98,7 +98,8 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                             obscureText: true),
                         PrimaryButton(
                           title: trans("Login"),
-                          action: _hasTappedLogin == true ? () {} : _loginUser,
+                          isLoading: _hasTappedLogin,
+                          action: _loginUser,
                         ),
                       ],
                     ),

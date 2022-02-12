@@ -1,3 +1,9 @@
+## [5.7.2] - 2022-02-12
+
+* Button UI loading state added
+* Fix payments on Android for Stripe
+* v2 embedding for Android
+
 ## [5.7.1] - 2022-02-07
 
 * Refactor account order detail page
