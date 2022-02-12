@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="Label StoreMax"
         android:icon="@mipmap/launcher_icon">
         <activity
@@ -42,14 +42,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="stripesdk"
-                    android:host="3ds.stripesdk.io" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

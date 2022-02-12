@@ -109,7 +109,9 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                           ),
                           PrimaryButton(
                               title: trans("Update details"),
-                              action: _updateDetails)
+                              isLoading: isLoading,
+                              action: _updateDetails,
+                          )
                         ],
                       ),
                       margin: EdgeInsets.all(8),

@@ -30,7 +30,7 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
 
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
