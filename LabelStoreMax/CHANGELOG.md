@@ -1,3 +1,9 @@
+## [5.7.3] - 2022-02-21
+
+* Fix builds for Flutter 2.10.2
+* Fix setState for product upsells
+* ext.kotlin_version version bump
+
 ## [5.7.2] - 2022-02-12
 
 * Button UI loading state added

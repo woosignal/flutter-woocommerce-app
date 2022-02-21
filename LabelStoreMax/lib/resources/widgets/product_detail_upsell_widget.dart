@@ -164,9 +164,13 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
           }
           return true;
         },
-        didFinish: () => setState(() {
+        didFinish: () {
+          if (mounted) {
+            setState(() {
               _isLoading = false;
-            }),
+            });
+          }
+        },
         productIds: widget.productIds);
   }
 }

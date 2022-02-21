@@ -4,7 +4,7 @@
 
 # WooCommerce App: Label StoreMax
 
-### Label StoreMax - v5.7.2
+### Label StoreMax - v5.7.3
 
 
 [Official WooSignal WooCommerce App](https://woosignal.com)
