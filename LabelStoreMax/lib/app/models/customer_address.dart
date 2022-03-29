@@ -17,6 +17,7 @@ class CustomerAddress {
   String city;
   String postalCode;
   String emailAddress;
+  String phoneNumber;
   CustomerCountry customerCountry;
 
   CustomerAddress(
@@ -26,6 +27,7 @@ class CustomerAddress {
       this.city,
       this.postalCode,
       this.emailAddress,
+        this.phoneNumber,
       this.customerCountry});
 
   void initAddress() {
@@ -36,6 +38,7 @@ class CustomerAddress {
     postalCode = "";
     customerCountry = CustomerCountry();
     emailAddress = "";
+    phoneNumber = "";
   }
 
   bool hasMissingFields() =>
@@ -85,6 +88,9 @@ class CustomerAddress {
     addressLine = json['address_line'];
     city = json['city'];
     postalCode = json['postal_code'];
+    if (json['phone_number'] != null) {
+      phoneNumber = json['phone_number'];
+    }
     customerCountry = CustomerCountry.fromJson(json['customer_country']);
     emailAddress = json['email_address'];
   }
@@ -98,6 +104,9 @@ class CustomerAddress {
     data['postal_code'] = postalCode;
     data['state'] = customerCountry.state;
     data['country'] = customerCountry.name;
+    if (phoneNumber != null && phoneNumber != "") {
+      data['phone_number'] = phoneNumber;
+    }
     data['email_address'] = emailAddress;
     data['customer_country'] = null;
     if (customerCountry != null) {

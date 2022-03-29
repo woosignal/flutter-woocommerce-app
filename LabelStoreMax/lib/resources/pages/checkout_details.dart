@@ -44,6 +44,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       _txtBillingCity = TextEditingController(),
       _txtBillingPostalCode = TextEditingController(),
       _txtBillingEmailAddress = TextEditingController(),
+      _txtBillingPhoneNumber = TextEditingController(),
       // shipping
       _txtShippingFirstName = TextEditingController(),
       _txtShippingLastName = TextEditingController(),
@@ -74,6 +75,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         txtControllerCity: _txtBillingCity,
         txtControllerPostalCode: _txtBillingPostalCode,
         txtControllerEmailAddress: _txtBillingEmailAddress,
+        txtControllerPhoneNumber: _txtBillingPhoneNumber,
         customerCountry: _billingCountry,
         onTapCountry: () => _navigateToSelectCountry(type: "billing"),
       );
@@ -107,6 +109,9 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
     CustomerAddress sfCustomerShippingAddress =
         await CheckoutSession.getInstance.getShippingAddress();
     _setFieldsFromCustomerAddress(sfCustomerShippingAddress, type: "shipping");
+    setState(() {
+
+    });
   }
 
   _setFieldsFromCustomerAddress(CustomerAddress customerAddress,
@@ -122,6 +127,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       city: customerAddress.city,
       postalCode: customerAddress.postalCode,
       emailAddress: customerAddress.emailAddress,
+      phoneNumber: customerAddress.phoneNumber,
       customerCountry: customerAddress.customerCountry,
       type: type,
     );
@@ -134,6 +140,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       @required String city,
       @required String postalCode,
       @required String emailAddress,
+        @required String phoneNumber,
       @required CustomerCountry customerCountry,
       String type}) {
     if (type == "billing") {
@@ -142,6 +149,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       _txtBillingAddressLine.text = addressLine;
       _txtBillingCity.text = city;
       _txtBillingPostalCode.text = postalCode;
+      _txtBillingPhoneNumber.text = phoneNumber;
       _txtBillingEmailAddress.text = emailAddress;
       _billingCountry = customerCountry;
     } else if (type == "shipping") {
@@ -172,20 +180,19 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Flexible(
-                fit: FlexFit.tight,
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    if (_hasDifferentShippingAddress)
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          (_hasDifferentShippingAddress
-                              ? Padding(
+                          Padding(
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -212,14 +219,12 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                                     ].where((e) => e != null).toList(),
                                   ),
                                   padding: EdgeInsets.symmetric(vertical: 4),
-                                )
-                              : null),
+                                ),
                         ].where((e) => e != null).toList(),
                       ),
                       height: 60,
                     ),
-                    Flexible(
-                      fit: FlexFit.tight,
+                    Expanded(
                       child: Container(
                         decoration: BoxDecoration(
                           color: ThemeColor.get(context).backgroundContainer,
@@ -230,7 +235,8 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                                   : null,
                         ),
                         padding: EdgeInsets.only(left: 8, right: 8, top: 8),
-                        child: (activeTab ?? tabBillingDetails()),
+                        margin: EdgeInsets.only(top: 8),
+                        child: (activeTab ?? tabBillingDetails())
                       ),
                     ),
                   ],
@@ -274,7 +280,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                     ),
                     PrimaryButton(
                       title: trans("USE DETAILS"),
-                      action: () => _useDetailsTapped(),
+                      action: _useDetailsTapped,
                     ),
                   ],
                 ),
@@ -286,15 +292,17 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
     );
   }
 
-  _useDetailsTapped() {
+  _useDetailsTapped() async {
     CustomerAddress customerBillingAddress = _setCustomerAddress(
         firstName: _txtBillingFirstName.text,
         lastName: _txtBillingLastName.text,
         addressLine: _txtBillingAddressLine.text,
         city: _txtBillingCity.text,
         postalCode: _txtBillingPostalCode.text,
+        phoneNumber: _txtBillingPhoneNumber.text,
         emailAddress: _txtBillingEmailAddress.text,
-        customerCountry: _billingCountry);
+        customerCountry: _billingCountry,
+    );
 
     CheckoutSession.getInstance.billingDetails.shippingAddress =
         customerBillingAddress;
@@ -350,11 +358,11 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
     }
 
     if (valRememberDetails == true) {
-      CheckoutSession.getInstance.saveBillingAddress();
-      CheckoutSession.getInstance.saveShippingAddress();
+      await CheckoutSession.getInstance.saveBillingAddress();
+      await CheckoutSession.getInstance.saveShippingAddress();
     } else {
-      CheckoutSession.getInstance.clearBillingAddress();
-      CheckoutSession.getInstance.clearShippingAddress();
+      await CheckoutSession.getInstance.clearBillingAddress();
+      await CheckoutSession.getInstance.clearShippingAddress();
     }
 
     CheckoutSession.getInstance.billingDetails.rememberDetails =
@@ -380,6 +388,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
           addressLine: "",
           city: "",
           postalCode: "",
+          phoneNumber: "",
           emailAddress: "",
           customerCountry: CustomerCountry());
     }
@@ -393,6 +402,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       @required String city,
       @required String postalCode,
       @required String emailAddress,
+        String phoneNumber,
       @required CustomerCountry customerCountry}) {
     CustomerAddress customerShippingAddress = CustomerAddress();
     customerShippingAddress.firstName = firstName;
@@ -400,6 +410,9 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
     customerShippingAddress.addressLine = addressLine;
     customerShippingAddress.city = city;
     customerShippingAddress.postalCode = postalCode;
+    if (phoneNumber != null && phoneNumber != "") {
+      customerShippingAddress.phoneNumber = phoneNumber;
+    }
     customerShippingAddress.customerCountry = customerCountry;
     customerShippingAddress.emailAddress = emailAddress;
     return customerShippingAddress;
