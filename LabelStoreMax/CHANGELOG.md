@@ -1,3 +1,9 @@
+## [5.8.0] - 2022-03-29
+
+* Add phone number to customer input form
+* Gradle version bump
+* Pubspec.yaml dependency updates
+
 ## [5.7.3] - 2022-02-21
 
 * Fix builds for Flutter 2.10.2

@@ -44,7 +44,7 @@ class CheckoutSession {
     coupon = null;
   }
 
-  void saveBillingAddress() async {
+  saveBillingAddress() async {
     CustomerAddress customerAddress =
         CheckoutSession.getInstance.billingDetails.billingAddress;
 
@@ -66,7 +66,7 @@ class CheckoutSession {
     return null;
   }
 
-  void clearBillingAddress() async =>
+  clearBillingAddress() async =>
       await NyStorage.delete(SharedKey.customerBillingDetails);
 
   saveShippingAddress() async {
@@ -88,8 +88,8 @@ class CheckoutSession {
     return null;
   }
 
-  void clearShippingAddress() async =>
-      NyStorage.delete(SharedKey.customerShippingDetails);
+  clearShippingAddress() async =>
+      await NyStorage.delete(SharedKey.customerShippingDetails);
 
   Future<String> total({bool withFormat = false, TaxRate taxRate}) async {
     double totalCart = parseWcPrice(await Cart.getInstance.getTotal());

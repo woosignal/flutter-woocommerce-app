@@ -65,6 +65,9 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
   billing.city = billingDetails.billingAddress.city;
   billing.postcode = billingDetails.billingAddress.postalCode;
   billing.email = billingDetails.billingAddress.emailAddress;
+  if (billingDetails.billingAddress.phoneNumber != "") {
+    billing.phone = billingDetails.billingAddress.phoneNumber;
+  }
   if (billingDetails.billingAddress.customerCountry.hasState()) {
     billing.state = billingDetails.billingAddress.customerCountry.state.name;
   }
