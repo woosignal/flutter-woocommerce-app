@@ -14,15 +14,13 @@ import 'package:flutter_app/app/controllers/product_search_loader_controller.dar
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:nylo_support/helpers/helper.dart';
-import 'package:nylo_support/widgets/ny_state.dart';
-import 'package:nylo_support/widgets/ny_stateful_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class BrowseSearchPage extends NyStatefulWidget {
   final BrowseSearchController controller = BrowseSearchController();
-  BrowseSearchPage({Key key}) : super(key: key);
+  BrowseSearchPage({Key? key}) : super(key: key);
 
   @override
   _BrowseSearchState createState() => _BrowseSearchState();
@@ -34,12 +32,11 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
   final ProductSearchLoaderController _productSearchLoaderController =
       ProductSearchLoaderController();
 
-  String _search;
+  String? _search;
   bool _shouldStopRequests = false, _isLoading = true;
 
   @override
-  widgetDidLoad() async {
-    super.widgetDidLoad();
+  init() async {
     _search = widget.controller.data();
     await fetchProducts();
   }
@@ -59,7 +56,7 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
           children: <Widget>[
             Text(trans("Search results for"),
                 style: Theme.of(context).textTheme.subtitle1),
-            Text("\"" + _search + "\"")
+            Text("\"" + _search! + "\"")
           ],
         ),
         centerTitle: true,

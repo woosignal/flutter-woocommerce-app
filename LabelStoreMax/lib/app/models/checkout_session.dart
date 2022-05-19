@@ -16,21 +16,21 @@ import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/app/models/shipping_type.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/coupon.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
 class CheckoutSession {
-  bool shipToDifferentAddress = false;
+  bool? shipToDifferentAddress = false;
 
   CheckoutSession._privateConstructor();
   static final CheckoutSession getInstance =
       CheckoutSession._privateConstructor();
 
-  BillingDetails billingDetails;
-  ShippingType shippingType;
-  PaymentType paymentType;
-  Coupon coupon;
+  BillingDetails? billingDetails;
+  ShippingType? shippingType;
+  PaymentType? paymentType;
+  Coupon? coupon;
 
   void initSession() {
     billingDetails = BillingDetails();
@@ -45,8 +45,8 @@ class CheckoutSession {
   }
 
   saveBillingAddress() async {
-    CustomerAddress customerAddress =
-        CheckoutSession.getInstance.billingDetails.billingAddress;
+    CustomerAddress? customerAddress =
+        CheckoutSession.getInstance.billingDetails!.billingAddress;
 
     if (customerAddress == null) {
       return;
@@ -56,9 +56,9 @@ class CheckoutSession {
     await NyStorage.store(SharedKey.customerBillingDetails, billingAddress);
   }
 
-  Future<CustomerAddress> getBillingAddress() async {
-    String strCheckoutDetails =
-        await NyStorage.read(SharedKey.customerBillingDetails);
+  Future<CustomerAddress?> getBillingAddress() async {
+    String? strCheckoutDetails =
+        await (NyStorage.read(SharedKey.customerBillingDetails));
 
     if (strCheckoutDetails != null && strCheckoutDetails != "") {
       return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
@@ -70,8 +70,8 @@ class CheckoutSession {
       await NyStorage.delete(SharedKey.customerBillingDetails);
 
   saveShippingAddress() async {
-    CustomerAddress customerAddress =
-        CheckoutSession.getInstance.billingDetails.shippingAddress;
+    CustomerAddress? customerAddress =
+        CheckoutSession.getInstance.billingDetails!.shippingAddress;
     if (customerAddress == null) {
       return;
     }
@@ -79,9 +79,9 @@ class CheckoutSession {
     await NyStorage.store(SharedKey.customerShippingDetails, shippingAddress);
   }
 
-  Future<CustomerAddress> getShippingAddress() async {
-    String strCheckoutDetails =
-        await NyStorage.read(SharedKey.customerShippingDetails);
+  Future<CustomerAddress?> getShippingAddress() async {
+    String? strCheckoutDetails =
+        await (NyStorage.read(SharedKey.customerShippingDetails));
     if (strCheckoutDetails != null && strCheckoutDetails != "") {
       return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
     }
@@ -91,19 +91,19 @@ class CheckoutSession {
   clearShippingAddress() async =>
       await NyStorage.delete(SharedKey.customerShippingDetails);
 
-  Future<String> total({bool withFormat = false, TaxRate taxRate}) async {
+  Future<String> total({bool withFormat = false, TaxRate? taxRate}) async {
     double totalCart = parseWcPrice(await Cart.getInstance.getTotal());
     double totalShipping = 0;
-    if (shippingType != null && shippingType.object != null) {
-      switch (shippingType.methodId) {
+    if (shippingType != null && shippingType!.object != null) {
+      switch (shippingType!.methodId) {
         case "flat_rate":
-          totalShipping = parseWcPrice(shippingType.cost);
+          totalShipping = parseWcPrice(shippingType!.cost);
           break;
         case "free_shipping":
-          totalShipping = parseWcPrice(shippingType.cost);
+          totalShipping = parseWcPrice(shippingType!.cost);
           break;
         case "local_pickup":
-          totalShipping = parseWcPrice(shippingType.cost);
+          totalShipping = parseWcPrice(shippingType!.cost);
           break;
         default:
           break;

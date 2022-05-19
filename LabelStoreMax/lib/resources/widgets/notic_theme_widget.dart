@@ -26,20 +26,20 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class NoticThemeWidget extends StatefulWidget {
   NoticThemeWidget(
-      {Key key, @required this.globalKey, @required this.wooSignalApp})
+      {Key? key, required this.globalKey, required this.wooSignalApp})
       : super(key: key);
   final GlobalKey globalKey;
-  final WooSignalApp wooSignalApp;
+  final WooSignalApp? wooSignalApp;
 
   @override
   _NoticThemeWidgetState createState() => _NoticThemeWidgetState();
 }
 
 class _NoticThemeWidgetState extends State<NoticThemeWidget> {
-  Widget activeWidget;
+  Widget? activeWidget;
 
   int _currentIndex = 0;
-  List<BottomNavItem> allNavWidgets;
+  List<BottomNavItem>? allNavWidgets;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
           ? AppLoaderWidget()
           : BottomNavigationBar(
               onTap: (currentIndex) =>
-                  _changeMainWidget(currentIndex, allNavWidgets),
+                  _changeMainWidget(currentIndex, allNavWidgets!),
               currentIndex: _currentIndex,
               unselectedItemColor: Colors.black54,
               fixedColor: Colors.black87,
@@ -74,7 +74,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
               showSelectedLabels: false,
               showUnselectedLabels: false,
               items:
-                  allNavWidgets.map((e) => e.bottomNavigationBarItem).toList(),
+                  allNavWidgets!.map((e) => e.bottomNavigationBarItem).toList(),
             ),
     );
   }
@@ -101,7 +101,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
           tabWidget: HomeSearchPage()),
     );
 
-    if (AppHelper.instance.appConfig.wishlistEnabled == true) {
+    if (AppHelper.instance.appConfig!.wishlistEnabled == true) {
       items.add(BottomNavItem(
         id: 3,
         bottomNavigationBarItem: BottomNavigationBarItem(
@@ -119,7 +119,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
       tabWidget: CartPage(),
     ));
 
-    if (AppHelper.instance.appConfig.wpLoginEnabled == 1) {
+    if (AppHelper.instance.appConfig!.wpLoginEnabled == 1) {
       items.add(BottomNavItem(
         id: 5,
         bottomNavigationBarItem:

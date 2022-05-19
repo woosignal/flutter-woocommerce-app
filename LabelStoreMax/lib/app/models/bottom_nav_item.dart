@@ -15,5 +15,8 @@ class BottomNavItem {
   BottomNavigationBarItem bottomNavigationBarItem;
   Widget tabWidget;
 
-  BottomNavItem({this.id, this.bottomNavigationBarItem, this.tabWidget});
+  BottomNavItem(
+      {required this.id,
+      required this.bottomNavigationBarItem,
+      required this.tabWidget});
 }

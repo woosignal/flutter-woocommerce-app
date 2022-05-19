@@ -4,10 +4,10 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutSelectCouponWidget extends StatelessWidget {
   const CheckoutSelectCouponWidget(
-      {Key key,
-      @required this.context,
-      @required this.checkoutSession,
-      @required this.resetState})
+      {Key? key,
+      required this.context,
+      required this.checkoutSession,
+      required this.resetState})
       : super(key: key);
 
   final CheckoutSession checkoutSession;
@@ -25,22 +25,21 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            hasCoupon == true
-                ? IconButton(
-                    padding: EdgeInsets.symmetric(vertical: 3),
-                    onPressed: _clearCoupon,
-                    icon: Icon(
-                      Icons.close,
-                      size: 19,
-                    ))
-                : null,
+            if (hasCoupon == true)
+              IconButton(
+                  padding: EdgeInsets.symmetric(vertical: 3),
+                  onPressed: _clearCoupon,
+                  icon: Icon(
+                    Icons.close,
+                    size: 19,
+                  )),
             Text(
               hasCoupon
-                  ? "Coupon Applied: " + checkoutSession.coupon.code
+                  ? "Coupon Applied: " + checkoutSession.coupon!.code!
                   : trans('Apply Coupon'),
               style: Theme.of(context).textTheme.subtitle2,
             ),
-          ].where((element) => element != null).toList(),
+          ],
         ),
       ),
     );
@@ -52,7 +51,7 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
   }
 
   _actionCoupon() {
-    if (checkoutSession.billingDetails.billingAddress == null) {
+    if (checkoutSession.billingDetails!.billingAddress == null) {
       showToastNotification(
         context,
         title: trans("Oops"),
@@ -64,7 +63,7 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
 
       return;
     }
-    if (checkoutSession.billingDetails.billingAddress.hasMissingFields()) {
+    if (checkoutSession.billingDetails!.billingAddress!.hasMissingFields()) {
       showToastNotification(
         context,
         title: trans("Oops"),

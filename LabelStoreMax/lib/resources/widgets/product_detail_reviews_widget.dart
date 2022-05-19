@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -21,9 +22,9 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailReviewsWidget extends StatefulWidget {
   ProductDetailReviewsWidget(
-      {@required this.product, @required this.wooSignalApp});
-  final Product product;
-  final WooSignalApp wooSignalApp;
+      {required this.product, required this.wooSignalApp});
+  final Product? product;
+  final WooSignalApp? wooSignalApp;
 
   @override
   _ProductDetailReviewsWidgetState createState() =>
@@ -41,8 +42,8 @@ class _ProductDetailReviewsWidgetState
 
   @override
   Widget build(BuildContext context) {
-    if (widget.product.reviewsAllowed == false ||
-        widget.wooSignalApp.showProductReviews == false) {
+    if (widget.product!.reviewsAllowed == false ||
+        widget.wooSignalApp!.showProductReviews == false) {
       return SizedBox.shrink();
     }
 
@@ -50,24 +51,27 @@ class _ProductDetailReviewsWidgetState
       children: <Widget>[
         Expanded(
             child: ExpansionTile(
-          textColor: ThemeColor.get(context).primaryAccent,
-          iconColor: ThemeColor.get(context).primaryAccent,
+          textColor: ThemeColor.get(context)!.primaryAccent,
+          iconColor: ThemeColor.get(context)!.primaryAccent,
           tilePadding: EdgeInsets.symmetric(horizontal: 16),
           childrenPadding: EdgeInsets.all(0),
-          title: Text("${trans("Reviews")} (${widget.product.ratingCount})"),
+          title: AutoSizeText(
+            "${trans("Reviews")} (${widget.product!.ratingCount})",
+            maxLines: 1,
+          ),
           onExpansionChanged: (value) {
             setState(() {
               _ratingExpanded = value;
             });
           },
           trailing: Container(
-            width: MediaQuery.of(context).size.width / 1.8,
+            width: MediaQuery.of(context).size.width / 2,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 RatingBarIndicator(
-                  rating: double.parse(widget.product.averageRating),
+                  rating: double.parse(widget.product!.averageRating!),
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     color: Colors.amber,
@@ -86,67 +90,68 @@ class _ProductDetailReviewsWidgetState
           ),
           initiallyExpanded: false,
           children: [
-            _ratingExpanded == true
-                ? FutureBuildWidget<List<ProductReview>>(
-                    asyncFuture: fetchReviews(),
-                    onValue: (reviews) {
-                      int reviewsCount = reviews.length;
-                      List<Widget> childrenWidgets = [];
-                      List<ProductDetailReviewTileWidget> children = reviews
-                          .map((review) => ProductDetailReviewTileWidget(
-                              productReview: review))
-                          .toList();
-                      childrenWidgets.addAll(children);
+            if (_ratingExpanded == true)
+              FutureBuildWidget<List<ProductReview>>(
+                asyncFuture: fetchReviews(),
+                onValue: (reviews) {
+                  if (reviews == null) {
+                    return SizedBox.shrink();
+                  }
+                  int reviewsCount = reviews.length;
+                  List<Widget> childrenWidgets = [];
+                  List<ProductDetailReviewTileWidget> children = reviews
+                      .map((review) =>
+                          ProductDetailReviewTileWidget(productReview: review))
+                      .toList();
+                  childrenWidgets.addAll(children);
 
-                      if (reviewsCount >= 5) {
-                        childrenWidgets.add(
-                          Container(
-                            child: ListTile(
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 16),
-                              title: Text(
-                                trans('See More Reviews'),
-                              ),
-                              onTap: () => Navigator.pushNamed(
-                                  context, "/product-reviews",
-                                  arguments: widget.product),
-                            ),
+                  if (reviewsCount >= 5) {
+                    childrenWidgets.add(
+                      Container(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                          title: Text(
+                            trans('See More Reviews'),
                           ),
-                        );
-                      }
-                      return ListView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.all(0),
-                        children: reviews.isEmpty
-                            ? [
-                                Container(
-                                  child: ListTile(
-                                    title: Text(
-                                      trans('There are no reviews yet.'),
-                                    ),
-                                  ),
-                                )
-                              ]
-                            : childrenWidgets,
-                      );
-                    },
-                    onLoading: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: CupertinoActivityIndicator(),
-                    ),
-                  )
-                : null,
-          ].where((element) => element != null).toList(),
+                          onTap: () => Navigator.pushNamed(
+                              context, "/product-reviews",
+                              arguments: widget.product),
+                        ),
+                      ),
+                    );
+                  }
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.all(0),
+                    children: reviews.isEmpty
+                        ? [
+                            Container(
+                              child: ListTile(
+                                title: Text(
+                                  trans('There are no reviews yet.'),
+                                ),
+                              ),
+                            )
+                          ]
+                        : childrenWidgets,
+                  );
+                },
+                onLoading: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: CupertinoActivityIndicator(),
+                ),
+              ),
+          ],
         )),
       ],
     );
   }
 
   Future<List<ProductReview>> fetchReviews() async {
-    return await appWooSignal(
+    return await (appWooSignal(
       (api) => api.getProductReviews(
-          perPage: 5, product: [widget.product.id], status: "approved"),
-    );
+          perPage: 5, product: [widget.product!.id!], status: "approved"),
+    ));
   }
 }

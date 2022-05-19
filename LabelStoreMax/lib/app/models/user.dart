@@ -8,11 +8,11 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class User extends Storable {
-  String userId;
-  String token;
+  String? userId;
+  String? token;
 
   User();
   User.fromUserAuthResponse({this.userId, this.token});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/config/app_font.dart';
+import 'package:flutter_app/config/font.dart';
 import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 import 'package:flutter_app/resources/themes/text_theme/default_text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,14 +11,14 @@ import 'package:nylo_framework/nylo_framework.dart';
 |--------------------------------------------------------------------------
 | Light Theme
 |
-| Theme Config - config/app_theme.dart
+| Theme Config - config/theme.dart
 |--------------------------------------------------------------------------
 */
 
 ThemeData lightTheme(BaseColorStyles lightColors) {
   try {
     appFont = GoogleFonts.getFont(
-        AppHelper.instance.appConfig.themeFont ?? "Poppins");
+        AppHelper.instance.appConfig!.themeFont ?? "Poppins");
   } on Exception catch (e) {
     if (getEnv('APP_DEBUG') == true) {
       NyLogger.error(e.toString());
@@ -38,7 +38,7 @@ ThemeData lightTheme(BaseColorStyles lightColors) {
     hintColor: lightColors.primaryAccent,
     appBarTheme: AppBarTheme(
       backgroundColor: lightColors.appBarBackground,
-      titleTextStyle: lightTheme.headline6
+      titleTextStyle: lightTheme.headline6!
           .copyWith(color: lightColors.appBarPrimaryContent),
       iconTheme: IconThemeData(color: lightColors.appBarPrimaryContent),
       elevation: 1.0,

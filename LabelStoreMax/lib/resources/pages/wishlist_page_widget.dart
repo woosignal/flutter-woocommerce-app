@@ -12,7 +12,7 @@ class WishListPageWidget extends StatefulWidget {
 
 class _WishListPageWidgetState extends State<WishListPageWidget> {
   List<Product> _products = [];
-  bool isLoading;
+  bool? isLoading;
 
   @override
   void initState() {
@@ -31,12 +31,12 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
       });
       return;
     }
-    _products = await appWooSignal((api) => api.getProducts(
+    _products = await (appWooSignal((api) => api.getProducts(
           include: productIds,
           perPage: 100,
           status: "publish",
           stockStatus: "instock",
-        ));
+        )));
     setState(() {
       isLoading = false;
     });
@@ -50,7 +50,7 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
         title: Text(trans("Wishlist")),
       ),
       body: SafeArea(
-          child: isLoading
+          child: isLoading!
               ? AppLoaderWidget()
               : _products.isEmpty && isLoading == false
                   ? Center(
@@ -68,9 +68,9 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
                           Text(trans("No items found"),
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
-                                  .setColor(
-                                      context, (color) => color.primaryContent))
+                                  .headline6!
+                                  .setColor(context,
+                                      (color) => color!.primaryContent))
                         ],
                       ),
                     )
@@ -86,6 +86,7 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
                             child: Row(
                               children: [
                                 Container(
+                                  margin: EdgeInsets.only(left: 8),
                                   child: CachedImageWidget(
                                     image: (product.images.isNotEmpty
                                         ? product.images.first.src
@@ -103,7 +104,13 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(product.name),
+                                        Text(
+                                          product.name!,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                         Text(
                                           formatStringCurrency(
                                               total: product.price),
@@ -113,7 +120,7 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
                                   ),
                                 ),
                                 Container(
-                                  width: 100,
+                                  width: MediaQuery.of(context).size.width / 5,
                                   alignment: Alignment.center,
                                   child: IconButton(
                                     icon: Icon(

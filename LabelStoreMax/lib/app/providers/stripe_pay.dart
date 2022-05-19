@@ -24,16 +24,16 @@ import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 stripePay(context,
-    {@required CheckoutConfirmationPageState state, TaxRate taxRate}) async {
-  WooSignalApp wooSignalApp = AppHelper.instance.appConfig;
+    {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {
+  WooSignalApp? wooSignalApp = AppHelper.instance.appConfig;
 
   bool liveMode = getEnv('STRIPE_LIVE_MODE') == null
-      ? !wooSignalApp.stripeLiveMode
+      ? !wooSignalApp!.stripeLiveMode!
       : getEnv('STRIPE_LIVE_MODE', defaultValue: false);
 
   // CONFIGURE STRIPE
   Stripe.stripeAccountId =
-      getEnv('STRIPE_ACCOUNT') ?? wooSignalApp.stripeAccount;
+      getEnv('STRIPE_ACCOUNT') ?? wooSignalApp!.stripeAccount;
 
   Stripe.publishableKey = liveMode
       ? "pk_live_IyS4Vt86L49jITSfaUShumzi"
@@ -51,10 +51,10 @@ stripePay(context,
     //   // CHECKOUT HELPER
     await checkout(taxRate, (total, billingDetails, cart) async {
       Map<String, dynamic> address = {
-        "name": billingDetails.billingAddress.nameFull(),
-        "line1": billingDetails.shippingAddress.addressLine,
-        "city": billingDetails.shippingAddress.city,
-        "postal_code": billingDetails.shippingAddress.postalCode,
+        "name": billingDetails!.billingAddress!.nameFull(),
+        "line1": billingDetails.shippingAddress!.addressLine,
+        "city": billingDetails.shippingAddress!.city,
+        "postal_code": billingDetails.shippingAddress!.postalCode,
         "country": (billingDetails.shippingAddress?.customerCountry?.name ?? "")
       };
 
@@ -62,7 +62,7 @@ stripePay(context,
 
       rsp = await appWooSignal((api) => api.stripePaymentIntent(
             amount: total,
-            email: billingDetails.billingAddress.emailAddress,
+            email: billingDetails.billingAddress!.emailAddress,
             desc: cartShortDesc,
             shipping: address,
           ));
@@ -87,7 +87,7 @@ stripePay(context,
           : ThemeMode.dark,
       testEnv: liveMode,
       merchantCountryCode: envVal('STRIPE_COUNTRY_CODE',
-          defaultValue: wooSignalApp.stripeCountryCode),
+          defaultValue: wooSignalApp!.stripeCountryCode),
       merchantDisplayName:
           envVal('APP_NAME', defaultValue: wooSignalApp.appName),
       paymentIntentClientSecret: rsp['client_secret'],
@@ -98,7 +98,7 @@ stripePay(context,
     state.reloadState(showLoader: true);
 
     OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
-    Order order = await appWooSignal((api) => api.createOrder(orderWC));
+    Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
 
     if (order == null) {
       showToastNotification(
@@ -113,12 +113,12 @@ stripePay(context,
     Navigator.pushNamed(context, "/checkout-status", arguments: order);
   } on StripeException catch (e) {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
-      NyLogger.error(e.error.message);
+      NyLogger.error(e.error.message!);
     }
     showToastNotification(
       context,
       title: trans("Oops!"),
-      description: e.error.localizedMessage,
+      description: e.error.localizedMessage!,
       icon: Icons.payment,
       style: ToastNotificationStyleType.WARNING,
     );

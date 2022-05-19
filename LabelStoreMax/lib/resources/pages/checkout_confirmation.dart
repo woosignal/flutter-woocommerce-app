@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
@@ -30,7 +31,7 @@ import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CheckoutConfirmationPage extends StatefulWidget {
-  CheckoutConfirmationPage({Key key}) : super(key: key);
+  CheckoutConfirmationPage({Key? key}) : super(key: key);
 
   @override
   CheckoutConfirmationPageState createState() =>
@@ -43,14 +44,14 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
   bool _showFullLoader = true, _isProcessingPayment = false;
 
   final List<TaxRate> _taxRates = [];
-  TaxRate _taxRate;
-  final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
+  TaxRate? _taxRate;
+  final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   void initState() {
     super.initState();
     CheckoutSession.getInstance.coupon = null;
-    List<PaymentType> paymentTypes = getPaymentTypes();
+    List<PaymentType?> paymentTypes = getPaymentTypes();
     if (CheckoutSession.getInstance.paymentType == null &&
         paymentTypes.isNotEmpty) {
       CheckoutSession.getInstance.paymentType = paymentTypes.first;
@@ -58,9 +59,9 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     _getTaxes();
   }
 
-  reloadState({@required bool showLoader}) {
+  reloadState({required bool showLoader}) {
     setState(() {
-      _showFullLoader = showLoader ?? false;
+      _showFullLoader = showLoader;
     });
   }
 
@@ -68,10 +69,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     int pageIndex = 1;
     bool fetchMore = true;
     while (fetchMore == true) {
-      List<TaxRate> tmpTaxRates = await appWooSignal(
-          (api) => api.getTaxRates(page: pageIndex, perPage: 100));
+      List<TaxRate> tmpTaxRates = await (appWooSignal(
+          (api) => api.getTaxRates(page: pageIndex, perPage: 100)));
 
-      if (tmpTaxRates != null && tmpTaxRates.isNotEmpty) {
+      if (tmpTaxRates.isNotEmpty) {
         _taxRates.addAll(tmpTaxRates);
       }
       if (tmpTaxRates.length >= 100) {
@@ -81,7 +82,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       }
     }
 
-    if (_taxRates == null || _taxRates.isEmpty) {
+    if (_taxRates.isEmpty) {
       setState(() {
         _showFullLoader = false;
       });
@@ -89,16 +90,16 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     }
 
     if (CheckoutSession.getInstance.billingDetails == null ||
-        CheckoutSession.getInstance.billingDetails.shippingAddress == null) {
+        CheckoutSession.getInstance.billingDetails!.shippingAddress == null) {
       setState(() {
         _showFullLoader = false;
       });
       return;
     }
-    CustomerCountry shippingCountry = CheckoutSession
-        .getInstance.billingDetails.shippingAddress.customerCountry;
-    String postalCode =
-        CheckoutSession.getInstance.billingDetails.shippingAddress.postalCode;
+    CustomerCountry? shippingCountry = CheckoutSession
+        .getInstance.billingDetails!.shippingAddress!.customerCountry;
+    String? postalCode =
+        CheckoutSession.getInstance.billingDetails!.shippingAddress!.postalCode;
 
     if (shippingCountry == null) {
       _showFullLoader = false;
@@ -106,15 +107,14 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    TaxRate taxRate;
+    TaxRate? taxRate;
     if (shippingCountry.hasState()) {
-      taxRate = _taxRates.firstWhere((t) {
-        if (shippingCountry == null ||
-            (shippingCountry?.state?.code ?? "") == "") {
+      taxRate = _taxRates.firstWhereOrNull((t) {
+        if ((shippingCountry.state?.code ?? "") == "") {
           return false;
         }
 
-        List<String> stateElements = shippingCountry.state.code.split(":");
+        List<String> stateElements = shippingCountry.state!.code!.split(":");
         String state = stateElements.last;
 
         if (t.country == shippingCountry.countryCode &&
@@ -127,20 +127,18 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
           return true;
         }
         return false;
-      }, orElse: () => null);
+      });
     }
 
     if (taxRate == null) {
-      taxRate = _taxRates.firstWhere(
+      taxRate = _taxRates.firstWhereOrNull(
         (t) =>
             t.country == shippingCountry.countryCode &&
             t.postcode == postalCode,
-        orElse: () => null,
       );
 
-      taxRate ??= _taxRates.firstWhere(
+      taxRate ??= _taxRates.firstWhereOrNull(
         (t) => t.country == shippingCountry.countryCode,
-        orElse: () => null,
       );
     }
 
@@ -157,19 +155,21 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
     CheckoutSession checkoutSession = CheckoutSession.getInstance;
 
     if (_showFullLoader == true) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            AppLoaderWidget(),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Text(
-                "${trans("One moment")}...",
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            )
-          ],
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AppLoaderWidget(),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Text(
+                  "${trans("One moment")}...",
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              )
+            ],
+          ),
         ),
       );
     }
@@ -199,7 +199,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
               child: Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
-                  color: ThemeColor.get(context).backgroundContainer,
+                  color: ThemeColor.get(context)!.backgroundContainer,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: (Theme.of(context).brightness == Brightness.light)
                       ? wsBoxShadow()
@@ -232,10 +232,10 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                         resetState: () => setState(() {}),
                         wooSignalApp: _wooSignalApp,
                       ),
-                    ].where((e) => e != null).toList()),
+                    ]),
               ),
             ),
-            if (_wooSignalApp.couponEnabled == true)
+            if (_wooSignalApp!.couponEnabled == true)
               CheckoutSelectCouponWidget(
                 context: context,
                 checkoutSession: checkoutSession,
@@ -244,7 +244,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
+              children: [
                 Divider(
                   color: Colors.black12,
                   thickness: 1,
@@ -253,21 +253,20 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                   title: trans("Subtotal"),
                 ),
                 CheckoutCouponAmountWidget(checkoutSession: checkoutSession),
-                _wooSignalApp.disableShipping == 1
-                    ? null
-                    : CheckoutMetaLine(
-                        title: trans("Shipping fee"),
-                        amount: CheckoutSession.getInstance.shippingType == null
-                            ? trans("Select shipping")
-                            : CheckoutSession.getInstance.shippingType
-                                .getTotal(withFormatting: true)),
-                (_taxRate != null ? CheckoutTaxTotal(taxRate: _taxRate) : null),
+                if (_wooSignalApp!.disableShipping != 1)
+                  CheckoutMetaLine(
+                      title: trans("Shipping fee"),
+                      amount: CheckoutSession.getInstance.shippingType == null
+                          ? trans("Select shipping")
+                          : CheckoutSession.getInstance.shippingType!
+                              .getTotal(withFormatting: true)),
+                if (_taxRate != null) CheckoutTaxTotal(taxRate: _taxRate),
                 CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
                 Divider(
                   color: Colors.black12,
                   thickness: 1,
                 ),
-              ].where((e) => e != null).toList(),
+              ],
             ),
             PrimaryButton(
               title: _isProcessingPayment
@@ -283,7 +282,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
   _handleCheckout() async {
     CheckoutSession checkoutSession = CheckoutSession.getInstance;
-    if (checkoutSession.billingDetails.billingAddress == null) {
+    if (checkoutSession.billingDetails!.billingAddress == null) {
       showToastNotification(
         context,
         title: trans("Oops"),
@@ -295,7 +294,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (checkoutSession.billingDetails.billingAddress.hasMissingFields()) {
+    if (checkoutSession.billingDetails!.billingAddress!.hasMissingFields()) {
       showToastNotification(
         context,
         title: trans("Oops"),
@@ -306,7 +305,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (_wooSignalApp.disableShipping == 0 &&
+    if (_wooSignalApp!.disableShipping == 0 &&
         checkoutSession.shippingType == null) {
       showToastNotification(
         context,
@@ -329,28 +328,27 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (_wooSignalApp.disableShipping == 0 &&
+    if (_wooSignalApp!.disableShipping == 0 &&
         checkoutSession.shippingType?.minimumValue != null) {
       String total = await Cart.getInstance.getTotal();
-      if (total == null) {
-        return;
-      }
+
       double doubleTotal = double.parse(total);
+
       double doubleMinimumValue =
-          double.parse(checkoutSession.shippingType?.minimumValue);
+          double.parse(checkoutSession.shippingType!.minimumValue!);
 
       if (doubleTotal < doubleMinimumValue) {
         showToastNotification(context,
             title: trans("Sorry"),
             description:
-                "${trans("Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans("for")} ${checkoutSession.shippingType.getTitle()}",
+                "${trans("Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans("for")} ${checkoutSession.shippingType!.getTitle()}",
             style: ToastNotificationStyleType.INFO,
             duration: Duration(seconds: 3));
         return;
       }
     }
 
-    bool appStatus = await appWooSignal((api) => api.checkAppStatus());
+    bool appStatus = await (appWooSignal((api) => api.checkAppStatus()));
 
     if (!appStatus) {
       showToastNotification(context,
@@ -369,7 +367,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       _isProcessingPayment = true;
     });
 
-    await checkoutSession.paymentType
+    await checkoutSession.paymentType!
         .pay(context, state: this, taxRate: _taxRate);
 
     setState(() {

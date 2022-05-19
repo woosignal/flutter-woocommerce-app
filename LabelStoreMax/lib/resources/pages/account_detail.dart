@@ -31,10 +31,10 @@ class AccountDetailPage extends StatefulWidget {
 
 class _AccountDetailPageState extends State<AccountDetailPage>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
   bool _isLoading = true;
   int _currentTabIndex = 0;
-  WCCustomerInfoResponse _wcCustomerInfoResponse;
+  WCCustomerInfoResponse? _wcCustomerInfoResponse;
 
   @override
   void initState() {
@@ -44,12 +44,12 @@ class _AccountDetailPageState extends State<AccountDetailPage>
   }
 
   _fetchWpUserData() async {
-    String userToken = await readAuthToken();
+    String? userToken = await readAuthToken();
 
-    WCCustomerInfoResponse wcCustomerInfoResponse;
+    WCCustomerInfoResponse? wcCustomerInfoResponse;
     try {
       wcCustomerInfoResponse = await WPJsonAPI.instance
-          .api((request) => request.wcCustomerInfo(userToken));
+          .api((request) => request.wcCustomerInfo(userToken!));
     } on InvalidUserTokenException catch (_) {
       showToastNotification(
         context,
@@ -81,7 +81,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    Widget activeBody;
+    Widget? activeBody;
     if (_currentTabIndex == 0) {
       activeBody = AccountDetailOrdersWidget();
     } else if (_currentTabIndex == 1) {
@@ -98,16 +98,15 @@ class _AccountDetailPageState extends State<AccountDetailPage>
     if (activeBody == null) {
       return SizedBox.shrink();
     }
-    String userAvatar;
-    String userFirstName = "";
-    String userLastName = "";
-    if (_wcCustomerInfoResponse != null && _wcCustomerInfoResponse.data != null) {
-      userAvatar = _wcCustomerInfoResponse.data.avatar;
+    String? userAvatar;
+    String? userFirstName = "";
+    String? userLastName = "";
+    if (_wcCustomerInfoResponse != null &&
+        _wcCustomerInfoResponse!.data != null) {
+      userAvatar = _wcCustomerInfoResponse!.data!.avatar;
 
-      userFirstName = _wcCustomerInfoResponse
-          .data.firstName;
-      userLastName = _wcCustomerInfoResponse
-          .data.lastName;
+      userFirstName = _wcCustomerInfoResponse!.data!.firstName;
+      userLastName = _wcCustomerInfoResponse!.data!.lastName;
     }
     return Scaffold(
       appBar: AppBar(
@@ -142,9 +141,14 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(top: 10),
-                              child: userAvatar != null ? CircleAvatar(
-                                backgroundImage: NetworkImage(userAvatar),
-                              ) : Icon(Icons.account_circle_rounded, size: 65,),
+                              child: userAvatar != null
+                                  ? CircleAvatar(
+                                      backgroundImage: NetworkImage(userAvatar),
+                                    )
+                                  : Icon(
+                                      Icons.account_circle_rounded,
+                                      size: 65,
+                                    ),
                               height: 90,
                               width: 90,
                             ),
@@ -161,11 +165,9 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                                           MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Text(
-                                          [
-                                            userFirstName,
-                                            userLastName
-                                          ].where((t) =>
-                                          (t != null || t != ""))
+                                          [userFirstName, userLastName]
+                                              .where(
+                                                  (t) => (t != null || t != ""))
                                               .toList()
                                               .join(" "),
                                           style: TextStyle(
@@ -210,7 +212,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context).backgroundContainer,
+                      color: ThemeColor.get(context)!.backgroundContainer,
                     ),
                   ),
                   Expanded(child: activeBody),
@@ -222,7 +224,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 

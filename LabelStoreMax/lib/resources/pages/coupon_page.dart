@@ -20,7 +20,7 @@ class _CouponPageState extends State<CouponPage> {
 
   final couponController = TextEditingController();
 
-  _showAlert({String message, ToastNotificationStyleType style}) {
+  _showAlert({required String message, ToastNotificationStyleType? style}) {
     showToastNotification(
       context,
       title: trans('Coupon'),
@@ -42,9 +42,9 @@ class _CouponPageState extends State<CouponPage> {
       _isLoading = true;
     });
 
-    _coupons = await appWooSignal(
+    _coupons = await (appWooSignal(
       (api) => api.getCoupons(code: couponCode, perPage: 100),
-    );
+    ));
 
     setState(() {
       _isLoading = false;
@@ -81,7 +81,7 @@ class _CouponPageState extends State<CouponPage> {
                 autofocus: true,
                 controller: couponController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return trans('Please enter coupon to redeem');
                   }
                   return null;
@@ -98,7 +98,7 @@ class _CouponPageState extends State<CouponPage> {
                         Radius.circular(8.0),
                       ),
                       borderSide: BorderSide(
-                          color: ThemeColor.get(context).primaryAccent)),
+                          color: ThemeColor.get(context)!.primaryAccent)),
                   filled: true,
                   hintStyle: TextStyle(color: Colors.grey[800]),
                   hintText: trans('Add coupon code'),
@@ -126,7 +126,7 @@ class _CouponPageState extends State<CouponPage> {
   _applyCoupon(CheckoutSession checkoutSession) async {
     await findCoupon(couponController.text);
 
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       // No coupons found
       if (_coupons.isEmpty) {
         _showAlert(
@@ -139,11 +139,11 @@ class _CouponPageState extends State<CouponPage> {
 
       DateTime dateNow = DateTime.now();
       List<CartLineItem> cart = await Cart.getInstance.getCart();
-      List<int> productIds = cart.map((e) => e.productId).toList();
+      List<int?> productIds = cart.map((e) => e.productId).toList();
 
       // Check excludedProductIds
       for (var productId in productIds) {
-        if (coupon.excludedProductIds.contains(productId)) {
+        if (coupon.excludedProductIds!.contains(productId)) {
           _showAlert(
               message:
                   "${trans('Sorry, this coupon can not be used with your cart')}.",
@@ -153,9 +153,9 @@ class _CouponPageState extends State<CouponPage> {
       }
 
       // Check email restrictions
-      String emailAddress =
-          checkoutSession.billingDetails.billingAddress.emailAddress;
-      if (coupon.emailRestrictions.contains(emailAddress)) {
+      String? emailAddress =
+          checkoutSession.billingDetails!.billingAddress!.emailAddress;
+      if (coupon.emailRestrictions!.contains(emailAddress)) {
         _showAlert(
             message: trans('You cannot redeem this coupon'),
             style: ToastNotificationStyleType.DANGER);
@@ -163,7 +163,7 @@ class _CouponPageState extends State<CouponPage> {
       }
 
       // Check for minimum amount
-      double minimumAmount = double.parse(coupon.minimumAmount);
+      double minimumAmount = double.parse(coupon.minimumAmount!);
       String strSubtotal = await Cart.getInstance.getSubtotal();
       double doubleSubtotal = double.parse(strSubtotal);
       if (minimumAmount != 0 && doubleSubtotal < minimumAmount) {
@@ -175,7 +175,7 @@ class _CouponPageState extends State<CouponPage> {
       }
 
       // Check maximum amount
-      double maximumAmount = double.parse(coupon.maximumAmount);
+      double maximumAmount = double.parse(coupon.maximumAmount!);
       if (maximumAmount != 0 && doubleSubtotal > maximumAmount) {
         _showAlert(
             message: trans("Spend less than maximumAmount to redeem",
@@ -187,7 +187,7 @@ class _CouponPageState extends State<CouponPage> {
       // Check if coupon has expired
       if (coupon.dateExpires != null &&
           dateNow.isAfter(
-            DateTime.parse(coupon.dateExpires),
+            DateTime.parse(coupon.dateExpires!),
           )) {
         _showAlert(
             message: trans("This coupon has expired"),
@@ -196,7 +196,8 @@ class _CouponPageState extends State<CouponPage> {
       }
 
       // Check usage limit
-      if (coupon.usageLimit != null && coupon.usageCount >= coupon.usageLimit) {
+      if (coupon.usageLimit != null &&
+          coupon.usageCount! >= coupon.usageLimit!) {
         _showAlert(
             message: trans("Usage limit has been reached"),
             style: ToastNotificationStyleType.WARNING);
@@ -204,11 +205,11 @@ class _CouponPageState extends State<CouponPage> {
       }
 
       // Check usage limit per user
-      int limitPerUser = coupon.usageLimitPerUser;
+      int? limitPerUser = coupon.usageLimitPerUser;
       if (limitPerUser != null &&
-          coupon.usedBy
+          coupon.usedBy!
                   .map((e) => e.toLowerCase())
-                  .where((usedBy) => usedBy == emailAddress.toLowerCase())
+                  .where((usedBy) => usedBy == emailAddress!.toLowerCase())
                   .length >=
               limitPerUser) {
         _showAlert(

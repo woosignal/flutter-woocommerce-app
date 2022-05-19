@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'dart:convert';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/app/models/billing_details.dart';
 import 'package:flutter_app/app/models/cart.dart';
@@ -20,9 +21,11 @@ import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/enums/symbol_position_enums.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:flutter_app/config/app_currency.dart';
-import 'package:flutter_app/config/app_payment_gateways.dart';
-import 'package:flutter_app/config/app_theme.dart';
+import 'package:flutter_app/config/currency.dart';
+import 'package:flutter_app/config/decoders.dart';
+import 'package:flutter_app/config/events.dart';
+import 'package:flutter_app/config/payment_gateways.dart';
+import 'package:flutter_app/config/theme.dart';
 import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
@@ -34,15 +37,14 @@ import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:money_formatter/money_formatter.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
 
-Future<User> getUser() async =>
-    (await NyStorage.read<User>(SharedKey.authUser, model: User()));
+Future<User?> getUser() async =>
+    (await (NyStorage.read<User>(SharedKey.authUser, model: User())));
 
 Future appWooSignal(Function(WooSignal) api) async {
   return await api(WooSignal.instance);
@@ -50,7 +52,7 @@ Future appWooSignal(Function(WooSignal) api) async {
 
 /// helper to find correct color from the [context].
 class ThemeColor {
-  static BaseColorStyles get(BuildContext context) {
+  static BaseColorStyles? get(BuildContext context) {
     return ((Theme.of(context).brightness == Brightness.light)
         ? ThemeConfig.light().colors
         : ThemeConfig.dark().colors);
@@ -60,39 +62,37 @@ class ThemeColor {
 /// helper to set colors on TextStyle
 extension ColorsHelper on TextStyle {
   TextStyle setColor(
-      BuildContext context, Color Function(BaseColorStyles color) newColor) {
+      BuildContext context, Color Function(BaseColorStyles? color) newColor) {
     return copyWith(color: newColor(ThemeColor.get(context)));
   }
 }
 
-List<PaymentType> getPaymentTypes() {
-  List<PaymentType> paymentTypes = [];
-  for (var appPaymentGateway in app_payment_gateways) {
+List<PaymentType?> getPaymentTypes() {
+  List<PaymentType?> paymentTypes = [];
+  for (var appPaymentGateway in appPaymentGateways) {
     if (paymentTypes.firstWhere(
-            (paymentType) => paymentType.name != appPaymentGateway,
+            (paymentType) => paymentType!.name != appPaymentGateway,
             orElse: () => null) ==
         null) {
-      paymentTypes.add(paymentTypeList.firstWhere(
-          (paymentTypeList) => paymentTypeList.name == appPaymentGateway,
-          orElse: () => null));
+      paymentTypes.add(paymentTypeList.firstWhereOrNull(
+          (paymentTypeList) => paymentTypeList.name == appPaymentGateway));
     }
   }
 
-  if (!app_payment_gateways.contains('Stripe') &&
-      AppHelper.instance.appConfig.stripeEnabled == true) {
+  if (!appPaymentGateways.contains('Stripe') &&
+      AppHelper.instance.appConfig!.stripeEnabled == true) {
     paymentTypes.add(paymentTypeList
-        .firstWhere((element) => element.name == "Stripe", orElse: () => null));
+        .firstWhereOrNull((element) => element.name == "Stripe"));
   }
-  if (!app_payment_gateways.contains('PayPal') &&
-      AppHelper.instance.appConfig.paypalEnabled == true) {
+  if (!appPaymentGateways.contains('PayPal') &&
+      AppHelper.instance.appConfig!.paypalEnabled == true) {
     paymentTypes.add(paymentTypeList
-        .firstWhere((element) => element.name == "PayPal", orElse: () => null));
+        .firstWhereOrNull((element) => element.name == "PayPal"));
   }
-  if (!app_payment_gateways.contains('CashOnDelivery') &&
-      AppHelper.instance.appConfig.codEnabled == true) {
-    paymentTypes.add(paymentTypeList.firstWhere(
-        (element) => element.name == "CashOnDelivery",
-        orElse: () => null));
+  if (!appPaymentGateways.contains('CashOnDelivery') &&
+      AppHelper.instance.appConfig!.codEnabled == true) {
+    paymentTypes.add(paymentTypeList
+        .firstWhereOrNull((element) => element.name == "CashOnDelivery"));
   }
 
   return paymentTypes.where((v) => v != null).toList();
@@ -102,11 +102,11 @@ dynamic envVal(String envVal, {dynamic defaultValue}) =>
     (getEnv(envVal) ?? defaultValue);
 
 PaymentType addPayment(
-        {@required int id,
-        @required String name,
-        @required String desc,
-        @required String assetImage,
-        @required Function pay}) =>
+        {required int id,
+        required String name,
+        required String desc,
+        required String assetImage,
+        required Function pay}) =>
     PaymentType(
       id: id,
       name: name,
@@ -116,7 +116,10 @@ PaymentType addPayment(
     );
 
 showStatusAlert(context,
-    {@required String title, String subtitle, IconData icon, int duration}) {
+    {required String title,
+    required String subtitle,
+    IconData? icon,
+    int? duration}) {
   StatusAlert.show(
     context,
     duration: Duration(seconds: duration ?? 2),
@@ -126,31 +129,31 @@ showStatusAlert(context,
   );
 }
 
-String parseHtmlString(String htmlString) {
+String parseHtmlString(String? htmlString) {
   var document = parse(htmlString);
-  return parse(document.body.text).documentElement.text;
+  return parse(document.body!.text).documentElement!.text;
 }
 
 String moneyFormatter(double amount) {
   MoneyFormatter fmf = MoneyFormatter(
     amount: amount,
     settings: MoneyFormatterSettings(
-      symbol: AppHelper.instance.appConfig.currencyMeta.symbolNative,
+      symbol: AppHelper.instance.appConfig!.currencyMeta!.symbolNative,
     ),
   );
-  if (app_currency_symbol_position == SymbolPositionType.left) {
+  if (appCurrencySymbolPosition == SymbolPositionType.left) {
     return fmf.output.symbolOnLeft;
-  } else if (app_currency_symbol_position == SymbolPositionType.right) {
+  } else if (appCurrencySymbolPosition == SymbolPositionType.right) {
     return fmf.output.symbolOnRight;
   }
   return fmf.output.symbolOnLeft;
 }
 
-String formatDoubleCurrency({@required double total}) {
+String formatDoubleCurrency({required double total}) {
   return moneyFormatter(total);
 }
 
-String formatStringCurrency({@required String total}) {
+String formatStringCurrency({required String? total}) {
   double tmpVal = 0;
   if (total != null && total != "") {
     tmpVal = parseWcPrice(total);
@@ -159,20 +162,24 @@ String formatStringCurrency({@required String total}) {
 }
 
 String workoutSaleDiscount(
-    {@required String salePrice, @required String priceBefore}) {
+    {required String? salePrice, required String? priceBefore}) {
   double dSalePrice = parseWcPrice(salePrice);
   double dPriceBefore = parseWcPrice(priceBefore);
   return ((dPriceBefore - dSalePrice) * (100 / dPriceBefore))
       .toStringAsFixed(0);
 }
 
-openBrowserTab({@required String url}) async {
+openBrowserTab({required String url}) async {
   await FlutterWebBrowser.openWebPage(
-      url: url,
-      customTabsOptions: CustomTabsOptions(toolbarColor: Colors.white70));
+    url: url,
+    customTabsOptions: CustomTabsOptions(
+      defaultColorSchemeParams:
+          CustomTabsColorSchemeParams(toolbarColor: Colors.white70),
+    ),
+  );
 }
 
-bool isNumeric(String str) {
+bool isNumeric(String? str) {
   if (str == null) {
     return false;
   }
@@ -180,18 +187,18 @@ bool isNumeric(String str) {
 }
 
 checkout(
-    TaxRate taxRate,
-    Function(String total, BillingDetails billingDetails, Cart cart)
+    TaxRate? taxRate,
+    Function(String total, BillingDetails? billingDetails, Cart cart)
         completeCheckout) async {
   String cartTotal = await CheckoutSession.getInstance
       .total(withFormat: false, taxRate: taxRate);
-  BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails;
+  BillingDetails? billingDetails = CheckoutSession.getInstance.billingDetails;
   Cart cart = Cart.getInstance;
   return await completeCheckout(cartTotal, billingDetails, cart);
 }
 
-double strCal({@required String sum}) {
-  if (sum == null || sum == "") {
+double? strCal({required String sum}) {
+  if (sum == "") {
     return 0;
   }
   Parser p = Parser();
@@ -200,7 +207,7 @@ double strCal({@required String sum}) {
   return exp.evaluate(EvaluationType.REAL, cm);
 }
 
-Future<double> workoutShippingCostWC({@required String sum}) async {
+Future<double?> workoutShippingCostWC({required String? sum}) async {
   if (sum == null || sum == "") {
     return 0;
   }
@@ -219,27 +226,27 @@ Future<double> workoutShippingCostWC({@required String sum}) async {
     if (replace.groupCount < 1) {
       return "()";
     }
-    String newSum = replace.group(1);
+    String newSum = replace.group(1)!;
 
     // PERCENT
     String percentVal = newSum.replaceAllMapped(
         defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
-      if (replacePercent != null && replacePercent.groupCount >= 1) {
+      if (replacePercent.groupCount >= 1) {
         String strPercentage = "( (" +
             orderTotal.toString() +
             " * " +
             replacePercent.group(1).toString() +
             ") / 100 )";
-        double calPercentage = strCal(sum: strPercentage);
+        double? calPercentage = strCal(sum: strPercentage);
 
         // MIN
         String strRegexMinFee = r'min_fee="([0-9\.]+)"';
         if (defaultRegex(strRegexMinFee).hasMatch(newSum)) {
           String strMinFee =
-              defaultRegex(strRegexMinFee).firstMatch(newSum).group(1) ?? "0";
+              defaultRegex(strRegexMinFee).firstMatch(newSum)!.group(1) ?? "0";
           double doubleMinFee = double.parse(strMinFee);
 
-          if (calPercentage < doubleMinFee) {
+          if (calPercentage! < doubleMinFee) {
             return "(" + doubleMinFee.toString() + ")";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMinFee), "");
@@ -249,10 +256,10 @@ Future<double> workoutShippingCostWC({@required String sum}) async {
         String strRegexMaxFee = r'max_fee="([0-9\.]+)"';
         if (defaultRegex(strRegexMaxFee).hasMatch(newSum)) {
           String strMaxFee =
-              defaultRegex(strRegexMaxFee).firstMatch(newSum).group(1) ?? "0";
+              defaultRegex(strRegexMaxFee).firstMatch(newSum)!.group(1) ?? "0";
           double doubleMaxFee = double.parse(strMaxFee);
 
-          if (calPercentage > doubleMaxFee) {
+          if (calPercentage! > doubleMaxFee) {
             return "(" + doubleMaxFee.toString() + ")";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMaxFee), "");
@@ -273,13 +280,13 @@ Future<double> workoutShippingCostWC({@required String sum}) async {
   return strCal(sum: sum);
 }
 
-Future<double> workoutShippingClassCostWC(
-    {@required String sum, List<CartLineItem> cartLineItem}) async {
+Future<double?> workoutShippingClassCostWC(
+    {required String? sum, List<CartLineItem>? cartLineItem}) async {
   if (sum == null || sum == "") {
     return 0;
   }
   sum = sum.replaceAllMapped(defaultRegex(r'\[qty\]', strict: true), (replace) {
-    return cartLineItem
+    return cartLineItem!
         .map((f) => f.quantity)
         .toList()
         .reduce((i, d) => i + d)
@@ -292,27 +299,27 @@ Future<double> workoutShippingClassCostWC(
     if (replace.groupCount < 1) {
       return "()";
     }
-    String newSum = replace.group(1);
+    String newSum = replace.group(1)!;
 
     // PERCENT
     String percentVal = newSum.replaceAllMapped(
         defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
-      if (replacePercent != null && replacePercent.groupCount >= 1) {
+      if (replacePercent.groupCount >= 1) {
         String strPercentage = "( (" +
             orderTotal.toString() +
             " * " +
             replacePercent.group(1).toString() +
             ") / 100 )";
-        double calPercentage = strCal(sum: strPercentage);
+        double? calPercentage = strCal(sum: strPercentage);
 
         // MIN
         String strRegexMinFee = r'min_fee="([0-9\.]+)"';
         if (defaultRegex(strRegexMinFee).hasMatch(newSum)) {
           String strMinFee =
-              defaultRegex(strRegexMinFee).firstMatch(newSum).group(1) ?? "0";
+              defaultRegex(strRegexMinFee).firstMatch(newSum)!.group(1) ?? "0";
           double doubleMinFee = double.parse(strMinFee);
 
-          if (calPercentage < doubleMinFee) {
+          if (calPercentage! < doubleMinFee) {
             return "(" + doubleMinFee.toString() + ")";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMinFee), "");
@@ -322,10 +329,10 @@ Future<double> workoutShippingClassCostWC(
         String strRegexMaxFee = r'max_fee="([0-9\.]+)"';
         if (defaultRegex(strRegexMaxFee).hasMatch(newSum)) {
           String strMaxFee =
-              defaultRegex(strRegexMaxFee).firstMatch(newSum).group(1) ?? "0";
+              defaultRegex(strRegexMaxFee).firstMatch(newSum)!.group(1) ?? "0";
           double doubleMaxFee = double.parse(strMaxFee);
 
-          if (calPercentage > doubleMaxFee) {
+          if (calPercentage! > doubleMaxFee) {
             return "(" + doubleMaxFee.toString() + ")";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMaxFee), "");
@@ -348,7 +355,7 @@ Future<double> workoutShippingClassCostWC(
 
 RegExp defaultRegex(
   String pattern, {
-  bool strict,
+  bool? strict,
 }) {
   return RegExp(
     pattern,
@@ -365,10 +372,10 @@ bool isEmail(String em) {
 }
 
 navigatorPush(BuildContext context,
-    {@required String routeName,
-    Object arguments,
+    {required String routeName,
+    Object? arguments,
     bool forgetAll = false,
-    int forgetLast}) {
+    int? forgetLast}) {
   if (forgetAll) {
     Navigator.of(context).pushNamedAndRemoveUntil(
         routeName, (Route<dynamic> route) => false,
@@ -383,51 +390,11 @@ navigatorPush(BuildContext context,
   Navigator.of(context).pushNamed(routeName, arguments: arguments);
 }
 
-PlatformDialogAction dialogAction(BuildContext context,
-    {@required title, ActionType actionType, Function() action}) {
-  return PlatformDialogAction(
-    actionType: actionType ?? ActionType.Default,
-    child: Text(title ?? ""),
-    onPressed: action ??
-        () {
-          Navigator.of(context).pop();
-        },
-  );
-}
-
-showPlatformAlertDialog(BuildContext context,
-    {String title,
-    String subtitle,
-    List<PlatformDialogAction> actions,
-    bool showDoneAction = true}) {
-  if (showDoneAction) {
-    actions.add(dialogAction(context, title: trans("Done"), action: () {
-      Navigator.of(context).pop();
-    }));
-  }
-  showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return PlatformAlertDialog(
-        title: Text(title ?? ""),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(subtitle ?? ""),
-            ],
-          ),
-        ),
-        actions: actions,
-      );
-    },
-  );
-}
-
 DateTime parseDateTime(String strDate) => DateTime.parse(strDate);
 
 DateFormat formatDateTime(String format) => DateFormat(format);
 
-String dateFormatted({@required String date, @required String formatType}) =>
+String dateFormatted({required String date, required String formatType}) =>
     formatDateTime(formatType).format(parseDateTime(date));
 
 enum FormatType {
@@ -457,20 +424,20 @@ String formatForDateTime(FormatType formatType) {
   }
 }
 
-double parseWcPrice(String price) => (double.tryParse(price ?? "0") ?? 0);
+double parseWcPrice(String? price) => (double.tryParse(price ?? "0") ?? 0);
 
 Widget refreshableScroll(context,
-    {@required refreshController,
-    @required VoidCallback onRefresh,
-    @required VoidCallback onLoading,
-    @required List<Product> products,
-    @required onTap,
+    {required refreshController,
+    required VoidCallback onRefresh,
+    required VoidCallback onLoading,
+    required List<Product> products,
+    required onTap,
     key}) {
   return SmartRefresher(
     enablePullDown: true,
     enablePullUp: true,
     footer: CustomFooter(
-      builder: (BuildContext context, LoadStatus mode) {
+      builder: (BuildContext context, LoadStatus? mode) {
         Widget body;
         if (mode == LoadStatus.idle) {
           body = Text(trans("pull up load"));
@@ -492,24 +459,24 @@ Widget refreshableScroll(context,
     controller: refreshController,
     onRefresh: onRefresh,
     onLoading: onLoading,
-    child: (products.length != null && products.isNotEmpty
-        ? StaggeredGridView.countBuilder(
+    child: products.isEmpty
+        ? NoResultsForProductsWidget()
+        : StaggeredGrid.count(
             crossAxisCount: 2,
-            itemCount: products.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 200,
-                child: ProductItemContainer(
-                  product: products[index],
-                  onTap: onTap,
-                ),
-              );
-            },
-            staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,
-          )
-        : NoResultsForProductsWidget()),
+            children: products.map((product) {
+              return StaggeredGridTile.fit(
+                crossAxisCellCount: 1,
+                child: Container(
+                  height: 200,
+                  child: ProductItemContainer(
+                    product: product,
+                    onTap: onTap,
+                  ),
+                ),
+              );
+            }).toList()),
   );
 }
 
@@ -546,38 +513,46 @@ String truncateString(String data, int length) {
 
 Future<List<dynamic>> getWishlistProducts() async {
   List<dynamic> favouriteProducts = [];
-  String currentProductsJSON = await NyStorage.read(SharedKey.wishlistProducts);
+  String? currentProductsJSON =
+      await (NyStorage.read(SharedKey.wishlistProducts));
   if (currentProductsJSON != null) {
-    favouriteProducts =
-        (jsonDecode(currentProductsJSON) as List<dynamic>).toList();
+    favouriteProducts = (jsonDecode(currentProductsJSON)).toList();
   }
   return favouriteProducts;
 }
 
-hasAddedWishlistProduct(int productId) async {
+hasAddedWishlistProduct(int? productId) async {
   List<dynamic> favouriteProducts = await getWishlistProducts();
   List<int> productIds =
-  favouriteProducts.map((e) => e['id']).cast<int>().toList();
+      favouriteProducts.map((e) => e['id']).cast<int>().toList();
   if (productIds.isEmpty) {
-   return false;
+    return false;
   }
   return productIds.contains(productId);
 }
 
-saveWishlistProduct({@required Product product}) async {
+saveWishlistProduct({required Product? product}) async {
   List<dynamic> products = await getWishlistProducts();
-  if (products.any((wishListProduct) => wishListProduct['id'] == product.id) ==
+  if (products.any((wishListProduct) => wishListProduct['id'] == product!.id) ==
       false) {
-    products.add({"id": product.id});
+    products.add({"id": product!.id});
   }
   String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
   await NyStorage.store(SharedKey.wishlistProducts, json);
 }
 
-removeWishlistProduct({@required Product product}) async {
+removeWishlistProduct({required Product? product}) async {
   List<dynamic> products = await getWishlistProducts();
-  products.removeWhere((element) => element['id'] == product.id);
+  products.removeWhere((element) => element['id'] == product!.id);
 
   String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
   await NyStorage.store(SharedKey.wishlistProducts, json);
 }
+
+/// API helper
+api<T>(dynamic Function(T) request, {BuildContext? context}) async =>
+    await nyApi<T>(
+        request: request, apiDecoders: apiDecoders, context: context);
+
+/// Event helper
+event<T>({Map? data}) async => nyEvent<T>(params: data, events: events);

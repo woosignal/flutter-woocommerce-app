@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/config/app_theme.dart';
+import 'package:flutter_app/config/theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 // ignore: must_be_immutable
 class AppBuild extends StatelessWidget {
-  String initialRoute;
-  ThemeData themeData;
-  ThemeData darkTheme;
-  ThemeData lightTheme;
-  Locale locale;
-  String title;
+  String? initialRoute;
+  ThemeData? themeData;
+  ThemeData? darkTheme;
+  ThemeData? lightTheme;
+  Locale? locale;
+  String? title;
   bool debugShowCheckedModeBanner;
   bool debugShowMaterialGrid;
   bool showPerformanceOverlay;
   bool checkerboardRasterCacheImages;
   bool checkerboardOffscreenLayers;
   bool showSemanticsDebugger;
-  Map<LogicalKeySet, Intent> shortcuts;
-  Map<Type, Action<Intent>> actions;
+  Map<LogicalKeySet, Intent>? shortcuts;
+  Map<Type, Action<Intent>>? actions;
   List<Locale> supportedLocales;
   ThemeMode themeMode;
-  Color color;
-  GenerateAppTitle onGenerateTitle;
-  TransitionBuilder builder;
+  Color? color;
+  GenerateAppTitle? onGenerateTitle;
+  TransitionBuilder? builder;
   List<NavigatorObserver> navigatorObservers;
-  RouteFactory onUnknownRoute;
-  InitialRouteListFactory onGenerateInitialRoutes;
-  GlobalKey<NavigatorState> navigatorKey;
+  RouteFactory? onUnknownRoute;
+  InitialRouteListFactory? onGenerateInitialRoutes;
+  GlobalKey<NavigatorState>? navigatorKey;
 
-  Route<dynamic> Function(RouteSettings settings) onGenerateRoute;
+  Route<dynamic>? Function(RouteSettings settings) onGenerateRoute;
 
   AppBuild({
-    Key key,
+    Key? key,
     this.initialRoute,
     this.title,
     this.locale,
     this.themeData,
-    @required this.onGenerateRoute,
+    required this.onGenerateRoute,
     this.navigatorKey,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
@@ -64,7 +64,7 @@ class AppBuild extends StatelessWidget {
       child: ThemeProvider(
         themes: appThemes
             .map((appTheme) => appTheme.toAppTheme(
-                defaultTheme: appTheme.theme.brightness == Brightness.light
+                defaultTheme: appTheme.theme!.brightness == Brightness.light
                     ? lightTheme
                     : darkTheme))
             .toList(),
@@ -96,13 +96,12 @@ class AppBuild extends StatelessWidget {
                 darkTheme: darkTheme ?? ThemeConfig.dark().theme,
                 theme: themeData ?? ThemeProvider.themeOf(context).data,
                 localeResolutionCallback:
-                    (Locale locale, Iterable<Locale> supportedLocales) {
+                    (Locale? locale, Iterable<Locale> supportedLocales) {
                   return locale;
                 },
                 localizationsDelegates: NyLocalization.instance.delegates,
                 locale: NyLocalization.instance.locale,
-                supportedLocales:
-                    supportedLocales ?? NyLocalization.instance.locals(),
+                supportedLocales: supportedLocales,
               ),
             ),
           ),

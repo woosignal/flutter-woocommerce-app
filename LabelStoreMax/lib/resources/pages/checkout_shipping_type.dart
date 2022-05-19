@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
@@ -20,7 +21,7 @@ import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 
 class CheckoutShippingTypePage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
 
   bool _isShippingSupported = true, _isLoading = true;
   final List<Map<String, dynamic>> _wsShippingOptions = [];
-  WSShipping _shipping;
+  WSShipping? _shipping;
 
   @override
   void initState() {
@@ -46,12 +47,12 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
 
   _getShippingMethods() async {
     List<WSShipping> wsShipping =
-        await appWooSignal((api) => api.getShippingMethods());
+        await (appWooSignal((api) => api.getShippingMethods()));
 
     CustomerAddress customerAddress =
-        CheckoutSession.getInstance.billingDetails.shippingAddress;
-    String postalCode = customerAddress.postalCode;
-    CustomerCountry customerCountry = customerAddress.customerCountry;
+        CheckoutSession.getInstance.billingDetails!.shippingAddress!;
+    String? postalCode = customerAddress.postalCode;
+    CustomerCountry? customerCountry = customerAddress.customerCountry;
 
     if (customerCountry == null) {
       setState(() {
@@ -65,7 +66,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         continue;
       }
 
-      Locations location = shipping.locations.firstWhere(
+      Locations? location = shipping.locations!.firstWhereOrNull(
         (ws) {
           if (customerCountry.countryCode == null || ws.code == null) {
             return false;
@@ -74,7 +75,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
           if (ws.type == "state") {
             if (customerCountry.state != null &&
                 (customerCountry.state?.code ?? "") != "") {
-              return ws.code == customerCountry.state.code;
+              return ws.code == customerCountry.state!.code;
             }
           }
 
@@ -88,7 +89,6 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
 
           return false;
         },
-        orElse: () => null,
       );
 
       if (location != null) {
@@ -100,8 +100,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
     await _handleShippingZones(_shipping);
 
     if (_shipping == null) {
-      WSShipping noZones = wsShipping
-          .firstWhere((element) => element.parentId == 0, orElse: () => null);
+      WSShipping? noZones =
+          wsShipping.firstWhereOrNull((element) => element.parentId == 0);
       await _handleShippingZones(noZones);
     }
     if (_wsShippingOptions.isEmpty) {
@@ -117,38 +117,40 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
     double total = 0;
     List<CartLineItem> cartLineItem = await Cart.getInstance.getCart();
 
-    total +=
-        await workoutShippingCostWC(sum: _wsShippingOptions[index]['cost']);
+    total += (await (workoutShippingCostWC(
+            sum: _wsShippingOptions[index]['cost']))) ??
+        0;
 
     switch (_wsShippingOptions[index]['method_id']) {
       case "flat_rate":
-        FlatRate flatRate = (_wsShippingOptions[index]['object'] as FlatRate);
+        FlatRate? flatRate = (_wsShippingOptions[index]['object'] as FlatRate?);
 
-        if (cartLineItem.firstWhere(
-                (t) => t.shippingClassId == null || t.shippingClassId == "0",
-                orElse: () => null) !=
+        if (cartLineItem.firstWhereOrNull(
+                (t) => t.shippingClassId == null || t.shippingClassId == "0") !=
             null) {
-          total += await workoutShippingClassCostWC(
-              sum: flatRate.classCost,
-              cartLineItem: cartLineItem
-                  .where((t) =>
-                      t.shippingClassId == null || t.shippingClassId == "0")
-                  .toList());
+          total += await (workoutShippingClassCostWC(
+                  sum: flatRate!.classCost,
+                  cartLineItem: cartLineItem
+                      .where((t) =>
+                          t.shippingClassId == null || t.shippingClassId == "0")
+                      .toList())) ??
+              0;
         }
 
         List<CartLineItem> cItemsWithShippingClasses = cartLineItem
             .where((t) => t.shippingClassId != null && t.shippingClassId != "0")
             .toList();
         for (int i = 0; i < cItemsWithShippingClasses.length; i++) {
-          ShippingClasses shippingClasses = flatRate.shippingClasses.firstWhere(
-              (d) => d.id == cItemsWithShippingClasses[i].shippingClassId,
-              orElse: () => null);
+          ShippingClasses? shippingClasses = flatRate!.shippingClasses!
+              .firstWhereOrNull(
+                  (d) => d.id == cItemsWithShippingClasses[i].shippingClassId);
           if (shippingClasses != null) {
-            double classTotal = await workoutShippingClassCostWC(
-                sum: shippingClasses.cost,
-                cartLineItem: cartLineItem
-                    .where((g) => g.shippingClassId == shippingClasses.id)
-                    .toList());
+            double classTotal = await (workoutShippingClassCostWC(
+                    sum: shippingClasses.cost,
+                    cartLineItem: cartLineItem
+                        .where((g) => g.shippingClassId == shippingClasses.id)
+                        .toList())) ??
+                0;
             total += classTotal;
           }
         }
@@ -159,13 +161,10 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
     return (total).toString();
   }
 
-  _handleShippingZones(WSShipping shipping) async {
+  _handleShippingZones(WSShipping? shipping) async {
     if (shipping != null && shipping.methods != null) {
-      if (shipping.methods.flatRate != null) {
-        shipping.methods.flatRate
-            .where((t) => t != null)
-            .toList()
-            .forEach((flatRate) {
+      if (shipping.methods!.flatRate != null) {
+        shipping.methods!.flatRate!.toList().forEach((flatRate) {
           Map<String, dynamic> tmpShippingOption = {};
           tmpShippingOption = {
             "id": flatRate.id,
@@ -178,11 +177,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         });
       }
 
-      if (shipping.methods.localPickup != null) {
-        shipping.methods.localPickup
-            .where((t) => t != null)
-            .toList()
-            .forEach((localPickup) {
+      if (shipping.methods!.localPickup != null) {
+        shipping.methods!.localPickup!.toList().forEach((localPickup) {
           Map<String, dynamic> tmpShippingOption = {};
           tmpShippingOption = {
             "id": localPickup.id,
@@ -195,23 +191,21 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
         });
       }
 
-      if (shipping.methods.freeShipping != null) {
-        List<FreeShipping> freeShipping =
-            shipping.methods.freeShipping.where((t) => t != null).toList();
+      if (shipping.methods!.freeShipping != null) {
+        List<FreeShipping> freeShipping = shipping.methods!.freeShipping!;
 
         for (int i = 0; i < freeShipping.length; i++) {
           if (isNumeric(freeShipping[i].cost) ||
               freeShipping[i].cost == 'min_amount') {
             if (freeShipping[i].cost == 'min_amount') {
               String total = await Cart.getInstance.getTotal();
-              if (total != null) {
-                double doubleTotal = double.parse(total);
-                double doubleMinimumValue =
-                    double.parse(freeShipping[i].minimumOrderAmount);
 
-                if (doubleTotal < doubleMinimumValue) {
-                  continue;
-                }
+              double doubleTotal = double.parse(total);
+              double doubleMinimumValue =
+                  double.parse(freeShipping[i].minimumOrderAmount!);
+
+              if (doubleTotal < doubleMinimumValue) {
+                continue;
               }
             }
 
@@ -288,7 +282,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                             _wsShippingOptions[index]['title'],
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .subtitle1
+                                                .subtitle1!
                                                 .copyWith(
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -343,19 +337,15 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                                 style: Theme.of(
                                                                         context)
                                                                     .textTheme
-                                                                    .bodyText2
+                                                                    .bodyText2!
                                                                     .copyWith(
                                                                         fontSize:
                                                                             14))
-                                                        ]
-                                                            .where((e) =>
-                                                                e != null)
-                                                            .toList(),
+                                                        ],
                                                       ),
                                                     );
                                                   }
                                               }
-                                              return null;
                                             },
                                           ),
                                           trailing: (CheckoutSession.getInstance
@@ -363,7 +353,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                       null &&
                                                   CheckoutSession
                                                           .getInstance
-                                                          .shippingType
+                                                          .shippingType!
                                                           .object ==
                                                       _wsShippingOptions[index]
                                                           ["object"]
@@ -389,7 +379,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                       ],
                     ),
                     decoration: BoxDecoration(
-                      color: ThemeColor.get(context).backgroundContainer,
+                      color: ThemeColor.get(context)!.backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
                           (Theme.of(context).brightness == Brightness.light)

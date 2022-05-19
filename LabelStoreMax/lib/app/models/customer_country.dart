@@ -11,21 +11,22 @@
 import 'package:flutter_app/app/models/default_shipping.dart';
 
 class CustomerCountry {
-  String countryCode;
-  String name;
-  DefaultShippingState state;
+  String? countryCode;
+  String? name;
+  DefaultShippingState? state;
 
   CustomerCountry({this.countryCode, this.name, this.state});
 
-  CustomerCountry.fromDefaultShipping({DefaultShipping defaultShipping}) {
+  CustomerCountry.fromDefaultShipping(
+      {required DefaultShipping defaultShipping}) {
     countryCode = defaultShipping.code;
     name = defaultShipping.country;
-    if ((defaultShipping.states?.length ?? 0) == 1) {
+    if ((defaultShipping.states.length) == 1) {
       state = defaultShipping.states.first;
     }
   }
 
-  CustomerCountry.fromJson(Map<String, dynamic> json) {
+  CustomerCountry.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return;
     }
@@ -40,7 +41,7 @@ class CustomerCountry {
     }
   }
 
-  bool hasState() => (state != null && state.name != null ? true : false);
+  bool hasState() => (state != null && state!.name != null ? true : false);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -48,7 +49,7 @@ class CustomerCountry {
     data['name'] = name;
     data['state'] = null;
     if (state != null) {
-      data['state'] = state.toJson();
+      data['state'] = state!.toJson();
     }
     return data;
   }

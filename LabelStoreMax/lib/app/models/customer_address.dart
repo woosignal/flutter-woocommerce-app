@@ -11,14 +11,14 @@
 import 'package:flutter_app/app/models/customer_country.dart';
 
 class CustomerAddress {
-  String firstName;
-  String lastName;
-  String addressLine;
-  String city;
-  String postalCode;
-  String emailAddress;
-  String phoneNumber;
-  CustomerCountry customerCountry;
+  String? firstName;
+  String? lastName;
+  String? addressLine;
+  String? city;
+  String? postalCode;
+  String? emailAddress;
+  String? phoneNumber;
+  CustomerCountry? customerCountry;
 
   CustomerAddress(
       {this.firstName,
@@ -27,7 +27,7 @@ class CustomerAddress {
       this.city,
       this.postalCode,
       this.emailAddress,
-        this.phoneNumber,
+      this.phoneNumber,
       this.customerCountry});
 
   void initAddress() {
@@ -42,17 +42,17 @@ class CustomerAddress {
   }
 
   bool hasMissingFields() =>
-      (firstName.isEmpty ||
-          lastName.isEmpty ||
-          addressLine.isEmpty ||
-          city.isEmpty ||
-          postalCode.isEmpty) ||
-      (customerCountry.hasState() == true
+      (firstName!.isEmpty ||
+          lastName!.isEmpty ||
+          addressLine!.isEmpty ||
+          city!.isEmpty ||
+          postalCode!.isEmpty) ||
+      (customerCountry!.hasState() == true
           ? (customerCountry?.state?.name ?? "").isEmpty
           : false);
 
   String addressFull() {
-    List<String> tmpArrAddress = [];
+    List<String?> tmpArrAddress = [];
     if (addressLine != null && addressLine != "") {
       tmpArrAddress.add(addressLine);
     }
@@ -66,13 +66,13 @@ class CustomerAddress {
       tmpArrAddress.add(customerCountry?.state?.name);
     }
     if (customerCountry != null && customerCountry?.name != null) {
-      tmpArrAddress.add(customerCountry.name);
+      tmpArrAddress.add(customerCountry!.name);
     }
     return tmpArrAddress.join(", ");
   }
 
   String nameFull() {
-    List<String> tmpArrName = [];
+    List<String?> tmpArrName = [];
     if (firstName != "") {
       tmpArrName.add(firstName);
     }
@@ -102,15 +102,15 @@ class CustomerAddress {
     data['address_line'] = addressLine;
     data['city'] = city;
     data['postal_code'] = postalCode;
-    data['state'] = customerCountry.state;
-    data['country'] = customerCountry.name;
+    data['state'] = customerCountry!.state;
+    data['country'] = customerCountry!.name;
     if (phoneNumber != null && phoneNumber != "") {
       data['phone_number'] = phoneNumber;
     }
     data['email_address'] = emailAddress;
     data['customer_country'] = null;
     if (customerCountry != null) {
-      data['customer_country'] = customerCountry.toJson();
+      data['customer_country'] = customerCountry!.toJson();
     }
     return data;
   }

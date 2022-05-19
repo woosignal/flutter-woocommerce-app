@@ -8,7 +8,6 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:woosignal/woosignal.dart';
 
@@ -20,15 +19,15 @@ class WooSignalApiLoaderController<T> {
   WooSignalApiLoaderController();
 
   Future<void> load(
-      {@required bool Function(bool hasProducts) hasResults,
-      @required void Function() didFinish,
-      @required Future<List<T>> Function(WooSignal query) apiQuery}) async {
+      {required bool Function(bool hasProducts) hasResults,
+      required void Function() didFinish,
+      required Future<List<T>> Function(WooSignal query) apiQuery}) async {
     if (_waitForNextRequest) {
       return;
     }
     _waitForNextRequest = true;
 
-    List<T> apiResults = await appWooSignal((api) => apiQuery(api));
+    List<T> apiResults = await (appWooSignal((api) => apiQuery(api)));
 
     if (!hasResults(apiResults.isNotEmpty)) {
       return;
@@ -41,9 +40,7 @@ class WooSignalApiLoaderController<T> {
     didFinish();
   }
 
-  List<T> getResults() {
-    return _results;
-  }
+  List<T> getResults() => _results;
 
   void clear() {
     _results = [];

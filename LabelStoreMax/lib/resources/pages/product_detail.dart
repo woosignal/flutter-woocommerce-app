@@ -30,7 +30,7 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 class ProductDetailPage extends NyStatefulWidget {
   @override
   final ProductDetailController controller = ProductDetailController();
-  ProductDetailPage({Key key}) : super(key: key);
+  ProductDetailPage({Key? key}) : super(key: key);
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -38,16 +38,16 @@ class ProductDetailPage extends NyStatefulWidget {
 
 class _ProductDetailState extends NyState<ProductDetailPage> {
   bool _isLoading = true;
-  ws_product.Product _product;
+  ws_product.Product? _product;
 
   List<ws_product_variation.ProductVariation> _productVariations = [];
   final Map<int, dynamic> _tmpAttributeObj = {};
-  final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
+  final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
-  widgetDidLoad() async {
+  init() async {
     _product = widget.controller.data();
-    if (_product.type == "variable") {
+    if (_product!.type == "variable") {
       await _fetchProductVariations();
       return;
     }
@@ -62,15 +62,15 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
 
     bool isFetching = true;
     while (isFetching) {
-      List<ws_product_variation.ProductVariation> tmp = await appWooSignal(
-        (api) => api.getProductVariations(_product.id,
+      List<ws_product_variation.ProductVariation> tmp = await (appWooSignal(
+        (api) => api.getProductVariations(_product!.id!,
             perPage: 100, page: currentPage),
-      );
-      if (tmp != null && tmp.isNotEmpty) {
+      ));
+      if (tmp.isNotEmpty) {
         tmpVariations.addAll(tmp);
       }
 
-      if (tmp != null && tmp.length >= 100) {
+      if (tmp.length >= 100) {
         currentPage += 1;
       } else {
         isFetching = false;
@@ -85,26 +85,27 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   _modalBottomSheetOptionsForAttribute(int attributeIndex) {
     wsModalBottom(
       context,
-      title: "${trans("Select a")} ${_product.attributes[attributeIndex].name}",
+      title:
+          "${trans("Select a")} ${_product!.attributes[attributeIndex].name}",
       bodyWidget: ListView.separated(
-        itemCount: _product.attributes[attributeIndex].options.length,
+        itemCount: _product!.attributes[attributeIndex].options!.length,
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(
-              _product.attributes[attributeIndex].options[index],
+              _product!.attributes[attributeIndex].options![index],
               style: Theme.of(context).textTheme.subtitle1,
             ),
             trailing: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(attributeIndex) &&
                     _tmpAttributeObj[attributeIndex]["value"] ==
-                        _product.attributes[attributeIndex].options[index])
+                        _product!.attributes[attributeIndex].options![index])
                 ? Icon(Icons.check, color: Colors.blueAccent)
                 : null,
             onTap: () {
               _tmpAttributeObj[attributeIndex] = {
-                "name": _product.attributes[attributeIndex].name,
-                "value": _product.attributes[attributeIndex].options[index]
+                "name": _product!.attributes[attributeIndex].name,
+                "value": _product!.attributes[attributeIndex].options![index]
               };
               Navigator.pop(context, () {});
               Navigator.pop(context);
@@ -117,7 +118,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   }
 
   _modalBottomSheetAttributes() {
-    ws_product_variation.ProductVariation productVariation = widget.controller
+    ws_product_variation.ProductVariation? productVariation = widget.controller
         .findProductVariation(
             tmpAttributeObj: _tmpAttributeObj,
             productVariations: _productVariations);
@@ -125,21 +126,21 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
       context,
       title: trans("Options"),
       bodyWidget: ListView.separated(
-        itemCount: _product.attributes.length,
+        itemCount: _product!.attributes.length,
         separatorBuilder: (BuildContext context, int index) => Divider(
           color: Colors.black12,
           thickness: 1,
         ),
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(_product.attributes[index].name,
+            title: Text(_product!.attributes[index].name!,
                 style: Theme.of(context).textTheme.subtitle1),
             subtitle: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(index))
                 ? Text(_tmpAttributeObj[index]["value"],
                     style: Theme.of(context).textTheme.bodyText1)
                 : Text(
-                    "${trans("Select a")} ${_product.attributes[index].name}"),
+                    "${trans("Select a")} ${_product!.attributes[index].name}"),
             trailing: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(index))
                 ? Icon(Icons.check, color: Colors.blueAccent)
@@ -157,7 +158,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
             Text(
               (productVariation != null
                   ? "${trans("Price")}: ${formatStringCurrency(total: productVariation.price)}"
-                  : (((_product.attributes.length ==
+                  : (((_product!.attributes.length ==
                               _tmpAttributeObj.values.length) &&
                           productVariation == null)
                       ? trans("This variation is unavailable")
@@ -175,7 +176,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
             PrimaryButton(
                 title: trans("Add to cart"),
                 action: () async {
-                  if (_product.attributes.length !=
+                  if (_product!.attributes.length !=
                       _tmpAttributeObj.values.length) {
                     showToastNotification(context,
                         title: trans("Oops"),
@@ -208,7 +209,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                   CartLineItem cartLineItem = CartLineItem.fromProductVariation(
                     quantityAmount: widget.controller.quantity,
                     options: options,
-                    product: _product,
+                    product: _product!,
                     productVariation: productVariation,
                   );
 
@@ -230,10 +231,10 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          if (_wooSignalApp.wishlistEnabled)
+          if (_wooSignalApp!.wishlistEnabled!)
             FutureBuildWidget(
-                asyncFuture: hasAddedWishlistProduct(_product.id),
-                onValue: (isInFavourites) {
+                asyncFuture: hasAddedWishlistProduct(_product!.id),
+                onValue: (dynamic isInFavourites) {
                   return isInFavourites
                       ? IconButton(
                           onPressed: () => widget.controller.toggleWishList(
@@ -244,8 +245,9 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                           onPressed: () => widget.controller.toggleWishList(
                               onSuccess: () => setState(() {}),
                               wishlistAction: WishlistAction.add),
-                          icon: Icon(Icons.favorite_border,
-                              color: Colors.black54));
+                          icon: Icon(
+                            Icons.favorite_border,
+                          ));
                 }),
           CartIconWidget(),
         ],
@@ -286,11 +288,11 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   }
 
   _addItemToCart() async {
-    if (_product.type != "simple") {
+    if (_product!.type != "simple") {
       _modalBottomSheetAttributes();
       return;
     }
-    if (_product.stockStatus != "instock") {
+    if (_product!.stockStatus != "instock") {
       showToastNotification(context,
           title: trans("Sorry"),
           description: trans("This item is out of stock"),
@@ -301,7 +303,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
 
     await widget.controller.itemAddToCart(
         cartLineItem: CartLineItem.fromProduct(
-            quantityAmount: widget.controller.quantity, product: _product),
+            quantityAmount: widget.controller.quantity, product: _product!),
         onSuccess: () => setState(() {}));
   }
 }

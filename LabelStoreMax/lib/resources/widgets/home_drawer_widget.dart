@@ -15,15 +15,15 @@ import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_version_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/theme/helper/ny_theme.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawerWidget extends StatefulWidget {
-  const HomeDrawerWidget({Key key, @required this.wooSignalApp})
+  const HomeDrawerWidget({Key? key, required this.wooSignalApp})
       : super(key: key);
 
-  final WooSignalApp wooSignalApp;
+  final WooSignalApp? wooSignalApp;
 
   @override
   _HomeDrawerWidgetState createState() => _HomeDrawerWidgetState();
@@ -31,13 +31,13 @@ class HomeDrawerWidget extends StatefulWidget {
 
 class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
   Map<String, dynamic> _socialLinks = {};
-  String _themeType;
+  String? _themeType;
 
   @override
   void initState() {
     super.initState();
-    _socialLinks = AppHelper.instance.appConfig.socialLinks ?? {};
-    _themeType = AppHelper.instance.appConfig.theme;
+    _socialLinks = AppHelper.instance.appConfig!.socialLinks ?? {};
+    _themeType = AppHelper.instance.appConfig!.theme;
   }
 
   @override
@@ -45,14 +45,14 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(
-        color: ThemeColor.get(context).background,
+        color: ThemeColor.get(context)!.background,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               child: Center(child: StoreLogo()),
               decoration: BoxDecoration(
-                color: ThemeColor.get(context).background,
+                color: ThemeColor.get(context)!.background,
               ),
             ),
             if (["compo"].contains(_themeType) == false)
@@ -67,25 +67,25 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                     ),
                     padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
                   ),
-                  if (widget.wooSignalApp.wpLoginEnabled == 1)
+                  if (widget.wooSignalApp!.wpLoginEnabled == 1)
                     ListTile(
                       title: Text(
                         trans("Profile"),
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2
+                            .bodyText2!
                             .copyWith(fontSize: 16),
                       ),
                       leading: Icon(Icons.account_circle),
                       onTap: _actionProfile,
                     ),
-                  if (widget.wooSignalApp.wishlistEnabled == true)
+                  if (widget.wooSignalApp!.wishlistEnabled == true)
                     ListTile(
                       title: Text(
                         trans("Wishlist"),
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2
+                            .bodyText2!
                             .copyWith(fontSize: 16),
                       ),
                       leading: Icon(Icons.favorite_border),
@@ -96,7 +96,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                       trans("Cart"),
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText2!
                           .copyWith(fontSize: 16),
                     ),
                     leading: Icon(Icons.shopping_cart),
@@ -104,8 +104,8 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                   ),
                 ],
               ),
-            if (widget.wooSignalApp.appTermsLink != null &&
-                widget.wooSignalApp.appPrivacyLink != null)
+            if (widget.wooSignalApp!.appTermsLink != null &&
+                widget.wooSignalApp!.appPrivacyLink != null)
               Padding(
                 child: Text(
                   trans("About Us"),
@@ -113,28 +113,28 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 ),
                 padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
               ),
-            if (widget.wooSignalApp.appTermsLink != null &&
-                widget.wooSignalApp.appTermsLink.isNotEmpty)
+            if (widget.wooSignalApp!.appTermsLink != null &&
+                widget.wooSignalApp!.appTermsLink!.isNotEmpty)
               ListTile(
                 title: Text(
                   trans("Terms and conditions"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(fontSize: 16),
                 ),
                 leading: Icon(Icons.menu_book_rounded),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 onTap: _actionTerms,
               ),
-            if (widget.wooSignalApp.appPrivacyLink != null &&
-                widget.wooSignalApp.appPrivacyLink.isNotEmpty)
+            if (widget.wooSignalApp!.appPrivacyLink != null &&
+                widget.wooSignalApp!.appPrivacyLink!.isNotEmpty)
               ListTile(
                 title: Text(
                   trans("Privacy policy"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(fontSize: 16),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -145,7 +145,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
               title: Text(trans((isDark ? "Light Mode" : "Dark Mode")),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(fontSize: 16)),
               leading: Icon(Icons.brightness_4_rounded),
               onTap: () {
@@ -166,20 +166,19 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
               ),
             ..._socialLinks.entries
-                .where((element) => element != null && element.value != "")
+                .where((element) => element.value != "")
                 .map((socialLink) => ListTile(
                       title: Text(capitalize(socialLink.key),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2
+                              .bodyText2!
                               .copyWith(fontSize: 16)),
                       leading: Image.asset(
                           getImageAsset(socialLink.key) + '.png',
                           height: 25,
                           width: 25),
-                      onTap: () async {
-                        await launch(socialLink.value);
-                      },
+                      onTap: () async =>
+                          await launchUrl(Uri.parse(socialLink.value)),
                     ))
                 .toList(),
             ListTile(
@@ -191,13 +190,13 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
     );
   }
 
-  _actionTerms() => openBrowserTab(url: widget.wooSignalApp.appTermsLink);
+  _actionTerms() => openBrowserTab(url: widget.wooSignalApp!.appTermsLink!);
 
-  _actionPrivacy() => openBrowserTab(url: widget.wooSignalApp.appPrivacyLink);
+  _actionPrivacy() => openBrowserTab(url: widget.wooSignalApp!.appPrivacyLink!);
 
   _actionProfile() async {
     Navigator.pop(context);
-    if (widget.wooSignalApp.wpLoginEnabled == 1 && !(await authCheck())) {
+    if (widget.wooSignalApp!.wpLoginEnabled == 1 && !(await authCheck())) {
       UserAuth.instance.redirect = "/account-detail";
       Navigator.pushNamed(context, "/account-landing");
       return;

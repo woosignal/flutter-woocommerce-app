@@ -26,16 +26,16 @@ class _HomePageState extends State<HomePage> {
   _HomePageState();
 
   final GlobalKey _key = GlobalKey();
-  final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
+  final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   Widget build(BuildContext context) {
     Widget theme =
         MelloThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
-    if (AppHelper.instance.appConfig.theme == "notic") {
+    if (AppHelper.instance.appConfig!.theme == "notic") {
       theme = NoticThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
     }
-    if (AppHelper.instance.appConfig.theme == "compo") {
+    if (AppHelper.instance.appConfig!.theme == "compo") {
       theme = CompoThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
     }
     return theme;

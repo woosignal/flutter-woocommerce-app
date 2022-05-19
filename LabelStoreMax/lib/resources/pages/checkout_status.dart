@@ -14,29 +14,25 @@ import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:nylo_support/widgets/ny_state.dart';
-import 'package:nylo_support/widgets/ny_stateful_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/order.dart' as ws_order;
-import 'package:nylo_support/helpers/helper.dart';
-
 import '../widgets/woosignal_ui.dart';
 
 class CheckoutStatusPage extends NyStatefulWidget {
   final CheckoutStatusController controller = CheckoutStatusController();
-  CheckoutStatusPage({Key key}) : super(key: key);
+  CheckoutStatusPage({Key? key}) : super(key: key);
 
   @override
   _CheckoutStatusState createState() => _CheckoutStatusState();
 }
 
 class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
-  ws_order.Order _order;
+  ws_order.Order? _order;
 
   @override
-  widgetDidLoad() async {
-    super.widgetDidLoad();
+  init() async {
     _order = widget.controller.data();
-    Cart.getInstance.clear();
+    await Cart.getInstance.clear();
     CheckoutSession.getInstance.clear();
   }
 
@@ -81,7 +77,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          "${trans("Order Ref")}. #${_order.id.toString()}",
+                          "${trans("Order Ref")}. #${_order!.id.toString()}",
                           style: Theme.of(context).textTheme.bodyText1,
                           textAlign: TextAlign.left,
                         ),
@@ -123,10 +119,11 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
               ),
               Expanded(
                 child: ListView.builder(
-                    itemCount:
-                        _order.lineItems == null ? 0 : _order.lineItems.length,
+                    itemCount: _order!.lineItems == null
+                        ? 0
+                        : _order!.lineItems!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      ws_order.LineItems lineItem = _order.lineItems[index];
+                      ws_order.LineItems lineItem = _order!.lineItems![index];
                       return Container(
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,7 +136,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                                       MainAxisAlignment.spaceAround,
                                   children: <Widget>[
                                     Text(
-                                      lineItem.name,
+                                      lineItem.name!,
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                       softWrap: false,

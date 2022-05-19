@@ -14,28 +14,25 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
-import 'package:nylo_support/widgets/ny_state.dart';
-import 'package:nylo_support/widgets/ny_stateful_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/order.dart';
 
 class AccountOrderDetailPage extends NyStatefulWidget {
   final AccountOrderDetailController controller =
       AccountOrderDetailController();
-  AccountOrderDetailPage({Key key}) : super(key: key);
+  AccountOrderDetailPage({Key? key}) : super(key: key);
 
   @override
   _AccountOrderDetailPageState createState() => _AccountOrderDetailPageState();
 }
 
 class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
-  int _orderId;
-  Order _order;
+  int? _orderId;
+  Order? _order;
   bool _isLoading = true;
 
   @override
-  widgetDidLoad() async {
-    super.widgetDidLoad();
+  init() async {
     _orderId = widget.controller.data();
     await _fetchOrder();
   }
@@ -67,7 +64,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                     child: Text(
                       "${trans("Date Ordered").capitalize()}: " +
                           dateFormatted(
-                            date: _order.dateCreated,
+                            date: _order!.dateCreated!,
                             formatType: formatForDateTime(FormatType.date),
                           ),
                     ),
@@ -86,15 +83,15 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                           child: Text(
                             [
                               [
-                                _order.shipping.firstName,
-                                _order.shipping.lastName
+                                _order!.shipping!.firstName,
+                                _order!.shipping!.lastName
                               ].where((t) => t != null).toList().join(" "),
-                              _order.shipping.address1,
-                              _order.shipping.address2,
-                              _order.shipping.city,
-                              _order.shipping.state,
-                              _order.shipping.postcode,
-                              _order.shipping.country,
+                              _order!.shipping!.address1,
+                              _order!.shipping!.address2,
+                              _order!.shipping!.city,
+                              _order!.shipping!.state,
+                              _order!.shipping!.postcode,
+                              _order!.shipping!.country,
                             ]
                                 .where((t) => (t != "" && t != null))
                                 .toList()
@@ -118,7 +115,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                   Expanded(
                     child: ListView.builder(
                       itemBuilder: (cxt, i) {
-                        LineItems lineItem = _order.lineItems[i];
+                        LineItems lineItem = _order!.lineItems![i];
                         return Card(
                           child: ListTile(
                             contentPadding: EdgeInsets.only(
@@ -137,7 +134,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                 children: <Widget>[
                                   Flexible(
                                     child: Text(
-                                      lineItem.name,
+                                      lineItem.name!,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -169,7 +166,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                         ),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2
+                                            .bodyText2!
                                             .copyWith(
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -190,7 +187,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                           ),
                         );
                       },
-                      itemCount: _order.lineItems.length,
+                      itemCount: _order!.lineItems!.length,
                     ),
                   ),
                 ],
@@ -205,9 +202,9 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
   }
 
   _fetchOrder() async {
-    _order = await appWooSignal((api) {
-      return api.retrieveOrder(_orderId);
-    });
+    _order = await (appWooSignal((api) {
+      return api.retrieveOrder(_orderId!);
+    }));
     if (_order != null) {
       setState(() {
         _isLoading = false;

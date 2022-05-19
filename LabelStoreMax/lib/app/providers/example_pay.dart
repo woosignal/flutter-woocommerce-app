@@ -33,7 +33,7 @@ import 'package:woosignal/models/response/tax_rate.dart';
 // AS THE PAY METHOD
 
 examplePay(context,
-    {@required CheckoutConfirmationPageState state, TaxRate taxRate}) async {
+    {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {
   // HANDLE YOUR PAYMENT INTEGRATION HERE
   // ...
   // ...
@@ -44,7 +44,7 @@ examplePay(context,
   OrderWC orderWC = await buildOrderWC(taxRate: taxRate, markPaid: true);
 
   // CREATES ORDER IN WOOCOMMERCE
-  Order order = await appWooSignal((api) => api.createOrder(orderWC));
+  Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
 
   // CHECK IF ORDER IS NULL
   if (order != null) {

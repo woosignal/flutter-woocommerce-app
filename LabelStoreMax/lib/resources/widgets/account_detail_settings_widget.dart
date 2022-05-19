@@ -13,7 +13,7 @@ import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class AccountDetailSettingsWidget extends StatelessWidget {
-  const AccountDetailSettingsWidget({Key key, @required this.refreshAccount})
+  const AccountDetailSettingsWidget({Key? key, required this.refreshAccount})
       : super(key: key);
   final Function refreshAccount;
   @override

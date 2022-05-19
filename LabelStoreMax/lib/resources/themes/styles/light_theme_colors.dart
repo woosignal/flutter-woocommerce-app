@@ -13,12 +13,12 @@ class LightThemeColors implements BaseColorStyles {
 
   @override
   Color get background => Color(int.parse(
-      AppHelper.instance.appConfig.themeColors['light']['background']));
+      AppHelper.instance.appConfig!.themeColors!['light']['background']));
   @override
   Color get backgroundContainer => Colors.white;
   @override
   Color get primaryContent => Color(int.parse(
-      AppHelper.instance.appConfig.themeColors['light']['primary_text']));
+      AppHelper.instance.appConfig!.themeColors!['light']['primary_text']));
   @override
   Color get primaryAccent => const Color(0xFF87c694);
 
@@ -29,22 +29,24 @@ class LightThemeColors implements BaseColorStyles {
 
   // app bar
   @override
-  Color get appBarBackground => Color(int.parse(
-      AppHelper.instance.appConfig.themeColors['light']['app_bar_background']));
+  Color get appBarBackground =>
+      Color(int.parse(AppHelper.instance.appConfig!.themeColors!['light']
+          ['app_bar_background']));
   @override
   Color get appBarPrimaryContent => Color(int.parse(
-      AppHelper.instance.appConfig.themeColors['light']['app_bar_text']));
+      AppHelper.instance.appConfig!.themeColors!['light']['app_bar_text']));
 
   @override
   Color get inputPrimaryContent => Colors.black;
 
   // buttons
   @override
-  Color get buttonBackground => Color(int.parse(
-      AppHelper.instance.appConfig.themeColors['light']['button_background']));
+  Color get buttonBackground =>
+      Color(int.parse(AppHelper.instance.appConfig!.themeColors!['light']
+          ['button_background']));
   @override
   Color get buttonPrimaryContent => Color(int.parse(
-      AppHelper.instance.appConfig.themeColors['light']['button_text']));
+      AppHelper.instance.appConfig!.themeColors!['light']['button_text']));
 
   // bottom tab bar
   @override

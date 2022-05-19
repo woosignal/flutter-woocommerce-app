@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/product_reviews_loader_controller.dart';
@@ -25,7 +26,7 @@ import '../../app/controllers/product_reviews_controller.dart';
 class ProductReviewsPage extends NyStatefulWidget {
   final ProductReviewsController controller = ProductReviewsController();
 
-  ProductReviewsPage({Key key}) : super(key: key);
+  ProductReviewsPage({Key? key}) : super(key: key);
 
   @override
   _ProductReviewsPageState createState() => _ProductReviewsPageState();
@@ -34,14 +35,14 @@ class ProductReviewsPage extends NyStatefulWidget {
 class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  Product _product;
+  Product? _product;
   bool _shouldStopRequests = false, _isLoading = true;
   final ProductReviewsLoaderController _productReviewsLoaderController =
       ProductReviewsLoaderController();
 
   @override
-  widgetDidLoad() async {
-    _product = widget.data() as Product;
+  init() async {
+    _product = widget.data() as Product?;
     await fetchProductReviews();
   }
 
@@ -63,113 +64,116 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
           ? AppLoaderWidget()
           : SafeArea(
               child: Column(
-              // shrinkWrap: true,
-              children: [
-                Container(
-                  height: mediaQuery.size.height / 5,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  margin: EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.black12))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Text(
-                          _product.name,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          _product.ratingCount.toString() + " Reviews",
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 8),
-                            child: Text(
-                              _product.averageRating + " Stars",
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
+                // shrinkWrap: true,
+                children: [
+                  Container(
+                    height: mediaQuery.size.height / 5,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        border:
+                            Border(bottom: BorderSide(color: Colors.black12))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            _product!.name!,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
-                          RatingBarIndicator(
-                            rating: double.parse(_product.averageRating),
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            itemCount: 5,
-                            itemSize: 20.0,
-                            direction: Axis.horizontal,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            _product!.ratingCount.toString() + " Reviews",
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: Text(
+                                _product!.averageRating! + " Stars",
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                            ),
+                            RatingBarIndicator(
+                              rating: double.parse(_product!.averageRating!),
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
+                  Expanded(
                     child: SmartRefresher(
-                  enablePullDown: true,
-                  enablePullUp: true,
-                  footer: CustomFooter(
-                    builder: (BuildContext context, LoadStatus mode) {
-                      Widget body;
-                      if (mode == LoadStatus.idle) {
-                        body = Text(trans("pull up load"));
-                      } else if (mode == LoadStatus.loading) {
-                        body = CupertinoActivityIndicator();
-                      } else if (mode == LoadStatus.failed) {
-                        body = Text(trans("Load Failed! Click retry!"));
-                      } else if (mode == LoadStatus.canLoading) {
-                        body = Text(trans("release to load more"));
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                      return Container(
-                        height: 55.0,
-                        child: Center(child: body),
-                      );
-                    },
-                  ),
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  onLoading: _onLoading,
-                  child: (productReviews.length != null &&
-                          productReviews.isNotEmpty
-                      ? StaggeredGridView.countBuilder(
-                          crossAxisCount: 2,
-                          scrollDirection: Axis.vertical,
-                          itemCount: productReviews.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            ProductReview productReview = productReviews[index];
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              margin: EdgeInsets.only(bottom: 8),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom:
-                                          BorderSide(color: Colors.black12))),
-                              child: ProductReviewItemContainerWidget(
-                                  productReview: productReview),
-                            );
-                          },
-                          staggeredTileBuilder: (int index) {
-                            return StaggeredTile.fit(2);
-                          },
-                          mainAxisSpacing: 4.0,
-                          crossAxisSpacing: 4.0,
-                        )
-                      : NoResultsForProductsWidget()),
-                ))
-              ],
-            )),
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus? mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            body = Text(trans("pull up load"));
+                          } else if (mode == LoadStatus.loading) {
+                            body = CupertinoActivityIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body = Text(trans("Load Failed! Click retry!"));
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text(trans("release to load more"));
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: (productReviews.isNotEmpty
+                          ? StaggeredGrid.count(
+                              crossAxisCount: 2,
+                              axisDirection: AxisDirection.down,
+                              children:
+                                  productReviews.mapIndexed((index, value) {
+                                ProductReview productReview =
+                                    productReviews[index];
+
+                                return StaggeredGridTile.fit(
+                                    crossAxisCellCount: 2,
+                                    // mainAxisCellCount: 2,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      margin: EdgeInsets.only(bottom: 8),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  color: Colors.black12))),
+                                      child: ProductReviewItemContainerWidget(
+                                          productReview: productReview),
+                                    ));
+                              }).toList(),
+                              mainAxisSpacing: 4.0,
+                              crossAxisSpacing: 4.0,
+                            )
+                          : NoResultsForProductsWidget()),
+                    ),
+                  )
+                ],
+              ),
+            ),
     );
   }
 

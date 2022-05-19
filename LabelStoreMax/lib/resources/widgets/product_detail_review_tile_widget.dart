@@ -15,7 +15,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_review.dart';
 
 class ProductDetailReviewTileWidget extends StatefulWidget {
-  ProductDetailReviewTileWidget({Key key, @required this.productReview});
+  ProductDetailReviewTileWidget({Key? key, required this.productReview});
   final ProductReview productReview;
 
   @override
@@ -25,7 +25,7 @@ class ProductDetailReviewTileWidget extends StatefulWidget {
 
 class _ProductDetailReviewTileWidgetState
     extends State<ProductDetailReviewTileWidget> {
-  int _maxLines = 3;
+  int? _maxLines = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _ProductDetailReviewTileWidgetState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RatingBarIndicator(
-                rating: widget.productReview.rating.toDouble(),
+                rating: widget.productReview.rating!.toDouble(),
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -49,10 +49,10 @@ class _ProductDetailReviewTileWidgetState
                 itemSize: 20.0,
                 direction: Axis.horizontal,
               ),
-              Text(widget.productReview.reviewer),
+              Text(widget.productReview.reviewer!),
               Text(
                 formatDateTime("MMM d, yyyy").format(
-                  parseDateTime(widget.productReview.dateCreated),
+                  parseDateTime(widget.productReview.dateCreated!),
                 ),
               ),
             ],
@@ -68,12 +68,12 @@ class _ProductDetailReviewTileWidgetState
               ),
               contentPadding: EdgeInsets.all(0),
               minVerticalPadding: 0),
-          if (_maxLines != null && widget.productReview.review.length > 115)
+          if (_maxLines != null && widget.productReview.review!.length > 115)
             InkWell(
               child: Text(trans("More"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(fontWeight: FontWeight.bold)),
               onTap: () => setState(() {
                 _maxLines = null;

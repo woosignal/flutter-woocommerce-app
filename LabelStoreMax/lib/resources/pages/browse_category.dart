@@ -17,23 +17,21 @@ import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
-import 'package:nylo_support/widgets/ny_state.dart';
-import 'package:nylo_support/widgets/ny_stateful_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class BrowseCategoryPage extends NyStatefulWidget {
   final BrowseCategoryController controller = BrowseCategoryController();
-  BrowseCategoryPage({Key key}) : super(key: key);
+  BrowseCategoryPage({Key? key}) : super(key: key);
 
   @override
   _BrowseCategoryPageState createState() => _BrowseCategoryPageState();
 }
 
 class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
-  ProductCategory productCategory;
+  ProductCategory? productCategory;
   _BrowseCategoryPageState();
 
   final RefreshController _refreshController =
@@ -46,8 +44,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
   bool _isLoading = true;
 
   @override
-  widgetDidLoad() async {
-    super.widgetDidLoad();
+  init() async {
     productCategory = widget.controller.data();
     await fetchProducts();
   }
@@ -66,7 +63,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(trans("Browse"), style: Theme.of(context).textTheme.subtitle1),
-            Text(parseHtmlString(productCategory.name))
+            Text(parseHtmlString(productCategory!.name))
           ],
         ),
         centerTitle: true,
@@ -115,7 +112,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
     }
   }
 
-  _sortProducts({@required SortByType by}) {
+  _sortProducts({required SortByType by}) {
     List<ws_product.Product> products =
         _productCategorySearchLoaderController.getResults();
     switch (by) {
@@ -133,12 +130,12 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
         break;
       case SortByType.nameAZ:
         products.sort(
-          (product1, product2) => product1.name.compareTo(product2.name),
+          (product1, product2) => product1.name!.compareTo(product2.name!),
         );
         break;
       case SortByType.nameZA:
         products.sort(
-          (product1, product2) => product2.name.compareTo(product1.name),
+          (product1, product2) => product2.name!.compareTo(product1.name!),
         );
         break;
     }

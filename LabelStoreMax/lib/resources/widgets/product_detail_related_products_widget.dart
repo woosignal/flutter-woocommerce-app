@@ -19,15 +19,15 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailRelatedProductsWidget extends StatelessWidget {
   const ProductDetailRelatedProductsWidget(
-      {Key key, @required this.product, @required this.wooSignalApp})
+      {Key? key, required this.product, required this.wooSignalApp})
       : super(key: key);
 
-  final Product product;
-  final WooSignalApp wooSignalApp;
+  final Product? product;
+  final WooSignalApp? wooSignalApp;
 
   @override
   Widget build(BuildContext context) {
-    if (wooSignalApp.showRelatedProducts == false) {
+    if (wooSignalApp!.showRelatedProducts == false) {
       return SizedBox.shrink();
     }
     return ListView(
@@ -44,7 +44,7 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
               Text(
                 trans("Related products"),
                 style:
-                    Theme.of(context).textTheme.caption.copyWith(fontSize: 18),
+                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
             ],
@@ -55,6 +55,9 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
           child: FutureBuildWidget<List<Product>>(
             asyncFuture: fetchRelated(),
             onValue: (relatedProducts) {
+              if (relatedProducts == null) {
+                return SizedBox.shrink();
+              }
               return ListView(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -73,8 +76,8 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
   }
 
   Future<List<Product>> fetchRelated() async {
-    return await appWooSignal(
-      (api) => api.getProducts(perPage: 100, include: product.relatedIds),
-    );
+    return await (appWooSignal(
+      (api) => api.getProducts(perPage: 100, include: product!.relatedIds),
+    ));
   }
 }

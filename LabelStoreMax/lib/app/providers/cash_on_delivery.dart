@@ -21,11 +21,11 @@ import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
 cashOnDeliveryPay(context,
-    {@required CheckoutConfirmationPageState state, TaxRate taxRate}) async {
+    {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {
   try {
     OrderWC orderWC = await buildOrderWC(taxRate: taxRate, markPaid: false);
 
-    Order order = await appWooSignal((api) => api.createOrder(orderWC));
+    Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
 
     if (order != null) {
       Navigator.pushNamed(context, "/checkout-status", arguments: order);

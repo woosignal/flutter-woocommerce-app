@@ -12,11 +12,11 @@ import 'package:flutter/material.dart';
 
 class SwitchAddressTab extends StatelessWidget {
   const SwitchAddressTab({
-    Key key,
-    @required this.type,
-    @required this.title,
-    @required this.currentTabIndex,
-    @required this.onTapAction,
+    Key? key,
+    required this.type,
+    required this.title,
+    required this.currentTabIndex,
+    required this.onTapAction,
   }) : super(key: key);
 
   final String type;
@@ -41,7 +41,7 @@ class SwitchAddressTab extends StatelessWidget {
           width: double.infinity,
           child: Text(
             title,
-            style: Theme.of(context).textTheme.subtitle1.copyWith(
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(
                   color: isActive ? Colors.white : Colors.black,
                 ),
             textAlign: TextAlign.center,

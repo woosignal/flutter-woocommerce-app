@@ -56,7 +56,7 @@ class _CartPageState extends State<CartPage> {
     List<Map<String, dynamic>> cartJSON = cart.map((c) => c.toJson()).toList();
 
     List<dynamic> cartRes =
-        await appWooSignal((api) => api.cartCheck(cartJSON));
+        await (appWooSignal((api) => api.cartCheck(cartJSON)));
     if (cartRes.isEmpty) {
       Cart.getInstance.saveCartToPref(cartLineItems: []);
       setState(() {
@@ -105,17 +105,17 @@ class _CartPageState extends State<CartPage> {
     }
 
     CheckoutSession.getInstance.initSession();
-    CustomerAddress sfCustomerAddress =
+    CustomerAddress? sfCustomerAddress =
         await CheckoutSession.getInstance.getBillingAddress();
 
     if (sfCustomerAddress != null) {
-      CheckoutSession.getInstance.billingDetails.billingAddress =
+      CheckoutSession.getInstance.billingDetails!.billingAddress =
           sfCustomerAddress;
-      CheckoutSession.getInstance.billingDetails.shippingAddress =
+      CheckoutSession.getInstance.billingDetails!.shippingAddress =
           sfCustomerAddress;
     }
 
-    if (AppHelper.instance.appConfig.wpLoginEnabled == 1 &&
+    if (AppHelper.instance.appConfig!.wpLoginEnabled == 1 &&
         !(await authCheck())) {
       UserAuth.instance.redirect = "/checkout";
       Navigator.pushNamed(context, "/account-landing");
@@ -125,9 +125,9 @@ class _CartPageState extends State<CartPage> {
     Navigator.pushNamed(context, "/checkout");
   }
 
-  actionIncrementQuantity({CartLineItem cartLineItem}) {
-    if (cartLineItem.isManagedStock &&
-        cartLineItem.quantity + 1 > cartLineItem.stockQuantity) {
+  actionIncrementQuantity({required CartLineItem cartLineItem}) {
+    if (cartLineItem.isManagedStock! &&
+        cartLineItem.quantity + 1 > cartLineItem.stockQuantity!) {
       showToastNotification(
         context,
         title: trans("Cart"),
@@ -143,7 +143,7 @@ class _CartPageState extends State<CartPage> {
     setState(() {});
   }
 
-  actionDecrementQuantity({CartLineItem cartLineItem}) {
+  actionDecrementQuantity({required CartLineItem cartLineItem}) {
     if (cartLineItem.quantity - 1 <= 0) {
       return;
     }
@@ -153,7 +153,7 @@ class _CartPageState extends State<CartPage> {
     setState(() {});
   }
 
-  actionRemoveItem({int index}) {
+  actionRemoveItem({required int index}) {
     Cart.getInstance.removeCartItemForIndex(index: index);
     _cartLines.removeAt(index);
     showToastNotification(

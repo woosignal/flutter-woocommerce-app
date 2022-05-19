@@ -68,7 +68,7 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
       enablePullDown: true,
       enablePullUp: true,
       footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
+        builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
             body = Text(trans("pull up load"));
@@ -120,7 +120,7 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      order.status.capitalize(),
+                      order.status!.capitalize(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -141,17 +141,17 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                           formatStringCurrency(total: order.total),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2
+                              .bodyText2!
                               .copyWith(fontWeight: FontWeight.w600),
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          order.lineItems.length.toString() +
+                          order.lineItems!.length.toString() +
                               " " +
                               trans("items"),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyText1!
                               .copyWith(fontWeight: FontWeight.w600),
                           textAlign: TextAlign.left,
                         ),
@@ -159,16 +159,16 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                     ),
                     Text(
                       dateFormatted(
-                            date: order.dateCreated,
+                            date: order.dateCreated!,
                             formatType: formatForDateTime(FormatType.date),
                           ) +
                           "\n" +
                           dateFormatted(
-                            date: order.dateCreated,
+                            date: order.dateCreated!,
                             formatType: formatForDateTime(FormatType.time),
                           ),
                       textAlign: TextAlign.right,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                             fontWeight: FontWeight.w400,
                           ),
                     ),
@@ -214,7 +214,7 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
   }
 
   fetchOrders() async {
-    String userId = await readUserId();
+    String? userId = await readUserId();
     if (userId == null) {
       setState(() {
         _isLoadingOrders = false;
@@ -238,7 +238,7 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
         userId: userId);
   }
 
-  _viewOrderDetail(int i, int orderId) => Navigator.pushNamed(
+  _viewOrderDetail(int i, int? orderId) => Navigator.pushNamed(
         context,
         "/account-order-detail",
         arguments: orderId,

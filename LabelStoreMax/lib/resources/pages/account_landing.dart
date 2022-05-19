@@ -65,7 +65,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                       child: Text(
                         trans("Login"),
                         textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headline4.copyWith(
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                             ),
@@ -79,7 +79,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context).backgroundContainer,
+                      color: ThemeColor.get(context)!.backgroundContainer,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     margin: EdgeInsets.symmetric(horizontal: 16),
@@ -133,8 +133,8 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
             LinkButton(
                 title: trans("Forgot Password"),
                 action: () {
-                  String forgotPasswordUrl =
-                      AppHelper.instance.appConfig.wpLoginForgotPasswordUrl;
+                  String? forgotPasswordUrl =
+                      AppHelper.instance.appConfig!.wpLoginForgotPasswordUrl;
                   if (forgotPasswordUrl != null) {
                     openBrowserTab(url: forgotPasswordUrl);
                   } else {
@@ -155,7 +155,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                 : Padding(
                     padding: EdgeInsets.only(bottom: 20),
                   )
-          ].where((element) => element != null).toList(),
+          ],
         ),
       ),
     );
@@ -190,7 +190,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
         _hasTappedLogin = true;
       });
 
-      WPUserLoginResponse wpUserLoginResponse;
+      WPUserLoginResponse? wpUserLoginResponse;
       try {
         wpUserLoginResponse = await WPJsonAPI.instance.api(
             (request) => request.wpLogin(email: email, password: password));
@@ -228,8 +228,8 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
       }
 
       if (wpUserLoginResponse != null && wpUserLoginResponse.status == 200) {
-        String token = wpUserLoginResponse.data.userToken;
-        String userId = wpUserLoginResponse.data.userId.toString();
+        String? token = wpUserLoginResponse.data!.userToken;
+        String userId = wpUserLoginResponse.data!.userId.toString();
         User user = User.fromUserAuthResponse(token: token, userId: userId);
         user.save(SharedKey.authUser);
 

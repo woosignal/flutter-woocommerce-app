@@ -7,7 +7,7 @@ import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutCouponAmountWidget extends StatelessWidget {
-  const CheckoutCouponAmountWidget({Key key, @required this.checkoutSession})
+  const CheckoutCouponAmountWidget({Key? key, required this.checkoutSession})
       : super(key: key);
 
   final CheckoutSession checkoutSession;
@@ -29,7 +29,7 @@ class CheckoutCouponAmountWidget extends StatelessWidget {
               }
               return Padding(
                 child: CheckoutMetaLine(
-                  title: "${trans('Coupon')}: ${checkoutSession.coupon.code}",
+                  title: "${trans('Coupon')}: ${checkoutSession.coupon!.code}",
                   amount: "-" + formatStringCurrency(total: snapshot.data),
                 ),
                 padding: EdgeInsets.only(bottom: 0, top: 0),

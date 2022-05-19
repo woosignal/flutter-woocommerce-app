@@ -20,12 +20,12 @@ import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
-Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
+Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
   CheckoutSession checkoutSession = CheckoutSession.getInstance;
   OrderWC orderWC = OrderWC();
-  WooSignalApp wooSignalApp = AppHelper.instance.appConfig;
+  WooSignalApp wooSignalApp = AppHelper.instance.appConfig!;
 
-  String paymentMethodName = checkoutSession.paymentType.name ?? "";
+  String paymentMethodName = checkoutSession.paymentType!.name;
 
   orderWC.paymentMethod = Platform.isAndroid
       ? "$paymentMethodName - Android App"
@@ -35,9 +35,10 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
   orderWC.setPaid = markPaid;
   orderWC.status = "pending";
-  orderWC.currency = wooSignalApp.currencyMeta.code.toUpperCase();
-  orderWC.customerId =
-      (wooSignalApp.wpLoginEnabled == 1) ? int.parse(await readUserId()) : 0;
+  orderWC.currency = wooSignalApp.currencyMeta!.code!.toUpperCase();
+  orderWC.customerId = (wooSignalApp.wpLoginEnabled == 1)
+      ? int.parse(await (readUserId()) ?? "0")
+      : 0;
 
   List<LineItems> lineItems = [];
   List<CartLineItem> cartItems = await Cart.getInstance.getCart();
@@ -56,49 +57,50 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
 
   orderWC.lineItems = lineItems;
 
-  BillingDetails billingDetails = checkoutSession.billingDetails;
+  BillingDetails billingDetails = checkoutSession.billingDetails!;
 
   Billing billing = Billing();
-  billing.firstName = billingDetails.billingAddress.firstName;
-  billing.lastName = billingDetails.billingAddress.lastName;
-  billing.address1 = billingDetails.billingAddress.addressLine;
-  billing.city = billingDetails.billingAddress.city;
-  billing.postcode = billingDetails.billingAddress.postalCode;
-  billing.email = billingDetails.billingAddress.emailAddress;
-  if (billingDetails.billingAddress.phoneNumber != "") {
-    billing.phone = billingDetails.billingAddress.phoneNumber;
+  billing.firstName = billingDetails.billingAddress!.firstName;
+  billing.lastName = billingDetails.billingAddress!.lastName;
+  billing.address1 = billingDetails.billingAddress!.addressLine;
+  billing.city = billingDetails.billingAddress!.city;
+  billing.postcode = billingDetails.billingAddress!.postalCode;
+  billing.email = billingDetails.billingAddress!.emailAddress;
+  if (billingDetails.billingAddress!.phoneNumber != "") {
+    billing.phone = billingDetails.billingAddress!.phoneNumber;
   }
-  if (billingDetails.billingAddress.customerCountry.hasState()) {
-    billing.state = billingDetails.billingAddress.customerCountry.state.name;
+  if (billingDetails.billingAddress!.customerCountry!.hasState()) {
+    billing.state = billingDetails.billingAddress!.customerCountry!.state!.name;
   }
-  billing.country = billingDetails.billingAddress.customerCountry.name;
+  billing.country = billingDetails.billingAddress!.customerCountry!.name;
 
   orderWC.billing = billing;
 
   Shipping shipping = Shipping();
 
-  shipping.firstName = billingDetails.shippingAddress.firstName;
-  shipping.lastName = billingDetails.shippingAddress.lastName;
-  shipping.address1 = billingDetails.shippingAddress.addressLine;
-  shipping.city = billingDetails.shippingAddress.city;
-  shipping.postcode = billingDetails.shippingAddress.postalCode;
-  if (billingDetails.shippingAddress.customerCountry.hasState()) {
-    billing.state = billingDetails.shippingAddress.customerCountry.state.name;
+  shipping.firstName = billingDetails.shippingAddress!.firstName;
+  shipping.lastName = billingDetails.shippingAddress!.lastName;
+  shipping.address1 = billingDetails.shippingAddress!.addressLine;
+  shipping.city = billingDetails.shippingAddress!.city;
+  shipping.postcode = billingDetails.shippingAddress!.postalCode;
+  if (billingDetails.shippingAddress!.customerCountry!.hasState()) {
+    billing.state =
+        billingDetails.shippingAddress!.customerCountry!.state!.name;
   }
-  billing.country = billingDetails.shippingAddress.customerCountry.name;
+  billing.country = billingDetails.shippingAddress!.customerCountry!.name;
 
   orderWC.shipping = shipping;
 
   orderWC.shippingLines = [];
   if (wooSignalApp.disableShipping != 1) {
-    Map<String, dynamic> shippingLineFeeObj =
-        checkoutSession.shippingType.toShippingLineFee();
+    Map<String, dynamic>? shippingLineFeeObj =
+        checkoutSession.shippingType!.toShippingLineFee();
     if (shippingLineFeeObj != null) {
       ShippingLines shippingLine = ShippingLines();
       shippingLine.methodId = shippingLineFeeObj['method_id'];
       shippingLine.methodTitle = shippingLineFeeObj['method_title'];
       shippingLine.total = shippingLineFeeObj['total'];
-      orderWC.shippingLines.add(shippingLine);
+      orderWC.shippingLines!.add(shippingLine);
     }
   }
 
@@ -109,13 +111,13 @@ Future<OrderWC> buildOrderWC({TaxRate taxRate, bool markPaid = true}) async {
     feeLines.total = await Cart.getInstance.taxAmount(taxRate);
     feeLines.taxClass = "";
     feeLines.taxStatus = "taxable";
-    orderWC.feeLines.add(feeLines);
+    orderWC.feeLines!.add(feeLines);
   }
 
   if (checkoutSession.coupon != null) {
     orderWC.couponLines = [];
-    CouponLines couponLine = CouponLines(code: checkoutSession.coupon.code);
-    orderWC.couponLines.add(couponLine);
+    CouponLines couponLine = CouponLines(code: checkoutSession.coupon!.code);
+    orderWC.couponLines!.add(couponLine);
   }
 
   return orderWC;

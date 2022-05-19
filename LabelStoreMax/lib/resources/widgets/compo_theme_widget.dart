@@ -26,9 +26,9 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CompoThemeWidget extends StatefulWidget {
   CompoThemeWidget(
-      {Key key, @required this.globalKey, @required this.wooSignalApp})
+      {Key? key, required this.globalKey, required this.wooSignalApp})
       : super(key: key);
-  final WooSignalApp wooSignalApp;
+  final WooSignalApp? wooSignalApp;
   final GlobalKey globalKey;
 
   @override
@@ -36,10 +36,10 @@ class CompoThemeWidget extends StatefulWidget {
 }
 
 class CcompoThemeWidgetState extends State<CompoThemeWidget> {
-  Widget activeWidget;
+  Widget? activeWidget;
 
   int _currentIndex = 0;
-  List<BottomNavItem> allNavWidgets;
+  List<BottomNavItem> allNavWidgets = [];
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class CcompoThemeWidgetState extends State<CompoThemeWidget> {
     return Scaffold(
       body: activeWidget,
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar: allNavWidgets == null
+      bottomNavigationBar: allNavWidgets.isEmpty
           ? AppLoaderWidget()
           : BottomNavigationBar(
               onTap: (currentIndex) =>
@@ -102,7 +102,7 @@ class CcompoThemeWidgetState extends State<CompoThemeWidget> {
           tabWidget: HomeSearchPage()),
     );
 
-    if (AppHelper.instance.appConfig.wishlistEnabled == true) {
+    if (AppHelper.instance.appConfig!.wishlistEnabled == true) {
       items.add(BottomNavItem(
         id: 3,
         bottomNavigationBarItem: BottomNavigationBarItem(
@@ -120,7 +120,7 @@ class CcompoThemeWidgetState extends State<CompoThemeWidget> {
       tabWidget: CartPage(),
     ));
 
-    if (AppHelper.instance.appConfig.wpLoginEnabled == 1) {
+    if (AppHelper.instance.appConfig!.wpLoginEnabled == 1) {
       items.add(BottomNavItem(
         id: 5,
         bottomNavigationBarItem:

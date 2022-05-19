@@ -12,23 +12,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class CustomerAddressInput extends StatelessWidget {
   const CustomerAddressInput(
-      {Key key,
-      @required this.txtControllerFirstName,
-      @required this.txtControllerLastName,
-      @required this.txtControllerAddressLine,
-      @required this.txtControllerCity,
-      @required this.txtControllerPostalCode,
-      @required this.txtControllerEmailAddress,
+      {Key? key,
+      required this.txtControllerFirstName,
+      required this.txtControllerLastName,
+      required this.txtControllerAddressLine,
+      required this.txtControllerCity,
+      required this.txtControllerPostalCode,
+      required this.txtControllerEmailAddress,
       this.txtControllerPhoneNumber,
-      @required this.customerCountry,
-      @required this.onTapCountry})
+      required this.customerCountry,
+      required this.onTapCountry})
       : super(key: key);
 
-  final TextEditingController txtControllerFirstName,
+  final TextEditingController? txtControllerFirstName,
       txtControllerLastName,
       txtControllerAddressLine,
       txtControllerCity,
@@ -36,7 +36,7 @@ class CustomerAddressInput extends StatelessWidget {
       txtControllerEmailAddress,
       txtControllerPhoneNumber;
 
-  final CustomerCountry customerCountry;
+  final CustomerCountry? customerCountry;
   final Function() onTapCountry;
 
   @override
@@ -102,7 +102,7 @@ class CustomerAddressInput extends StatelessWidget {
                 child: TextEditingRow(
                   heading: "Phone Number",
                   controller: txtControllerPhoneNumber,
-                  keyboardType:TextInputType.phone,
+                  keyboardType: TextInputType.phone,
                 ),
               ),
             ],
@@ -111,7 +111,7 @@ class CustomerAddressInput extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Row(
             children: <Widget>[
-              if (customerCountry.hasState())
+              if (customerCountry!.hasState())
                 Flexible(
                   child: Column(
                     children: [
@@ -126,7 +126,7 @@ class CustomerAddressInput extends StatelessWidget {
                       ),
                       Padding(
                         child: SecondaryButton(
-                          title: (customerCountry.state != null
+                          title: (customerCountry!.state != null
                               ? (customerCountry?.state?.name ?? "")
                               : trans("Select state")),
                           action: onTapCountry,
@@ -151,8 +151,8 @@ class CustomerAddressInput extends StatelessWidget {
                     Padding(
                       child: SecondaryButton(
                         title: (customerCountry != null &&
-                            (customerCountry?.name ?? "").isNotEmpty
-                            ? customerCountry.name
+                                (customerCountry?.name ?? "").isNotEmpty
+                            ? customerCountry!.name
                             : trans("Select country")),
                         action: onTapCountry,
                       ),
@@ -161,12 +161,12 @@ class CustomerAddressInput extends StatelessWidget {
                   ],
                 ),
               ),
-            ].where((element) => element != null).toList(),
+            ],
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           ),
         ),
-      ].where((e) => e != null).toList(),
+      ],
     );
   }
 }

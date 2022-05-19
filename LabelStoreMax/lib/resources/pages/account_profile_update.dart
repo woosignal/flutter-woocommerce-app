@@ -47,11 +47,11 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
   _fetchUserDetails() async {
     WPUserInfoResponse wpUserInfoResponse =
         await WPJsonAPI.instance.api((request) async {
-      return request.wpGetUserInfo(await readAuthToken());
+      return request.wpGetUserInfo((await readAuthToken()) ?? "0");
     });
 
-    _tfFirstName.text = wpUserInfoResponse.data.firstName;
-    _tfLastName.text = wpUserInfoResponse.data.lastName;
+    _tfFirstName.text = wpUserInfoResponse.data!.firstName!;
+    _tfLastName.text = wpUserInfoResponse.data!.lastName!;
     setState(() {
       isLoading = false;
     });
@@ -108,9 +108,9 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                             padding: EdgeInsets.only(top: 10),
                           ),
                           PrimaryButton(
-                              title: trans("Update details"),
-                              isLoading: isLoading,
-                              action: _updateDetails,
+                            title: trans("Update details"),
+                            isLoading: isLoading,
+                            action: _updateDetails,
                           )
                         ],
                       ),
@@ -133,8 +133,8 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
         isLoading = true;
       });
 
-      String userToken = await readAuthToken();
-      WPUserInfoUpdatedResponse wpUserInfoUpdatedResponse;
+      String? userToken = await readAuthToken();
+      WPUserInfoUpdatedResponse? wpUserInfoUpdatedResponse;
       try {
         wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api((request) =>
             request.wpUpdateUserInfo(userToken,

@@ -16,7 +16,6 @@ import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:nylo_support/helpers/helper.dart';
 
 class CheckoutPaymentTypePage extends StatefulWidget {
   CheckoutPaymentTypePage();
@@ -34,7 +33,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
     super.initState();
 
     if (CheckoutSession.getInstance.paymentType == null) {
-      if (getPaymentTypes() != null && getPaymentTypes().isNotEmpty) {
+      if (getPaymentTypes().isNotEmpty) {
         CheckoutSession.getInstance.paymentType = getPaymentTypes().first;
       }
     }
@@ -42,7 +41,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentType> paymentTypes = getPaymentTypes();
+    List<PaymentType?> paymentTypes = getPaymentTypes();
     if (paymentTypes.isEmpty &&
         getEnv('APP_DEBUG', defaultValue: false) == true) {
       NyLogger.info(
@@ -91,7 +90,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     PaymentType paymentType =
-                                        paymentTypes[index];
+                                        paymentTypes[index]!;
                                     return ListTile(
                                       contentPadding: EdgeInsets.only(
                                         top: 10,
@@ -139,7 +138,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                       ],
                     ),
                     decoration: BoxDecoration(
-                      color: ThemeColor.get(context).backgroundContainer,
+                      color: ThemeColor.get(context)!.backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
                           (Theme.of(context).brightness == Brightness.light)
