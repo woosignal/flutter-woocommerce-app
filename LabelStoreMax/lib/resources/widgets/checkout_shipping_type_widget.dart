@@ -7,21 +7,21 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CheckoutShippingTypeWidget extends StatelessWidget {
   const CheckoutShippingTypeWidget(
-      {Key key,
-      @required this.context,
-      @required this.wooSignalApp,
-      @required this.checkoutSession,
+      {Key? key,
+      required this.context,
+      required this.wooSignalApp,
+      required this.checkoutSession,
       this.resetState})
       : super(key: key);
 
   final CheckoutSession checkoutSession;
   final BuildContext context;
-  final Function resetState;
-  final WooSignalApp wooSignalApp;
+  final Function? resetState;
+  final WooSignalApp? wooSignalApp;
 
   @override
   Widget build(BuildContext context) {
-    bool hasDisableShipping = wooSignalApp.disableShipping == 1;
+    bool hasDisableShipping = wooSignalApp!.disableShipping == 1;
     if (hasDisableShipping == true) {
       return SizedBox.shrink();
     }
@@ -31,7 +31,7 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
           hasSelectedShippingType ? "Shipping selected" : "Select shipping"),
       leadImage: Icon(Icons.local_shipping),
       leadTitle: hasSelectedShippingType
-          ? checkoutSession.shippingType.getTitle()
+          ? checkoutSession.shippingType!.getTitle()
           : trans("Select a shipping option"),
       action: _actionSelectShipping,
       showBorderBottom: false,
@@ -39,8 +39,8 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
   }
 
   _actionSelectShipping() {
-    CustomerAddress shippingAddress =
-        checkoutSession.billingDetails.shippingAddress;
+    CustomerAddress? shippingAddress =
+        checkoutSession.billingDetails!.shippingAddress;
     if (shippingAddress == null || shippingAddress.customerCountry == null) {
       showToastNotification(
         context,
@@ -51,6 +51,6 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
       return;
     }
     Navigator.pushNamed(context, "/checkout-shipping-type")
-        .then((value) => resetState());
+        .then((value) => resetState!());
   }
 }

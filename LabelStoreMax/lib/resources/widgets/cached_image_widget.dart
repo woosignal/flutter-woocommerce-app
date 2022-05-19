@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 class CachedImageWidget extends StatelessWidget {
   const CachedImageWidget({
-    Key key,
+    Key? key,
     this.image,
     this.height = 70,
     this.width = 70,
@@ -26,7 +26,7 @@ class CachedImageWidget extends StatelessWidget {
     this.fit = BoxFit.contain,
   }) : super(key: key);
 
-  final String image;
+  final String? image;
   final double height;
   final double width;
   final Widget placeholder;
@@ -34,7 +34,7 @@ class CachedImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CachedNetworkImage(
-        imageUrl: image,
+        imageUrl: image!,
         placeholder: (context, url) => placeholder,
         errorWidget: (context, url, error) => Icon(Icons.error),
         height: height,

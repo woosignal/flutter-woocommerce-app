@@ -20,11 +20,11 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailBodyWidget extends StatelessWidget {
   const ProductDetailBodyWidget(
-      {Key key, @required this.product, @required this.wooSignalApp})
+      {Key? key, required this.product, required this.wooSignalApp})
       : super(key: key);
 
-  final Product product;
-  final WooSignalApp wooSignalApp;
+  final Product? product;
+  final WooSignalApp? wooSignalApp;
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,9 @@ class ProductDetailBodyWidget extends StatelessWidget {
             product: product, wooSignalApp: wooSignalApp),
         // </Product reviews>
 
+        if (product != null)
         ProductDetailUpsellWidget(
-            productIds: product.upsellIds, wooSignalApp: wooSignalApp),
+            productIds: product!.upsellIds, wooSignalApp: wooSignalApp),
         // </You may also like>
 
         ProductDetailRelatedProductsWidget(
@@ -60,6 +61,6 @@ class ProductDetailBodyWidget extends StatelessWidget {
   _viewProductImages(BuildContext context, int i) =>
       Navigator.pushNamed(context, "/product-images", arguments: {
         "index": i,
-        "images": product.images.map((f) => f.src).toList()
+        "images": product!.images.map((f) => f.src).toList()
       });
 }

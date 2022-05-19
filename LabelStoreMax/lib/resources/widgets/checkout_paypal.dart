@@ -12,9 +12,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class PayPalCheckout extends StatefulWidget {
-  final String description;
-  final String amount;
-  final List<CartLineItem> cartLineItems;
+  final String? description;
+  final String? amount;
+  final List<CartLineItem>? cartLineItems;
 
   PayPalCheckout({this.description, this.amount, this.cartLineItems});
 
@@ -26,49 +26,49 @@ class WebViewState extends NyState<PayPalCheckout> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
-  String payerId = '';
+  String? payerId = '';
   int intCount = 0;
-  StreamSubscription<String> _onUrlChanged;
-  final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
-  String formCheckoutShippingAddress;
+  StreamSubscription<String>? _onUrlChanged;
+  final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
+  String? formCheckoutShippingAddress;
 
   setCheckoutShippingAddress(CustomerAddress customerAddress) {
     String tmp = "";
     if (customerAddress.firstName != null) {
       tmp +=
-          '<input type="hidden" name="first_name" value="${customerAddress.firstName.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="first_name" value="${customerAddress.firstName!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
     if (customerAddress.lastName != null) {
       tmp +=
-          '<input type="hidden" name="last_name" value="${customerAddress.lastName.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="last_name" value="${customerAddress.lastName!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
     if (customerAddress.addressLine != null) {
       tmp +=
-          '<input type="hidden" name="address1" value="${customerAddress.addressLine.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="address1" value="${customerAddress.addressLine!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
     if (customerAddress.city != null) {
       tmp +=
-          '<input type="hidden" name="city" value="${customerAddress.city.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="city" value="${customerAddress.city!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
-    if (customerAddress.customerCountry.hasState() &&
-        customerAddress.customerCountry.state.name != null) {
+    if (customerAddress.customerCountry!.hasState() &&
+        customerAddress.customerCountry!.state!.name != null) {
       tmp +=
-          '<input type="hidden" name="state" value="${customerAddress.customerCountry.state.name.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="state" value="${customerAddress.customerCountry!.state!.name!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
     if (customerAddress.postalCode != null) {
       tmp +=
-          '<input type="hidden" name="zip" value="${customerAddress.postalCode.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="zip" value="${customerAddress.postalCode!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
-    if (customerAddress.customerCountry.countryCode != null) {
+    if (customerAddress.customerCountry!.countryCode != null) {
       tmp +=
-          '<input type="hidden" name="country" value="${customerAddress.customerCountry.countryCode.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
+          '<input type="hidden" name="country" value="${customerAddress.customerCountry!.countryCode!.replaceAll(RegExp(r'[^\d\w\s,\-+]+'), '')}">\n';
     }
     formCheckoutShippingAddress = tmp;
   }
 
   String getPayPalItemName() {
     return truncateString(
-        widget.description.replaceAll(RegExp(r'[^\w\s]+'), ''), 124);
+        widget.description!.replaceAll(RegExp(r'[^\w\s]+'), ''), 124);
   }
 
   String getPayPalPaymentType() {
@@ -76,8 +76,8 @@ class WebViewState extends NyState<PayPalCheckout> {
   }
 
   String getPayPalUrl() {
-    bool liveMode =
-        envVal('PAYPAL_LIVE_MODE', defaultValue: _wooSignalApp.paypalLiveMode);
+    bool? liveMode =
+        envVal('PAYPAL_LIVE_MODE', defaultValue: _wooSignalApp!.paypalLiveMode);
     return liveMode == true
         ? "https://www.paypal.com/cgi-bin/webscr"
         : "https://www.sandbox.paypal.com/cgi-bin/webscr";
@@ -88,14 +88,14 @@ class WebViewState extends NyState<PayPalCheckout> {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     setCheckoutShippingAddress(
-        CheckoutSession.getInstance.billingDetails.shippingAddress);
+        CheckoutSession.getInstance.billingDetails!.shippingAddress!);
     setState(() {});
   }
 
   @override
   void dispose() {
     if (_onUrlChanged != null) {
-      _onUrlChanged.cancel();
+      _onUrlChanged!.cancel();
     }
     super.dispose();
   }
@@ -117,9 +117,9 @@ class WebViewState extends NyState<PayPalCheckout> {
 <form method="post" name="paypal_form" action="${getPayPalUrl()}">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="amount" value="${widget.amount}">
-<input type="hidden" name="lc" value="${envVal('PAYPAL_LOCALE', defaultValue: _wooSignalApp.paypalLocale)}">
-<input type="hidden" name="currency_code" value="${_wooSignalApp.currencyMeta.code}">
-<input type="hidden" name="business" value="${envVal('PAYPAL_ACCOUNT_EMAIL', defaultValue: _wooSignalApp.paypalEmail)}">
+<input type="hidden" name="lc" value="${envVal('PAYPAL_LOCALE', defaultValue: _wooSignalApp!.paypalLocale)}">
+<input type="hidden" name="currency_code" value="${_wooSignalApp!.currencyMeta!.code}">
+<input type="hidden" name="business" value="${envVal('PAYPAL_ACCOUNT_EMAIL', defaultValue: _wooSignalApp!.paypalEmail)}">
 <input type="hidden" name="return" value="https://woosignal.com/paypal/payment~success">
 <input type="hidden" name="cancel_return" value="https://woosignal.com/paypal/payment~failure">
 <input type="hidden" name="item_name" value="${getPayPalItemName()}">

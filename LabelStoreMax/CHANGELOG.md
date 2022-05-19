@@ -1,3 +1,11 @@
+## [5.9.0] - 2022-05-19
+
+* Migrate to Nylo 3.x
+* Null safety
+* Min dart version 2.17
+* Refactor product detail screen
+* Pubspec.yaml dependency updates
+
 ## [5.8.0] - 2022-03-29
 
 * Add phone number to customer input form

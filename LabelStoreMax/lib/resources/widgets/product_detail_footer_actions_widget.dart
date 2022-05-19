@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
@@ -16,15 +17,15 @@ import 'package:woosignal/models/response/products.dart';
 
 class ProductDetailFooterActionsWidget extends StatelessWidget {
   const ProductDetailFooterActionsWidget(
-      {Key key,
-      @required this.product,
-      @required this.quantity,
-      @required this.onAddToCart,
-      @required this.onViewExternalProduct,
-      @required this.onAddQuantity,
-      @required this.onRemoveQuantity})
+      {Key? key,
+      required this.product,
+      required this.quantity,
+      required this.onAddToCart,
+      required this.onViewExternalProduct,
+      required this.onAddQuantity,
+      required this.onRemoveQuantity})
       : super(key: key);
-  final Product product;
+  final Product? product;
   final Function onViewExternalProduct;
   final Function onAddToCart;
   final Function onAddQuantity;
@@ -37,7 +38,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
       height: 140,
       padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: ThemeColor.get(context).background,
+        color: ThemeColor.get(context)!.background,
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
@@ -53,64 +54,63 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          (product.type != "external"
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (product!.type != "external")
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  trans("Quantity"),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(color: Colors.grey),
+                ),
+                Row(
                   children: <Widget>[
-                    Text(
-                      trans("Quantity"),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .copyWith(color: Colors.grey),
+                    IconButton(
+                      icon: Icon(
+                        Icons.remove_circle_outline,
+                        size: 28,
+                      ),
+                      onPressed: onRemoveQuantity as void Function()?,
                     ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.remove_circle_outline,
-                            size: 28,
-                          ),
-                          onPressed: onRemoveQuantity,
-                        ),
-                        Text(
-                          quantity.toString(),
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.add_circle_outline,
-                            size: 28,
-                          ),
-                          onPressed: onAddQuantity,
-                        ),
-                      ],
-                    )
+                    Text(
+                      quantity.toString(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.add_circle_outline,
+                        size: 28,
+                      ),
+                      onPressed: onAddQuantity as void Function()?,
+                    ),
                   ],
                 )
-              : null),
+              ],
+            ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Flexible(
                   child: Align(
-                child: Text(
+                child: AutoSizeText(
                   formatStringCurrency(
                       total:
-                          (parseWcPrice(product.price) * quantity).toString()),
+                          (parseWcPrice(product!.price) * quantity).toString()),
                   style: Theme.of(context).textTheme.headline4,
                   textAlign: TextAlign.center,
                 ),
                 alignment: Alignment.centerLeft,
               )),
-              product.type == "external"
+              product!.type == "external"
                   ? Flexible(
                       child: PrimaryButton(
                         title: trans("Buy Product"),
-                        action: () => onViewExternalProduct,
+                        action: onViewExternalProduct,
                       ),
                     )
                   : Flexible(
@@ -121,7 +121,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
                     ),
             ],
           ),
-        ].where((e) => e != null).toList(),
+        ],
       ),
     );
   }

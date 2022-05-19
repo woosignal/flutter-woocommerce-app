@@ -47,7 +47,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       _tfFirstNameController = TextEditingController(),
       _tfLastNameController = TextEditingController();
 
-  final WooSignalApp _wooSignalApp = AppHelper.instance.appConfig;
+  final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   void initState() {
@@ -105,9 +105,9 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             ),
             Padding(
               child: PrimaryButton(
-                  title: trans("Sign up"),
-                  isLoading: _hasTappedRegister,
-                  action: _signUpTapped,
+                title: trans("Sign up"),
+                isLoading: _hasTappedRegister,
+                action: _signUpTapped,
               ),
               padding: EdgeInsets.only(top: 10),
             ),
@@ -116,7 +116,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                 child: RichText(
                   text: TextSpan(
                     text: trans("By tapping \"Register\" you agree to ") +
-                        AppHelper.instance.appConfig.appName +
+                        AppHelper.instance.appConfig!.appName! +
                         '\'s ',
                     children: <TextSpan>[
                       TextSpan(
@@ -179,7 +179,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       String username =
           (email.replaceAll(RegExp(r'([@.])'), "")) + _randomStr(4);
 
-      WPUserRegisterResponse wpUserRegisterResponse;
+      WPUserRegisterResponse? wpUserRegisterResponse;
       try {
         wpUserRegisterResponse = await WPJsonAPI.instance.api(
           (request) => request.wpRegister(
@@ -232,8 +232,8 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
 
       if (wpUserRegisterResponse != null &&
           wpUserRegisterResponse.status == 200) {
-        String token = wpUserRegisterResponse.data.userToken;
-        String userId = wpUserRegisterResponse.data.userId.toString();
+        String? token = wpUserRegisterResponse.data!.userToken;
+        String userId = wpUserRegisterResponse.data!.userId.toString();
         User user = User.fromUserAuthResponse(token: token, userId: userId);
         user.save(SharedKey.authUser);
 
@@ -251,17 +251,30 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
     }
   }
 
-  _viewTOSModal() {
-    showPlatformAlertDialog(
-      context,
-      title: trans("Actions"),
-      subtitle: trans("View Terms and Conditions or Privacy policy"),
-      actions: [
-        dialogAction(context,
-            title: trans("Terms and Conditions"), action: _viewTermsConditions),
-        dialogAction(context,
-            title: trans("Privacy Policy"), action: _viewPrivacyPolicy),
-      ],
+  _viewTOSModal() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(trans("Actions")),
+        content: Text(trans("View Terms and Conditions or Privacy policy")),
+        actions: <Widget>[
+          MaterialButton(
+            onPressed: _viewTermsConditions,
+            child: Text(trans("Terms and Conditions")),
+          ),
+          MaterialButton(
+            onPressed: _viewPrivacyPolicy,
+            child: Text(trans("Privacy Policy")),
+          ),
+          Divider(),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Close'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -277,11 +290,11 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
 
   void _viewTermsConditions() {
     Navigator.pop(context);
-    openBrowserTab(url: _wooSignalApp.appTermsLink);
+    openBrowserTab(url: _wooSignalApp!.appTermsLink!);
   }
 
   void _viewPrivacyPolicy() {
     Navigator.pop(context);
-    openBrowserTab(url: _wooSignalApp.appPrivacyLink);
+    openBrowserTab(url: _wooSignalApp!.appPrivacyLink!);
   }
 }

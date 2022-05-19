@@ -50,12 +50,12 @@ class _AccountShippingDetailsPageState
   }
 
   _fetchUserDetails() async {
-    String userToken = await readAuthToken();
+    String? userToken = await readAuthToken();
 
-    WCCustomerInfoResponse wcCustomerInfoResponse;
+    WCCustomerInfoResponse? wcCustomerInfoResponse;
     try {
       wcCustomerInfoResponse = await WPJsonAPI.instance
-          .api((request) => request.wcCustomerInfo(userToken));
+          .api((request) => request.wcCustomerInfo(userToken!));
     } on Exception catch (_) {
       showToastNotification(
         context,
@@ -73,15 +73,15 @@ class _AccountShippingDetailsPageState
 
     if (wcCustomerInfoResponse != null &&
         wcCustomerInfoResponse.status == 200) {
-      Shipping shipping = wcCustomerInfoResponse.data.shipping;
-      _txtShippingFirstName.text = shipping.firstName;
-      _txtShippingLastName.text = shipping.lastName;
+      Shipping shipping = wcCustomerInfoResponse.data!.shipping!;
+      _txtShippingFirstName.text = shipping.firstName!;
+      _txtShippingLastName.text = shipping.lastName!;
 
-      _txtShippingAddressLine.text = shipping.address1;
-      _txtShippingCity.text = shipping.city;
-      _txtShippingState.text = shipping.state;
-      _txtShippingPostalCode.text = shipping.postcode;
-      _txtShippingCountry.text = shipping.country;
+      _txtShippingAddressLine.text = shipping.address1!;
+      _txtShippingCity.text = shipping.city!;
+      _txtShippingState.text = shipping.state!;
+      _txtShippingPostalCode.text = shipping.postcode!;
+      _txtShippingCountry.text = shipping.country!;
     }
   }
 
@@ -172,7 +172,7 @@ class _AccountShippingDetailsPageState
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: ThemeColor.get(context).surfaceBackground,
+                            color: ThemeColor.get(context)!.surfaceBackground,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: (Theme.of(context).brightness ==
                                     Brightness.light)
@@ -188,9 +188,9 @@ class _AccountShippingDetailsPageState
                       Column(
                         children: <Widget>[
                           PrimaryButton(
-                              title: trans("UPDATE DETAILS"),
-                              isLoading: _isUpdating,
-                              action: _updateShippingDetails,
+                            title: trans("UPDATE DETAILS"),
+                            isLoading: _isUpdating,
+                            action: _updateShippingDetails,
                           ),
                         ],
                       ),
@@ -211,7 +211,7 @@ class _AccountShippingDetailsPageState
     String postalCode = _txtShippingPostalCode.text;
     String country = _txtShippingCountry.text;
 
-    String userToken = await readAuthToken();
+    String? userToken = await readAuthToken();
 
     if (_isUpdating == true) {
       return;
@@ -221,7 +221,7 @@ class _AccountShippingDetailsPageState
       _isUpdating = true;
     });
 
-    WCCustomerUpdatedResponse wcCustomerUpdatedResponse;
+    WCCustomerUpdatedResponse? wcCustomerUpdatedResponse;
     try {
       wcCustomerUpdatedResponse = await WPJsonAPI.instance.api(
         (request) => request.wcUpdateCustomerInfo(

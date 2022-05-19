@@ -7,22 +7,19 @@
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-import 'package:flutter/cupertino.dart';
-
 class DefaultShipping {
   String code;
-  String country;
+  String? country;
   List<DefaultShippingState> states;
   DefaultShipping(
-      {@required this.code, @required this.country, @required this.states});
+      {required this.code, required this.country, required this.states});
 }
 
 class DefaultShippingState {
-  String code;
-  String name;
+  String? code;
+  String? name;
 
-  DefaultShippingState({@required this.code, @required this.name});
+  DefaultShippingState({required this.code, required this.name});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

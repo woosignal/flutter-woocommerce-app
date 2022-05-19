@@ -6,16 +6,16 @@ import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_tv/flutter_swiper.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/models/response/products.dart';
 
 class CompoHomeWidget extends StatefulWidget {
-  CompoHomeWidget({Key key, @required this.wooSignalApp}) : super(key: key);
+  CompoHomeWidget({Key? key, required this.wooSignalApp}) : super(key: key);
 
-  final WooSignalApp wooSignalApp;
+  final WooSignalApp? wooSignalApp;
 
   @override
   _CompoHomeWidgetState createState() => _CompoHomeWidgetState();
@@ -29,19 +29,19 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
   }
 
   _loadHome() async {
-    categories = await appWooSignal((api) =>
-        api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true));
+    categories = await (appWooSignal((api) =>
+        api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true)));
     categories.sort((category1, category2) =>
-        category1.menuOrder.compareTo(category2.menuOrder));
+        category1.menuOrder!.compareTo(category2.menuOrder!));
 
     for (var category in categories) {
-      List<Product> products = await appWooSignal(
+      List<Product> products = await (appWooSignal(
         (api) => api.getProducts(
             perPage: 10,
             category: category.id.toString(),
             status: "publish",
             stockStatus: "instock"),
-      );
+      ));
       if (products.isNotEmpty) {
         categoryAndProducts.addAll({category: products});
         setState(() {});
@@ -60,7 +60,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    List<String> bannerImages = widget.wooSignalApp.bannerImages;
+    List<String>? bannerImages = widget.wooSignalApp!.bannerImages;
     return Scaffold(
       drawer: HomeDrawerWidget(wooSignalApp: widget.wooSignalApp),
       appBar: AppBar(
@@ -74,7 +74,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
             : ListView(
                 shrinkWrap: true,
                 children: [
-                  if (bannerImages.isNotEmpty)
+                  if (bannerImages!.isNotEmpty)
                     Container(
                       child: Swiper(
                         itemBuilder: (BuildContext context, int index) {
@@ -101,17 +101,16 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                       margin: EdgeInsets.only(top: 10),
                       child: Column(
                         children: [
-                          hasImage
-                              ? InkWell(
-                                  child: CachedImageWidget(
-                                    image: catProds.key.image.src,
-                                    height: containerHeight / 2,
-                                    width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  onTap: () => _showCategory(catProds.key),
-                                )
-                              : null,
+                          if (hasImage)
+                            InkWell(
+                              child: CachedImageWidget(
+                                image: catProds.key.image!.src,
+                                height: containerHeight / 2,
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                              ),
+                              onTap: () => _showCategory(catProds.key),
+                            ),
                           ConstrainedBox(
                             constraints: BoxConstraints(
                               minHeight: 50,
@@ -128,10 +127,10 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                                 children: [
                                   Expanded(
                                     child: AutoSizeText(
-                                      catProds.key.name,
+                                      catProds.key.name!,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .subtitle1
+                                          .subtitle1!
                                           .copyWith(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 22),
@@ -172,7 +171,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                               itemCount: catProds.value.length,
                             ),
                           )
-                        ].where((e) => e != null).toList(),
+                        ],
                       ),
                     );
                   }),

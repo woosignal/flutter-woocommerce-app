@@ -6,7 +6,7 @@ import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
 import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/models/response/product_category.dart' as ws_category;
@@ -14,10 +14,10 @@ import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class MelloThemeWidget extends StatefulWidget {
   MelloThemeWidget(
-      {Key key, @required this.globalKey, @required this.wooSignalApp})
+      {Key? key, required this.globalKey, required this.wooSignalApp})
       : super(key: key);
   final GlobalKey globalKey;
-  final WooSignalApp wooSignalApp;
+  final WooSignalApp? wooSignalApp;
 
   @override
   _MelloThemeWidgetState createState() => _MelloThemeWidgetState();
@@ -49,11 +49,11 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
 
   _fetchCategories() async {
     _categories =
-        await appWooSignal((api) => api.getProductCategories(perPage: 100));
+        await (appWooSignal((api) => api.getProductCategories(perPage: 100)));
   }
 
   _modalBottomSheetMenu() {
-    widget.globalKey.currentState.setState(() {});
+    widget.globalKey.currentState!.setState(() {});
     wsModalBottom(
       context,
       title: trans("Categories"),
@@ -75,7 +75,7 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> bannerImages = widget.wooSignalApp.bannerImages;
+    List<String>? bannerImages = widget.wooSignalApp!.bannerImages;
     return Scaffold(
       drawer: HomeDrawerWidget(wooSignalApp: widget.wooSignalApp),
       appBar: AppBar(
@@ -88,8 +88,8 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
               Icons.search,
               size: 35,
             ),
-            onPressed: () => Navigator.pushNamed(context, "/home-search")
-                .then((value) => widget.globalKey.currentState.setState(() {})),
+            onPressed: () => Navigator.pushNamed(context, "/home-search").then(
+                (value) => widget.globalKey.currentState!.setState(() {})),
           ),
           CartIconWidget(key: widget.globalKey),
         ],
@@ -159,5 +159,5 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
 
   _showProduct(ws_product.Product product) =>
       Navigator.pushNamed(context, "/product-detail", arguments: product)
-          .then((value) => widget.globalKey.currentState.setState(() {}));
+          .then((value) => widget.globalKey.currentState!.setState(() {}));
 }

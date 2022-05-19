@@ -14,24 +14,24 @@ import 'package:woosignal/models/response/product_variation.dart';
 import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class CartLineItem {
-  String name;
-  int productId;
-  int variationId;
-  int quantity;
-  bool isManagedStock;
-  int stockQuantity;
-  String shippingClassId;
-  String taxStatus;
-  String taxClass;
-  bool shippingIsTaxable;
-  String subtotal;
-  String total;
-  String imageSrc;
-  String variationOptions;
-  List<ws_product.Category> categories;
-  bool onSale;
-  String stockStatus;
-  Object metaData = {};
+  String? name;
+  int? productId;
+  int? variationId;
+  int quantity = 0;
+  bool? isManagedStock;
+  int? stockQuantity;
+  String? shippingClassId;
+  String? taxStatus;
+  String? taxClass;
+  bool? shippingIsTaxable;
+  String? subtotal;
+  String? total;
+  String? imageSrc;
+  String? variationOptions;
+  List<ws_product.Category>? categories;
+  bool? onSale;
+  String? stockStatus;
+  Object? metaData = {};
 
   CartLineItem(
       {this.name,
@@ -39,7 +39,7 @@ class CartLineItem {
       this.variationId,
       this.isManagedStock,
       this.stockQuantity,
-      this.quantity,
+      this.quantity = 1,
       this.stockStatus,
       this.shippingClassId,
       this.taxStatus,
@@ -57,10 +57,11 @@ class CartLineItem {
     return (quantity * parseWcPrice(subtotal)).toStringAsFixed(2);
   }
 
-  CartLineItem.fromProduct({int quantityAmount, ws_product.Product product}) {
+  CartLineItem.fromProduct(
+      {int? quantityAmount, required ws_product.Product product}) {
     name = product.name;
     productId = product.id;
-    quantity = quantityAmount;
+    quantity = quantityAmount ?? 1;
     taxStatus = product.taxStatus;
     shippingClassId = product.shippingClassId.toString();
     subtotal = product.price;
@@ -76,21 +77,21 @@ class CartLineItem {
   }
 
   CartLineItem.fromProductVariation(
-      {int quantityAmount,
-      List<String> options,
-      ws_product.Product product,
-      ProductVariation productVariation}) {
-    String imageSrc = getEnv("PRODUCT_PLACEHOLDER_IMAGE");
+      {int? quantityAmount,
+      required List<String> options,
+      required ws_product.Product product,
+      required ProductVariation productVariation}) {
+    String? imageSrc = getEnv("PRODUCT_PLACEHOLDER_IMAGE");
     if (product.images.isNotEmpty) {
       imageSrc = product.images.first.src;
     }
     if (productVariation.image != null) {
-      imageSrc = productVariation.image.src;
+      imageSrc = productVariation.image!.src;
     }
     name = product.name;
     productId = product.id;
     variationId = productVariation.id;
-    quantity = quantityAmount;
+    quantity = quantityAmount ?? 1;
     taxStatus = productVariation.taxStatus;
     shippingClassId = productVariation.shippingClassId.toString();
     subtotal = productVariation.price;
@@ -145,7 +146,7 @@ class CartLineItem {
         'shipping_is_taxable': shippingIsTaxable,
         'image_src': imageSrc,
         'categories': categories != null
-            ? categories.map((e) => e.toJson()).toList()
+            ? categories!.map((e) => e.toJson()).toList()
             : [],
         'variation_options': variationOptions,
         'subtotal': subtotal,

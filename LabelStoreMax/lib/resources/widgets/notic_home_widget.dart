@@ -8,25 +8,24 @@ import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:flutter_swiper_tv/flutter_swiper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/models/response/product_category.dart' as ws_category;
 import 'package:woosignal/models/response/products.dart' as ws_product;
 
 class NoticHomeWidget extends StatefulWidget {
-  NoticHomeWidget({Key key, @required this.wooSignalApp}) : super(key: key);
+  NoticHomeWidget({Key? key, required this.wooSignalApp}) : super(key: key);
 
-  final WooSignalApp wooSignalApp;
+  final WooSignalApp? wooSignalApp;
 
   @override
   _NoticHomeWidgetState createState() => _NoticHomeWidgetState();
 }
 
 class _NoticHomeWidgetState extends State<NoticHomeWidget> {
-  Widget activeWidget;
+  Widget? activeWidget;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -52,7 +51,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
 
   _fetchCategories() async {
     _categories =
-        await appWooSignal((api) => api.getProductCategories(perPage: 100));
+        await (appWooSignal((api) => api.getProductCategories(perPage: 100)));
   }
 
   _modalBottomSheetMenu() {
@@ -116,11 +115,13 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                           child: Swiper(
                             itemBuilder: (BuildContext context, int index) {
                               return CachedImageWidget(
-                                image: widget.wooSignalApp.bannerImages[index],
+                                image:
+                                    widget.wooSignalApp!.bannerImages![index],
                                 fit: BoxFit.cover,
                               );
                             },
-                            itemCount: widget.wooSignalApp.bannerImages.length,
+                            itemCount:
+                                widget.wooSignalApp!.bannerImages!.length,
                             viewportFraction: 0.8,
                             scale: 0.9,
                           ),
@@ -149,7 +150,8 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                             enablePullDown: true,
                             enablePullUp: true,
                             footer: CustomFooter(
-                              builder: (BuildContext context, LoadStatus mode) {
+                              builder:
+                                  (BuildContext context, LoadStatus? mode) {
                                 Widget body;
                                 if (mode == LoadStatus.idle) {
                                   body = Text(trans("pull up load"));
@@ -172,29 +174,21 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                             controller: _refreshController,
                             onRefresh: _onRefresh,
                             onLoading: _onLoading,
-                            child:
-                                (products.length != null && products.isNotEmpty
-                                    ? StaggeredGridView.countBuilder(
-                                        crossAxisCount: 2,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: products.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            height: 250,
-                                            child: ProductItemContainer(
-                                              product: products[index],
-                                              onTap: _showProduct,
-                                            ),
-                                          );
-                                        },
-                                        staggeredTileBuilder: (int index) {
-                                          return StaggeredTile.fit(2);
-                                        },
-                                        mainAxisSpacing: 4.0,
-                                        crossAxisSpacing: 4.0,
-                                      )
-                                    : NoResultsForProductsWidget()),
+                            child: (products.isNotEmpty
+                                ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: false,
+                              itemBuilder: (cxt, i) {
+                                return Container(
+                                  // height: 200,
+                                  width: MediaQuery.of(context).size.width / 2.5,
+                                  child: ProductItemContainer(
+                                      product: products[i], onTap: _showProduct),
+                                );
+                              },
+                              itemCount: products.length,
+                            )
+                                : NoResultsForProductsWidget()),
                           ),
                         )
                       ],

@@ -26,24 +26,24 @@ import '../../app/controllers/leave_review_controller.dart';
 class LeaveReviewPage extends NyStatefulWidget {
   final LeaveReviewController controller = LeaveReviewController();
 
-  LeaveReviewPage({Key key}) : super(key: key);
+  LeaveReviewPage({Key? key}) : super(key: key);
 
   @override
   _LeaveReviewPageState createState() => _LeaveReviewPageState();
 }
 
 class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
-  LineItems _lineItem;
-  Order _order;
+  LineItems? _lineItem;
+  Order? _order;
 
-  TextEditingController _textEditingController;
-  int _rating;
+  TextEditingController? _textEditingController;
+  int? _rating;
   bool _isLoading = false;
 
   @override
-  widgetDidLoad() async {
-    _lineItem = widget.controller.data()['line_item'] as LineItems;
-    _order = widget.controller.data()['order'] as Order;
+  init() async {
+    _lineItem = widget.controller.data()['line_item'] as LineItems?;
+    _order = widget.controller.data()['order'] as Order?;
     _textEditingController = TextEditingController();
     _rating = 5;
   }
@@ -74,7 +74,7 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
                       trans("How would you rate"),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    Text(_lineItem.name),
+                    Text(_lineItem!.name!),
                     Flexible(
                       child: Container(
                         child: TextField(
@@ -92,7 +92,7 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
                       padding: EdgeInsets.only(bottom: 16),
                     ),
                     RatingBar.builder(
-                      initialRating: _rating.toDouble(),
+                      initialRating: _rating!.toDouble(),
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: false,
@@ -120,8 +120,8 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
     setState(() {
       _isLoading = true;
     });
-    String review = _textEditingController.text;
-    wc_customer_info.Data wcCustomerInfo = await _fetchWpUserData();
+    String review = _textEditingController!.text;
+    wc_customer_info.Data? wcCustomerInfo = await _fetchWpUserData();
     if (wcCustomerInfo == null) {
       showToastNotification(
         context,
@@ -138,17 +138,19 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
     try {
       validator(rules: {"review": "min:5"}, data: {"review": review});
 
-      ProductReview productReview =
-          await appWooSignal((api) => api.createProductReview(
-                productId: _lineItem.productId,
+      ProductReview? productReview =
+          await (appWooSignal((api) => api.createProductReview(
+                productId: _lineItem!.productId,
                 verified: true,
                 review: review,
                 status: "approved",
-                reviewer: [_order.billing.firstName, _order.billing.lastName]
-                    .join(" "),
+                reviewer: [
+                  _order!.billing!.firstName,
+                  _order!.billing!.lastName
+                ].join(" "),
                 rating: _rating,
-                reviewerEmail: _order.billing.email,
-              ));
+                reviewerEmail: _order!.billing!.email,
+              )));
 
       if (productReview == null) {
         showToastNotification(context,
@@ -171,13 +173,13 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
     }
   }
 
-  Future<wc_customer_info.Data> _fetchWpUserData() async {
-    String userToken = await readAuthToken();
+  Future<wc_customer_info.Data?> _fetchWpUserData() async {
+    String? userToken = await readAuthToken();
 
-    wc_customer_info.WCCustomerInfoResponse wcCustomerInfoResponse;
+    wc_customer_info.WCCustomerInfoResponse? wcCustomerInfoResponse;
     try {
       wcCustomerInfoResponse = await WPJsonAPI.instance
-          .api((request) => request.wcCustomerInfo(userToken));
+          .api((request) => request.wcCustomerInfo(userToken!));
 
       if (wcCustomerInfoResponse == null) {
         return null;

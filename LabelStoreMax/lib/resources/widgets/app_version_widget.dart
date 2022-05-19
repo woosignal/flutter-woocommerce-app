@@ -9,11 +9,11 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:package_info/package_info.dart';
 
 class AppVersionWidget extends StatelessWidget {
-  const AppVersionWidget({Key key}) : super(key: key);
+  const AppVersionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +29,14 @@ class AppVersionWidget extends StatelessWidget {
           case ConnectionState.done:
             if (snapshot.hasError) return Text("");
             return Padding(
-              child: Text("${trans("Version")}: ${snapshot.data.version}",
+              child: Text("${trans("Version")}: ${snapshot.data!.version}",
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyText2!
                       .copyWith(fontWeight: FontWeight.w300)),
               padding: EdgeInsets.only(top: 15, bottom: 15),
             );
         }
-        return null; // unreachable
       },
     );
   }

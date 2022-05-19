@@ -12,13 +12,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 Future<bool> authCheck() async => ((await getUser()) != null);
 
-Future<String> readAuthToken() async => (await getUser()).token;
+Future<String?> readAuthToken() async => (await getUser())!.token;
 
-Future<String> readUserId() async => (await getUser()).userId;
+Future<String?> readUserId() async => (await getUser())!.userId;
 
 authLogout(BuildContext context) async {
   await NyStorage.delete(SharedKey.authUser);

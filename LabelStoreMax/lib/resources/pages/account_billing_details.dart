@@ -51,18 +51,18 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
   _fetchUserDetails() async {
     WCCustomerInfoResponse wcCustomerInfoResponse =
         await WPJsonAPI.instance.api((request) async {
-      return request.wcCustomerInfo(await readAuthToken());
+      return request.wcCustomerInfo((await readAuthToken())!);
     });
 
-    Billing billing = wcCustomerInfoResponse.data.billing;
-    _txtShippingFirstName.text = billing.firstName;
-    _txtShippingLastName.text = billing.lastName;
+    Billing billing = wcCustomerInfoResponse.data!.billing!;
+    _txtShippingFirstName.text = billing.firstName!;
+    _txtShippingLastName.text = billing.lastName!;
 
-    _txtShippingAddressLine.text = billing.address1;
-    _txtShippingCity.text = billing.city;
-    _txtShippingState.text = billing.state;
-    _txtShippingPostalCode.text = billing.postcode;
-    _txtShippingCountry.text = billing.country;
+    _txtShippingAddressLine.text = billing.address1!;
+    _txtShippingCity.text = billing.city!;
+    _txtShippingState.text = billing.state!;
+    _txtShippingPostalCode.text = billing.postcode!;
+    _txtShippingCountry.text = billing.country!;
 
     setState(() {
       _isLoading = false;
@@ -155,7 +155,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: ThemeColor.get(context).surfaceBackground,
+                            color: ThemeColor.get(context)!.surfaceBackground,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: (Theme.of(context).brightness ==
                                     Brightness.light)
@@ -171,9 +171,9 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                       Column(
                         children: <Widget>[
                           PrimaryButton(
-                              title: trans("UPDATE DETAILS"),
-                              isLoading: _isUpdating,
-                              action: _updateBillingDetails,
+                            title: trans("UPDATE DETAILS"),
+                            isLoading: _isUpdating,
+                            action: _updateBillingDetails,
                           ),
                         ],
                       ),
@@ -194,13 +194,13 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
     String postalCode = _txtShippingPostalCode.text;
     String country = _txtShippingCountry.text;
 
-    String userToken = await readAuthToken();
+    String? userToken = await readAuthToken();
 
     setState(() {
       _isUpdating = true;
     });
 
-    WCCustomerUpdatedResponse wcCustomerUpdatedResponse;
+    WCCustomerUpdatedResponse? wcCustomerUpdatedResponse;
     try {
       wcCustomerUpdatedResponse = await WPJsonAPI.instance.api((request) =>
           request.wcUpdateCustomerInfo(userToken,

@@ -16,14 +16,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:woosignal/models/response/products.dart';
 
 class ProductDetailDescriptionWidget extends StatelessWidget {
-  const ProductDetailDescriptionWidget({Key key, @required this.product})
+  const ProductDetailDescriptionWidget({Key? key, required this.product})
       : super(key: key);
 
-  final Product product;
+  final Product? product;
 
   @override
   Widget build(BuildContext context) {
-    if (product.shortDescription.isEmpty && product.description.isEmpty) {
+    if (product!.shortDescription!.isEmpty && product!.description!.isEmpty) {
       return SizedBox.shrink();
     }
 
@@ -41,17 +41,17 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
               Text(
                 trans("Description"),
                 style:
-                    Theme.of(context).textTheme.caption.copyWith(fontSize: 18),
+                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
-              if (product.shortDescription.isNotEmpty &&
-                  product.description.isNotEmpty)
+              if (product!.shortDescription!.isNotEmpty &&
+                  product!.description!.isNotEmpty)
                 MaterialButton(
                   child: Text(
                     trans("Full description"),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyText2!
                         .copyWith(fontSize: 14),
                     textAlign: TextAlign.right,
                     overflow: TextOverflow.ellipsis,
@@ -66,11 +66,11 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           child: HtmlWidget(
-              product.shortDescription.isNotEmpty
-                  ? product.shortDescription
-                  : product.description,
+              product!.shortDescription!.isNotEmpty
+                  ? product!.shortDescription!
+                  : product!.description!,
               renderMode: RenderMode.column, onTapUrl: (String url) async {
-            await launch(url);
+            await launchUrl(Uri.parse(url));
             return true;
           }, textStyle: Theme.of(context).textTheme.bodyText2),
         ),
@@ -83,7 +83,7 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
       context,
       title: trans("Description"),
       bodyWidget: SingleChildScrollView(
-        child: HtmlWidget(product.description),
+        child: HtmlWidget(product!.description!),
       ),
     );
   }

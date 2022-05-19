@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/config/app_font.dart';
+import 'package:flutter_app/config/font.dart';
 import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 import 'package:flutter_app/resources/themes/text_theme/default_text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,14 +11,14 @@ import 'package:nylo_framework/nylo_framework.dart';
 |--------------------------------------------------------------------------
 | Dark Theme
 |
-| Theme Config - config/app_theme.dart
+| Theme Config - config/theme.dart
 |--------------------------------------------------------------------------
 */
 
 ThemeData darkTheme(BaseColorStyles darkColors) {
   try {
     appFont = GoogleFonts.getFont(
-        AppHelper.instance.appConfig.themeFont ?? "Poppins");
+        AppHelper.instance.appConfig!.themeFont ?? "Poppins");
   } on Exception catch (e) {
     if (getEnv('APP_DEBUG') == true) {
       NyLogger.error(e.toString());
@@ -37,7 +37,7 @@ ThemeData darkTheme(BaseColorStyles darkColors) {
     scaffoldBackgroundColor: darkColors.background,
     appBarTheme: AppBarTheme(
         backgroundColor: darkColors.appBarBackground,
-        titleTextStyle: darkTheme.headline6
+        titleTextStyle: darkTheme.headline6!
             .copyWith(color: darkColors.appBarPrimaryContent),
         iconTheme: IconThemeData(color: darkColors.appBarPrimaryContent),
         elevation: 1.0,

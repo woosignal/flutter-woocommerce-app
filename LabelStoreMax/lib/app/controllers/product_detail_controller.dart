@@ -16,44 +16,46 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:woosignal/models/response/product_variation.dart'
-as ws_product_variation;
+    as ws_product_variation;
 
 import 'controller.dart';
 
 class ProductDetailController extends Controller {
   int quantity = 1;
-  Product product;
+  Product? product;
 
   @override
   construct(BuildContext context) {
     super.construct(context);
-    product = data() as Product;
+    product = data() as Product?;
   }
 
   viewExternalProduct() {
-    if (product.externalUrl != null && product.externalUrl.isNotEmpty) {
-      openBrowserTab(url: product.externalUrl);
+    if (product!.externalUrl != null && product!.externalUrl!.isNotEmpty) {
+      openBrowserTab(url: product!.externalUrl!);
     }
   }
 
-  itemAddToCart({@required CartLineItem cartLineItem, @required Function onSuccess}) async {
+  itemAddToCart(
+      {required CartLineItem cartLineItem, required Function onSuccess}) async {
     await Cart.getInstance.addToCart(cartLineItem: cartLineItem);
-    showStatusAlert(context,
-        title: trans("Success"),
-        subtitle: trans("Added to cart"),
-        duration: 1,
-        icon: Icons.add_shopping_cart,
+    showStatusAlert(
+      context,
+      title: trans("Success"),
+      subtitle: trans("Added to cart"),
+      duration: 1,
+      icon: Icons.add_shopping_cart,
     );
     onSuccess();
   }
 
-  addQuantityTapped({@required Function onSuccess}) {
-    if (product.manageStock != null && product.manageStock == true) {
-      if (quantity >= product.stockQuantity) {
-        showToastNotification(context,
+  addQuantityTapped({required Function onSuccess}) {
+    if (product!.manageStock != null && product!.manageStock == true) {
+      if (quantity >= product!.stockQuantity!) {
+        showToastNotification(context!,
             title: trans("Maximum quantity reached"),
             description:
-            "${trans("Sorry, only")} ${product.stockQuantity} ${trans("left")}",
+                "${trans("Sorry, only")} ${product!.stockQuantity} ${trans("left")}",
             style: ToastNotificationStyleType.INFO);
         return;
       }
@@ -64,14 +66,16 @@ class ProductDetailController extends Controller {
     }
   }
 
-  removeQuantityTapped({@required Function onSuccess}) {
+  removeQuantityTapped({required Function onSuccess}) {
     if ((quantity - 1) >= 1) {
       quantity--;
       onSuccess();
     }
   }
 
-  toggleWishList({@required Function onSuccess, @required WishlistAction wishlistAction}) async {
+  toggleWishList(
+      {required Function onSuccess,
+      required WishlistAction wishlistAction}) async {
     String subtitleMsg;
     if (wishlistAction == WishlistAction.remove) {
       await removeWishlistProduct(product: product);
@@ -80,7 +84,8 @@ class ProductDetailController extends Controller {
       await saveWishlistProduct(product: product);
       subtitleMsg = trans("This product has been added to your wishlist");
     }
-    showStatusAlert(context,
+    showStatusAlert(
+      context,
       title: trans("Success"),
       subtitle: subtitleMsg,
       icon: Icons.favorite,
@@ -90,18 +95,18 @@ class ProductDetailController extends Controller {
     onSuccess();
   }
 
-  ws_product_variation.ProductVariation findProductVariation(
-      {@required Map<int, dynamic> tmpAttributeObj,
-      @required List<ws_product_variation.ProductVariation> productVariations}) {
-    ws_product_variation.ProductVariation tmpProductVariation;
+  ws_product_variation.ProductVariation? findProductVariation(
+      {required Map<int, dynamic> tmpAttributeObj,
+      required List<ws_product_variation.ProductVariation> productVariations}) {
+    ws_product_variation.ProductVariation? tmpProductVariation;
 
-    Map<String, dynamic> tmpSelectedObj = {};
+    Map<String?, dynamic> tmpSelectedObj = {};
     for (var attributeObj in tmpAttributeObj.values) {
       tmpSelectedObj[attributeObj["name"]] = attributeObj["value"];
     }
 
     for (var productVariation in productVariations) {
-      Map<String, dynamic> tmpVariations = {};
+      Map<String?, dynamic> tmpVariations = {};
 
       for (var attr in productVariation.attributes) {
         tmpVariations[attr.name] = attr.option;

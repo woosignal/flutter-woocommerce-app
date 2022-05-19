@@ -5,14 +5,14 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutPaymentTypeWidget extends StatelessWidget {
   const CheckoutPaymentTypeWidget(
-      {Key key,
-      @required this.context,
-      @required this.checkoutSession,
+      {Key? key,
+      required this.context,
+      required this.checkoutSession,
       this.resetState})
       : super(key: key);
   final CheckoutSession checkoutSession;
   final BuildContext context;
-  final Function resetState;
+  final Function? resetState;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +23,13 @@ class CheckoutPaymentTypeWidget extends StatelessWidget {
           ? Container(
               color: Colors.white,
               child: Image.asset(
-                getImageAsset(checkoutSession.paymentType.assetImage),
+                getImageAsset(checkoutSession.paymentType!.assetImage),
                 width: 70,
               ),
             )
           : Icon(Icons.payment),
       leadTitle: hasPaymentType
-          ? checkoutSession.paymentType.desc
+          ? checkoutSession.paymentType!.desc
           : trans("Select a payment method"),
       action: _actionPayWith,
       showBorderBottom: true,
@@ -38,6 +38,6 @@ class CheckoutPaymentTypeWidget extends StatelessWidget {
 
   _actionPayWith() {
     Navigator.pushNamed(context, "/checkout-payment-type")
-        .then((value) => resetState());
+        .then((value) => resetState!());
   }
 }

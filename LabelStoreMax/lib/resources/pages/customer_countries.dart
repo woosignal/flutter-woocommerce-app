@@ -13,7 +13,7 @@ import 'package:flutter_app/app/models/default_shipping.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class CustomerCountriesPage extends StatefulWidget {
   CustomerCountriesPage();
@@ -64,7 +64,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
                       offset: Offset(0, 2),
                     ),
                   ],
-                  color: ThemeColor.get(context).background),
+                  color: ThemeColor.get(context)!.background),
               height: 60,
               child: Row(
                 children: [
@@ -106,11 +106,11 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
                         decoration: BoxDecoration(
                             // color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.grey[200])),
+                            border: Border.all(color: Colors.grey[200]!)),
                         margin: EdgeInsets.symmetric(vertical: 4),
                         padding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                        child: Text(defaultShipping.country),
+                        child: Text(defaultShipping.country!),
                       ),
                     );
                   },
@@ -125,7 +125,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
   _handleOnChanged(String value) {
     _activeShippingResults = _defaultShipping
         .where((element) =>
-            element.country.toLowerCase().contains(value.toLowerCase()))
+            element.country!.toLowerCase().contains(value.toLowerCase()))
         .toList();
     setState(() {});
   }
@@ -151,7 +151,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
           return InkWell(
             child: Container(
               child: Text(
-                state.name,
+                state.name!,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               padding: EdgeInsets.only(top: 25, bottom: 25),
@@ -173,7 +173,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
   }
 
   _popWithShippingResult(DefaultShipping defaultShipping,
-      {DefaultShippingState state}) {
+      {DefaultShippingState? state}) {
     if (state != null) {
       defaultShipping.states = [];
       defaultShipping.states.add(state);

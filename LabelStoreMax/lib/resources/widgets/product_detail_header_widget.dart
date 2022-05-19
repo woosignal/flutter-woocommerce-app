@@ -13,15 +13,14 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:woosignal/models/response/products.dart';
 
 class ProductDetailHeaderWidget extends StatelessWidget {
-  const ProductDetailHeaderWidget({Key key, @required this.product})
+  const ProductDetailHeaderWidget({Key? key, required this.product})
       : super(key: key);
 
-  final Product product;
+  final Product? product;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
       padding: EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 16,
@@ -32,9 +31,9 @@ class ProductDetailHeaderWidget extends StatelessWidget {
         children: <Widget>[
           Flexible(
             child: Text(
-              product.name,
+              product!.name!,
               style:
-                  Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 20),
+                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 20),
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -45,24 +44,23 @@ class ProductDetailHeaderWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 Text(
-                  formatStringCurrency(total: product.price),
-                  style: Theme.of(context).textTheme.headline4.copyWith(
+                  formatStringCurrency(total: product!.price),
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
                         fontSize: 20,
                       ),
                   textAlign: TextAlign.right,
                 ),
-                (product.onSale == true && product.type != "variable"
-                    ? Text(
-                        formatStringCurrency(total: product.regularPrice),
-                        style: TextStyle(
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      )
-                    : null)
-              ].where((t) => t != null).toList(),
+                if (product!.onSale == true && product!.type != "variable")
+                  Text(
+                    formatStringCurrency(total: product!.regularPrice),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  )
+              ],
             ),
             flex: 2,
           )

@@ -10,11 +10,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:nylo_support/helpers/helper.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class TopNavWidget extends StatelessWidget {
-  const TopNavWidget({Key key, this.onPressBrowseCategories}) : super(key: key);
-  final Function() onPressBrowseCategories;
+  const TopNavWidget({Key? key, this.onPressBrowseCategories})
+      : super(key: key);
+  final Function()? onPressBrowseCategories;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -28,7 +29,7 @@ class TopNavWidget extends StatelessWidget {
                 "${(trans("Shop").capitalize())} / ",
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1
+                    .subtitle1!
                     .copyWith(fontWeight: FontWeight.bold),
                 maxLines: 1,
               ),
@@ -36,7 +37,7 @@ class TopNavWidget extends StatelessWidget {
                 trans("Newest"),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyText2!
                     .copyWith(fontWeight: FontWeight.bold),
                 maxLines: 1,
               ),

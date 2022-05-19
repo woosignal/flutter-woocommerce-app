@@ -13,7 +13,7 @@ import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
 
 class CartIconWidget extends StatefulWidget {
-  CartIconWidget({Key key}) : super(key: key);
+  CartIconWidget({Key? key}) : super(key: key);
 
   @override
   _CartIconWidgetState createState() => _CartIconWidgetState();
@@ -45,12 +45,12 @@ class _CartIconWidgetState extends State<CartIconWidget> {
                       if (snapshot.hasError) {
                         return Text("");
                       } else {
-                        List<int> cartItems =
-                            snapshot.data.map((e) => e.quantity).toList();
+                        List<int?> cartItems =
+                            snapshot.data!.map((e) => e.quantity).toList();
                         String cartValue = "0";
                         if (cartItems.isNotEmpty) {
                           cartValue = cartItems
-                              .reduce((value, element) => value + element)
+                              .reduce((value, element) => value! + element!)
                               .toString();
                         }
                         return Text(

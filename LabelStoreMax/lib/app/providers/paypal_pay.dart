@@ -23,7 +23,7 @@ import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
 payPalPay(context,
-    {@required CheckoutConfirmationPageState state, TaxRate taxRate}) async {
+    {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {
   await checkout(taxRate, (total, billingDetails, cart) async {
     List<CartLineItem> cartLineItems = await cart.getCart();
     String description = await cart.cartShortDesc();
@@ -35,7 +35,7 @@ payPalPay(context,
                 description: description,
                 amount: total,
                 cartLineItems: cartLineItems))).then((value) async {
-      if (!(value is Map<String, dynamic>)) {
+      if (value is! Map<String, dynamic>) {
         showToastNotification(
           context,
           title: trans("Payment Cancelled"),
@@ -48,7 +48,7 @@ payPalPay(context,
       state.reloadState(showLoader: true);
       if (value.containsKey("status") && value["status"] == "success") {
         OrderWC orderWC = await buildOrderWC(taxRate: taxRate, markPaid: true);
-        Order order = await appWooSignal((api) => api.createOrder(orderWC));
+        Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
 
         if (order == null) {
           showToastNotification(

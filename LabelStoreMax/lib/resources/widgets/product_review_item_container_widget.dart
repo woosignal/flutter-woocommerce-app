@@ -15,7 +15,7 @@ import 'package:woosignal/models/response/product_review.dart';
 
 class ProductReviewItemContainerWidget extends StatelessWidget {
   const ProductReviewItemContainerWidget(
-      {Key key, @required this.productReview})
+      {Key? key, required this.productReview})
       : super(key: key);
 
   final ProductReview productReview;
@@ -28,7 +28,7 @@ class ProductReviewItemContainerWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           RatingBarIndicator(
-            rating: productReview.rating.toDouble(),
+            rating: productReview.rating!.toDouble(),
             itemBuilder: (context, index) => Icon(
               Icons.star,
               color: Colors.amber,
@@ -43,7 +43,7 @@ class ProductReviewItemContainerWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(productReview.reviewer),
+              Text(productReview.reviewer!),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Icon(
@@ -53,7 +53,7 @@ class ProductReviewItemContainerWidget extends StatelessWidget {
               ),
               Text(
                 formatDateTime("MMM d, yyyy").format(
-                  parseDateTime(productReview.dateCreated),
+                  parseDateTime(productReview.dateCreated!),
                 ),
               ),
             ],
