@@ -15,9 +15,7 @@ import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-
 import 'package:woosignal/models/response/order.dart' as ws_order;
-
 import '../widgets/woosignal_ui.dart';
 
 class CheckoutStatusPage extends NyStatefulWidget {

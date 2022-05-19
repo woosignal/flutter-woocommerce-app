@@ -15,7 +15,6 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:woosignal/models/response/products.dart' as ws_product;
 
