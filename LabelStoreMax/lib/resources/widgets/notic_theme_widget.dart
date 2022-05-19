@@ -73,9 +73,8 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
               ),
               showSelectedLabels: false,
               showUnselectedLabels: false,
-              items: allNavWidgets!
-                  .map((e) => e.bottomNavigationBarItem)
-                  .toList(),
+              items:
+                  allNavWidgets!.map((e) => e.bottomNavigationBarItem).toList(),
             ),
     );
   }

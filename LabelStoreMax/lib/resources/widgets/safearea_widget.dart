@@ -16,7 +16,6 @@ class SafeAreaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       minimum: EdgeInsets.only(left: 16, right: 16, bottom: 8),
       child: child!,

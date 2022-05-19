@@ -16,7 +16,6 @@ import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-
 import 'package:woosignal/models/response/order.dart';
 
 class AccountOrderDetailPage extends NyStatefulWidget {

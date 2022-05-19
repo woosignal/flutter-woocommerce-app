@@ -28,7 +28,6 @@ class ProductDetailUpsellWidget extends StatefulWidget {
 }
 
 class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
-
   final ProductLoaderController _productLoaderController =
       ProductLoaderController();
 
@@ -73,18 +72,21 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
             ],
           ),
         ),
-     Container(
-       height: 200,
-       child: ListView(
-    shrinkWrap: true,
-    scrollDirection: Axis.horizontal,
-    children: products
-          .map((e) => Container(
-    width: MediaQuery.of(context).size.width / 2.2,
-    child: ProductItemContainer(product: e),),)
-          .toList(),
-    ),
-     ),
+        Container(
+          height: 200,
+          child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            children: products
+                .map(
+                  (e) => Container(
+                    width: MediaQuery.of(context).size.width / 2.2,
+                    child: ProductItemContainer(product: e),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
       ],
     );
   }

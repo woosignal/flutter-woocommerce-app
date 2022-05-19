@@ -104,7 +104,13 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(product.name!, style: TextStyle(fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                                        Text(
+                                          product.name!,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                         Text(
                                           formatStringCurrency(
                                               total: product.price),

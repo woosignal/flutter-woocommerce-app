@@ -516,8 +516,7 @@ Future<List<dynamic>> getWishlistProducts() async {
   String? currentProductsJSON =
       await (NyStorage.read(SharedKey.wishlistProducts));
   if (currentProductsJSON != null) {
-    favouriteProducts =
-        (jsonDecode(currentProductsJSON)).toList();
+    favouriteProducts = (jsonDecode(currentProductsJSON)).toList();
   }
   return favouriteProducts;
 }

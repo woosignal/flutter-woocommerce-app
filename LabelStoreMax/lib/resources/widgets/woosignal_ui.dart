@@ -313,148 +313,134 @@ class ProductItemContainer extends StatelessWidget {
       return SizedBox.shrink();
     }
     return LayoutBuilder(
-      builder: (cxt, constraints) =>
-          InkWell(
-            child: Container(
-              margin: EdgeInsets.all(4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: constraints.maxHeight / 2,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(3.0),
-                      child: Stack(
-                        children: [
-                          Container(
-                            color: Colors.grey[100],
-                            height: double.infinity,
-                            width: double.infinity,
-                          ),
-                          CachedImageWidget(
-                            image: (product!.images.isNotEmpty
-                                ? product!.images.first.src
-                                : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
-                            fit: BoxFit.contain,
-                            height: constraints.maxHeight / 2,
-                            width: double.infinity,
-                          ),
-                          if (product!.onSale! && product!.type != "variable")
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  color: Colors.white70,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                    text: '',
-                                    style: Theme
-                                        .of(context)
+      builder: (cxt, constraints) => InkWell(
+        child: Container(
+          margin: EdgeInsets.all(4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                height: constraints.maxHeight / 2,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(3.0),
+                  child: Stack(
+                    children: [
+                      Container(
+                        color: Colors.grey[100],
+                        height: double.infinity,
+                        width: double.infinity,
+                      ),
+                      CachedImageWidget(
+                        image: (product!.images.isNotEmpty
+                            ? product!.images.first.src
+                            : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
+                        fit: BoxFit.contain,
+                        height: constraints.maxHeight / 2,
+                        width: double.infinity,
+                      ),
+                      if (product!.onSale! && product!.type != "variable")
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              color: Colors.white70,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: '',
+                                style: Theme.of(context).textTheme.bodyText1,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        "${workoutSaleDiscount(salePrice: product!.salePrice, priceBefore: product!.regularPrice)}% ${trans("off")}",
+                                    style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text:
-                                        "${workoutSaleDiscount(
-                                            salePrice: product!.salePrice,
-                                            priceBefore: product!
-                                                .regularPrice)}% ${trans(
-                                            "off")}",
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .copyWith(
+                                        .bodyText1!
+                                        .copyWith(
                                           color: Colors.black87,
                                           fontSize: 11,
                                         ),
-                                      ),
-                                    ],
                                   ),
-                                ),
+                                ],
                               ),
                             ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(
-                      product!.name!,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText2!
-                          .copyWith(fontSize: 15),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Flexible(
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AutoSizeText(
-                            "${formatStringCurrency(total: product!.price)} ",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(fontWeight: FontWeight.w600),
-                            textAlign: TextAlign.left,
                           ),
-                          if (product!.onSale! && product!.type != "variable")
-                            RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                  text: '${trans("Was")}: ',
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 2, bottom: 2),
+                child: Text(
+                  product!.name!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(fontSize: 15),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Flexible(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AutoSizeText(
+                        "${formatStringCurrency(total: product!.price)} ",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.left,
+                      ),
+                      if (product!.onSale! && product!.type != "variable")
+                        RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: '${trans("Was")}: ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
                                     fontSize: 11,
                                   ),
-                                ),
-                                TextSpan(
-                                  text: formatStringCurrency(
-                                    total: product!.regularPrice,
-                                  ),
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
+                            ),
+                            TextSpan(
+                              text: formatStringCurrency(
+                                total: product!.regularPrice,
+                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
                                     decoration: TextDecoration.lineThrough,
                                     color: Colors.grey,
                                     fontSize: 11,
                                   ),
-                                ),
-                              ]),
                             ),
-                        ].toList(),
-                      ),
-                    ),
+                          ]),
+                        ),
+                    ].toList(),
                   ),
-                ],
+                ),
               ),
-            ),
-            onTap: () =>
-            onTap != null
-                ? onTap!(product)
-                : Navigator.pushNamed(context, "/product-detail",
-                arguments: product),
+            ],
           ),
+        ),
+        onTap: () => onTap != null
+            ? onTap!(product)
+            : Navigator.pushNamed(context, "/product-detail",
+                arguments: product),
+      ),
     );
   }
 }

@@ -47,8 +47,8 @@ class ProductDetailBodyWidget extends StatelessWidget {
         // </Product reviews>
 
         if (product != null)
-        ProductDetailUpsellWidget(
-            productIds: product!.upsellIds, wooSignalApp: wooSignalApp),
+          ProductDetailUpsellWidget(
+              productIds: product!.upsellIds, wooSignalApp: wooSignalApp),
         // </You may also like>
 
         ProductDetailRelatedProductsWidget(

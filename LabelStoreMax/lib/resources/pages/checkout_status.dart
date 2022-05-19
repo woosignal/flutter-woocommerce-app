@@ -18,7 +18,6 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 import 'package:woosignal/models/response/order.dart' as ws_order;
 
-
 import '../widgets/woosignal_ui.dart';
 
 class CheckoutStatusPage extends NyStatefulWidget {

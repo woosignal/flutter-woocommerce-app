@@ -176,18 +176,21 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                             onLoading: _onLoading,
                             child: (products.isNotEmpty
                                 ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: false,
-                              itemBuilder: (cxt, i) {
-                                return Container(
-                                  // height: 200,
-                                  width: MediaQuery.of(context).size.width / 2.5,
-                                  child: ProductItemContainer(
-                                      product: products[i], onTap: _showProduct),
-                                );
-                              },
-                              itemCount: products.length,
-                            )
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: false,
+                                    itemBuilder: (cxt, i) {
+                                      return Container(
+                                        // height: 200,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: ProductItemContainer(
+                                            product: products[i],
+                                            onTap: _showProduct),
+                                      );
+                                    },
+                                    itemCount: products.length,
+                                  )
                                 : NoResultsForProductsWidget()),
                           ),
                         )
