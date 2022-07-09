@@ -18,6 +18,7 @@ class CheckoutStoreHeadingWidget extends StatelessWidget {
         child: ClipRRect(
           child: StoreLogo(height: 65),
           borderRadius: BorderRadius.circular(8),
-        ));
+        ),
+    );
   }
 }

@@ -1,3 +1,10 @@
+## [6.1.0] - 2022-07-09
+
+* Add RazorPay
+* Null safety tweaks to widgets
+* Ability for users to delete their accounts using WP_JSON
+* Pubspec.yaml dependency updates
+
 ## [6.0.0] - 2022-05-19
 
 * Migrate to Nylo 3.x

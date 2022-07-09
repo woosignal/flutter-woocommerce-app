@@ -48,6 +48,14 @@ class AccountDetailSettingsWidget extends StatelessWidget {
         ),
         Card(
           child: ListTile(
+            leading: Icon(Icons.no_accounts_rounded),
+            title: Text("Delete Account"),
+            onTap: () =>
+                Navigator.pushNamed(context, "/account-delete"),
+          ),
+        ),
+        Card(
+          child: ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text(trans("Logout")),
             onTap: () => authLogout(context),

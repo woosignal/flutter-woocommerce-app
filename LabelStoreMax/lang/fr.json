@@ -219,5 +219,10 @@
   "Leave a review": "Laisser un commentaire",
   "How would you rate": "Comment évalueriez-vous",
   "Submit": "Soumettre",
-  "Your review has been submitted": "Votre avis a été soumis"
+  "Your review has been submitted": "Votre avis a été soumis",
+  "Delete Account": "Supprimer le compte",
+  "Delete your account": "Supprimer votre compte",
+  "Are you sure?": "Êtes-vous sûr?",
+  "Yes, delete my account": "Oui, supprimer mon compte",
+  "Account deleted": "Compte supprimé"
 }

@@ -51,7 +51,7 @@ stripePay(context,
     //   // CHECKOUT HELPER
     await checkout(taxRate, (total, billingDetails, cart) async {
       Map<String, dynamic> address = {
-        "name": billingDetails!.billingAddress!.nameFull(),
+        "name": billingDetails!.billingAddress?.nameFull(),
         "line1": billingDetails.shippingAddress!.addressLine,
         "city": billingDetails.shippingAddress!.city,
         "postal_code": billingDetails.shippingAddress!.postalCode,
@@ -62,7 +62,7 @@ stripePay(context,
 
       rsp = await appWooSignal((api) => api.stripePaymentIntent(
             amount: total,
-            email: billingDetails.billingAddress!.emailAddress,
+            email: billingDetails.billingAddress?.emailAddress,
             desc: cartShortDesc,
             shipping: address,
           ));

@@ -219,5 +219,10 @@
   "Leave a review": "发表评论",
   "How would you rate": "你如何评价",
   "Submit": "提交",
-  "Your review has been submitted": "您的评论已提交"
+  "Your review has been submitted": "您的评论已提交",
+  "Delete Account": "删除帐户",
+  "Delete your account": "删除您的帐户",
+  "Are you sure?": "你确定吗？",
+  "Yes, delete my account": "是的，删除我的帐户",
+  "Account deleted": "帐号已删除"
 }
