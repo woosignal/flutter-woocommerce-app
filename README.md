@@ -46,7 +46,7 @@ Full documentation this available [here](https://woosignal.com/docs/app/ios/labe
 - Light and dark mode
 - Theme customization
 - Stripe, Cash On Delivery, PayPal and RazorPay
-- Localized for en, es, pt, it, hi, fr, zh
+- Localized for en, es, pt, it, hi, fr, zh, tr, nl
 - Orders show as normal in WooCommerce
 
 ## Security Vulnerabilities
