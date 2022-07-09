@@ -219,11 +219,17 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
             icon: Icons.account_circle);
       }
 
-      if (wpUserLoginResponse != null && wpUserLoginResponse.status == 200) {
+      if (wpUserLoginResponse == null) {
+        return;
+      }
+
+      if (wpUserLoginResponse.status != 200) {
+        return;
+      }
         String? token = wpUserLoginResponse.data!.userToken;
         String userId = wpUserLoginResponse.data!.userId.toString();
         User user = User.fromUserAuthResponse(token: token, userId: userId);
-        user.save(SharedKey.authUser);
+        await user.save(SharedKey.authUser);
 
         showToastNotification(context,
             title: trans("Hello"),
@@ -232,7 +238,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
             icon: Icons.account_circle);
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 1);
-      }
+
     });
   }
 }
