@@ -37,10 +37,9 @@ class AccountRegistrationPage extends StatefulWidget {
       _AccountRegistrationPageState();
 }
 
-class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
+class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
   _AccountRegistrationPageState();
 
-  bool _hasTappedRegister = false;
   final TextEditingController _tfEmailAddressController =
           TextEditingController(),
       _tfPasswordController = TextEditingController(),
@@ -106,7 +105,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             Padding(
               child: PrimaryButton(
                 title: trans("Sign up"),
-                isLoading: _hasTappedRegister,
+                isLoading: isLocked('register_user'),
                 action: _signUpTapped,
               ),
               padding: EdgeInsets.only(top: 10),
@@ -122,7 +121,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
                       TextSpan(
                           text: trans("terms and conditions"),
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '  ' + trans("and") + '  '),
+                      TextSpan(text: '  ${trans("and")}  '),
                       TextSpan(
                           text: trans("privacy policy"),
                           style: TextStyle(fontWeight: FontWeight.bold)),
@@ -171,18 +170,14 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
       return;
     }
 
-    if (_hasTappedRegister == false) {
-      setState(() {
-        _hasTappedRegister = true;
-      });
-
+    await lockRelease('register_user', perform: () async {
       String username =
           (email.replaceAll(RegExp(r'([@.])'), "")) + _randomStr(4);
 
       WPUserRegisterResponse? wpUserRegisterResponse;
       try {
         wpUserRegisterResponse = await WPJsonAPI.instance.api(
-          (request) => request.wpRegister(
+              (request) => request.wpRegister(
             email: email.toLowerCase(),
             password: password,
             username: username,
@@ -197,7 +192,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
         showToastNotification(context,
             title: trans("Invalid details"),
             description:
-                trans("Something went wrong, please contact our store"),
+            trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.DANGER);
       } on ExistingUserLoginException catch (_) {
         showToastNotification(context,
@@ -224,18 +219,21 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             title: trans("Oops!"),
             description: trans("Something went wrong"),
             style: ToastNotificationStyleType.DANGER);
-      } finally {
-        setState(() {
-          _hasTappedRegister = false;
-        });
       }
 
-      if (wpUserRegisterResponse != null &&
-          wpUserRegisterResponse.status == 200) {
+      if (wpUserRegisterResponse == null) {
+        return;
+      }
+
+      if (wpUserRegisterResponse.status != 200) {
+        return;
+      }
+
+      // Save user to shared preferences
         String? token = wpUserRegisterResponse.data!.userToken;
         String userId = wpUserRegisterResponse.data!.userId.toString();
         User user = User.fromUserAuthResponse(token: token, userId: userId);
-        user.save(SharedKey.authUser);
+        await user.save(SharedKey.authUser);
 
         await WPJsonAPI.instance.api((request) => request
             .wpUpdateUserInfo(token, firstName: firstName, lastName: lastName));
@@ -247,8 +245,7 @@ class _AccountRegistrationPageState extends State<AccountRegistrationPage> {
             icon: Icons.account_circle);
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 2);
-      }
-    }
+    });
   }
 
   _viewTOSModal() async {

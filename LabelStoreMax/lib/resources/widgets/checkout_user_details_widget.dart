@@ -23,10 +23,9 @@ class CheckoutUserDetailsWidget extends StatelessWidget {
       leadImage: Icon(Icons.home),
       leadTitle: hasUserCheckoutInfo
           ? (checkoutSession.billingDetails == null ||
-                  checkoutSession.billingDetails!.billingAddress!
-                      .hasMissingFields()
+          (checkoutSession.billingDetails?.billingAddress?.hasMissingFields() ?? true)
               ? trans("Billing address is incomplete")
-              : checkoutSession.billingDetails!.billingAddress!.addressFull())
+              : checkoutSession.billingDetails!.billingAddress?.addressFull())
           : trans("Add billing & shipping details"),
       action: _actionCheckoutDetails,
       showBorderBottom: true,
@@ -36,10 +35,6 @@ class CheckoutUserDetailsWidget extends StatelessWidget {
   _actionCheckoutDetails() {
     Navigator.pushNamed(context, "/checkout-details").then((e) {
       resetState!();
-      // setState(() {
-      //   _showFullLoader = true;
-      // });
-      // _getTaxes();
     });
   }
 }

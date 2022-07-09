@@ -219,5 +219,10 @@
   "Leave a review": "Hinterlassen Sie eine Bewertung",
   "How would you rate": "Wie beurteilen Sie",
   "Submit": "einreichen",
-  "Your review has been submitted": "Ihre Bewertung wurde übermittelt"
+  "Your review has been submitted": "Ihre Bewertung wurde übermittelt",
+  "Delete Account": "Konto löschen",
+  "Delete your account": "Lösche deinen Account",
+  "Are you sure?": "Bist du dir sicher?",
+  "Yes, delete my account": "Ja, lösche mein Konto",
+  "Account deleted": "Konto gelöscht"
 }

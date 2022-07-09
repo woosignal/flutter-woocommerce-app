@@ -18,7 +18,7 @@ import 'package:flutter_app/resources/widgets/product_review_item_container_widg
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/product_review.dart';
 import 'package:woosignal/models/response/products.dart';
 import '../../app/controllers/product_reviews_controller.dart';

@@ -31,8 +31,8 @@ class AccountLandingPage extends StatefulWidget {
   _AccountLandingPageState createState() => _AccountLandingPageState();
 }
 
-class _AccountLandingPageState extends State<AccountLandingPage> {
-  bool _hasTappedLogin = false;
+class _AccountLandingPageState extends NyState<AccountLandingPage> {
+
   final TextEditingController _tfEmailController = TextEditingController(),
       _tfPasswordController = TextEditingController();
 
@@ -98,7 +98,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
                             obscureText: true),
                         PrimaryButton(
                           title: trans("Login"),
-                          isLoading: _hasTappedLogin,
+                          isLoading: isLocked('login_button'),
                           action: _loginUser,
                         ),
                       ],
@@ -185,11 +185,7 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
       return;
     }
 
-    if (_hasTappedLogin == false) {
-      setState(() {
-        _hasTappedLogin = true;
-      });
-
+    await lockRelease('login_button', perform: () async {
       WPUserLoginResponse? wpUserLoginResponse;
       try {
         wpUserLoginResponse = await WPJsonAPI.instance.api(
@@ -221,10 +217,6 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
             description: trans("Invalid login credentials"),
             style: ToastNotificationStyleType.DANGER,
             icon: Icons.account_circle);
-      } finally {
-        setState(() {
-          _hasTappedLogin = false;
-        });
       }
 
       if (wpUserLoginResponse != null && wpUserLoginResponse.status == 200) {
@@ -241,6 +233,6 @@ class _AccountLandingPageState extends State<AccountLandingPage> {
         navigatorPush(context,
             routeName: UserAuth.instance.redirect, forgetLast: 1);
       }
-    }
+    });
   }
 }
