@@ -298,7 +298,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       city: _txtBillingCity.text,
       postalCode: _txtBillingPostalCode.text,
       phoneNumber: _txtBillingPhoneNumber.text,
-      emailAddress: _txtBillingEmailAddress.text,
+      emailAddress: _txtBillingEmailAddress.text.trim(),
       customerCountry: _billingCountry,
     );
 
@@ -314,7 +314,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
           addressLine: _txtShippingAddressLine.text,
           city: _txtShippingCity.text,
           postalCode: _txtShippingPostalCode.text,
-          emailAddress: _txtShippingEmailAddress.text,
+          emailAddress: _txtShippingEmailAddress.text.trim(),
           customerCountry: _shippingCountry);
 
       if (customerShippingAddress.hasMissingFields()) {
@@ -328,31 +328,32 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
         return;
       }
 
-      // Email validation
-      String billingEmail = _txtBillingEmailAddress.text;
-      String shippingEmail = _txtShippingEmailAddress.text;
-      if (billingEmail.isNotEmpty && !validate.isEmail(billingEmail)) {
-        showToastNotification(
-          context,
-          title: trans("Oops"),
-          description: trans("Please enter a valid billing email"),
-          style: ToastNotificationStyleType.WARNING,
-        );
-        return;
-      }
-
-      if (shippingEmail.isNotEmpty && !validate.isEmail(shippingEmail)) {
-        showToastNotification(
-          context,
-          title: trans("Oops"),
-          description: trans("Please enter a valid shipping email"),
-          style: ToastNotificationStyleType.WARNING,
-        );
-        return;
-      }
-
       CheckoutSession.getInstance.billingDetails!.shippingAddress =
           customerShippingAddress;
+    }
+    
+    // Email validation
+    String billingEmail = CheckoutSession.getInstance.billingDetails!.billingAddress!.emailAddress!;
+    String shippingEmail = CheckoutSession.getInstance.billingDetails!.shippingAddress!.emailAddress!;
+    // Billing email is required for Stripe
+    if (billingEmail.isEmpty || !validate.isEmail(billingEmail)) {
+      showToastNotification(
+        context,
+        title: trans("Oops"),
+        description: trans("Please enter a valid billing email"),
+        style: ToastNotificationStyleType.WARNING,
+      );
+      return;
+    }
+
+    if (shippingEmail.isNotEmpty && !validate.isEmail(shippingEmail)) {
+      showToastNotification(
+        context,
+        title: trans("Oops"),
+        description: trans("Please enter a valid shipping email"),
+        style: ToastNotificationStyleType.WARNING,
+      );
+      return;
     }
 
     if (valRememberDetails == true) {
