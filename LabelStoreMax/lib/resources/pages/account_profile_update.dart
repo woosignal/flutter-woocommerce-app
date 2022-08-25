@@ -62,7 +62,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          trans("Update Details"),
+          trans("Update details"),
           style: TextStyle(
             fontSize: 20,
           ),
@@ -108,7 +108,7 @@ class _AccountProfileUpdatePageState extends State<AccountProfileUpdatePage> {
                             padding: EdgeInsets.only(top: 10),
                           ),
                           PrimaryButton(
-                            title: trans("Update details"),
+                            title: trans("Update Details"),
                             isLoading: isLoading,
                             action: _updateDetails,
                           )

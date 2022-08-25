@@ -71,12 +71,6 @@ class CustomerAddressInput extends StatelessWidget {
                 controller: txtControllerAddressLine,
               ),
             ),
-            Flexible(
-              child: TextEditingRow(
-                heading: trans("City"),
-                controller: txtControllerCity,
-              ),
-            ),
           ],
         ),
         Row(
@@ -87,6 +81,16 @@ class CustomerAddressInput extends StatelessWidget {
                 controller: txtControllerPostalCode,
               ),
             ),
+            Flexible(
+              child: TextEditingRow(
+                heading: trans("City"),
+                controller: txtControllerCity,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
             Flexible(
               child: TextEditingRow(
                   heading: trans("Email address"),
@@ -100,7 +104,7 @@ class CustomerAddressInput extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: TextEditingRow(
-                  heading: "Phone Number",
+                  heading: trans("Phone Number"),
                   controller: txtControllerPhoneNumber,
                   keyboardType: TextInputType.phone,
                 ),
