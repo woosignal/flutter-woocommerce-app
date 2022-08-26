@@ -80,6 +80,7 @@
   "Shipping is not supported for your country, sorry": "Shipping is not supported for your country, sorry",
   "Search": "Search",
   "Debit or Credit Card": "Debit or Credit Card",
+  "Cash on delivery": "Cash on delivery",
   "Oops, something went wrong": "Oops, something went wrong",
   "Tax": "Tax",
   "No results": "No results",
@@ -219,5 +220,7 @@
   "Leave a review": "Leave a review",
   "How would you rate": "How would you rate",
   "Submit": "Submit",
-  "Your review has been submitted": "Your review has been submitted"
+  "Your review has been submitted": "Your review has been submitted",
+  "Delete Account": "Delete Account",
+  "Phone Number": "Phone Number"
 }

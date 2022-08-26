@@ -80,6 +80,7 @@
   "Shipping is not supported for your country, sorry": "shiping aapake desh ke lie samarthit nahin hai, kshama karen",
   "Search": "khoj",
   "Debit or Credit Card": "debit ya kredit kaard",
+  "Cash on delivery": "dilavaree par nakadee\n",
   "Oops, something went wrong": "oh! kuchh galat ho gaya hai",
   "Tax": "kar",
   "No results": "koee parinaam nahin",
@@ -219,5 +220,7 @@
   "Leave a review": "sameeksha likhen",
   "How would you rate": "aap ise kya ret karate hain",
   "Submit": "prastut karana",
-  "Your review has been submitted": "aapakee sameeksha jama ho chukee hai"
+  "Your review has been submitted": "aapakee sameeksha jama ho chukee hai",
+  "Delete Account": "khaata hata do",
+  "Phone Number": "fon nambar"
 }

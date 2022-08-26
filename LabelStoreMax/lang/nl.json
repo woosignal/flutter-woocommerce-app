@@ -80,6 +80,7 @@
   "Shipping is not supported for your country, sorry": "Verzending wordt niet ondersteund voor uw land, sorry",
   "Search": "Zoekopdracht",
   "Debit or Credit Card": "Debet- of creditcard",
+  "Cash on delivery": "Onder rembours",
   "Oops, something went wrong": "Oeps! Er is iets misgegaan",
   "Tax": "Belasting",
   "No results": "Geen resultaten",
@@ -219,5 +220,7 @@
   "Leave a review": "Laat je mening achter",
   "How would you rate": "Hoe zou jij beoordelen",
   "Submit": "Indienen",
-  "Your review has been submitted": "Uw beoordeling is verzonden"
+  "Your review has been submitted": "Uw beoordeling is verzonden",
+  "Delete Account": "Account verwijderen",
+  "Phone Number": "Telefoonnummer"
 }

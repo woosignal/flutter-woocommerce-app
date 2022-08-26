@@ -80,6 +80,7 @@
   "Shipping is not supported for your country, sorry": "Der Versand wird für Ihr Land leider nicht unterstützt",
   "Search": "Suche",
   "Debit or Credit Card": "Debit- oder Kreditkarte",
+  "Cash on delivery": "Barzahlung bei Lieferung",
   "Oops, something went wrong": "Ups! Irgendwas lief schief",
   "Tax": "MwSt",
   "No results": "Keine Ergebnisse",
@@ -219,5 +220,7 @@
   "Leave a review": "Hinterlassen Sie eine Bewertung",
   "How would you rate": "Wie beurteilen Sie",
   "Submit": "einreichen",
-  "Your review has been submitted": "Ihre Bewertung wurde übermittelt"
+  "Your review has been submitted": "Ihre Bewertung wurde übermittelt",
+  "Delete Account": "Konto löschen",
+  "Phone Number": "Telefonnummer"
 }
