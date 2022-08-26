@@ -90,7 +90,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       CheckoutSession.getInstance.billingDetails!.initSession();
       CheckoutSession.getInstance.billingDetails!.shippingAddress!
           .initAddress();
-      CheckoutSession.getInstance.billingDetails!.billingAddress!.initAddress();
+      CheckoutSession.getInstance.billingDetails!.billingAddress?.initAddress();
     }
     BillingDetails billingDetails = CheckoutSession.getInstance.billingDetails!;
     _setFieldsFromCustomerAddress(billingDetails.billingAddress,

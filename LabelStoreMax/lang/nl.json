@@ -222,5 +222,9 @@
   "Submit": "Indienen",
   "Your review has been submitted": "Uw beoordeling is verzonden",
   "Delete Account": "Account verwijderen",
-  "Phone Number": "Telefoonnummer"
+  "Phone Number": "Telefoonnummer",
+  "Delete your account": "Verwijder je account",
+  "Are you sure?": "Weet je het zeker?",
+  "Yes, delete my account": "Ja, verwijder mijn account",
+  "Account deleted": "Account verwijderd"
 }

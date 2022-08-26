@@ -222,5 +222,9 @@
   "Submit": "prastut karana",
   "Your review has been submitted": "aapakee sameeksha jama ho chukee hai",
   "Delete Account": "khaata hata do",
-  "Phone Number": "fon nambar"
+  "Phone Number": "fon nambar",
+  "Delete your account": "apane khaate ko nasht karo",
+  "Are you sure?": "kya aapako yakeen hai?",
+  "Yes, delete my account": "haan, mera akaunt dileet kar do",
+  "Account deleted": "khaata hataaya gaya"
 }

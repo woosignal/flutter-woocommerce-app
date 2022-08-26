@@ -60,19 +60,19 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
   BillingDetails billingDetails = checkoutSession.billingDetails!;
 
   Billing billing = Billing();
-  billing.firstName = billingDetails.billingAddress!.firstName;
-  billing.lastName = billingDetails.billingAddress!.lastName;
-  billing.address1 = billingDetails.billingAddress!.addressLine;
-  billing.city = billingDetails.billingAddress!.city;
-  billing.postcode = billingDetails.billingAddress!.postalCode;
-  billing.email = billingDetails.billingAddress!.emailAddress;
-  if (billingDetails.billingAddress!.phoneNumber != "") {
-    billing.phone = billingDetails.billingAddress!.phoneNumber;
+  billing.firstName = billingDetails.billingAddress?.firstName;
+  billing.lastName = billingDetails.billingAddress?.lastName;
+  billing.address1 = billingDetails.billingAddress?.addressLine;
+  billing.city = billingDetails.billingAddress?.city;
+  billing.postcode = billingDetails.billingAddress?.postalCode;
+  billing.email = billingDetails.billingAddress?.emailAddress;
+  if (billingDetails.billingAddress?.phoneNumber != "") {
+    billing.phone = billingDetails.billingAddress?.phoneNumber;
   }
-  if (billingDetails.billingAddress!.customerCountry!.hasState()) {
-    billing.state = billingDetails.billingAddress!.customerCountry!.state!.name;
+  if (billingDetails.billingAddress?.customerCountry?.hasState() ?? false) {
+    billing.state = billingDetails.billingAddress?.customerCountry!.state!.name;
   }
-  billing.country = billingDetails.billingAddress!.customerCountry!.name;
+  billing.country = billingDetails.billingAddress?.customerCountry!.name;
 
   orderWC.billing = billing;
 

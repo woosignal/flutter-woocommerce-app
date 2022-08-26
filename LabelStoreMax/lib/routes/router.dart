@@ -1,4 +1,5 @@
 import 'package:flutter_app/resources/pages/account_billing_details.dart';
+import 'package:flutter_app/resources/pages/account_delete_page.dart';
 import 'package:flutter_app/resources/pages/account_detail.dart';
 import 'package:flutter_app/resources/pages/account_landing.dart';
 import 'package:flutter_app/resources/pages/account_order_detail.dart';
@@ -102,6 +103,8 @@ appRouter() => nyRoutes((router) {
       router.route("/account-detail", (context) => AccountDetailPage());
 
       router.route("/account-update", (context) => AccountProfileUpdatePage());
+
+      router.route("/account-delete", (context) => AccountDeletePage());
 
       router.route(
           "/account-billing-details", (context) => AccountBillingDetailsPage());

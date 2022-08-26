@@ -154,7 +154,7 @@ class _CouponPageState extends State<CouponPage> {
 
       // Check email restrictions
       String? emailAddress =
-          checkoutSession.billingDetails!.billingAddress!.emailAddress;
+          checkoutSession.billingDetails!.billingAddress?.emailAddress;
       if (coupon.emailRestrictions!.contains(emailAddress)) {
         _showAlert(
             message: trans('You cannot redeem this coupon'),

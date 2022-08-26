@@ -222,5 +222,9 @@
   "Submit": "Entregar",
   "Your review has been submitted": "Tu reseña ha sido enviada",
   "Delete Account": "Borrar cuenta",
-  "Phone Number": "Número de teléfono"
+  "Phone Number": "Número de teléfono",
+  "Delete your account": "eliminar su cuenta",
+  "Are you sure?": "¿Está seguro?",
+  "Yes, delete my account": "Sí, eliminar mi cuenta",
+  "Account deleted": "Cuenta borrada"
 }

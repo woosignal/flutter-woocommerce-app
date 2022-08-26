@@ -222,5 +222,9 @@
   "Submit": "Göndermek",
   "Your review has been submitted": "İncelemeniz gönderildi",
   "Delete Account": "Hesabı sil",
-  "Phone Number": "Telefon numarası"
+  "Phone Number": "Telefon numarası",
+  "Delete your account": "Hesabını sil",
+  "Are you sure?": "Emin misin?",
+  "Yes, delete my account": "Evet, hesabımı sil",
+  "Account deleted": "Hesap silindi"
 }
