@@ -183,6 +183,11 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
             username: username,
           ),
         );
+        
+        if (wpUserRegisterResponse?.data?.userToken != null) {
+          await WPJsonAPI.instance.api((request) => request.wpUserAddRole(wpUserRegisterResponse!.data!.userToken, role: "customer"));
+          await WPJsonAPI.instance.api((request) => request.wpUserRemoveRole(wpUserRegisterResponse!.data!.userToken, role: "subscriber"));
+        }
       } on UsernameTakenException catch (e) {
         showToastNotification(context,
             title: trans("Oops!"),
