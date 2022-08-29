@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 /// Interface for your base styles.
 /// Add more styles here and then implement in
 /// light_theme_colors.dart and dark_theme_colors.dart.
-abstract class BaseColorStyles {
+abstract class ColorStyles extends BaseColorStyles {
   // general
   Color get background;
   Color get backgroundContainer;

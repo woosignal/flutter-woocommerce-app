@@ -80,16 +80,11 @@ stripePay(context,
 
     await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
-      applePay: false,
-      googlePay: false,
       style: Theme.of(state.context).brightness == Brightness.light
           ? ThemeMode.light
           : ThemeMode.dark,
-      testEnv: liveMode,
-      merchantCountryCode: envVal('STRIPE_COUNTRY_CODE',
-          defaultValue: wooSignalApp!.stripeCountryCode),
       merchantDisplayName:
-          envVal('APP_NAME', defaultValue: wooSignalApp.appName),
+          envVal('APP_NAME', defaultValue: wooSignalApp?.appName),
       paymentIntentClientSecret: rsp['client_secret'],
     ));
 

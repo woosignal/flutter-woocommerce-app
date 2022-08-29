@@ -10,7 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
-import 'package:flutter_swiper_tv/flutter_swiper.dart';
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/products.dart';
 

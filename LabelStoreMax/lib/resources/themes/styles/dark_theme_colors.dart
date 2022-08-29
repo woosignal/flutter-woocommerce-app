@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/resources/themes/styles/base_styles.dart';
+import 'package:flutter_app/resources/themes/styles/color_styles.dart';
 
 /*
 |--------------------------------------------------------------------------
@@ -8,7 +8,7 @@ import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 |--------------------------------------------------------------------------
 */
 
-class DarkThemeColors implements BaseColorStyles {
+class DarkThemeColors implements ColorStyles {
   // general
   @override
   Color get background => Color(int.parse(

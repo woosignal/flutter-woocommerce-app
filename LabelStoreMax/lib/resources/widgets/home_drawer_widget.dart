@@ -45,14 +45,14 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(
-        color: ThemeColor.get(context)!.background,
+        color: ThemeColor.get(context).background,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               child: Center(child: StoreLogo()),
               decoration: BoxDecoration(
-                color: ThemeColor.get(context)!.background,
+                color: ThemeColor.get(context).background,
               ),
             ),
             if (["compo"].contains(_themeType) == false)

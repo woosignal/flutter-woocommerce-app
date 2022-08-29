@@ -199,7 +199,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
               child: Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
-                  color: ThemeColor.get(context)!.backgroundContainer,
+                  color: ThemeColor.get(context).backgroundContainer,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: (Theme.of(context).brightness == Brightness.light)
                       ? wsBoxShadow()

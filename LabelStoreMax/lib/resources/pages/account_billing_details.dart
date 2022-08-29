@@ -155,7 +155,7 @@ class _AccountBillingDetailsPageState extends State<AccountBillingDetailsPage> {
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: ThemeColor.get(context)!.surfaceBackground,
+                            color: ThemeColor.get(context).surfaceBackground,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: (Theme.of(context).brightness ==
                                     Brightness.light)

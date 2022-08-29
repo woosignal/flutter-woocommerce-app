@@ -1,9 +1,9 @@
-import 'package:flutter_app/bootstrap/base_theme_config.dart';
 import 'package:flutter_app/resources/themes/dark_theme.dart';
 import 'package:flutter_app/resources/themes/light_theme.dart';
-import 'package:flutter_app/resources/themes/styles/base_styles.dart';
+import 'package:flutter_app/resources/themes/styles/color_styles.dart';
 import 'package:flutter_app/resources/themes/styles/dark_theme_colors.dart';
 import 'package:flutter_app/resources/themes/styles/light_theme_colors.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ import 'package:flutter_app/resources/themes/styles/light_theme_colors.dart';
 */
 
 // App Themes
-final appThemes = [
+final List<BaseThemeConfig> appThemes = [
   ThemeConfig.light(),
   ThemeConfig.dark(),
 ];
@@ -24,10 +24,10 @@ final appThemes = [
 */
 
 // Light Colors
-BaseColorStyles lightColors = LightThemeColors();
+ColorStyles lightColors = LightThemeColors();
 
 // Dark Colors
-BaseColorStyles darkColors = DarkThemeColors();
+ColorStyles darkColors = DarkThemeColors();
 
 /*
 |--------------------------------------------------------------------------

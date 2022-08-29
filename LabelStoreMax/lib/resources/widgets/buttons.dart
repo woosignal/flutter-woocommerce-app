@@ -31,8 +31,8 @@ class PrimaryButton extends StatelessWidget {
         textStyle: Theme.of(context).textTheme.button!.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: ThemeColor.get(context)!.buttonPrimaryContent),
-        bgColor: ThemeColor.get(context)!.buttonBackground,
+            color: ThemeColor.get(context).buttonPrimaryContent),
+        bgColor: ThemeColor.get(context).buttonBackground,
       );
 }
 
