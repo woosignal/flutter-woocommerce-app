@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/config/font.dart';
-import 'package:flutter_app/resources/themes/styles/base_styles.dart';
+import 'package:flutter_app/resources/themes/styles/color_styles.dart';
 import 'package:flutter_app/resources/themes/text_theme/default_text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -15,7 +15,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 |--------------------------------------------------------------------------
 */
 
-ThemeData darkTheme(BaseColorStyles darkColors) {
+ThemeData darkTheme(ColorStyles darkColors) {
   try {
     appFont = GoogleFonts.getFont(
         AppHelper.instance.appConfig!.themeFont ?? "Poppins");

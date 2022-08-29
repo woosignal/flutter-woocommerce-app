@@ -25,8 +25,6 @@ import 'package:flutter_app/config/currency.dart';
 import 'package:flutter_app/config/decoders.dart';
 import 'package:flutter_app/config/events.dart';
 import 'package:flutter_app/config/payment_gateways.dart';
-import 'package:flutter_app/config/theme.dart';
-import 'package:flutter_app/resources/themes/styles/base_styles.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -42,6 +40,7 @@ import 'package:status_alert/status_alert.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
+import '../resources/themes/styles/color_styles.dart';
 
 Future<User?> getUser() async =>
     (await (NyStorage.read<User>(SharedKey.authUser, model: User())));
@@ -52,10 +51,22 @@ Future appWooSignal(Function(WooSignal) api) async {
 
 /// helper to find correct color from the [context].
 class ThemeColor {
-  static BaseColorStyles? get(BuildContext context) {
-    return ((Theme.of(context).brightness == Brightness.light)
-        ? ThemeConfig.light().colors
-        : ThemeConfig.dark().colors);
+  static ColorStyles get(BuildContext context, {String? themeId}) {
+
+    Nylo nylo = Backpack.instance.read('nylo');
+    List<BaseThemeConfig> appThemes = nylo.appThemes;
+
+    if (themeId == null) {
+      dynamic themeFound = appThemes
+          .firstWhere(
+              (theme) => theme.id == getEnv(Theme.of(context).brightness == Brightness.light ? 'LIGHT_THEME_ID' : 'DARK_THEME_ID'),
+          orElse: () => appThemes.first
+      );
+      return themeFound.colors;
+    }
+
+    dynamic baseThemeConfig = appThemes.firstWhere((theme) => theme.id == themeId, orElse: () => appThemes.first);
+    return baseThemeConfig.colors;
   }
 }
 

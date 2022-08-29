@@ -21,7 +21,7 @@ import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/top_nav_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_swiper_tv/flutter_swiper.dart';
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/products.dart';
@@ -234,7 +234,7 @@ class TextEditingRow extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
-                      .copyWith(color: ThemeColor.get(context)!.primaryContent),
+                      .copyWith(color: ThemeColor.get(context).primaryContent),
                 ),
                 padding: EdgeInsets.only(bottom: 2),
               ),
@@ -459,7 +459,7 @@ wsModalBottom(BuildContext context,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: ThemeColor.get(context)!.background,
+              color: ThemeColor.get(context).background,
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(10.0),
                 topRight: const Radius.circular(10.0),
@@ -484,7 +484,7 @@ wsModalBottom(BuildContext context,
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context)!.background,
+                      color: ThemeColor.get(context).background,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: bodyWidget,

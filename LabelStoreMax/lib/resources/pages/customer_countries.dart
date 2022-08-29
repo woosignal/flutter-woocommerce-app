@@ -64,7 +64,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
                       offset: Offset(0, 2),
                     ),
                   ],
-                  color: ThemeColor.get(context)!.background),
+                  color: ThemeColor.get(context).background),
               height: 60,
               child: Row(
                 children: [

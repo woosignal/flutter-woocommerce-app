@@ -226,7 +226,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
                     Expanded(
                       child: Container(
                           decoration: BoxDecoration(
-                            color: ThemeColor.get(context)!.backgroundContainer,
+                            color: ThemeColor.get(context).backgroundContainer,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: (Theme.of(context).brightness ==
                                     Brightness.light)

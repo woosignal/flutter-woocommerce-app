@@ -98,7 +98,7 @@ class _CouponPageState extends State<CouponPage> {
                         Radius.circular(8.0),
                       ),
                       borderSide: BorderSide(
-                          color: ThemeColor.get(context)!.primaryAccent)),
+                          color: ThemeColor.get(context).primaryAccent)),
                   filled: true,
                   hintStyle: TextStyle(color: Colors.grey[800]),
                   hintText: trans('Add coupon code'),

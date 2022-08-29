@@ -51,8 +51,8 @@ class _ProductDetailReviewsWidgetState
       children: <Widget>[
         Expanded(
             child: ExpansionTile(
-          textColor: ThemeColor.get(context)!.primaryAccent,
-          iconColor: ThemeColor.get(context)!.primaryAccent,
+          textColor: ThemeColor.get(context).primaryAccent,
+          iconColor: ThemeColor.get(context).primaryAccent,
           tilePadding: EdgeInsets.symmetric(horizontal: 16),
           childrenPadding: EdgeInsets.all(0),
           title: AutoSizeText(

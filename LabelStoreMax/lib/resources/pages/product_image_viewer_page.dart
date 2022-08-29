@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/product_image_viewer_controller.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_swiper_tv/flutter_swiper.dart';
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class ProductImageViewerPage extends NyStatefulWidget {

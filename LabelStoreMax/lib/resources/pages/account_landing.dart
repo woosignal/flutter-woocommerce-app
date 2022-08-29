@@ -79,7 +79,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context)!.backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     margin: EdgeInsets.symmetric(horizontal: 16),

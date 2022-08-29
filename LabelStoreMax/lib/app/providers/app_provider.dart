@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/config/theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:flutter_app/config/localization.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -90,6 +91,8 @@ class AppProvider implements NyProvider {
         languagesList: languagesList,
         assetsDirectory: assetsDirectory,
         valuesAsMap: valuesAsMap);
+
+    nylo.appThemes = appThemes;
 
     return nylo;
   }

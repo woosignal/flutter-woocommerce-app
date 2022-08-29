@@ -1,3 +1,10 @@
+## [6.2.0] - 2022-08-29
+
+* Migration to use Nylo v3.3.0
+* Pubspec.yaml dependency updates
+* Increase the minimum targetSdkVersion to 31
+*
+
 ## [6.1.0] - 2022-07-09
 
 * Add RazorPay

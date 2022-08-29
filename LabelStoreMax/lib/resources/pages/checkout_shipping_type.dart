@@ -330,10 +330,9 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                                   "min_amount"] !=
                                                               null)
                                                             TextSpan(
-                                                                text: "\n${trans("Spend a minimum of")} " +
-                                                                    formatStringCurrency(
-                                                                        total: shippingOption[
-                                                                            "min_amount"]),
+                                                                text: "\n${trans("Spend a minimum of")} ${formatStringCurrency(
+                                                                    total: shippingOption[
+                                                                    "min_amount"])}",
                                                                 style: Theme.of(
                                                                         context)
                                                                     .textTheme
@@ -379,7 +378,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                       ],
                     ),
                     decoration: BoxDecoration(
-                      color: ThemeColor.get(context)!.backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
                           (Theme.of(context).brightness == Brightness.light)

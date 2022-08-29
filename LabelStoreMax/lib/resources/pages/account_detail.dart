@@ -212,7 +212,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context)!.backgroundContainer,
+                      color: ThemeColor.get(context).backgroundContainer,
                     ),
                   ),
                   Expanded(child: activeBody),

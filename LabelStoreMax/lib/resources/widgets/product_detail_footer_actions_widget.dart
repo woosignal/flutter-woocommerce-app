@@ -38,7 +38,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
       height: 140,
       padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: ThemeColor.get(context)!.background,
+        color: ThemeColor.get(context).background,
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
