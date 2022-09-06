@@ -150,7 +150,7 @@ class _CheckoutDetailsPageState extends State<CheckoutDetailsPage> {
       _txtBillingAddressLine.text = addressLine!;
       _txtBillingCity.text = city!;
       _txtBillingPostalCode.text = postalCode!;
-      _txtBillingPhoneNumber.text = phoneNumber!;
+      _txtBillingPhoneNumber.text = phoneNumber ?? "";
       _txtBillingEmailAddress.text = emailAddress!;
       _billingCountry = customerCountry;
     } else if (type == "shipping") {
