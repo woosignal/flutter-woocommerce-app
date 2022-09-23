@@ -1,8 +1,11 @@
-## [6.2.0] - 2022-08-29
+## [6.2.0] - 2022-09-23
 
-* Migration to use Nylo v3.3.0
+* Migration to use Nylo v3.4.0
 * Pubspec.yaml dependency updates
 * Increase the minimum targetSdkVersion to 31
+* Merge #51, #50, #47, #40, #39 and #38 by @jeanmatthieud
+* UI changes to the search page for a nicer experience
+* More translations added throughout the app
 
 ## [6.1.0] - 2022-07-09
 
