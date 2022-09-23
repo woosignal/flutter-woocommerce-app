@@ -26,7 +26,6 @@ import 'package:flutter_app/resources/pages/product_reviews_page.dart';
 import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
 import 'package:flutter_app/resources/widgets/checkout_paypal.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:page_transition/page_transition.dart';
 
 /*
 |--------------------------------------------------------------------------
