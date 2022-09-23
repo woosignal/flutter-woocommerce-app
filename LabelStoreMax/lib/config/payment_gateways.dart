@@ -4,6 +4,7 @@ import 'package:flutter_app/app/providers/paypal_pay.dart';
 import 'package:flutter_app/app/providers/razorpay_pay.dart';
 import 'package:flutter_app/app/providers/stripe_pay.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ List<PaymentType> paymentTypeList = [
   addPayment(
     id: 1,
     name: "Stripe",
-    desc: "Debit or Credit Card",
+    description: trans("Debit or Credit Card"),
     assetImage: "dark_powered_by_stripe.png",
     pay: stripePay,
   ),
@@ -30,7 +31,7 @@ List<PaymentType> paymentTypeList = [
   addPayment(
     id: 2,
     name: "CashOnDelivery",
-    desc: "Cash on delivery",
+    description: trans("Cash on delivery"),
     assetImage: "cash_on_delivery.jpeg",
     pay: cashOnDeliveryPay,
   ),
@@ -38,7 +39,7 @@ List<PaymentType> paymentTypeList = [
   addPayment(
     id: 4,
     name: "PayPal",
-    desc: "Debit or Credit Card",
+    description: trans("Debit or Credit Card"),
     assetImage: "paypal_logo.png",
     pay: payPalPay,
   ),
@@ -46,7 +47,7 @@ List<PaymentType> paymentTypeList = [
   addPayment(
     id: 5,
     name: "RazorPay",
-    desc: "Debit or Credit Card",
+    description: trans("Debit or Credit Card"),
     assetImage: "razorpay.png",
     pay: razorPay,
   ),
@@ -56,7 +57,7 @@ List<PaymentType> paymentTypeList = [
   // addPayment(
   //   id: 6,
   //   name: "MyNewPaymentMethod",
-  //   desc: "Debit or Credit Card",
+  //   description: "Debit or Credit Card",
   //   assetImage: "add icon image to public/assets/images/myimage.png",
   //   pay: "myCustomPaymentFunction",
   // ),

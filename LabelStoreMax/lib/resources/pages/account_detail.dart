@@ -154,30 +154,16 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                             ),
                             Expanded(
                               child: Padding(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: <Widget>[
-                                        Text(
-                                          [userFirstName, userLastName]
-                                              .where(
-                                                  (t) => (t != null || t != ""))
-                                              .toList()
-                                              .join(" "),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                child: Text(
+                                  [userFirstName, userLastName]
+                                      .where(
+                                          (t) => (t != null || t != ""))
+                                      .toList()
+                                      .join(" "),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 padding: EdgeInsets.only(left: 16),
                               ),

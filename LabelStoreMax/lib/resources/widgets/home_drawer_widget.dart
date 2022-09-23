@@ -174,7 +174,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                               .bodyText2!
                               .copyWith(fontSize: 16)),
                       leading: Image.asset(
-                          getImageAsset(socialLink.key) + '.png',
+                          '${getImageAsset(socialLink.key)}.png',
                           height: 25,
                           width: 25),
                       onTap: () async =>

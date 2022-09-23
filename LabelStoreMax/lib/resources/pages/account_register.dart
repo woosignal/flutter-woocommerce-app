@@ -114,7 +114,7 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
               child: InkWell(
                 child: RichText(
                   text: TextSpan(
-                    text: '${trans("By tapping \"Register\" you agree to ")} ${AppHelper.instance.appConfig!.appName!}\'s',
+                    text: '${trans("By tapping \"Register\" you agree to ")} ${AppHelper.instance.appConfig!.appName!}\'s ',
                     children: <TextSpan>[
                       TextSpan(
                           text: trans("terms and conditions"),

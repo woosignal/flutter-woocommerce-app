@@ -56,11 +56,8 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: Icon(Icons.search, size: 36),
-              margin: EdgeInsets.only(bottom: 20),
-            ),
             TextField(
+              decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
               controller: _txtSearchController,
               style: Theme.of(context).textTheme.headline3,
               keyboardType: TextInputType.text,
@@ -68,8 +65,8 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
               autofocus: true,
               textCapitalization: TextCapitalization.sentences,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
+            Container(
+              margin: EdgeInsets.only(top: 10),
               child: PrimaryButton(
                 title: trans("Search"),
                 action: _actionSearch,

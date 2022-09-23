@@ -49,7 +49,7 @@ class AccountDetailSettingsWidget extends StatelessWidget {
         Card(
           child: ListTile(
             leading: Icon(Icons.no_accounts_rounded),
-            title: Text("Delete Account"),
+            title: Text(trans("Delete Account")),
             onTap: () =>
                 Navigator.pushNamed(context, "/account-delete"),
           ),

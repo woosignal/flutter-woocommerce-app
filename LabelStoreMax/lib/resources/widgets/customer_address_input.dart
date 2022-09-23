@@ -100,7 +100,7 @@ class CustomerAddressInput extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: TextEditingRow(
-                  heading: "Phone Number",
+                  heading: trans("Phone Number"),
                   controller: txtControllerPhoneNumber,
                   keyboardType: TextInputType.phone,
                 ),

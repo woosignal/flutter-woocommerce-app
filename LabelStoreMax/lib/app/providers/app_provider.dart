@@ -10,6 +10,7 @@ import 'package:woosignal/woosignal.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AppProvider implements NyProvider {
+  @override
   boot(Nylo nylo) async {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

@@ -115,13 +115,13 @@ dynamic envVal(String envVal, {dynamic defaultValue}) =>
 PaymentType addPayment(
         {required int id,
         required String name,
-        required String desc,
+        required String description,
         required String assetImage,
         required Function pay}) =>
     PaymentType(
       id: id,
       name: name,
-      desc: desc,
+      desc: description,
       assetImage: assetImage,
       pay: pay,
     );
