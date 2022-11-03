@@ -15,7 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
+import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -24,36 +24,36 @@ import 'package:woosignal/models/response/order.dart';
 
 razorPay(context,
     {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {
- Razorpay razorpay = Razorpay();
+  Razorpay razorpay = Razorpay();
 
- razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-     (PaymentSuccessResponse response) async {
-   OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
+  razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+      (PaymentSuccessResponse response) async {
+    OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
 
-   Order? order = await appWooSignal((api) => api.createOrder(orderWC));
+    Order? order = await appWooSignal((api) => api.createOrder(orderWC));
 
-   if (order != null) {
-     Cart.getInstance.clear();
-     Navigator.pushNamed(context, "/checkout-status", arguments: order);
-   } else {
-     showToastNotification(
-       context,
-       title: "Error".tr(),
-       description: trans("Something went wrong, please contact our store"),
-     );
-     state.reloadState(showLoader: false);
-   }
- });
+    if (order != null) {
+      Cart.getInstance.clear();
+      Navigator.pushNamed(context, "/checkout-status", arguments: order);
+    } else {
+      showToastNotification(
+        context,
+        title: "Error".tr(),
+        description: trans("Something went wrong, please contact our store"),
+      );
+      state.reloadState(showLoader: false);
+    }
+  });
 
- razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (PaymentFailureResponse response) {
-   showToastNotification(context,
-       title: trans("Error"),
-       description: response.message ?? "",
-       style: ToastNotificationStyleType.WARNING);
-   state.reloadState(showLoader: false);
- });
+  razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (PaymentFailureResponse response) {
+    showToastNotification(context,
+        title: trans("Error"),
+        description: response.message ?? "",
+        style: ToastNotificationStyleType.WARNING);
+    state.reloadState(showLoader: false);
+  });
 
- razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
 
   // CHECKOUT HELPER
   await checkout(taxRate, (total, billingDetails, cart) async {
@@ -74,7 +74,7 @@ razorPay(context,
 
     state.reloadState(showLoader: true);
 
-   razorpay.open(options);
+    razorpay.open(options);
   });
 }
 

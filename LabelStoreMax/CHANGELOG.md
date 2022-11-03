@@ -1,3 +1,12 @@
+## [6.3.0] - 2022-11-03
+
+* Ability to add Menu Links to the drawer widget through the WooSignal dashboard
+* Fix wording when a shipping zone cannot be found to "Shipping is not supported for your location, sorry"
+* Update account shipping widget to be uniform with the checkout shipping widget
+* When logged in, the `CheckoutDetailsPage` will now populate shipping info from the users account
+* Small refactor to resources/pages
+* Pubspec.yaml dependency updates
+
 ## [6.2.0] - 2022-09-23
 
 * Migration to use Nylo v3.4.0

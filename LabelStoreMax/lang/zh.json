@@ -226,5 +226,6 @@
   "Delete your account": "删除您的帐户",
   "Are you sure?": "你确定吗？",
   "Yes, delete my account": "是的，删除我的帐户",
-  "Account deleted": "帐号已删除"
+  "Account deleted": "帐号已删除",
+  "Shipping is not supported for your location, sorry": "您所在的位置不支持送货，抱歉"
 }

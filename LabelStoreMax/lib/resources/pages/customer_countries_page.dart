@@ -35,7 +35,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
   }
 
   _getDefaultShipping() async {
-    _defaultShipping = await getDefaultShipping(context);
+    _defaultShipping = await getDefaultShipping();
     _activeShippingResults = _defaultShipping;
     setState(() {});
   }

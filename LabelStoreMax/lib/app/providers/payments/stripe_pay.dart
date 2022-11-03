@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
+import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
@@ -50,21 +50,13 @@ stripePay(context,
     dynamic rsp = {};
     //   // CHECKOUT HELPER
     await checkout(taxRate, (total, billingDetails, cart) async {
-      Map<String, dynamic> address = {
-        "name": billingDetails!.billingAddress?.nameFull(),
-        "line1": billingDetails.shippingAddress!.addressLine,
-        "city": billingDetails.shippingAddress!.city,
-        "postal_code": billingDetails.shippingAddress!.postalCode,
-        "country": (billingDetails.shippingAddress?.customerCountry?.name ?? "")
-      };
-
       String cartShortDesc = await cart.cartShortDesc();
 
       rsp = await appWooSignal((api) => api.stripePaymentIntent(
             amount: total,
-            email: billingDetails.billingAddress?.emailAddress,
+            email: billingDetails?.billingAddress?.emailAddress,
             desc: cartShortDesc,
-            shipping: address,
+            shipping: billingDetails?.getShippingAddressStripe(),
           ));
     });
 

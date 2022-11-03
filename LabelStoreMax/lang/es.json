@@ -226,5 +226,6 @@
   "Delete your account": "eliminar su cuenta",
   "Are you sure?": "¿Está seguro?",
   "Yes, delete my account": "Sí, eliminar mi cuenta",
-  "Account deleted": "Cuenta borrada"
+  "Account deleted": "Cuenta borrada",
+  "Shipping is not supported for your location, sorry": "El envío no es compatible para su ubicación, lo siento"
 }

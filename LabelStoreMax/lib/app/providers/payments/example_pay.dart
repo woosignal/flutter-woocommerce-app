@@ -14,7 +14,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
+import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/order.dart';
@@ -29,8 +29,16 @@ import 'package:woosignal/models/response/tax_rate.dart';
 //
 // });
 
-// REMEMBER TO ADD THIS METHOD E.G. "examplePay" TO THE APP_PAYMENT_METHODS
-// AS THE PAY METHOD
+// TO USE A PAYMENT GATEWAY, FIRST OPEN /config/payment_gateways.dart.
+// THEN ADD A NEW PAYMENT LIKE IN THE BELOW EXAMPLE
+//
+// addPayment(
+//     id: 6,
+//     name: "My Payment",
+//     description: trans("Debit or Credit Card"),
+//     assetImage: "payment_logo.png",  E.g. /public/assets/images/payment_logo.png
+//     pay: examplePay,
+//   ),
 
 examplePay(context,
     {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {

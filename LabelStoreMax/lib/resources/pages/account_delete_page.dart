@@ -8,17 +8,14 @@ import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountDeletePage extends StatefulWidget {
   AccountDeletePage({Key? key}) : super(key: key);
-  
+
   @override
   _AccountDeletePageState createState() => _AccountDeletePageState();
 }
 
 class _AccountDeletePageState extends NyState<AccountDeletePage> {
-
   @override
-  init() async {
-
-  }
+  init() async {}
 
   @override
   void dispose() {
@@ -33,33 +30,39 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
       ),
       body: SafeAreaWidget(
           child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.no_accounts_rounded, size: 50),
+                Text(
+                  trans("Delete your account"),
+                  style: textTheme.headline3,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: Text(trans("Are you sure?")),
+                ),
+              ],
+            ),
+          ),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.no_accounts_rounded, size: 50),
-                    Text(trans("Delete your account"), style: textTheme.headline3,),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 18),
-                      child: Text(trans("Are you sure?")),
-                    ),
-                  ],),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  PrimaryButton(title: trans("Yes, delete my account"), isLoading: isLocked('delete_account'), action: _deleteAccount),
-                  LinkButton(title: trans("Back"), action: pop)
-                ],
-              )
+              PrimaryButton(
+                  title: trans("Yes, delete my account"),
+                  isLoading: isLocked('delete_account'),
+                  action: _deleteAccount),
+              LinkButton(title: trans("Back"), action: pop)
             ],
           )
-      ),
+        ],
+      )),
     );
   }
 
@@ -70,9 +73,7 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
       WPUserDeleteResponse? wpUserDeleteResponse;
       try {
         wpUserDeleteResponse = await WPJsonAPI.instance
-            .api((request) => request.wpUserDelete(
-            userToken
-        ));
+            .api((request) => request.wpUserDelete(userToken));
       } on Exception catch (e) {
         NyLogger.error(e.toString());
         showToastNotification(
@@ -84,7 +85,8 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
       }
 
       if (wpUserDeleteResponse != null) {
-        showToast(title: trans("Success"), description: trans("Account deleted"));
+        showToast(
+            title: trans("Success"), description: trans("Account deleted"));
         await authLogout(context);
       }
     });

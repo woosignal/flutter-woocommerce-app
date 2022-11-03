@@ -23,7 +23,9 @@ class CheckoutUserDetailsWidget extends StatelessWidget {
       leadImage: Icon(Icons.home),
       leadTitle: hasUserCheckoutInfo
           ? (checkoutSession.billingDetails == null ||
-          (checkoutSession.billingDetails?.billingAddress?.hasMissingFields() ?? true)
+                  (checkoutSession.billingDetails?.billingAddress
+                          ?.hasMissingFields() ??
+                      true)
               ? trans("Billing address is incomplete")
               : checkoutSession.billingDetails!.billingAddress?.addressFull())
           : trans("Add billing & shipping details"),

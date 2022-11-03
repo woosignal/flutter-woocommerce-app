@@ -33,25 +33,16 @@ class AccountDetailSettingsWidget extends StatelessWidget {
         Card(
           child: ListTile(
             leading: Icon(Icons.local_shipping),
-            title: Text(trans("Shipping Details")),
+            title: Text(trans("Billing/shipping details")),
             onTap: () =>
                 Navigator.pushNamed(context, "/account-shipping-details"),
           ),
         ),
         Card(
           child: ListTile(
-            leading: Icon(Icons.credit_card),
-            title: Text(trans("Billing Details")),
-            onTap: () =>
-                Navigator.pushNamed(context, "/account-billing-details"),
-          ),
-        ),
-        Card(
-          child: ListTile(
             leading: Icon(Icons.no_accounts_rounded),
             title: Text(trans("Delete Account")),
-            onTap: () =>
-                Navigator.pushNamed(context, "/account-delete"),
+            onTap: () => Navigator.pushNamed(context, "/account-delete"),
           ),
         ),
         Card(

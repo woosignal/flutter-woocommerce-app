@@ -294,7 +294,8 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       return;
     }
 
-    if (checkoutSession.billingDetails?.billingAddress?.hasMissingFields() ?? true) {
+    if (checkoutSession.billingDetails?.billingAddress?.hasMissingFields() ??
+        true) {
       showToastNotification(
         context,
         title: trans("Oops"),

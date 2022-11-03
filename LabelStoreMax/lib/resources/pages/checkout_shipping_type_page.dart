@@ -330,9 +330,8 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                                   "min_amount"] !=
                                                               null)
                                                             TextSpan(
-                                                                text: "\n${trans("Spend a minimum of")} ${formatStringCurrency(
-                                                                    total: shippingOption[
-                                                                    "min_amount"])}",
+                                                                text:
+                                                                    "\n${trans("Spend a minimum of")} ${formatStringCurrency(total: shippingOption["min_amount"])}",
                                                                 style: Theme.of(
                                                                         context)
                                                                     .textTheme
@@ -366,7 +365,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                   )
                                 : Text(
                                     trans(
-                                        "Shipping is not supported for your country, sorry"),
+                                        "Shipping is not supported for your location, sorry"),
                                     style:
                                         Theme.of(context).textTheme.headline6,
                                     textAlign: TextAlign.center,

@@ -40,7 +40,9 @@ import 'package:status_alert/status_alert.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
+import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import '../resources/themes/styles/color_styles.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 Future<User?> getUser() async =>
     (await (NyStorage.read<User>(SharedKey.authUser, model: User())));
@@ -498,9 +500,8 @@ class UserAuth {
   String redirect = "/home";
 }
 
-Future<List<DefaultShipping>> getDefaultShipping(BuildContext context) async {
-  String data = await DefaultAssetBundle.of(context)
-      .loadString("public/assets/json/default_shipping.json");
+Future<List<DefaultShipping>> getDefaultShipping() async {
+  String data = await rootBundle.loadString('public/assets/json/default_shipping.json');
   dynamic dataJson = json.decode(data);
   List<DefaultShipping> shipping = [];
 
@@ -516,6 +517,37 @@ Future<List<DefaultShipping>> getDefaultShipping(BuildContext context) async {
     shipping.add(defaultShipping);
   });
   return shipping;
+}
+
+Future<DefaultShipping?> findCountryMetaForShipping(String countryCode) async {
+  List<DefaultShipping> defaultShipping =  await getDefaultShipping();
+  List<DefaultShipping> shippingByCountryCode = defaultShipping.where((element) => element.code == countryCode).toList();
+  if (shippingByCountryCode.isNotEmpty) {
+    return shippingByCountryCode.first;
+  }
+  return null;
+}
+
+DefaultShippingState? findDefaultShippingStateByCode(DefaultShipping defaultShipping, String code) {
+  List<DefaultShippingState> defaultShippingStates = defaultShipping.states.where((state) => state.code == code).toList();
+  if (defaultShippingStates.isEmpty) {
+    return null;
+  }
+  DefaultShippingState defaultShippingState = defaultShippingStates.first;
+  return DefaultShippingState(code: defaultShippingState.code, name: defaultShippingState.name);
+}
+
+bool hasKeyInMeta(WPUserInfoResponse wpUserInfoResponse, String key) {
+  return (wpUserInfoResponse.data!.metaData ?? []).where((meta) => meta.key == key).toList().isNotEmpty;
+}
+
+String fetchValueInMeta(WPUserInfoResponse wpUserInfoResponse, String key) {
+  String value = "";
+  List<dynamic>? metaDataValue = (wpUserInfoResponse.data!.metaData ?? []).where((meta) => meta.key == key).first.value;
+  if (metaDataValue != null && metaDataValue.isNotEmpty) {
+    return metaDataValue.first ?? "";
+  }
+  return value;
 }
 
 String truncateString(String data, int length) {
@@ -558,6 +590,45 @@ removeWishlistProduct({required Product? product}) async {
 
   String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
   await NyStorage.store(SharedKey.wishlistProducts, json);
+}
+
+Future<BillingDetails> billingDetailsFromWpUserInfoResponse(wpUserInfoResponse) async {
+  List<String> metaDataAddress = [
+    'billing_first_name',
+    'billing_last_name',
+    'billing_company',
+    'billing_address_1',
+    'billing_address_2',
+    'billing_city',
+    'billing_postcode',
+    'billing_country',
+    'billing_state',
+    'billing_phone',
+    'billing_email',
+    'shipping_first_name',
+    'shipping_last_name',
+    'shipping_company',
+    'shipping_address_1',
+    'shipping_address_2',
+    'shipping_city',
+    'shipping_postcode',
+    'shipping_country',
+    'shipping_state',
+    'shipping_phone',
+  ];
+
+  Map<String, String> metaData = {};
+
+  for (var dataKey in metaDataAddress) {
+    if (hasKeyInMeta(wpUserInfoResponse, dataKey)) {
+      String value = fetchValueInMeta(wpUserInfoResponse, dataKey);
+      metaData.addAll({dataKey: value});
+    }
+  }
+
+  BillingDetails billingDetails = BillingDetails();
+  await billingDetails.fromWpMeta(metaData);
+  return billingDetails;
 }
 
 /// API helper

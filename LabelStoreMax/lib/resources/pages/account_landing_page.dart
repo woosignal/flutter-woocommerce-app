@@ -32,7 +32,6 @@ class AccountLandingPage extends StatefulWidget {
 }
 
 class _AccountLandingPageState extends NyState<AccountLandingPage> {
-
   final TextEditingController _tfEmailController = TextEditingController(),
       _tfPasswordController = TextEditingController();
 
@@ -226,19 +225,18 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
       if (wpUserLoginResponse.status != 200) {
         return;
       }
-        String? token = wpUserLoginResponse.data!.userToken;
-        String userId = wpUserLoginResponse.data!.userId.toString();
-        User user = User.fromUserAuthResponse(token: token, userId: userId);
-        await user.save(SharedKey.authUser);
+      String? token = wpUserLoginResponse.data!.userToken;
+      String userId = wpUserLoginResponse.data!.userId.toString();
+      User user = User.fromUserAuthResponse(token: token, userId: userId);
+      await user.save(SharedKey.authUser);
 
-        showToastNotification(context,
-            title: trans("Hello"),
-            description: trans("Welcome back"),
-            style: ToastNotificationStyleType.SUCCESS,
-            icon: Icons.account_circle);
-        navigatorPush(context,
-            routeName: UserAuth.instance.redirect, forgetLast: 1);
-
+      showToastNotification(context,
+          title: trans("Hello"),
+          description: trans("Welcome back"),
+          style: ToastNotificationStyleType.SUCCESS,
+          icon: Icons.account_circle);
+      navigatorPush(context,
+          routeName: UserAuth.instance.redirect, forgetLast: 1);
     });
   }
 }

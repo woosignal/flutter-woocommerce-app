@@ -226,5 +226,6 @@
   "Delete your account": "Verwijder je account",
   "Are you sure?": "Weet je het zeker?",
   "Yes, delete my account": "Ja, verwijder mijn account",
-  "Account deleted": "Account verwijderd"
+  "Account deleted": "Account verwijderd",
+  "Shipping is not supported for your location, sorry": "Verzending wordt niet ondersteund voor uw locatie, sorry"
 }

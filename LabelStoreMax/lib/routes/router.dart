@@ -1,26 +1,25 @@
-import 'package:flutter_app/resources/pages/account_billing_details.dart';
 import 'package:flutter_app/resources/pages/account_delete_page.dart';
-import 'package:flutter_app/resources/pages/account_detail.dart';
-import 'package:flutter_app/resources/pages/account_landing.dart';
-import 'package:flutter_app/resources/pages/account_order_detail.dart';
-import 'package:flutter_app/resources/pages/account_profile_update.dart';
-import 'package:flutter_app/resources/pages/account_register.dart';
-import 'package:flutter_app/resources/pages/account_shipping_details.dart';
-import 'package:flutter_app/resources/pages/browse_category.dart';
-import 'package:flutter_app/resources/pages/browse_search.dart';
-import 'package:flutter_app/resources/pages/cart.dart';
-import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
-import 'package:flutter_app/resources/pages/checkout_details.dart';
-import 'package:flutter_app/resources/pages/checkout_payment_type.dart';
-import 'package:flutter_app/resources/pages/checkout_shipping_type.dart';
-import 'package:flutter_app/resources/pages/checkout_status.dart';
+import 'package:flutter_app/resources/pages/account_detail_page.dart';
+import 'package:flutter_app/resources/pages/account_landing_page.dart';
+import 'package:flutter_app/resources/pages/account_order_detail_page.dart';
+import 'package:flutter_app/resources/pages/account_profile_update_page.dart';
+import 'package:flutter_app/resources/pages/account_register_page.dart';
+import 'package:flutter_app/resources/pages/account_shipping_details_page.dart';
+import 'package:flutter_app/resources/pages/browse_category_page.dart';
+import 'package:flutter_app/resources/pages/browse_search_page.dart';
+import 'package:flutter_app/resources/pages/cart_page.dart';
+import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
+import 'package:flutter_app/resources/pages/checkout_details_page.dart';
+import 'package:flutter_app/resources/pages/checkout_payment_type_page.dart';
+import 'package:flutter_app/resources/pages/checkout_shipping_type_page.dart';
+import 'package:flutter_app/resources/pages/checkout_status_page.dart';
 import 'package:flutter_app/resources/pages/coupon_page.dart';
-import 'package:flutter_app/resources/pages/customer_countries.dart';
-import 'package:flutter_app/resources/pages/home.dart';
-import 'package:flutter_app/resources/pages/home_search.dart';
+import 'package:flutter_app/resources/pages/customer_countries_page.dart';
+import 'package:flutter_app/resources/pages/home_page.dart';
+import 'package:flutter_app/resources/pages/home_search_page.dart';
 import 'package:flutter_app/resources/pages/leave_review_page.dart';
 import 'package:flutter_app/resources/pages/no_connection_page.dart';
-import 'package:flutter_app/resources/pages/product_detail.dart';
+import 'package:flutter_app/resources/pages/product_detail_page.dart';
 import 'package:flutter_app/resources/pages/product_image_viewer_page.dart';
 import 'package:flutter_app/resources/pages/product_reviews_page.dart';
 import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
@@ -104,9 +103,6 @@ appRouter() => nyRoutes((router) {
       router.route("/account-update", (context) => AccountProfileUpdatePage());
 
       router.route("/account-delete", (context) => AccountDeletePage());
-
-      router.route(
-          "/account-billing-details", (context) => AccountBillingDetailsPage());
 
       router.route("/account-shipping-details",
           (context) => AccountShippingDetailsPage());

@@ -22,7 +22,7 @@ class CustomerAddressInput extends StatelessWidget {
       required this.txtControllerAddressLine,
       required this.txtControllerCity,
       required this.txtControllerPostalCode,
-      required this.txtControllerEmailAddress,
+      this.txtControllerEmailAddress,
       this.txtControllerPhoneNumber,
       required this.customerCountry,
       required this.onTapCountry})
@@ -87,12 +87,13 @@ class CustomerAddressInput extends StatelessWidget {
                 controller: txtControllerPostalCode,
               ),
             ),
-            Flexible(
-              child: TextEditingRow(
-                  heading: trans("Email address"),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: txtControllerEmailAddress),
-            ),
+            if (txtControllerEmailAddress == null)
+              Flexible(
+                child: TextEditingRow(
+                    heading: trans("Email address"),
+                    keyboardType: TextInputType.emailAddress,
+                    controller: txtControllerEmailAddress),
+              ),
           ],
         ),
         if (txtControllerPhoneNumber != null)
@@ -111,7 +112,7 @@ class CustomerAddressInput extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Row(
             children: <Widget>[
-              if (customerCountry!.hasState())
+              if (customerCountry?.hasState() ?? false)
                 Flexible(
                   child: Column(
                     children: [

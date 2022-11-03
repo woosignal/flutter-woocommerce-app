@@ -114,7 +114,8 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
               child: InkWell(
                 child: RichText(
                   text: TextSpan(
-                    text: '${trans("By tapping \"Register\" you agree to ")} ${AppHelper.instance.appConfig!.appName!}\'s ',
+                    text:
+                        '${trans("By tapping \"Register\" you agree to ")} ${AppHelper.instance.appConfig!.appName!}\'s ',
                     children: <TextSpan>[
                       TextSpan(
                           text: trans("terms and conditions"),
@@ -175,16 +176,20 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
       WPUserRegisterResponse? wpUserRegisterResponse;
       try {
         wpUserRegisterResponse = await WPJsonAPI.instance.api(
-              (request) => request.wpRegister(
+          (request) => request.wpRegister(
             email: email.toLowerCase(),
             password: password,
             username: username,
           ),
         );
-        
+
         if (wpUserRegisterResponse?.data?.userToken != null) {
-          await WPJsonAPI.instance.api((request) => request.wpUserAddRole(wpUserRegisterResponse!.data!.userToken, role: "customer"));
-          await WPJsonAPI.instance.api((request) => request.wpUserRemoveRole(wpUserRegisterResponse!.data!.userToken, role: "subscriber"));
+          await WPJsonAPI.instance.api((request) => request.wpUserAddRole(
+              wpUserRegisterResponse!.data!.userToken,
+              role: "customer"));
+          await WPJsonAPI.instance.api((request) => request.wpUserRemoveRole(
+              wpUserRegisterResponse!.data!.userToken,
+              role: "subscriber"));
         }
       } on UsernameTakenException catch (e) {
         showToastNotification(context,
@@ -195,7 +200,7 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
         showToastNotification(context,
             title: trans("Invalid details"),
             description:
-            trans("Something went wrong, please contact our store"),
+                trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.DANGER);
       } on ExistingUserLoginException catch (_) {
         showToastNotification(context,
@@ -233,21 +238,21 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
       }
 
       // Save user to shared preferences
-        String? token = wpUserRegisterResponse.data!.userToken;
-        String userId = wpUserRegisterResponse.data!.userId.toString();
-        User user = User.fromUserAuthResponse(token: token, userId: userId);
-        await user.save(SharedKey.authUser);
+      String? token = wpUserRegisterResponse.data!.userToken;
+      String userId = wpUserRegisterResponse.data!.userId.toString();
+      User user = User.fromUserAuthResponse(token: token, userId: userId);
+      await user.save(SharedKey.authUser);
 
-        await WPJsonAPI.instance.api((request) => request
-            .wpUpdateUserInfo(token, firstName: firstName, lastName: lastName));
+      await WPJsonAPI.instance.api((request) => request.wpUpdateUserInfo(token,
+          firstName: firstName, lastName: lastName));
 
-        showToastNotification(context,
-            title: "${trans("Hello")} $firstName",
-            description: trans("you're now logged in"),
-            style: ToastNotificationStyleType.SUCCESS,
-            icon: Icons.account_circle);
-        navigatorPush(context,
-            routeName: UserAuth.instance.redirect, forgetLast: 2);
+      showToastNotification(context,
+          title: "${trans("Hello")} $firstName",
+          description: trans("you're now logged in"),
+          style: ToastNotificationStyleType.SUCCESS,
+          icon: Icons.account_circle);
+      navigatorPush(context,
+          routeName: UserAuth.instance.redirect, forgetLast: 2);
     });
   }
 

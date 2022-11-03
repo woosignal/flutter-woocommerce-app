@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/pages/checkout_confirmation.dart';
+import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
 import 'package:flutter_app/resources/widgets/checkout_paypal.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/payload/order_wc.dart';

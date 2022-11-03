@@ -156,8 +156,7 @@ class _AccountDetailPageState extends State<AccountDetailPage>
                               child: Padding(
                                 child: Text(
                                   [userFirstName, userLastName]
-                                      .where(
-                                          (t) => (t != null || t != ""))
+                                      .where((t) => (t != null || t != ""))
                                       .toList()
                                       .join(" "),
                                   style: TextStyle(

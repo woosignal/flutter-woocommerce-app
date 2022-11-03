@@ -226,5 +226,6 @@
   "Delete your account": "Hesabını sil",
   "Are you sure?": "Emin misin?",
   "Yes, delete my account": "Evet, hesabımı sil",
-  "Account deleted": "Hesap silindi"
+  "Account deleted": "Hesap silindi",
+  "Shipping is not supported for your location, sorry": "Bulunduğunuz yer için gönderim desteklenmiyor, üzgünüm"
 }

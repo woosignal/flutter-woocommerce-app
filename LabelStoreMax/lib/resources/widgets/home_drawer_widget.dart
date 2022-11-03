@@ -13,9 +13,11 @@ import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_version_widget.dart';
+import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/theme/helper/ny_theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:woosignal/models/menu_link.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,13 +32,13 @@ class HomeDrawerWidget extends StatefulWidget {
 }
 
 class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
-  Map<String, dynamic> _socialLinks = {};
+  List<MenuLink> _menuLinks = [];
   String? _themeType;
 
   @override
   void initState() {
     super.initState();
-    _socialLinks = AppHelper.instance.appConfig!.socialLinks ?? {};
+    _menuLinks = AppHelper.instance.appConfig?.menuLinks ?? [];
     _themeType = AppHelper.instance.appConfig!.theme;
   }
 
@@ -157,7 +159,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 });
               },
             ),
-            if (_socialLinks.isNotEmpty)
+            if (_menuLinks.isNotEmpty)
               Padding(
                 child: Text(
                   trans("Social"),
@@ -165,20 +167,23 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 ),
                 padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
               ),
-            ..._socialLinks.entries
-                .where((element) => element.value != "")
-                .map((socialLink) => ListTile(
-                      title: Text(capitalize(socialLink.key),
+            ..._menuLinks
+                .where((element) => element.label != "")
+                .map((menuLink) => ListTile(
+                      title: Text(menuLink.label,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(fontSize: 16)),
-                      leading: Image.asset(
-                          '${getImageAsset(socialLink.key)}.png',
-                          height: 25,
-                          width: 25),
+                      leading: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: CachedImageWidget(
+                          image: menuLink.iconUrl,
+                          width: 40,
+                        ),
+                      ),
                       onTap: () async =>
-                          await launchUrl(Uri.parse(socialLink.value)),
+                          await launchUrl(Uri.parse(menuLink.linkUrl)),
                     ))
                 .toList(),
             ListTile(
@@ -213,6 +218,4 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
     Navigator.pop(context);
     Navigator.pushNamed(context, "/cart");
   }
-
-  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }

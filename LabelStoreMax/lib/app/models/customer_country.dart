@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter_app/app/models/default_shipping.dart';
+import 'package:flutter_app/bootstrap/helpers.dart';
 
 class CustomerCountry {
   String? countryCode;
@@ -24,6 +25,14 @@ class CustomerCountry {
     if ((defaultShipping.states.length) == 1) {
       state = defaultShipping.states.first;
     }
+  }
+
+  CustomerCountry.fromWpMeta(
+      Map<String, dynamic> json, DefaultShipping defaultShipping) {
+    countryCode = json['country'];
+    name = defaultShipping.country;
+    state = findDefaultShippingStateByCode(
+        defaultShipping, "${json['country']}:${json['state']}");
   }
 
   CustomerCountry.fromJson(Map<String, dynamic>? json) {
