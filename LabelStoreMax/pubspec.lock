@@ -1051,9 +1051,9 @@ packages:
   woosignal:
     dependency: "direct main"
     description:
-      path: "/Users/anthony/AndroidStudioProjects/woosignal-woocommerce-api"
-      relative: false
-    source: path
+      name: woosignal
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "3.2.0"
   wp_json_api:
     dependency: "direct main"
