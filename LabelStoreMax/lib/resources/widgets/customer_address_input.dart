@@ -87,7 +87,7 @@ class CustomerAddressInput extends StatelessWidget {
                 controller: txtControllerPostalCode,
               ),
             ),
-            if (txtControllerEmailAddress == null)
+            if (txtControllerEmailAddress != null)
               Flexible(
                 child: TextEditingRow(
                     heading: trans("Email address"),

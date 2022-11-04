@@ -1,3 +1,7 @@
+## [6.3.1] - 2022-11-04
+
+* Fix email address bug in customer_address_input.dart
+
 ## [6.3.0] - 2022-11-03
 
 * Ability to add Menu Links to the drawer widget through the WooSignal dashboard
