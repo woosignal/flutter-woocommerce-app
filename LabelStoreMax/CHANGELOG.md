@@ -1,3 +1,10 @@
+## [6.4.0] - 2023-01-06
+
+* Upgrade to Nylo v4.0.0
+* Update copyright
+* Refactor wp_json_api metadata
+* Pubspec.yaml dependency updates
+
 ## [6.3.1] - 2022-11-04
 
 * Fix email address bug in customer_address_input.dart

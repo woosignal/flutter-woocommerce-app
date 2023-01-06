@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2022, WooSignal Ltd. All rights reserved.
+//  2023, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -395,7 +395,7 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
 
         try {
           await WPJsonAPI.instance.api(
-            (request) => request.wpUpdateUserInfo(userToken, wpUserMetaData: [
+            (request) => request.wpUpdateUserInfo(userToken, metaData: [
               ...?billingDetails.billingAddress?.toUserMetaDataItem('billing'),
               ...?billingDetails.shippingAddress
                   ?.toUserMetaDataItem('shipping'),

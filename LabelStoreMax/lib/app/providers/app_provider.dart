@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/config/design.dart';
 import 'package:flutter_app/config/theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:flutter_app/config/localization.dart';
@@ -108,6 +109,13 @@ class AppProvider implements NyProvider {
         valuesAsMap: valuesAsMap);
 
     nylo.appThemes = appThemes;
+    nylo.appLoader = loader;
+
+    String initialRoute = AppHelper.instance.appConfig!.appStatus != null
+        ? '/home'
+        : '/no-connection';
+
+    nylo.initialRoute = initialRoute;
 
     return nylo;
   }

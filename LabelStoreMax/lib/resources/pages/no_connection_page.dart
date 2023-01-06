@@ -1,7 +1,7 @@
 //  StoreMob
 //
 //  Created by Anthony Gordon.
-//  2022, WooSignal Ltd. All rights reserved.
+//  2023, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software

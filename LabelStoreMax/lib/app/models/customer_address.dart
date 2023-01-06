@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2022, WooSignal Ltd. All rights reserved.
+//  2023, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -157,19 +157,19 @@ class CustomerAddress {
     }
   }
 
-  List<UserMetaDataItem> toUserMetaDataItem(String type) {
+  List<WpMetaData> toUserMetaDataItem(String type) {
     return [
-      UserMetaDataItem(key: "${type}_first_name", value: firstName),
-      UserMetaDataItem(key: "${type}_last_name", value: lastName),
-      UserMetaDataItem(key: "${type}_address_1", value: addressLine),
-      UserMetaDataItem(key: "${type}_city", value: city),
-      UserMetaDataItem(key: "${type}_postcode", value: postalCode),
-      UserMetaDataItem(key: "${type}_phone", value: phoneNumber),
+      WpMetaData(key: "${type}_first_name", value: firstName),
+      WpMetaData(key: "${type}_last_name", value: lastName),
+      WpMetaData(key: "${type}_address_1", value: addressLine),
+      WpMetaData(key: "${type}_city", value: city),
+      WpMetaData(key: "${type}_postcode", value: postalCode),
+      WpMetaData(key: "${type}_phone", value: phoneNumber),
       if (type != "shipping")
-        UserMetaDataItem(key: "${type}_email", value: emailAddress),
-      UserMetaDataItem(
+        WpMetaData(key: "${type}_email", value: emailAddress),
+      WpMetaData(
           key: "${type}_country", value: customerCountry?.countryCode),
-      UserMetaDataItem(
+      WpMetaData(
           key: "${type}_state",
           value: customerCountry?.state?.code
               ?.replaceAll("${customerCountry?.countryCode}:", "")),
