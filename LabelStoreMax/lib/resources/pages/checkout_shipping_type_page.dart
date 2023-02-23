@@ -282,7 +282,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                             _wsShippingOptions[index]['title'],
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .subtitle1!
+                                                .titleMedium!
                                                 .copyWith(
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -313,7 +313,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                         text: '',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText2,
+                                                            .bodyMedium,
                                                         children: <TextSpan>[
                                                           (shippingOption[
                                                                       "object"]
@@ -335,7 +335,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                                 style: Theme.of(
                                                                         context)
                                                                     .textTheme
-                                                                    .bodyText2!
+                                                                    .bodyMedium!
                                                                     .copyWith(
                                                                         fontSize:
                                                                             14))
@@ -367,7 +367,7 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                     trans(
                                         "Shipping is not supported for your location, sorry"),
                                     style:
-                                        Theme.of(context).textTheme.headline6,
+                                        Theme.of(context).textTheme.titleLarge,
                                     textAlign: TextAlign.center,
                                   ))),
                         LinkButton(

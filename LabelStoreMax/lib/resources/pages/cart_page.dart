@@ -198,7 +198,7 @@ class _CartPageState extends State<CartPage> {
               child: Padding(
                 child: Text(
                   trans("Clear Cart"),
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 padding: EdgeInsets.only(right: 8),
               ),
@@ -229,7 +229,7 @@ class _CartPageState extends State<CartPage> {
                           Padding(
                             child: Text(
                               trans("Empty Basket"),
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             padding: EdgeInsets.only(top: 10),
                           )

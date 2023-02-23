@@ -55,7 +55,7 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(trans("Search results for"),
-                style: Theme.of(context).textTheme.subtitle1),
+                style: Theme.of(context).textTheme.titleMedium),
             Text("\"" + _search! + "\"")
           ],
         ),

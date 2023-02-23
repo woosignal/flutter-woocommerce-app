@@ -62,23 +62,23 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                         Padding(
                           child: Text(
                             trans("Order Status"),
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           padding: EdgeInsets.only(bottom: 15),
                         ),
                         Text(
                           trans("Thank You!"),
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           textAlign: TextAlign.left,
                         ),
                         Text(
                           trans("Your transaction details"),
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.left,
                         ),
                         Text(
                           "${trans("Order Ref")}. #${_order!.id.toString()}",
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           textAlign: TextAlign.left,
                         ),
                       ],
@@ -110,7 +110,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                 child: Padding(
                   child: Text(
                     trans("Items"),
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.titleMedium,
                     textAlign: TextAlign.left,
                   ),
                   padding: EdgeInsets.all(8),
@@ -138,7 +138,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                                     Text(
                                       lineItem.name!,
                                       style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                          Theme.of(context).textTheme.bodyLarge,
                                       softWrap: false,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -146,7 +146,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                                     Text(
                                       "x${lineItem.quantity.toString()}",
                                       style:
-                                          Theme.of(context).textTheme.bodyText2,
+                                          Theme.of(context).textTheme.bodyMedium,
                                     ),
                                   ],
                                 ),
@@ -155,7 +155,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                                 formatStringCurrency(
                                   total: lineItem.total.toString(),
                                 ),
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                               )
                             ],
                           ),

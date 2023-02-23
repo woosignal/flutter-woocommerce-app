@@ -47,7 +47,7 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
               hasCoupon
                   ? "Coupon Applied: " + checkoutSession.coupon!.code!
                   : trans('Apply Coupon'),
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ],
         ),

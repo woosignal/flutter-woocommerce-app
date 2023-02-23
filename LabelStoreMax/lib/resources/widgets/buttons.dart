@@ -28,7 +28,7 @@ class PrimaryButton extends StatelessWidget {
         title: title,
         action: action,
         isLoading: isLoading,
-        textStyle: Theme.of(context).textTheme.button!.copyWith(
+        textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: ThemeColor.get(context).buttonPrimaryContent),
@@ -51,7 +51,7 @@ class SecondaryButton extends StatelessWidget {
         key: key,
         title: title,
         action: action,
-        textStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+        textStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: Colors.black87,
             ),
         bgColor: Color(0xFFF6F6F9),
@@ -83,7 +83,7 @@ class LinkButton extends StatelessWidget {
             child: Text(
           title!,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         )),
       ),
       onTap: action == null ? null : () async => await action!(),
@@ -120,10 +120,9 @@ class WooSignalButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
-          ),
+          ), backgroundColor: bgColor,
           padding: EdgeInsets.all(8),
           elevation: 0,
-          primary: bgColor,
           shadowColor: Colors.transparent,
         ),
         child: isLoading

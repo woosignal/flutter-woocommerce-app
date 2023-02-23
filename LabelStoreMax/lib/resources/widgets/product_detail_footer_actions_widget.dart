@@ -64,7 +64,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
                   trans("Quantity"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
+                      .bodyLarge!
                       .copyWith(color: Colors.grey),
                 ),
                 Row(
@@ -78,7 +78,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
                     ),
                     Text(
                       quantity.toString(),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     IconButton(
                       icon: Icon(
@@ -101,7 +101,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
                   formatStringCurrency(
                       total:
                           (parseWcPrice(product!.price) * quantity).toString()),
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 alignment: Alignment.centerLeft,

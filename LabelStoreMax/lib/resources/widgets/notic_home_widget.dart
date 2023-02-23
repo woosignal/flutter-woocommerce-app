@@ -102,7 +102,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                 onTap: _modalBottomSheetMenu,
                 child: Text(
                   trans("Categories"),
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             ),
@@ -146,7 +146,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                               Flexible(
                                 child: Text(
                                   trans("Our selection of new items"),
-                                  style: Theme.of(context).textTheme.headline4,
+                                  style: Theme.of(context).textTheme.headlineMedium,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),

@@ -166,7 +166,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                         ),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2!
+                                            .bodyMedium!
                                             .copyWith(
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -176,7 +176,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                                         "x${lineItem.quantity.toString()}",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .bodyLarge,
                                         textAlign: TextAlign.left,
                                       ),
                                     ],

@@ -80,14 +80,14 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
                         Container(
                           child: Text(
                             _product!.name!,
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: Text(
                             _product!.ratingCount.toString() + " Reviews",
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                         Row(
@@ -96,7 +96,7 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
                               margin: EdgeInsets.only(right: 8),
                               child: Text(
                                 _product!.averageRating! + " Stars",
-                                style: Theme.of(context).textTheme.bodyText2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             RatingBarIndicator(

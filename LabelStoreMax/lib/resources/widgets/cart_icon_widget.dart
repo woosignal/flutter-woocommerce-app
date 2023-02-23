@@ -55,7 +55,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
                         }
                         return Text(
                           cartValue,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         );
                       }

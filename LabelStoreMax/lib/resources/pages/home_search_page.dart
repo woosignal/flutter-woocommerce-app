@@ -59,7 +59,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
             TextField(
               decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
               controller: _txtSearchController,
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.displaySmall,
               keyboardType: TextInputType.text,
               autocorrect: false,
               autofocus: true,

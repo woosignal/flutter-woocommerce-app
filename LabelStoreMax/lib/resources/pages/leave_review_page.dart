@@ -72,14 +72,14 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
                     ),
                     Text(
                       trans("How would you rate"),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     Text(_lineItem!.name!),
                     Flexible(
                       child: Container(
                         child: TextField(
                           controller: _textEditingController,
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.titleMedium,
                           keyboardType: TextInputType.text,
                           autocorrect: false,
                           autofocus: true,

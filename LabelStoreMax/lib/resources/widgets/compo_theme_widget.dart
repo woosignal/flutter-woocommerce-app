@@ -32,10 +32,10 @@ class CompoThemeWidget extends StatefulWidget {
   final GlobalKey globalKey;
 
   @override
-  CcompoThemeWidgetState createState() => CcompoThemeWidgetState();
+  CompoThemeWidgetState createState() => CompoThemeWidgetState();
 }
 
-class CcompoThemeWidgetState extends State<CompoThemeWidget> {
+class CompoThemeWidgetState extends State<CompoThemeWidget> {
   Widget? activeWidget;
 
   int _currentIndex = 0;

@@ -24,7 +24,7 @@ class TextRowWidget extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: Container(
-            child: Text(title!, style: Theme.of(context).textTheme.headline6),
+            child: Text(title!, style: Theme.of(context).textTheme.titleLarge),
           ),
           flex: 3,
         ),
@@ -33,7 +33,7 @@ class TextRowWidget extends StatelessWidget {
             child: Text(
               text!,
               style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
             ),
           ),
           flex: 3,

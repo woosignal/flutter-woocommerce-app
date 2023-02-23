@@ -51,7 +51,7 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
                 Icon(Icons.no_accounts_rounded, size: 50),
                 Text(
                   trans("Delete your account"),
-                  style: textTheme.headline3,
+                  style: textTheme.displaySmall,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 18),

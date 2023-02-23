@@ -44,7 +44,7 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
               Text(
                 trans("Related products"),
                 style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
+                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
             ],

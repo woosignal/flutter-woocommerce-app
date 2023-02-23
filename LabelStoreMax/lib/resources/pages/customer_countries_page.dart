@@ -152,7 +152,7 @@ class _CustomerCountriesPageState extends State<CustomerCountriesPage> {
             child: Container(
               child: Text(
                 state.name!,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               padding: EdgeInsets.only(top: 25, bottom: 25),
             ),

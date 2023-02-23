@@ -80,7 +80,7 @@ class _CouponPageState extends State<CouponPage> {
             Icon(Icons.local_offer_outlined, size: 30),
             Text(
               trans('Redeem Coupon'),
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             SizedBox(
               height: 30,

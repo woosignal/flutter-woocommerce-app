@@ -41,7 +41,7 @@ class SwitchAddressTab extends StatelessWidget {
           width: double.infinity,
           child: Text(
             title,
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: isActive ? Colors.white : Colors.black,
                 ),
             textAlign: TextAlign.center,

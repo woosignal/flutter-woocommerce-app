@@ -277,7 +277,7 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
                             children: <Widget>[
                               Text(
                                 trans("Ship to a different address?"),
-                                style: Theme.of(context).textTheme.bodyText2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Checkbox(
                                 value: _hasDifferentShippingAddress,
@@ -292,7 +292,7 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
                               children: <Widget>[
                                 Text(
                                   trans("Remember my details"),
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Checkbox(
                                   value: valRememberDetails,

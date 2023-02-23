@@ -32,7 +32,7 @@ class AppVersionWidget extends StatelessWidget {
               child: Text("${trans("Version")}: ${snapshot.data!.version}",
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontWeight: FontWeight.w300)),
               padding: EdgeInsets.only(top: 15, bottom: 15),
             );

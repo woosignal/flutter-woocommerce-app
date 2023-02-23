@@ -78,7 +78,7 @@ class _WishListPageWidgetState extends State<WishListPageWidget> {
                           Text(trans("No items found"),
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6!
+                                  .titleLarge!
                                   .setColor(context,
                                       (color) => color!.primaryContent))
                         ],

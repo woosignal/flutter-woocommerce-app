@@ -26,19 +26,17 @@ ThemeData lightTheme(ColorStyles lightColors) {
   }
 
   TextTheme lightTheme = getAppTextTheme(
-      appFont, defaultTextTheme.merge(_lightTextTheme(lightColors)));
+      appFont, defaultTextTheme.merge(_textTheme(lightColors)));
 
   return ThemeData(
     primaryColor: lightColors.primaryContent,
-    backgroundColor: lightColors.background,
-    colorScheme: ColorScheme.light(),
     primaryColorLight: lightColors.primaryAccent,
     focusColor: lightColors.primaryContent,
     scaffoldBackgroundColor: lightColors.background,
     hintColor: lightColors.primaryAccent,
     appBarTheme: AppBarTheme(
       backgroundColor: lightColors.appBarBackground,
-      titleTextStyle: lightTheme.headline6!
+      titleTextStyle: lightTheme.titleLarge!
           .copyWith(color: lightColors.appBarPrimaryContent),
       iconTheme: IconThemeData(color: lightColors.appBarPrimaryContent),
       elevation: 1.0,
@@ -68,7 +66,7 @@ ThemeData lightTheme(ColorStyles lightColors) {
           TextStyle(color: lightColors.bottomTabBarLabelSelected),
       selectedItemColor: lightColors.bottomTabBarLabelSelected,
     ),
-    textTheme: lightTheme,
+    textTheme: lightTheme, colorScheme: ColorScheme.light().copyWith(background: lightColors.background),
   );
 }
 
@@ -78,47 +76,11 @@ ThemeData lightTheme(ColorStyles lightColors) {
 |--------------------------------------------------------------------------
 */
 
-TextTheme _lightTextTheme(BaseColorStyles lightColors) {
-  Color lightPrimaryContent = lightColors.primaryContent;
-  return TextTheme(
-    headline6: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    headline5: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    headline4: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    headline3: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    headline2: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    headline1: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    subtitle2: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    subtitle1: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    overline: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    button: TextStyle(
-      color: lightPrimaryContent.withOpacity(0.8),
-    ),
-    bodyText2: TextStyle(
-      color: lightPrimaryContent.withOpacity(0.8),
-    ),
-    bodyText1: TextStyle(
-      color: lightPrimaryContent,
-    ),
-    caption: TextStyle(
-      color: lightPrimaryContent,
-    ),
+TextTheme _textTheme(ColorStyles colors) {
+  Color primaryContent = colors.primaryContent;
+  TextTheme textTheme = TextTheme().apply(displayColor: primaryContent);
+  return textTheme.copyWith(
+      labelLarge: TextStyle(color: primaryContent.withOpacity(0.8)),
+      bodyMedium: TextStyle(color: primaryContent.withOpacity(0.8)),
   );
 }

@@ -64,7 +64,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
                       child: Text(
                         trans("Login"),
                         textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                             ),
@@ -120,7 +120,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
                   Padding(
                     child: Text(
                       trans("Create an account"),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     padding: EdgeInsets.only(left: 8),
                   )

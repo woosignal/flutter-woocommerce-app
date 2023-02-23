@@ -120,7 +120,7 @@ class CustomerAddressInput extends StatelessWidget {
                         height: 23,
                         child: Text(
                           trans("State"),
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           textAlign: TextAlign.left,
                         ),
                         width: double.infinity,
@@ -144,7 +144,7 @@ class CustomerAddressInput extends StatelessWidget {
                       height: 23,
                       child: Text(
                         trans("Country"),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                         textAlign: TextAlign.left,
                       ),
                       width: double.infinity,

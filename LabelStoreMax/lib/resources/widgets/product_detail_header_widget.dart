@@ -33,7 +33,7 @@ class ProductDetailHeaderWidget extends StatelessWidget {
             child: Text(
               product!.name!,
               style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 20),
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20),
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -47,7 +47,7 @@ class ProductDetailHeaderWidget extends StatelessWidget {
               children: [
                 Text(
                   formatStringCurrency(total: product!.price),
-                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         fontSize: 20,
                       ),
                   textAlign: TextAlign.right,

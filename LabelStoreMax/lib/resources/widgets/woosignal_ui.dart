@@ -151,7 +151,7 @@ class CheckoutRowLine extends StatelessWidget {
                     heading,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2!
+                        .bodyMedium!
                         .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   padding: EdgeInsets.only(bottom: 8),
@@ -171,7 +171,7 @@ class CheckoutRowLine extends StatelessWidget {
                               child: Container(
                                 child: Text(
                                   leadTitle!,
-                                  style: Theme.of(context).textTheme.subtitle1,
+                                  style: Theme.of(context).textTheme.titleMedium,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: false,
@@ -233,7 +233,7 @@ class TextEditingRow extends StatelessWidget {
                   heading!,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
+                      .bodyLarge!
                       .copyWith(color: ThemeColor.get(context).primaryContent),
                 ),
                 padding: EdgeInsets.only(bottom: 2),
@@ -242,7 +242,7 @@ class TextEditingRow extends StatelessWidget {
             Flexible(
               child: TextField(
                 controller: controller,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
                 keyboardType: keyboardType ?? TextInputType.text,
                 autocorrect: false,
                 autofocus: shouldAutoFocus ?? false,
@@ -270,14 +270,14 @@ class CheckoutMetaLine extends StatelessWidget {
           Flexible(
             child: Container(
               child: AutoSizeText(title!,
-                  style: Theme.of(context).textTheme.bodyText2),
+                  style: Theme.of(context).textTheme.bodyMedium),
             ),
             flex: 3,
           ),
           Flexible(
             child: Container(
               child:
-                  Text(amount!, style: Theme.of(context).textTheme.bodyText1),
+                  Text(amount!, style: Theme.of(context).textTheme.bodyLarge),
             ),
             flex: 3,
           )
@@ -354,14 +354,14 @@ class ProductItemContainer extends StatelessWidget {
                               textAlign: TextAlign.center,
                               text: TextSpan(
                                 text: '',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 children: <TextSpan>[
                                   TextSpan(
                                     text:
                                         "${workoutSaleDiscount(salePrice: product!.salePrice, priceBefore: product!.regularPrice)}% ${trans("off")}",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .copyWith(
                                           color: Colors.black87,
                                           fontSize: 11,
@@ -382,7 +382,7 @@ class ProductItemContainer extends StatelessWidget {
                   product!.name!,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontSize: 15),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -398,7 +398,7 @@ class ProductItemContainer extends StatelessWidget {
                         "${formatStringCurrency(total: product!.price)} ",
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2!
+                            .bodyMedium!
                             .copyWith(fontWeight: FontWeight.w600),
                         textAlign: TextAlign.left,
                       ),
@@ -409,7 +409,7 @@ class ProductItemContainer extends StatelessWidget {
                               text: '${trans("Was")}: ',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodyLarge!
                                   .copyWith(
                                     fontSize: 11,
                                   ),
@@ -420,7 +420,7 @@ class ProductItemContainer extends StatelessWidget {
                               ),
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodyLarge!
                                   .copyWith(
                                     decoration: TextDecoration.lineThrough,
                                     color: Colors.grey,
@@ -471,7 +471,7 @@ wsModalBottom(BuildContext context,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Text(
                     title!,
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -641,14 +641,14 @@ class CartItemContainer extends StatelessWidget {
                           cartLineItem.name!,
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle1!
+                              .titleMedium!
                               .copyWith(fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                         ),
                         (cartLineItem.variationOptions != null
                             ? Text(cartLineItem.variationOptions!,
-                                style: Theme.of(context).textTheme.bodyText1)
+                                style: Theme.of(context).textTheme.bodyLarge)
                             : Container()),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -659,8 +659,8 @@ class CartItemContainer extends StatelessWidget {
                                   ? trans("Out of stock")
                                   : trans("In Stock")),
                               style: (cartLineItem.stockStatus == "outofstock"
-                                  ? Theme.of(context).textTheme.caption
-                                  : Theme.of(context).textTheme.bodyText2),
+                                  ? Theme.of(context).textTheme.bodySmall
+                                  : Theme.of(context).textTheme.bodyMedium),
                             ),
                             Text(
                               formatDoubleCurrency(
@@ -668,7 +668,7 @@ class CartItemContainer extends StatelessWidget {
                               ),
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1!
+                                  .titleMedium!
                                   .copyWith(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             )
@@ -696,7 +696,7 @@ class CartItemContainer extends StatelessWidget {
                       highlightColor: Colors.transparent,
                     ),
                     Text(cartLineItem.quantity.toString(),
-                        style: Theme.of(context).textTheme.headline6),
+                        style: Theme.of(context).textTheme.titleLarge),
                     IconButton(
                       icon: Icon(Icons.add_circle_outline),
                       onPressed: actionIncrementQuantity,

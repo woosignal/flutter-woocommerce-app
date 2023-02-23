@@ -110,6 +110,7 @@ class AppProvider implements NyProvider {
 
     nylo.appThemes = appThemes;
     nylo.appLoader = loader;
+    nylo.appLogo = logo;
 
     String initialRoute = AppHelper.instance.appConfig!.appStatus != null
         ? '/home'

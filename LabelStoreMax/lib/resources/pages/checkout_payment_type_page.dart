@@ -82,7 +82,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                   child: Text(
                                     trans("No payment methods are available"),
                                     style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 )
                               : ListView.separated(
@@ -112,7 +112,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                       title: Text(paymentType.desc,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle1),
+                                              .titleMedium),
                                       selected: true,
                                       trailing: (CheckoutSession
                                                   .getInstance.paymentType ==

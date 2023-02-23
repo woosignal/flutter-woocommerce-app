@@ -52,7 +52,7 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   trans("Oops, something went wrong"),
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
               ),

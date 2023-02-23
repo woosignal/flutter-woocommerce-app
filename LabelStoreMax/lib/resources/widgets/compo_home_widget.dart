@@ -50,7 +50,8 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
             perPage: 10,
             category: category.id.toString(),
             status: "publish",
-            stockStatus: "instock"),
+            stockStatus: "instock",
+        ),
       ));
       if (products.isNotEmpty) {
         categoryAndProducts.addAll({category: products});
@@ -140,7 +141,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                                       catProds.key.name!,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .subtitle1!
+                                          .titleMedium!
                                           .copyWith(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 22),

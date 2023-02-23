@@ -165,7 +165,7 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
                 padding: const EdgeInsets.only(top: 15),
                 child: Text(
                   "${trans("One moment")}...",
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               )
             ],

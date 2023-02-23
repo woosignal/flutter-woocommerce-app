@@ -1,4 +1,11 @@
-## [6.4.0] - 2023-01-06
+## [6.4.1] - 2023-02-23
+
+* Upgrade to Nylo v4.1.3
+* Small refactor to TextStyle
+* Fix the ThemeColor.get helper method to support ColorStyles.
+* Pubspec.yaml dependency updates
+
+* ## [6.4.0] - 2023-01-06
 
 * Upgrade to Nylo v4.0.0
 * Update copyright

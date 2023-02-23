@@ -65,7 +65,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                   Padding(
                     child: Text(
                       trans("Menu"),
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
                   ),
@@ -75,7 +75,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                         trans("Profile"),
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2!
+                            .bodyMedium!
                             .copyWith(fontSize: 16),
                       ),
                       leading: Icon(Icons.account_circle),
@@ -87,7 +87,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                         trans("Wishlist"),
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2!
+                            .bodyMedium!
                             .copyWith(fontSize: 16),
                       ),
                       leading: Icon(Icons.favorite_border),
@@ -98,7 +98,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                       trans("Cart"),
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2!
+                          .bodyMedium!
                           .copyWith(fontSize: 16),
                     ),
                     leading: Icon(Icons.shopping_cart),
@@ -111,7 +111,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
               Padding(
                 child: Text(
                   trans("About Us"),
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
               ),
@@ -122,7 +122,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                   trans("Terms and conditions"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontSize: 16),
                 ),
                 leading: Icon(Icons.menu_book_rounded),
@@ -136,7 +136,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                   trans("Privacy policy"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontSize: 16),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -147,7 +147,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
               title: Text(trans((isDark ? "Light Mode" : "Dark Mode")),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontSize: 16)),
               leading: Icon(Icons.brightness_4_rounded),
               onTap: () {
@@ -163,7 +163,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
               Padding(
                 child: Text(
                   trans("Social"),
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
               ),
@@ -173,7 +173,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                       title: Text(menuLink.label,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2!
+                              .bodyMedium!
                               .copyWith(fontSize: 16)),
                       leading: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),

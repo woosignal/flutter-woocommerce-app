@@ -94,7 +94,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
           return ListTile(
             title: Text(
               _product!.attributes[attributeIndex].options![index],
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             trailing: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(attributeIndex) &&
@@ -134,11 +134,11 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(_product!.attributes[index].name!,
-                style: Theme.of(context).textTheme.subtitle1),
+                style: Theme.of(context).textTheme.titleMedium),
             subtitle: (_tmpAttributeObj.isNotEmpty &&
                     _tmpAttributeObj.containsKey(index))
                 ? Text(_tmpAttributeObj[index]["value"],
-                    style: Theme.of(context).textTheme.bodyText1)
+                    style: Theme.of(context).textTheme.bodyLarge)
                 : Text(
                     "${trans("Select a")} ${_product!.attributes[index].name}"),
             trailing: (_tmpAttributeObj.isNotEmpty &&
@@ -163,7 +163,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                           productVariation == null)
                       ? trans("This variation is unavailable")
                       : trans("Choose your options"))),
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
               (productVariation != null
@@ -171,7 +171,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                       ? trans("Out of stock")
                       : ""
                   : ""),
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             PrimaryButton(
                 title: trans("Add to cart"),

@@ -41,7 +41,7 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
               Text(
                 trans("Description"),
                 style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
+                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
               if (product!.shortDescription!.isNotEmpty &&
@@ -51,7 +51,7 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
                     trans("Full description"),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2!
+                        .bodyMedium!
                         .copyWith(fontSize: 14),
                     textAlign: TextAlign.right,
                     overflow: TextOverflow.ellipsis,
@@ -72,7 +72,7 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
               renderMode: RenderMode.column, onTapUrl: (String url) async {
             await launchUrl(Uri.parse(url));
             return true;
-          }, textStyle: Theme.of(context).textTheme.bodyText2),
+          }, textStyle: Theme.of(context).textTheme.bodyMedium),
         ),
       ],
     );

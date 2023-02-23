@@ -29,7 +29,7 @@ class TopNavWidget extends StatelessWidget {
                 "${(trans("Shop").capitalize())} / ",
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1!
+                    .titleMedium!
                     .copyWith(fontWeight: FontWeight.bold),
                 maxLines: 1,
               ),
@@ -37,7 +37,7 @@ class TopNavWidget extends StatelessWidget {
                 trans("Newest"),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2!
+                    .bodyMedium!
                     .copyWith(fontWeight: FontWeight.bold),
                 maxLines: 1,
               ),
@@ -49,7 +49,7 @@ class TopNavWidget extends StatelessWidget {
               height: 60,
               child: AutoSizeText(
                 trans("Browse categories"),
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 maxLines: 1,
                 textAlign: TextAlign.right,
               ),

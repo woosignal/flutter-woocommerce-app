@@ -62,7 +62,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(trans("Browse"), style: Theme.of(context).textTheme.subtitle1),
+            Text(trans("Browse"), style: Theme.of(context).textTheme.titleMedium),
             Text(parseHtmlString(productCategory!.name))
           ],
         ),

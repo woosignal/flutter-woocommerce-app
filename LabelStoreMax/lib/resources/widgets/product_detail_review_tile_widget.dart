@@ -73,7 +73,7 @@ class _ProductDetailReviewTileWidgetState
               child: Text(trans("More"),
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(fontWeight: FontWeight.bold)),
               onTap: () => setState(() {
                 _maxLines = null;
