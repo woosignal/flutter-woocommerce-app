@@ -228,5 +228,6 @@
   "Yes, delete my account": "Oui, supprimer mon compte",
   "Account deleted": "Compte supprimé",
   "Shipping is not supported for your location, sorry": "L'expédition n'est pas prise en charge pour votre emplacement, désolé",
-  "Order Summary": "Récapitulatif de la commande"
+  "Order Summary": "Récapitulatif de la commande",
+  "By completing this order, I agree to all": "En remplissant cette commande, j'accepte toutes"
 }

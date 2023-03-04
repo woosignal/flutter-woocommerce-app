@@ -228,5 +228,6 @@
   "Yes, delete my account": "Evet, hesabımı sil",
   "Account deleted": "Hesap silindi",
   "Shipping is not supported for your location, sorry": "Bulunduğunuz yer için gönderim desteklenmiyor, üzgünüm",
-  "Order Summary": "Sipariş özeti"
+  "Order Summary": "Sipariş özeti",
+  "By completing this order, I agree to all": "Bu siparişi tamamlayarak, tümünü kabul ediyorum"
 }

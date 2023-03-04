@@ -1,3 +1,7 @@
+## [6.5.1] - 2023-03-04
+
+* New translation added.
+
 ## [6.5.0] - 2023-03-04
 
 * When making payments via Stripe, it will now save the card for later.

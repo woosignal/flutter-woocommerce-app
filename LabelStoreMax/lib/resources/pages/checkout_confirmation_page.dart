@@ -287,14 +287,14 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                                 textAlign: TextAlign.left,
                                 text: TextSpan(
                                   text:
-                                  'By completing this order, I agree to all ',
+                                  '${trans('By completing this order, I agree to all')} ',
                                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                     fontSize: 12,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
                                       recognizer: TapGestureRecognizer()..onTap = _openTermsLink,
-                                      text: "terms & conditions",
+                                      text: trans("Terms and conditions").toLowerCase(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!

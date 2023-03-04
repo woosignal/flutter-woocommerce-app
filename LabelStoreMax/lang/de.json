@@ -228,5 +228,6 @@
   "Yes, delete my account": "Ja, lösche mein Konto",
   "Account deleted": "Konto gelöscht",
   "Shipping is not supported for your location, sorry": "Der Versand wird für Ihren Standort nicht unterstützt, tut mir leid",
-  "Order Summary": "Bestellübersicht"
+  "Order Summary": "Bestellübersicht",
+  "By completing this order, I agree to all": "Mit Abschluss dieser Bestellung stimme ich allem zu"
 }

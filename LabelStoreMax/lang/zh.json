@@ -228,5 +228,6 @@
   "Yes, delete my account": "是的，删除我的帐户",
   "Account deleted": "帐号已删除",
   "Shipping is not supported for your location, sorry": "您所在的位置不支持送货，抱歉",
-  "Order Summary": "订单摘要"
+  "Order Summary": "订单摘要",
+  "By completing this order, I agree to all": "通过完成此订单，我同意所有"
 }
