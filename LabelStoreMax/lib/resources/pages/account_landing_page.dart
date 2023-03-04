@@ -64,7 +64,10 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
                       child: Text(
                         trans("Login"),
                         textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                             ),

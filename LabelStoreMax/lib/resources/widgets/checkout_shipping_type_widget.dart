@@ -44,7 +44,7 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
           ? checkoutSession.shippingType!.getTitle()
           : trans("Select a shipping option"),
       action: _actionSelectShipping,
-      showBorderBottom: false,
+      showBorderBottom: true,
     );
   }
 

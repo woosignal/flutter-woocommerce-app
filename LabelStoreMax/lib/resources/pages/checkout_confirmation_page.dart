@@ -9,12 +9,14 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
+import 'package:flutter_app/bootstrap/extensions.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
@@ -38,23 +40,26 @@ class CheckoutConfirmationPage extends StatefulWidget {
       CheckoutConfirmationPageState();
 }
 
-class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
+class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
   CheckoutConfirmationPageState();
 
   bool _showFullLoader = true, _isProcessingPayment = false;
-
   final List<TaxRate> _taxRates = [];
   TaxRate? _taxRate;
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
-  void initState() {
-    super.initState();
+  init() async {
+    super.init();
     CheckoutSession.getInstance.coupon = null;
-    List<PaymentType?> paymentTypes = getPaymentTypes();
+    List<PaymentType?> paymentTypes = await getPaymentTypes();
+
     if (CheckoutSession.getInstance.paymentType == null &&
         paymentTypes.isNotEmpty) {
-      CheckoutSession.getInstance.paymentType = paymentTypes.first;
+      CheckoutSession.getInstance.paymentType = paymentTypes.firstWhere(
+          (paymentType) => paymentType?.id == 20,
+          orElse: () => paymentTypes.first);
+      print(CheckoutSession.getInstance.paymentType?.name);
     }
     _getTaxes();
   }
@@ -176,8 +181,15 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(trans("Checkout")),
-        centerTitle: true,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(trans("Checkout")),
+            Text(_wooSignalApp?.appName ?? getEnv('APP_NAME')).small(context),
+          ],
+        ),
+        centerTitle: false,
         leading: Container(
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -191,94 +203,153 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       ),
       resizeToAvoidBottomInset: false,
       body: SafeAreaWidget(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    CheckoutStoreHeadingWidget(),
+                    CheckoutUserDetailsWidget(
+                      context: context,
+                      checkoutSession: checkoutSession,
+                      resetState: () {
+                        setState(() {
+                          _showFullLoader = true;
+                        });
+                        _getTaxes();
+                      },
+                    ),
+                    CheckoutPaymentTypeWidget(
+                      context: context,
+                      checkoutSession: checkoutSession,
+                      resetState: () => setState(() {}),
+                    ),
+                    CheckoutShippingTypeWidget(
+                      context: context,
+                      checkoutSession: checkoutSession,
+                      resetState: () => setState(() {}),
+                      wooSignalApp: _wooSignalApp,
+                    ),
+                    if (_wooSignalApp!.couponEnabled == true)
+                      CheckoutSelectCouponWidget(
+                        context: context,
+                        checkoutSession: checkoutSession,
+                        resetState: () => setState(() {}),
+                      ),
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: wsBoxShadow(),
+                        color: Colors.white,
+                        // borderRadius: BorderRadius.circular(16)
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      margin: EdgeInsets.only(top: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Row(
+                              children: [
+                                Icon(Icons.receipt),
+                                Padding(padding: EdgeInsets.only(right: 8),),
+                                Text(trans("Order Summary")).fontWeightBold()
+                              ],
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(padding: EdgeInsets.only(top: 16)),
+                              CheckoutSubtotal(
+                                title: trans("Subtotal"),
+                              ),
+                              CheckoutCouponAmountWidget(
+                                  checkoutSession: checkoutSession),
+                              if (_wooSignalApp!.disableShipping != 1)
+                                CheckoutMetaLine(
+                                    title: trans("Shipping fee"),
+                                    amount: CheckoutSession
+                                                .getInstance.shippingType ==
+                                            null
+                                        ? trans("Select shipping")
+                                        : CheckoutSession
+                                            .getInstance.shippingType!
+                                            .getTotal(withFormatting: true)),
+                              if (_taxRate != null)
+                                CheckoutTaxTotal(taxRate: _taxRate),
+                              Padding(padding: EdgeInsets.only(top: 8, left: 8, right: 8)),
+                              Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: RichText(
+                                textAlign: TextAlign.left,
+                                text: TextSpan(
+                                  text:
+                                  'By completing this order, I agree to all ',
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()..onTap = _openTermsLink,
+                                      text: "terms & conditions",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                        color: ThemeColor.get(context)
+                                            .primaryAccent,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: ".",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                        color: Colors.black87,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
                 decoration: BoxDecoration(
-                  color: ThemeColor.get(context).backgroundContainer,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: (Theme.of(context).brightness == Brightness.light)
-                      ? wsBoxShadow()
-                      : null,
+                  borderRadius: BorderRadius.circular(16)
                 ),
-                margin: EdgeInsets.only(top: 5, bottom: 5),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      CheckoutStoreHeadingWidget(),
-                      CheckoutUserDetailsWidget(
-                        context: context,
-                        checkoutSession: checkoutSession,
-                        resetState: () {
-                          setState(() {
-                            _showFullLoader = true;
-                          });
-                          _getTaxes();
-                        },
-                      ),
-                      CheckoutPaymentTypeWidget(
-                        context: context,
-                        checkoutSession: checkoutSession,
-                        resetState: () => setState(() {}),
-                      ),
-                      CheckoutShippingTypeWidget(
-                        context: context,
-                        checkoutSession: checkoutSession,
-                        resetState: () => setState(() {}),
-                        wooSignalApp: _wooSignalApp,
-                      ),
-                    ]),
-              ),
-            ),
-            if (_wooSignalApp!.couponEnabled == true)
-              CheckoutSelectCouponWidget(
-                context: context,
-                checkoutSession: checkoutSession,
-                resetState: () => setState(() {}),
-              ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Divider(
-                  color: Colors.black12,
-                  thickness: 1,
+                  children: [
+                    CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
+                    Padding(padding: EdgeInsets.only(bottom: 8)),
+                    PrimaryButton(
+                      title: _isProcessingPayment
+                          ? "${trans("PROCESSING")}..."
+                          : trans("CHECKOUT"),
+                      action: _isProcessingPayment ? null : _handleCheckout,
+                    ),
+                  ],
                 ),
-                CheckoutSubtotal(
-                  title: trans("Subtotal"),
-                ),
-                CheckoutCouponAmountWidget(checkoutSession: checkoutSession),
-                if (_wooSignalApp!.disableShipping != 1)
-                  CheckoutMetaLine(
-                      title: trans("Shipping fee"),
-                      amount: CheckoutSession.getInstance.shippingType == null
-                          ? trans("Select shipping")
-                          : CheckoutSession.getInstance.shippingType!
-                              .getTotal(withFormatting: true)),
-                if (_taxRate != null) CheckoutTaxTotal(taxRate: _taxRate),
-                CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
-                Divider(
-                  color: Colors.black12,
-                  thickness: 1,
-                ),
-              ],
-            ),
-            PrimaryButton(
-              title: _isProcessingPayment
-                  ? "${trans("PROCESSING")}..."
-                  : trans("CHECKOUT"),
-              action: _isProcessingPayment ? null : _handleCheckout,
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+
+  _openTermsLink() => openBrowserTab(url: AppHelper.instance.appConfig?.appTermsLink ?? "");
 
   _handleCheckout() async {
     CheckoutSession checkoutSession = CheckoutSession.getInstance;
@@ -368,8 +439,12 @@ class CheckoutConfirmationPageState extends State<CheckoutConfirmationPage> {
       _isProcessingPayment = true;
     });
 
-    await checkoutSession.paymentType!
-        .pay(context, state: this, taxRate: _taxRate);
+    try {
+      await checkoutSession.paymentType!
+          .pay(context, state: this, taxRate: _taxRate);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
 
     setState(() {
       _isProcessingPayment = false;

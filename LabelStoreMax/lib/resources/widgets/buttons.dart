@@ -120,7 +120,8 @@ class WooSignalButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
-          ), backgroundColor: bgColor,
+          ),
+          backgroundColor: bgColor,
           padding: EdgeInsets.all(8),
           elevation: 0,
           shadowColor: Colors.transparent,

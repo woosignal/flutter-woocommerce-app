@@ -40,8 +40,10 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 trans("Description"),
-                style:
-                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
               if (product!.shortDescription!.isNotEmpty &&

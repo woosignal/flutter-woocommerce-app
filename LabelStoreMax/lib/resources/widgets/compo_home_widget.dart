@@ -47,10 +47,10 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
     for (var category in categories) {
       List<Product> products = await (appWooSignal(
         (api) => api.getProducts(
-            perPage: 10,
-            category: category.id.toString(),
-            status: "publish",
-            stockStatus: "instock",
+          perPage: 10,
+          category: category.id.toString(),
+          status: "publish",
+          stockStatus: "instock",
         ),
       ));
       if (products.isNotEmpty) {
@@ -138,7 +138,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
                                 children: [
                                   Expanded(
                                     child: AutoSizeText(
-                                      catProds.key.name!,
+                                      parseHtmlString(catProds.key.name!),
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium!

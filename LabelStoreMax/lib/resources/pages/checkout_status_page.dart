@@ -125,46 +125,51 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                     itemBuilder: (BuildContext context, int index) {
                       ws_order.LineItems lineItem = _order!.lineItems![index];
                       return Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Text(
-                                      lineItem.name!,
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                      softWrap: false,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      "x${lineItem.quantity.toString()}",
-                                      style:
-                                          Theme.of(context).textTheme.bodyMedium,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                formatStringCurrency(
-                                  total: lineItem.total.toString(),
-                                ),
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              )
-                            ],
-                          ),
-                          padding: EdgeInsets.all(16),
-                          margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: wsBoxShadow(),
                           color:
                               (Theme.of(context).brightness == Brightness.light)
                                   ? Colors.white
-                                  : null);
+                                  : null,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Text(
+                                    lineItem.name!,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                    softWrap: false,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    "x${lineItem.quantity.toString()}",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              formatStringCurrency(
+                                total: lineItem.total.toString(),
+                              ),
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            )
+                          ],
+                        ),
+                        padding: EdgeInsets.all(16),
+                        margin: EdgeInsets.all(8),
+                      );
                     }),
               ),
               Align(

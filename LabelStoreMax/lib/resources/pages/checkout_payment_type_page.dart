@@ -25,28 +25,35 @@ class CheckoutPaymentTypePage extends StatefulWidget {
       _CheckoutPaymentTypePageState();
 }
 
-class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
+class _CheckoutPaymentTypePageState extends NyState<CheckoutPaymentTypePage> {
   _CheckoutPaymentTypePageState();
 
-  @override
-  void initState() {
-    super.initState();
+  List<PaymentType?> _paymentTypes = [];
 
+  @override
+  init() async {
+    super.init();
+
+    _paymentTypes = await getPaymentTypes();
+
+    if (_paymentTypes.isEmpty &&
+        getEnv('APP_DEBUG', defaultValue: false) == true) {
+      NyLogger.info(
+          'You have no payment methods set. Visit the WooSignal dashboard (https://woosignal.com/dashboard) to set a payment method.');
+    }
+
+    // print(CheckoutSession.getInstance.paymentType?.name);
     if (CheckoutSession.getInstance.paymentType == null) {
-      if (getPaymentTypes().isNotEmpty) {
-        CheckoutSession.getInstance.paymentType = getPaymentTypes().first;
+      if (_paymentTypes.isNotEmpty) {
+        CheckoutSession.getInstance.paymentType = _paymentTypes.firstWhere(
+            (paymentType) => paymentType?.id == 20,
+            orElse: () => _paymentTypes.first);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentType?> paymentTypes = getPaymentTypes();
-    if (paymentTypes.isEmpty &&
-        getEnv('APP_DEBUG', defaultValue: false) == true) {
-      NyLogger.info(
-          'You have no payment methods set. Visit the WooSignal dashboard (https://woosignal.com/dashboard) to set a payment method.');
-    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -76,7 +83,7 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Expanded(
-                          child: paymentTypes.isEmpty
+                          child: _paymentTypes.isEmpty
                               ? Container(
                                   padding: EdgeInsets.only(top: 20),
                                   child: Text(
@@ -86,11 +93,12 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                   ),
                                 )
                               : ListView.separated(
-                                  itemCount: paymentTypes.length,
+                                  itemCount: _paymentTypes.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     PaymentType paymentType =
-                                        paymentTypes[index]!;
+                                        _paymentTypes[index]!;
+
                                     return ListTile(
                                       contentPadding: EdgeInsets.only(
                                         top: 10,
@@ -114,9 +122,9 @@ class _CheckoutPaymentTypePageState extends State<CheckoutPaymentTypePage> {
                                               .textTheme
                                               .titleMedium),
                                       selected: true,
-                                      trailing: (CheckoutSession
-                                                  .getInstance.paymentType ==
-                                              paymentType
+                                      trailing: (CheckoutSession.getInstance
+                                                  .paymentType?.id ==
+                                              paymentType.id
                                           ? Icon(Icons.check)
                                           : null),
                                       onTap: () {

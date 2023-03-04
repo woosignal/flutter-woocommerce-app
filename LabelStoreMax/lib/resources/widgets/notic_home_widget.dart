@@ -146,7 +146,9 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                               Flexible(
                                 child: Text(
                                   trans("Our selection of new items"),
-                                  style: Theme.of(context).textTheme.headlineMedium,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),

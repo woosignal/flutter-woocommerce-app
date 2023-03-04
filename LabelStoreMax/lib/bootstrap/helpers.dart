@@ -54,20 +54,24 @@ Future appWooSignal(Function(WooSignal) api) async {
 /// helper to find correct color from the [context].
 class ThemeColor {
   static ColorStyles get(BuildContext context, {String? themeId}) {
-
     Nylo nylo = Backpack.instance.read('nylo');
-    List<BaseThemeConfig<ColorStyles>> appThemes = nylo.appThemes as List<BaseThemeConfig<ColorStyles>>;
+    List<BaseThemeConfig<ColorStyles>> appThemes =
+        nylo.appThemes as List<BaseThemeConfig<ColorStyles>>;
 
     if (themeId == null) {
-      BaseThemeConfig<ColorStyles> themeFound = appThemes
-          .firstWhere(
-              (theme) => theme.id == getEnv(Theme.of(context).brightness == Brightness.light ? 'LIGHT_THEME_ID' : 'DARK_THEME_ID'),
-          orElse: () => appThemes.first
-      );
+      BaseThemeConfig<ColorStyles> themeFound = appThemes.firstWhere(
+          (theme) =>
+              theme.id ==
+              getEnv(Theme.of(context).brightness == Brightness.light
+                  ? 'LIGHT_THEME_ID'
+                  : 'DARK_THEME_ID'),
+          orElse: () => appThemes.first);
       return themeFound.colors;
     }
 
-    BaseThemeConfig<ColorStyles> baseThemeConfig = appThemes.firstWhere((theme) => theme.id == themeId, orElse: () => appThemes.first);
+    BaseThemeConfig<ColorStyles> baseThemeConfig = appThemes.firstWhere(
+        (theme) => theme.id == themeId,
+        orElse: () => appThemes.first);
     return baseThemeConfig.colors;
   }
 }
@@ -80,7 +84,7 @@ extension ColorsHelper on TextStyle {
   }
 }
 
-List<PaymentType?> getPaymentTypes() {
+Future<List<PaymentType?>> getPaymentTypes() async {
   List<PaymentType?> paymentTypes = [];
   for (var appPaymentGateway in appPaymentGateways) {
     if (paymentTypes.firstWhere(
@@ -501,7 +505,8 @@ class UserAuth {
 }
 
 Future<List<DefaultShipping>> getDefaultShipping() async {
-  String data = await rootBundle.loadString('public/assets/json/default_shipping.json');
+  String data =
+      await rootBundle.loadString('public/assets/json/default_shipping.json');
   dynamic dataJson = json.decode(data);
   List<DefaultShipping> shipping = [];
 
@@ -520,30 +525,40 @@ Future<List<DefaultShipping>> getDefaultShipping() async {
 }
 
 Future<DefaultShipping?> findCountryMetaForShipping(String countryCode) async {
-  List<DefaultShipping> defaultShipping =  await getDefaultShipping();
-  List<DefaultShipping> shippingByCountryCode = defaultShipping.where((element) => element.code == countryCode).toList();
+  List<DefaultShipping> defaultShipping = await getDefaultShipping();
+  List<DefaultShipping> shippingByCountryCode =
+      defaultShipping.where((element) => element.code == countryCode).toList();
   if (shippingByCountryCode.isNotEmpty) {
     return shippingByCountryCode.first;
   }
   return null;
 }
 
-DefaultShippingState? findDefaultShippingStateByCode(DefaultShipping defaultShipping, String code) {
-  List<DefaultShippingState> defaultShippingStates = defaultShipping.states.where((state) => state.code == code).toList();
+DefaultShippingState? findDefaultShippingStateByCode(
+    DefaultShipping defaultShipping, String code) {
+  List<DefaultShippingState> defaultShippingStates =
+      defaultShipping.states.where((state) => state.code == code).toList();
   if (defaultShippingStates.isEmpty) {
     return null;
   }
   DefaultShippingState defaultShippingState = defaultShippingStates.first;
-  return DefaultShippingState(code: defaultShippingState.code, name: defaultShippingState.name);
+  return DefaultShippingState(
+      code: defaultShippingState.code, name: defaultShippingState.name);
 }
 
 bool hasKeyInMeta(WPUserInfoResponse wpUserInfoResponse, String key) {
-  return (wpUserInfoResponse.data!.metaData ?? []).where((meta) => meta.key == key).toList().isNotEmpty;
+  return (wpUserInfoResponse.data!.metaData ?? [])
+      .where((meta) => meta.key == key)
+      .toList()
+      .isNotEmpty;
 }
 
 String fetchValueInMeta(WPUserInfoResponse wpUserInfoResponse, String key) {
   String value = "";
-  List<dynamic>? metaDataValue = (wpUserInfoResponse.data!.metaData ?? []).where((meta) => meta.key == key).first.value;
+  List<dynamic>? metaDataValue = (wpUserInfoResponse.data!.metaData ?? [])
+      .where((meta) => meta.key == key)
+      .first
+      .value;
   if (metaDataValue != null && metaDataValue.isNotEmpty) {
     return metaDataValue.first ?? "";
   }
@@ -592,7 +607,8 @@ removeWishlistProduct({required Product? product}) async {
   await NyStorage.store(SharedKey.wishlistProducts, json);
 }
 
-Future<BillingDetails> billingDetailsFromWpUserInfoResponse(wpUserInfoResponse) async {
+Future<BillingDetails> billingDetailsFromWpUserInfoResponse(
+    wpUserInfoResponse) async {
   List<String> metaDataAddress = [
     'billing_first_name',
     'billing_last_name',

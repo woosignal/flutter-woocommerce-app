@@ -288,62 +288,48 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                 ),
                                           ),
                                           selected: true,
-                                          subtitle: FutureBuilder<String>(
+                                          subtitle: NyFutureBuilder<String>(
                                             future: _getShippingPrice(index),
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<String>
-                                                    snapshot) {
-                                              switch (
-                                                  snapshot.connectionState) {
-                                                case ConnectionState.none:
-                                                  return Text('');
-                                                case ConnectionState.active:
-                                                case ConnectionState.waiting:
-                                                  return Text('');
-                                                case ConnectionState.done:
-                                                  if (snapshot.hasError) {
-                                                    return Text('');
-                                                  } else {
-                                                    Map<String, dynamic>
-                                                        shippingOption =
-                                                        _wsShippingOptions[
-                                                            index];
-                                                    return RichText(
-                                                      text: TextSpan(
-                                                        text: '',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyMedium,
-                                                        children: <TextSpan>[
-                                                          (shippingOption[
-                                                                      "object"]
-                                                                  is FreeShipping
-                                                              ? TextSpan(
-                                                                  text: trans(
-                                                                      "Free postage"),
-                                                                )
-                                                              : TextSpan(
-                                                                  text:
-                                                                      "${trans("Price")}: ${formatStringCurrency(total: snapshot.data)}",
-                                                                )),
-                                                          if (shippingOption[
-                                                                  "min_amount"] !=
-                                                              null)
-                                                            TextSpan(
-                                                                text:
-                                                                    "\n${trans("Spend a minimum of")} ${formatStringCurrency(total: shippingOption["min_amount"])}",
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                        fontSize:
-                                                                            14))
-                                                        ],
-                                                      ),
-                                                    );
-                                                  }
-                                              }
+                                            child: (BuildContext context,
+                                                data) {
+                                              Map<String, dynamic>
+                                              shippingOption =
+                                              _wsShippingOptions[
+                                              index];
+                                              return RichText(
+                                                text: TextSpan(
+                                                  text: '',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium,
+                                                  children: <TextSpan>[
+                                                    (shippingOption[
+                                                    "object"]
+                                                    is FreeShipping
+                                                        ? TextSpan(
+                                                      text: trans(
+                                                          "Free postage"),
+                                                    )
+                                                        : TextSpan(
+                                                      text:
+                                                      "${trans("Price")}: ${formatStringCurrency(total: data)}",
+                                                    )),
+                                                    if (shippingOption[
+                                                    "min_amount"] !=
+                                                        null)
+                                                      TextSpan(
+                                                          text:
+                                                          "\n${trans("Spend a minimum of")} ${formatStringCurrency(total: shippingOption["min_amount"])}",
+                                                          style: Theme.of(
+                                                              context)
+                                                              .textTheme
+                                                              .bodyMedium!
+                                                              .copyWith(
+                                                              fontSize:
+                                                              14))
+                                                  ],
+                                                ),
+                                              );
                                             },
                                           ),
                                           trailing: (CheckoutSession.getInstance

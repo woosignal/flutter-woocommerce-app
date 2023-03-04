@@ -43,8 +43,10 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 trans("Related products"),
-                style:
-                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
             ],

@@ -16,7 +16,6 @@ import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/top_nav_widget.dart';
@@ -142,6 +141,7 @@ class CheckoutRowLine extends StatelessWidget {
   Widget build(BuildContext context) => Flexible(
         child: InkWell(
           child: Container(
+            height: 125,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +171,8 @@ class CheckoutRowLine extends StatelessWidget {
                               child: Container(
                                 child: Text(
                                   leadTitle!,
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: false,
@@ -227,18 +228,17 @@ class TextEditingRow extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Flexible(
-              child: Padding(
-                child: AutoSizeText(
-                  heading!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: ThemeColor.get(context).primaryContent),
+            if (heading != null)
+              Flexible(
+                child: Padding(
+                  child: AutoSizeText(
+                    heading!,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: ThemeColor.get(context).primaryContent),
+                  ),
+                  padding: EdgeInsets.only(bottom: 2),
                 ),
-                padding: EdgeInsets.only(bottom: 2),
               ),
-            ),
             Flexible(
               child: TextField(
                 controller: controller,
@@ -253,7 +253,7 @@ class TextEditingRow extends StatelessWidget {
           ],
         ),
         padding: EdgeInsets.all(2),
-        height: 78,
+        height: heading == null ? 50 : 78,
       );
 }
 
@@ -263,26 +263,29 @@ class CheckoutMetaLine extends StatelessWidget {
   final String? title, amount;
 
   @override
-  Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Flexible(
-            child: Container(
-              child: AutoSizeText(title!,
-                  style: Theme.of(context).textTheme.bodyMedium),
+  Widget build(BuildContext context) => Container(
+    padding: EdgeInsets.symmetric(horizontal: 8),
+    child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(
+              child: Container(
+                child: AutoSizeText(title!,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              flex: 3,
             ),
-            flex: 3,
-          ),
-          Flexible(
-            child: Container(
-              child:
-                  Text(amount!, style: Theme.of(context).textTheme.bodyLarge),
-            ),
-            flex: 3,
-          )
-        ],
-      );
+            Flexible(
+              child: Container(
+                child:
+                    Text(amount!, style: Theme.of(context).textTheme.bodyLarge),
+              ),
+              flex: 3,
+            )
+          ],
+        ),
+  );
 }
 
 List<BoxShadow> wsBoxShadow({double? blurRadius}) => [
@@ -507,25 +510,15 @@ class CheckoutTotal extends StatelessWidget {
   final TaxRate? taxRate;
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<String>(
-        future: CheckoutSession.getInstance
-            .total(withFormat: true, taxRate: taxRate),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return AppLoaderWidget();
-            default:
-              if (snapshot.hasError) {
-                return Text("");
-              } else {
-                return Padding(
-                  child: CheckoutMetaLine(title: title, amount: snapshot.data),
-                  padding: EdgeInsets.only(bottom: 0, top: 15),
-                );
-              }
-          }
-        },
-      );
+  Widget build(BuildContext context) => NyFutureBuilder<String>(
+    future: CheckoutSession.getInstance
+        .total(withFormat: true, taxRate: taxRate),
+    child: (BuildContext context, data) => Padding(
+      child: CheckoutMetaLine(title: title, amount: data),
+      padding: EdgeInsets.only(bottom: 0, top: 15),
+    ),
+    loading: SizedBox.shrink(),
+  );
 }
 
 class CheckoutTaxTotal extends StatelessWidget {
@@ -534,28 +527,17 @@ class CheckoutTaxTotal extends StatelessWidget {
   final TaxRate? taxRate;
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<String>(
+  Widget build(BuildContext context) => NyFutureBuilder<String>(
         future: Cart.getInstance.taxAmount(taxRate),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return AppLoaderWidget();
-            default:
-              if (snapshot.hasError) {
-                return Text("");
-              } else {
-                return (snapshot.data == "0"
-                    ? Container()
-                    : Padding(
-                        child: CheckoutMetaLine(
-                          title: trans("Tax"),
-                          amount: formatStringCurrency(total: snapshot.data),
-                        ),
-                        padding: EdgeInsets.only(bottom: 0, top: 0),
-                      ));
-              }
-          }
-        },
+        child: (BuildContext context, data) => (data == "0"
+            ? Container()
+            : Padding(
+          child: CheckoutMetaLine(
+            title: trans("Tax"),
+            amount: formatStringCurrency(total: data),
+          ),
+          padding: EdgeInsets.only(bottom: 0, top: 0),
+        )),
       );
 }
 
@@ -565,26 +547,16 @@ class CheckoutSubtotal extends StatelessWidget {
   final String? title;
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<String>(
+  Widget build(BuildContext context) => NyFutureBuilder<String>(
         future: Cart.getInstance.getSubtotal(withFormat: true),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return AppLoaderWidget();
-            default:
-              if (snapshot.hasError) {
-                return Text("");
-              } else {
-                return Padding(
-                  child: CheckoutMetaLine(
-                    title: title,
-                    amount: snapshot.data,
-                  ),
-                  padding: EdgeInsets.only(bottom: 0, top: 0),
-                );
-              }
-          }
-        },
+        child: (BuildContext context, data) => Padding(
+          child: CheckoutMetaLine(
+            title: title,
+            amount: data,
+          ),
+          padding: EdgeInsets.only(bottom: 0, top: 0),
+        ),
+    loading: SizedBox.shrink(),
       );
 }
 

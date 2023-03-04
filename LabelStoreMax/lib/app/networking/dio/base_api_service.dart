@@ -14,7 +14,6 @@ class BaseApiService extends NyBaseApiService {
   /// Default interceptors
   @override
   final interceptors = {
-    if (getEnv('APP_DEBUG') == true)
-      LoggingInterceptor: LoggingInterceptor()
+    if (getEnv('APP_DEBUG') == true) LoggingInterceptor: LoggingInterceptor()
   };
 }

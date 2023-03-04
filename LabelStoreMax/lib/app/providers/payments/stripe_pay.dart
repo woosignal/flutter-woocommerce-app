@@ -47,16 +47,17 @@ stripePay(context,
   }
 
   try {
-    dynamic rsp = {};
+    Map<String, dynamic>? rsp = {};
     //   // CHECKOUT HELPER
     await checkout(taxRate, (total, billingDetails, cart) async {
       String cartShortDesc = await cart.cartShortDesc();
 
-      rsp = await appWooSignal((api) => api.stripePaymentIntent(
+      rsp = await appWooSignal((api) => api.stripePaymentIntentV2(
             amount: total,
             email: billingDetails?.billingAddress?.emailAddress,
             desc: cartShortDesc,
             shipping: billingDetails?.getShippingAddressStripe(),
+            customerDetails: billingDetails?.createStripeDetails(),
           ));
     });
 
@@ -71,16 +72,36 @@ stripePay(context,
     }
 
     await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-      style: Theme.of(state.context).brightness == Brightness.light
-          ? ThemeMode.light
-          : ThemeMode.dark,
-      merchantDisplayName:
-          envVal('APP_NAME', defaultValue: wooSignalApp?.appName),
-      paymentIntentClientSecret: rsp['client_secret'],
-    ));
+      paymentSheetParameters: SetupPaymentSheetParameters(
+          style: Theme.of(state.context).brightness == Brightness.light
+              ? ThemeMode.light
+              : ThemeMode.dark,
+          merchantDisplayName:
+              envVal('APP_NAME', defaultValue: wooSignalApp?.appName),
+          customerId: rsp!['customer'],
+          paymentIntentClientSecret: rsp!['client_secret'],
+          customerEphemeralKeySecret: rsp!['ephemeral_key'],
+          setupIntentClientSecret: rsp!['setup_intent_secret']),
+    );
 
     await Stripe.instance.presentPaymentSheet();
+
+    PaymentIntent paymentIntent =
+        await Stripe.instance.retrievePaymentIntent(rsp!['client_secret']);
+
+    if (paymentIntent.status == PaymentIntentsStatus.Unknown) {
+      showToastNotification(
+        context,
+        title: trans("Oops!"),
+        description: trans("Something went wrong, please try again."),
+        icon: Icons.payment,
+        style: ToastNotificationStyleType.WARNING,
+      );
+    }
+
+    if (paymentIntent.status != PaymentIntentsStatus.Succeeded) {
+      return;
+    }
 
     state.reloadState(showLoader: true);
 

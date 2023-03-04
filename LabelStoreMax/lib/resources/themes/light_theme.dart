@@ -25,8 +25,8 @@ ThemeData lightTheme(ColorStyles lightColors) {
     }
   }
 
-  TextTheme lightTheme = getAppTextTheme(
-      appFont, defaultTextTheme.merge(_textTheme(lightColors)));
+  TextTheme lightTheme =
+      getAppTextTheme(appFont, defaultTextTheme.merge(_textTheme(lightColors)));
 
   return ThemeData(
     primaryColor: lightColors.primaryContent,
@@ -66,7 +66,9 @@ ThemeData lightTheme(ColorStyles lightColors) {
           TextStyle(color: lightColors.bottomTabBarLabelSelected),
       selectedItemColor: lightColors.bottomTabBarLabelSelected,
     ),
-    textTheme: lightTheme, colorScheme: ColorScheme.light().copyWith(background: lightColors.background),
+    textTheme: lightTheme,
+    colorScheme:
+        ColorScheme.light().copyWith(background: lightColors.background),
   );
 }
 
@@ -80,7 +82,7 @@ TextTheme _textTheme(ColorStyles colors) {
   Color primaryContent = colors.primaryContent;
   TextTheme textTheme = TextTheme().apply(displayColor: primaryContent);
   return textTheme.copyWith(
-      labelLarge: TextStyle(color: primaryContent.withOpacity(0.8)),
-      bodyMedium: TextStyle(color: primaryContent.withOpacity(0.8)),
+    labelLarge: TextStyle(color: primaryContent.withOpacity(0.8)),
+    bodyMedium: TextStyle(color: primaryContent.withOpacity(0.8)),
   );
 }

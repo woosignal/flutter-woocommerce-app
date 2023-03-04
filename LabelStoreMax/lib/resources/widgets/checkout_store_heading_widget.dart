@@ -18,9 +18,6 @@ class CheckoutStoreHeadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: (Theme.of(context).brightness == Brightness.light)
-            ? wsBoxShadow(blurRadius: 10)
-            : null,
         color: Colors.transparent,
       ),
       padding: EdgeInsets.all(2),

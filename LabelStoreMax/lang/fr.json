@@ -227,5 +227,6 @@
   "Are you sure?": "Êtes-vous sûr?",
   "Yes, delete my account": "Oui, supprimer mon compte",
   "Account deleted": "Compte supprimé",
-  "Shipping is not supported for your location, sorry": "L'expédition n'est pas prise en charge pour votre emplacement, désolé"
+  "Shipping is not supported for your location, sorry": "L'expédition n'est pas prise en charge pour votre emplacement, désolé",
+  "Order Summary": "Récapitulatif de la commande"
 }

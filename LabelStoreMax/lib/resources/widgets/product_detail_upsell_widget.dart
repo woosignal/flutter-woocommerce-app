@@ -65,8 +65,10 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
             children: <Widget>[
               Text(
                 trans("${trans('You may also like')}…"),
-                style:
-                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 18),
                 textAlign: TextAlign.left,
               ),
             ],

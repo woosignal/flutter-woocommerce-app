@@ -106,4 +106,4 @@ appRouter() => nyRoutes((router) {
 
       router.route("/account-shipping-details",
           (context) => AccountShippingDetailsPage());
-    });
+});

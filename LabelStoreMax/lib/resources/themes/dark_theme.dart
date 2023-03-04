@@ -25,8 +25,8 @@ ThemeData darkTheme(ColorStyles darkColors) {
     }
   }
 
-  TextTheme darkTheme = getAppTextTheme(
-      appFont, defaultTextTheme.merge(_textTheme(darkColors)));
+  TextTheme darkTheme =
+      getAppTextTheme(appFont, defaultTextTheme.merge(_textTheme(darkColors)));
   return ThemeData(
     primaryColor: darkColors.primaryContent,
     primaryColorDark: darkColors.primaryContent,
@@ -64,7 +64,8 @@ ThemeData darkTheme(ColorStyles darkColors) {
           TextStyle(color: darkColors.bottomTabBarLabelSelected),
       selectedItemColor: darkColors.bottomTabBarLabelSelected,
     ),
-    textTheme: darkTheme, colorScheme: ColorScheme.dark().copyWith(background: darkColors.background),
+    textTheme: darkTheme,
+    colorScheme: ColorScheme.dark().copyWith(background: darkColors.background),
   );
 }
 
@@ -81,6 +82,5 @@ TextTheme _textTheme(ColorStyles colors) {
       titleLarge: TextStyle(color: primaryContent.withOpacity(0.8)),
       labelLarge: TextStyle(color: primaryContent.withOpacity(0.8)),
       bodySmall: TextStyle(color: primaryContent.withOpacity(0.8)),
-      bodyMedium: TextStyle(color: primaryContent.withOpacity(0.8))
-  );
+      bodyMedium: TextStyle(color: primaryContent.withOpacity(0.8)));
 }

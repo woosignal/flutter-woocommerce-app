@@ -167,8 +167,7 @@ class CustomerAddress {
       WpMetaData(key: "${type}_phone", value: phoneNumber),
       if (type != "shipping")
         WpMetaData(key: "${type}_email", value: emailAddress),
-      WpMetaData(
-          key: "${type}_country", value: customerCountry?.countryCode),
+      WpMetaData(key: "${type}_country", value: customerCountry?.countryCode),
       WpMetaData(
           key: "${type}_state",
           value: customerCountry?.state?.code

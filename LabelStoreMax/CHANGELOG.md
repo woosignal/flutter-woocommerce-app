@@ -1,3 +1,10 @@
+## [6.5.0] - 2023-03-04
+
+* When making payments via Stripe, it will now save the card for later.
+* Small UI changes to the checkout confirmation page. 
+* New translation added.
+* Pubspec.yaml dependency updates.
+
 ## [6.4.1] - 2023-02-23
 
 * Upgrade to Nylo v4.1.3

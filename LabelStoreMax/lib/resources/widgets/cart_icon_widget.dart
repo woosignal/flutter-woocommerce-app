@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class CartIconWidget extends StatefulWidget {
   CartIconWidget({Key? key}) : super(key: key);
@@ -34,32 +35,23 @@ class _CartIconWidgetState extends State<CartIconWidget> {
           ),
           Positioned.fill(
             child: Align(
-              child: FutureBuilder<List<CartLineItem>>(
+              child: NyFutureBuilder<List<CartLineItem>>(
                 future: Cart.getInstance.getCart(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<CartLineItem>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Text("");
-                    default:
-                      if (snapshot.hasError) {
-                        return Text("");
-                      } else {
-                        List<int?> cartItems =
-                            snapshot.data!.map((e) => e.quantity).toList();
-                        String cartValue = "0";
-                        if (cartItems.isNotEmpty) {
-                          cartValue = cartItems
-                              .reduce((value, element) => value! + element!)
-                              .toString();
-                        }
-                        return Text(
-                          cartValue,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          textAlign: TextAlign.center,
-                        );
-                      }
+                child: (BuildContext context,
+                    data) {
+                  List<int?> cartItems =
+                  data.map((e) => e.quantity).toList();
+                  String cartValue = "0";
+                  if (cartItems.isNotEmpty) {
+                    cartValue = cartItems
+                        .reduce((value, element) => value! + element!)
+                        .toString();
                   }
+                  return Text(
+                    cartValue,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  );
                 },
               ),
               alignment: Alignment.topCenter,

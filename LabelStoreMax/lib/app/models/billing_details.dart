@@ -22,6 +22,37 @@ class BillingDetails {
     shippingAddress = CustomerAddress();
   }
 
+  Map<String, dynamic> createStripeDetails() => {
+        'address': {
+          if (billingAddress?.addressLine != null)
+            'line1': billingAddress?.addressLine,
+          if (billingAddress?.city != null) 'city': billingAddress?.city,
+          if (billingAddress?.postalCode != null)
+            'postal_code': billingAddress?.postalCode,
+          if (billingAddress?.customerCountry?.state?.name != null)
+            'state': billingAddress?.customerCountry?.state?.name,
+          if (billingAddress?.customerCountry?.countryCode != null)
+            'country': billingAddress?.customerCountry?.countryCode,
+        },
+        'shipping': {
+          if (shippingAddress?.nameFull() != null)
+            'name': shippingAddress?.nameFull(),
+          if (shippingAddress?.city != null) 'city': shippingAddress?.city,
+          if (shippingAddress?.postalCode != null)
+            'postal_code': shippingAddress?.postalCode,
+          if (shippingAddress?.customerCountry?.state?.name != null)
+            'state': shippingAddress?.customerCountry?.state?.name,
+          if (shippingAddress?.customerCountry?.countryCode != null)
+            'country': shippingAddress?.customerCountry?.countryCode,
+        },
+        if (billingAddress?.emailAddress != null)
+          'email': billingAddress?.emailAddress,
+        if (billingAddress?.nameFull() != null)
+          'name': billingAddress?.nameFull(),
+        if (billingAddress?.phoneNumber != null)
+          'phone': billingAddress?.phoneNumber
+      };
+
   Map<String, String?> getShippingAddressStripe() => {
         "name": shippingAddress?.nameFull(),
         "line1": shippingAddress!.addressLine,

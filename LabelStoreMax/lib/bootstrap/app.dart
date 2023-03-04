@@ -60,7 +60,8 @@ class AppBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Nylo nylo = Backpack.instance.read('nylo');
-    List<AppTheme> appThemes = nylo.appThemes.map((appTheme) => appTheme.toAppTheme()).toList();
+    List<AppTheme> appThemes =
+        nylo.appThemes.map((appTheme) => appTheme.toAppTheme()).toList();
     return LocalizedApp(
       child: ThemeProvider(
         themes: appThemes,
@@ -89,7 +90,12 @@ class AppBuild extends StatelessWidget {
                 title: title ?? "",
                 initialRoute: initialRoute,
                 onGenerateRoute: onGenerateRoute,
-                darkTheme: darkTheme ?? appThemes.firstWhere((theme) => theme.id == getEnv('DARK_THEME_ID'), orElse: () => appThemes.first).data,
+                darkTheme: darkTheme ??
+                    appThemes
+                        .firstWhere(
+                            (theme) => theme.id == getEnv('DARK_THEME_ID'),
+                            orElse: () => appThemes.first)
+                        .data,
                 theme: themeData ?? ThemeProvider.themeOf(context).data,
                 localeResolutionCallback:
                     (Locale? locale, Iterable<Locale> supportedLocales) {

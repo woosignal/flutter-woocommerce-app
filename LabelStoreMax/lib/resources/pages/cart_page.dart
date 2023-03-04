@@ -266,26 +266,16 @@ class _CartPageState extends State<CartPage> {
             Divider(
               color: Colors.black45,
             ),
-            FutureBuilder<String>(
+            NyFutureBuilder<String>(
               future: Cart.getInstance.getTotal(withFormat: true),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Text("");
-                  default:
-                    if (snapshot.hasError) {
-                      return Text("");
-                    } else {
-                      return Padding(
-                        child: TextRowWidget(
-                          title: trans("Total"),
-                          text: (_isLoading ? "" : snapshot.data),
-                        ),
-                        padding: EdgeInsets.only(bottom: 15, top: 15),
-                      );
-                    }
-                }
-              },
+              child: (BuildContext context, data) => Padding(
+                child: TextRowWidget(
+                  title: trans("Total"),
+                  text: (_isLoading ? "" : data),
+                ),
+                padding: EdgeInsets.only(bottom: 15, top: 15),
+              ),
+              loading: SizedBox.shrink(),
             ),
             PrimaryButton(
               title: trans("PROCEED TO CHECKOUT"),

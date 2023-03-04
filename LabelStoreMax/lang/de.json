@@ -227,5 +227,6 @@
   "Are you sure?": "Bist du dir sicher?",
   "Yes, delete my account": "Ja, lösche mein Konto",
   "Account deleted": "Konto gelöscht",
-  "Shipping is not supported for your location, sorry": "Der Versand wird für Ihren Standort nicht unterstützt, tut mir leid"
+  "Shipping is not supported for your location, sorry": "Der Versand wird für Ihren Standort nicht unterstützt, tut mir leid",
+  "Order Summary": "Bestellübersicht"
 }

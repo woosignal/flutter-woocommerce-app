@@ -17,27 +17,17 @@ class AppVersionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<PackageInfo>(
+    return NyFutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
-      builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Text("");
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-            return Text("");
-          case ConnectionState.done:
-            if (snapshot.hasError) return Text("");
-            return Padding(
-              child: Text("${trans("Version")}: ${snapshot.data!.version}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontWeight: FontWeight.w300)),
-              padding: EdgeInsets.only(top: 15, bottom: 15),
-            );
-        }
-      },
+      child: (BuildContext context, data) => Padding(
+        child: Text("${trans("Version")}: ${data.version}",
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(fontWeight: FontWeight.w300)),
+        padding: EdgeInsets.only(top: 15, bottom: 15),
+      ),
+      loading: SizedBox.shrink(),
     );
   }
 }
