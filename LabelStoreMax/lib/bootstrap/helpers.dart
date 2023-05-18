@@ -20,6 +20,7 @@ import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/enums/symbol_position_enums.dart';
+import 'package:flutter_app/bootstrap/extensions.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
 import 'package:flutter_app/config/currency.dart';
 import 'package:flutter_app/config/decoders.dart';
@@ -45,7 +46,7 @@ import '../resources/themes/styles/color_styles.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 Future<User?> getUser() async =>
-    (await (NyStorage.read<User>(SharedKey.authUser, model: User())));
+    (await (NyStorage.read<User>(SharedKey.authUser)));
 
 Future appWooSignal(Function(WooSignal) api) async {
   return await api(WooSignal.instance);
@@ -156,6 +157,7 @@ String moneyFormatter(double amount) {
     amount: amount,
     settings: MoneyFormatterSettings(
       symbol: AppHelper.instance.appConfig!.currencyMeta!.symbolNative,
+        symbolAndNumberSeparator: ""
     ),
   );
   if (appCurrencySymbolPosition == SymbolPositionType.left) {
@@ -486,7 +488,7 @@ Widget refreshableScroll(context,
               return StaggeredGridTile.fit(
                 crossAxisCellCount: 1,
                 child: Container(
-                  height: 200,
+                  height: 350,
                   child: ProductItemContainer(
                     product: product,
                     onTap: onTap,
@@ -654,3 +656,15 @@ api<T>(dynamic Function(T) request, {BuildContext? context}) async =>
 
 /// Event helper
 event<T>({Map? data}) async => nyEvent<T>(params: data, events: events);
+
+/// Check if the [Product] is new.
+bool isProductNew(Product? product) {
+  if (product?.dateCreatedGMT == null) false;
+  try {
+    DateTime dateTime = DateTime.parse(product!.dateCreatedGMT!);
+    return dateTime.isBetween(DateTime.now().subtract(Duration(days: 2)), DateTime.now()) ?? false;
+  } on Exception catch (e) {
+    NyLogger.error(e.toString());
+  }
+  return false;
+}

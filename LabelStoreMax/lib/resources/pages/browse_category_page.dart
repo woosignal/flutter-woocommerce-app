@@ -85,7 +85,8 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
                 products: _productCategorySearchLoaderController.getResults(),
-                onTap: _showProduct),
+                onTap: _showProduct,
+        ),
       ),
     );
   }

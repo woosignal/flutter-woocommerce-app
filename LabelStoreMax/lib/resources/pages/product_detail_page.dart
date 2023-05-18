@@ -17,7 +17,6 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
-import 'package:flutter_app/resources/widgets/future_build_widget.dart';
 import 'package:flutter_app/resources/widgets/product_detail_body_widget.dart';
 import 'package:flutter_app/resources/widgets/product_detail_footer_actions_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
@@ -232,9 +231,9 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
       appBar: AppBar(
         actions: <Widget>[
           if (_wooSignalApp!.wishlistEnabled!)
-            FutureBuildWidget(
-                asyncFuture: hasAddedWishlistProduct(_product!.id),
-                onValue: (dynamic isInFavourites) {
+            NyFutureBuilder(
+                future: hasAddedWishlistProduct(_product!.id),
+                child: (context, dynamic isInFavourites) {
                   return isInFavourites
                       ? IconButton(
                           onPressed: () => widget.controller.toggleWishList(

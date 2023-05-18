@@ -9,7 +9,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 | Add your "app/providers" here.
 | Providers are booted when your application start.
 |
-| Learn more: https://nylo.dev/docs/4.x/providers
+| Learn more: https://nylo.dev/docs/5.x/providers
 |--------------------------------------------------------------------------
 */
 

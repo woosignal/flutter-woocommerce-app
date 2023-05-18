@@ -315,6 +315,7 @@ class ProductItemContainer extends StatelessWidget {
     if (product == null) {
       return SizedBox.shrink();
     }
+
     return LayoutBuilder(
       builder: (cxt, constraints) => InkWell(
         child: Container(
@@ -324,7 +325,7 @@ class ProductItemContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                height: constraints.maxHeight / 2,
+                height: constraints.maxHeight / 1.6,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(3.0),
                   child: Stack(
@@ -338,10 +339,12 @@ class ProductItemContainer extends StatelessWidget {
                         image: (product!.images.isNotEmpty
                             ? product!.images.first.src
                             : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
-                        fit: BoxFit.contain,
-                        height: constraints.maxHeight / 2,
+                        fit: BoxFit.cover,
+                        height: constraints.maxHeight / 1.6,
                         width: double.infinity,
                       ),
+                      if (isProductNew(product))
+                      Container(padding: EdgeInsets.all(4), child: Text("New", style: TextStyle(color: Colors.white),), decoration: BoxDecoration(color: Colors.black),),
                       if (product!.onSale! && product!.type != "variable")
                         Positioned(
                           bottom: 0,
@@ -351,7 +354,7 @@ class ProductItemContainer extends StatelessWidget {
                             padding: EdgeInsets.all(3),
                             decoration: BoxDecoration(
                               color: Colors.white70,
-                              borderRadius: BorderRadius.circular(4),
+                              // borderRadius: BorderRadius.circular(4),
                             ),
                             child: RichText(
                               textAlign: TextAlign.center,
@@ -366,8 +369,8 @@ class ProductItemContainer extends StatelessWidget {
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          color: Colors.black87,
-                                          fontSize: 11,
+                                          color: Colors.black,
+                                          fontSize: 13,
                                         ),
                                   ),
                                 ],
@@ -393,16 +396,17 @@ class ProductItemContainer extends StatelessWidget {
               ),
               Flexible(
                 child: Container(
+                  padding: EdgeInsets.only(top: 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       AutoSizeText(
                         "${formatStringCurrency(total: product!.price)} ",
                         style: Theme.of(context)
                             .textTheme
-                            .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.w600),
+                            .bodyLarge!
+                            .copyWith(fontWeight: FontWeight.w800),
                         textAlign: TextAlign.left,
                       ),
                       if (product!.onSale! && product!.type != "variable")

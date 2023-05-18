@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/config/decoders.dart';
 import 'package:flutter_app/config/design.dart';
 import 'package:flutter_app/config/theme.dart';
+import 'package:flutter_app/config/validation_rules.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:flutter_app/config/localization.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -112,12 +114,14 @@ class AppProvider implements NyProvider {
     nylo.appLoader = loader;
     nylo.appLogo = logo;
 
-    String initialRoute = AppHelper.instance.appConfig!.appStatus != null
-        ? '/home'
-        : '/no-connection';
-
-    nylo.initialRoute = initialRoute;
+    nylo.addModelDecoders(modelDecoders);
+    nylo.addValidationRules(validationRules);
 
     return nylo;
+  }
+
+  @override
+  afterBoot(Nylo nylo) async {
+
   }
 }

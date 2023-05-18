@@ -8,4 +8,9 @@ class EventProvider implements NyProvider {
 
     return nylo;
   }
+
+  @override
+  afterBoot(Nylo nylo) async {
+
+  }
 }

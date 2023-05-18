@@ -11,7 +11,7 @@ void main() async {
     AppBuild(
       navigatorKey: NyNavigator.instance.router.navigatorKey,
       onGenerateRoute: nylo.router!.generator(),
-      initialRoute: nylo.initialRoute,
+      initialRoute: nylo.getInitialRoute(),
       debugShowCheckedModeBanner: false,
     ),
   );

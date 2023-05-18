@@ -36,11 +36,6 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
       _tfPasswordController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -231,7 +226,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
       String? token = wpUserLoginResponse.data!.userToken;
       String userId = wpUserLoginResponse.data!.userId.toString();
       User user = User.fromUserAuthResponse(token: token, userId: userId);
-      await user.save(SharedKey.authUser);
+      await Auth.set(user, key: SharedKey.authUser);
 
       showToastNotification(context,
           title: trans("Hello"),

@@ -23,45 +23,48 @@ class CartIconWidget extends StatefulWidget {
 class _CartIconWidgetState extends State<CartIconWidget> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: Align(
-              child: Icon(Icons.shopping_cart, size: 20),
-              alignment: Alignment.bottomCenter,
-            ),
-            bottom: 0,
-          ),
-          Positioned.fill(
-            child: Align(
-              child: NyFutureBuilder<List<CartLineItem>>(
-                future: Cart.getInstance.getCart(),
-                child: (BuildContext context,
-                    data) {
-                  List<int?> cartItems =
-                  data.map((e) => e.quantity).toList();
-                  String cartValue = "0";
-                  if (cartItems.isNotEmpty) {
-                    cartValue = cartItems
-                        .reduce((value, element) => value! + element!)
-                        .toString();
-                  }
-                  return Text(
-                    cartValue,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  );
-                },
+    return Container(
+      width: 70,
+      child: IconButton(
+        icon: Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: Align(
+                child: Icon(Icons.shopping_cart, size: 20),
+                alignment: Alignment.bottomCenter,
               ),
-              alignment: Alignment.topCenter,
+              bottom: 0,
             ),
-            top: 0,
-          )
-        ],
+            Positioned.fill(
+              child: Align(
+                child: NyFutureBuilder<List<CartLineItem>>(
+                  future: Cart.getInstance.getCart(),
+                  child: (BuildContext context,
+                      data) {
+                    List<int?> cartItems =
+                    data.map((e) => e.quantity).toList();
+                    String cartValue = "0";
+                    if (cartItems.isNotEmpty) {
+                      cartValue = cartItems
+                          .reduce((value, element) => value! + element!)
+                          .toString();
+                    }
+                    return Text(
+                      cartValue,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    );
+                  },
+                ),
+                alignment: Alignment.topCenter,
+              ),
+              top: 0,
+            )
+          ],
+        ),
+        onPressed: () => Navigator.pushNamed(context, "/cart")
+            .then((value) => setState(() {})),
       ),
-      onPressed: () => Navigator.pushNamed(context, "/cart")
-          .then((value) => setState(() {})),
     );
   }
 }

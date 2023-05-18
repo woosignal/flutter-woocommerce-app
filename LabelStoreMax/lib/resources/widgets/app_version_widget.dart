@@ -10,7 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppVersionWidget extends StatelessWidget {
   const AppVersionWidget({Key? key}) : super(key: key);

@@ -135,42 +135,41 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
       return;
     }
 
-    try {
-      validator(rules: {"review": "min:5"}, data: {"review": review});
-
-      ProductReview? productReview =
+    await validate(
+        rules: {"review": "min:5"},
+        data: {"review": review},
+        onSuccess: () async {
+          ProductReview? productReview =
           await (appWooSignal((api) => api.createProductReview(
-                productId: _lineItem!.productId,
-                verified: true,
-                review: review,
-                status: "approved",
-                reviewer: [
-                  _order!.billing!.firstName,
-                  _order!.billing!.lastName
-                ].join(" "),
-                rating: _rating,
-                reviewerEmail: _order!.billing!.email,
-              )));
+            productId: _lineItem!.productId,
+            verified: true,
+            review: review,
+            status: "approved",
+            reviewer: [
+              _order!.billing!.firstName,
+              _order!.billing!.lastName
+            ].join(" "),
+            rating: _rating,
+            reviewerEmail: _order!.billing!.email,
+          )));
 
-      if (productReview == null) {
-        showToastNotification(context,
-            title: trans("Oops"),
-            description: trans("Something went wrong"),
-            style: ToastNotificationStyleType.INFO);
-        return;
-      }
-      showToastNotification(context,
-          title: trans("Success"),
-          description: trans("Your review has been submitted"),
-          style: ToastNotificationStyleType.SUCCESS);
-      pop(result: _lineItem);
-    } on ValidationException catch (e) {
-      NyLogger.error(e.toString());
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+          if (productReview == null) {
+            showToastNotification(context,
+                title: trans("Oops"),
+                description: trans("Something went wrong"),
+                style: ToastNotificationStyleType.INFO);
+            return;
+          }
+          showToastNotification(context,
+              title: trans("Success"),
+              description: trans("Your review has been submitted"),
+              style: ToastNotificationStyleType.SUCCESS);
+          pop(result: _lineItem);
+    });
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<wc_customer_info.Data?> _fetchWpUserData() async {

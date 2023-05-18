@@ -75,7 +75,7 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
           ),
         ),
         Container(
-          height: 200,
+          height: 300,
           child: ListView(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

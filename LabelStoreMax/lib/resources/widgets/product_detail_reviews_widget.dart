@@ -12,7 +12,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/future_build_widget.dart';
 import 'package:flutter_app/resources/widgets/product_detail_review_tile_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -91,12 +90,9 @@ class _ProductDetailReviewsWidgetState
           initiallyExpanded: false,
           children: [
             if (_ratingExpanded == true)
-              FutureBuildWidget<List<ProductReview>>(
-                asyncFuture: fetchReviews(),
-                onValue: (reviews) {
-                  if (reviews == null) {
-                    return SizedBox.shrink();
-                  }
+              NyFutureBuilder<List<ProductReview>>(
+                future: fetchReviews(),
+                child: (context, reviews) {
                   int reviewsCount = reviews.length;
                   List<Widget> childrenWidgets = [];
                   List<ProductDetailReviewTileWidget> children = reviews
@@ -137,7 +133,7 @@ class _ProductDetailReviewsWidgetState
                         : childrenWidgets,
                   );
                 },
-                onLoading: Padding(
+                loading: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: CupertinoActivityIndicator(),
                 ),
@@ -149,9 +145,9 @@ class _ProductDetailReviewsWidgetState
   }
 
   Future<List<ProductReview>> fetchReviews() async {
-    return await (appWooSignal(
+    return await appWooSignal(
       (api) => api.getProductReviews(
           perPage: 5, product: [widget.product!.id!], status: "approved"),
-    ));
+    );
   }
 }

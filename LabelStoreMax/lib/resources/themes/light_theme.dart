@@ -29,6 +29,7 @@ ThemeData lightTheme(ColorStyles lightColors) {
       getAppTextTheme(appFont, defaultTextTheme.merge(_textTheme(lightColors)));
 
   return ThemeData(
+    useMaterial3: true,
     primaryColor: lightColors.primaryContent,
     primaryColorLight: lightColors.primaryAccent,
     focusColor: lightColors.primaryContent,

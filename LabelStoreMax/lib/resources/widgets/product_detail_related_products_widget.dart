@@ -10,8 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/future_build_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/products.dart';
@@ -53,10 +51,10 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
           ),
         ),
         Container(
-          height: 200,
-          child: FutureBuildWidget<List<Product>>(
-            asyncFuture: fetchRelated(),
-            onValue: (relatedProducts) {
+          height: 300,
+          child: NyFutureBuilder<List<Product>>(
+            future: fetchRelated(),
+            child: (context, relatedProducts) {
               if (relatedProducts == null) {
                 return SizedBox.shrink();
               }
@@ -70,7 +68,6 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
                     .toList(),
               );
             },
-            onLoading: AppLoaderWidget(),
           ),
         ),
       ],

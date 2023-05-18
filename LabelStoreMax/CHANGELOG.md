@@ -1,3 +1,9 @@
+## [6.6.0] - 2023-05-18
+
+* Nylo v5.0.0 migration
+* Refactor project
+* Flutter v3.10.0 compatibility
+
 ## [6.5.1] - 2023-03-04
 
 * New translation added.

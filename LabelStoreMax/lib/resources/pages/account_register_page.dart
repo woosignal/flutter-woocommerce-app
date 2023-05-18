@@ -49,11 +49,6 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -241,7 +236,7 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
       String? token = wpUserRegisterResponse.data!.userToken;
       String userId = wpUserRegisterResponse.data!.userId.toString();
       User user = User.fromUserAuthResponse(token: token, userId: userId);
-      await user.save(SharedKey.authUser);
+      await Auth.set(user, key: SharedKey.authUser);
 
       await WPJsonAPI.instance.api((request) => request.wpUpdateUserInfo(token,
           firstName: firstName, lastName: lastName));
