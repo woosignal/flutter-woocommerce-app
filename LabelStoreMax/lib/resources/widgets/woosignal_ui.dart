@@ -339,7 +339,7 @@ class ProductItemContainer extends StatelessWidget {
                         image: (product!.images.isNotEmpty
                             ? product!.images.first.src
                             : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         height: constraints.maxHeight / 1.6,
                         width: double.infinity,
                       ),
