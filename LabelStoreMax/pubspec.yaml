@@ -30,10 +30,7 @@ dependencies:
   analyzer: ^5.12.0
   intl: ^0.18.0
   nylo_framework: ^5.0.0
-#  woosignal: ^3.3.0
-  woosignal:
-    path: /Users/anthony/StudioProjects/woosignal-api
-#  flutter_stripe: ^9.2.0
+  woosignal: ^3.4.0
   wp_json_api: ^3.3.2
   cached_network_image: ^3.2.3
   package_info_plus: ^4.0.0
