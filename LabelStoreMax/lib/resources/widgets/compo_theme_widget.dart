@@ -22,6 +22,7 @@ import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
 import 'package:flutter_app/resources/pages/home_search_page.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/compo_home_widget.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CompoThemeWidget extends StatefulWidget {
@@ -87,7 +88,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
           id: 1,
           bottomNavigationBarItem: BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Home'.tr(),
           ),
           tabWidget: CompoHomeWidget(wooSignalApp: widget.wooSignalApp)),
     );
@@ -97,7 +98,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
           id: 2,
           bottomNavigationBarItem: BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search',
+            label: 'Search'.tr(),
           ),
           tabWidget: HomeSearchPage()),
     );
@@ -107,7 +108,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
         id: 3,
         bottomNavigationBarItem: BottomNavigationBarItem(
           icon: Icon(Icons.favorite_border),
-          label: 'Wishlist',
+          label: 'Wishlist'.tr(),
         ),
         tabWidget: WishListPageWidget(),
       ));
@@ -116,7 +117,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
     items.add(BottomNavItem(
       id: 4,
       bottomNavigationBarItem: BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart), label: 'Cart'),
+          icon: Icon(Icons.shopping_cart), label: 'Cart'.tr()),
       tabWidget: CartPage(),
     ));
 
@@ -124,7 +125,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
       items.add(BottomNavItem(
         id: 5,
         bottomNavigationBarItem:
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'.tr()),
         tabWidget: (await authCheck())
             ? AccountDetailPage(showLeadingBackButton: false)
             : AccountLandingPage(
