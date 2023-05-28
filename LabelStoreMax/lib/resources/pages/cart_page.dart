@@ -16,7 +16,6 @@ import 'package:flutter_app/app/models/customer_address.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/text_row_widget.dart';
@@ -30,26 +29,19 @@ class CartPage extends StatefulWidget {
   _CartPageState createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
+class _CartPageState extends NyState<CartPage> {
   _CartPageState();
 
-  bool _isLoading = true, _isCartEmpty = false;
   List<CartLineItem> _cartLines = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _cartCheck();
+  boot() async {
+    await _cartCheck();
     CheckoutSession.getInstance.coupon = null;
   }
 
   _cartCheck() async {
     List<CartLineItem> cart = await Cart.getInstance.getCart();
     if (cart.isEmpty) {
-      setState(() {
-        _isLoading = false;
-        _isCartEmpty = true;
-      });
       return;
     }
 
@@ -59,25 +51,18 @@ class _CartPageState extends State<CartPage> {
         await (appWooSignal((api) => api.cartCheck(cartJSON)));
     if (cartRes.isEmpty) {
       Cart.getInstance.saveCartToPref(cartLineItems: []);
-      setState(() {
-        _isCartEmpty = true;
-        _isLoading = false;
-      });
       return;
     }
     _cartLines = cartRes.map((json) => CartLineItem.fromJson(json)).toList();
     if (_cartLines.isNotEmpty) {
       Cart.getInstance.saveCartToPref(cartLineItems: _cartLines);
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _actionProceedToCheckout() async {
     List<CartLineItem> cartLineItems = await Cart.getInstance.getCart();
 
-    if (_isLoading == true) {
+    if (isLoading()) {
       return;
     }
 
@@ -163,9 +148,6 @@ class _CartPageState extends State<CartPage> {
       style: ToastNotificationStyleType.WARNING,
       icon: Icons.remove_shopping_cart,
     );
-    if (_cartLines.isEmpty) {
-      _isCartEmpty = true;
-    }
     setState(() {});
   }
 
@@ -177,7 +159,6 @@ class _CartPageState extends State<CartPage> {
         description: trans("Cart cleared"),
         style: ToastNotificationStyleType.SUCCESS,
         icon: Icons.delete_outline);
-    _isCartEmpty = true;
     setState(() {});
   }
 
@@ -214,55 +195,46 @@ class _CartPageState extends State<CartPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _isCartEmpty
-                ? Expanded(
-                    child: FractionallySizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Icon(
-                            Icons.shopping_cart,
-                            size: 100,
-                            color: Colors.black45,
-                          ),
-                          Padding(
-                            child: Text(
-                              trans("Empty Basket"),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            padding: EdgeInsets.only(top: 10),
-                          )
-                        ],
-                      ),
-                      heightFactor: 0.5,
-                      widthFactor: 1,
+            Expanded(
+              child: afterLoad(child: () => _cartLines.isEmpty ? FractionallySizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Icon(
+                      Icons.shopping_cart,
+                      size: 100,
+                      color: Colors.black45,
                     ),
-                  )
-                : (_isLoading
-                    ? Expanded(
-                        child: AppLoaderWidget(),
-                      )
-                    : Expanded(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: _cartLines.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              CartLineItem cartLineItem = _cartLines[index];
-                              return CartItemContainer(
-                                cartLineItem: cartLineItem,
-                                actionIncrementQuantity: () =>
-                                    actionIncrementQuantity(
-                                        cartLineItem: cartLineItem),
-                                actionDecrementQuantity: () =>
-                                    actionDecrementQuantity(
-                                        cartLineItem: cartLineItem),
-                                actionRemoveItem: () =>
-                                    actionRemoveItem(index: index),
-                              );
-                            }),
-                        flex: 3,
-                      )),
+                    Padding(
+                      child: Text(
+                        trans("Empty Basket"),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      padding: EdgeInsets.only(top: 10),
+                    )
+                  ],
+                ),
+                heightFactor: 0.5,
+                widthFactor: 1,
+              ) : ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: _cartLines.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    CartLineItem cartLineItem = _cartLines[index];
+                    return CartItemContainer(
+                      cartLineItem: cartLineItem,
+                      actionIncrementQuantity: () =>
+                          actionIncrementQuantity(
+                              cartLineItem: cartLineItem),
+                      actionDecrementQuantity: () =>
+                          actionDecrementQuantity(
+                              cartLineItem: cartLineItem),
+                      actionRemoveItem: () =>
+                          actionRemoveItem(index: index),
+                    );
+                  })),
+            ),
             Divider(
               color: Colors.black45,
             ),
@@ -271,7 +243,7 @@ class _CartPageState extends State<CartPage> {
               child: (BuildContext context, data) => Padding(
                 child: TextRowWidget(
                   title: trans("Total"),
-                  text: (_isLoading ? "" : data),
+                  text: isLoading() ? '' : data,
                 ),
                 padding: EdgeInsets.only(bottom: 15, top: 15),
               ),

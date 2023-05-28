@@ -10,7 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 
 class ProductDetailHeaderWidget extends StatelessWidget {
   const ProductDetailHeaderWidget({Key? key, required this.product})

@@ -20,7 +20,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/product_review.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 import '../../app/controllers/product_reviews_controller.dart';
 
 class ProductReviewsPage extends NyStatefulWidget {

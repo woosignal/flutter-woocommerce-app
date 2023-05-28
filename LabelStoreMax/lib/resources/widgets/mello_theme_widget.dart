@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/product_loader_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
 import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
@@ -20,7 +19,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/models/response/product_category.dart' as ws_category;
-import 'package:woosignal/models/response/products.dart' as ws_product;
+import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class MelloThemeWidget extends StatefulWidget {
   MelloThemeWidget(
@@ -33,7 +32,7 @@ class MelloThemeWidget extends StatefulWidget {
   _MelloThemeWidgetState createState() => _MelloThemeWidgetState();
 }
 
-class _MelloThemeWidgetState extends State<MelloThemeWidget> {
+class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final ProductLoaderController _productLoaderController =
@@ -41,20 +40,21 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
 
   List<ws_category.ProductCategory> _categories = [];
 
-  bool _shouldStopRequests = false, _isLoading = true;
+  bool _shouldStopRequests = false;
 
   @override
-  void initState() {
-    super.initState();
-    _home();
+  void init() async {
+    super.init();
+  }
+
+  @override
+  boot() async {
+    await _home();
   }
 
   _home() async {
     await fetchProducts();
     await _fetchCategories();
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   _fetchCategories() async {
@@ -110,18 +110,16 @@ class _MelloThemeWidgetState extends State<MelloThemeWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: _isLoading
-                  ? AppLoaderWidget()
-                  : RefreshableScrollContainer(
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      products: _productLoaderController.getResults(),
-                      onTap: _showProduct,
-                      bannerHeight: MediaQuery.of(context).size.height / 3.5,
-                      bannerImages: bannerImages,
-                      modalBottomSheetMenu: _modalBottomSheetMenu,
-                    ),
+              child: afterLoad(child: () => RefreshableScrollContainer(
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                products: _productLoaderController.getResults(),
+                onTap: _showProduct,
+                bannerHeight: MediaQuery.of(context).size.height / 3.5,
+                bannerImages: bannerImages,
+                modalBottomSheetMenu: _modalBottomSheetMenu,
+              )),
               flex: 1,
             ),
           ],

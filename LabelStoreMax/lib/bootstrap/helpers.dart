@@ -38,7 +38,7 @@ import 'package:money_formatter/money_formatter.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:status_alert/status_alert.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';

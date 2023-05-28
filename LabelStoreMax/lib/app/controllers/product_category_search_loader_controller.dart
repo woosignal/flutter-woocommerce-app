@@ -10,7 +10,7 @@
 
 import 'package:flutter_app/app/controllers/woosignal_api_loader_controller.dart';
 import 'package:woosignal/models/response/product_category.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 
 class ProductCategorySearchLoaderController
     extends WooSignalApiLoaderController<Product> {

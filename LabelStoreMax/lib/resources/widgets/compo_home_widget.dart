@@ -20,7 +20,7 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 
 class CompoHomeWidget extends StatefulWidget {
   CompoHomeWidget({Key? key, required this.wooSignalApp}) : super(key: key);

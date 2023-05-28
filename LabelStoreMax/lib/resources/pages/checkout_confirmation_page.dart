@@ -16,7 +16,6 @@ import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/app/models/customer_country.dart';
 import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/extensions.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
@@ -186,7 +185,7 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(trans("Checkout")),
-            Text(_wooSignalApp?.appName ?? getEnv('APP_NAME')).small(context),
+            Text(_wooSignalApp?.appName ?? getEnv('APP_NAME')).bodySmall(context),
           ],
         ),
         centerTitle: false,

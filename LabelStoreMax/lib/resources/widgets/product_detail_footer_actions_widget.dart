@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 
 class ProductDetailFooterActionsWidget extends StatelessWidget {
   const ProductDetailFooterActionsWidget(

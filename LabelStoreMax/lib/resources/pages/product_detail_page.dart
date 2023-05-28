@@ -14,7 +14,6 @@ import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/enums/wishlist_action_enums.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
 import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
 import 'package:flutter_app/resources/widgets/product_detail_body_widget.dart';
@@ -23,7 +22,7 @@ import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_variation.dart'
     as ws_product_variation;
-import 'package:woosignal/models/response/products.dart' as ws_product;
+import 'package:woosignal/models/response/product.dart' as ws_product;
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailPage extends NyStatefulWidget {
@@ -36,7 +35,6 @@ class ProductDetailPage extends NyStatefulWidget {
 }
 
 class _ProductDetailState extends NyState<ProductDetailPage> {
-  bool _isLoading = true;
   ws_product.Product? _product;
 
   List<ws_product_variation.ProductVariation> _productVariations = [];
@@ -45,14 +43,15 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
 
   @override
   init() async {
+    super.init();
+  }
+
+  @override
+  boot() async {
     _product = widget.controller.data();
     if (_product!.type == "variable") {
       await _fetchProductVariations();
-      return;
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   _fetchProductVariations() async {
@@ -76,9 +75,6 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
       }
     }
     _productVariations = tmpVariations;
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   _modalBottomSheetOptionsForAttribute(int attributeIndex) {
@@ -232,7 +228,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
         actions: <Widget>[
           if (_wooSignalApp!.wishlistEnabled!)
             NyFutureBuilder(
-                future: hasAddedWishlistProduct(_product!.id),
+                future: hasAddedWishlistProduct(_product?.id),
                 child: (context, dynamic isInFavourites) {
                   return isInFavourites
                       ? IconButton(
@@ -256,32 +252,30 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: _isLoading
-            ? AppLoaderWidget()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: ProductDetailBodyWidget(
-                      wooSignalApp: _wooSignalApp,
-                      product: _product,
-                    ),
-                  ),
-                  // </Product body>
-                  ProductDetailFooterActionsWidget(
-                    onAddToCart: _addItemToCart,
-                    onViewExternalProduct:
-                        widget.controller.viewExternalProduct,
-                    onAddQuantity: () => widget.controller
-                        .addQuantityTapped(onSuccess: () => setState(() {})),
-                    onRemoveQuantity: () => widget.controller
-                        .removeQuantityTapped(onSuccess: () => setState(() {})),
-                    product: _product,
-                    quantity: widget.controller.quantity,
-                  )
-                ],
+        child: afterLoad(child: () => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: ProductDetailBodyWidget(
+                wooSignalApp: _wooSignalApp,
+                product: _product,
               ),
+            ),
+            // </Product body>
+            ProductDetailFooterActionsWidget(
+              onAddToCart: _addItemToCart,
+              onViewExternalProduct:
+              widget.controller.viewExternalProduct,
+              onAddQuantity: () => widget.controller
+                  .addQuantityTapped(onSuccess: () => setState(() {})),
+              onRemoveQuantity: () => widget.controller
+                  .removeQuantityTapped(onSuccess: () => setState(() {})),
+              product: _product,
+              quantity: widget.controller.quantity,
+            )
+          ],
+        ))
       ),
     );
   }

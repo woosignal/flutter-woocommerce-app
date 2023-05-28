@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailRelatedProductsWidget extends StatelessWidget {
@@ -55,7 +55,7 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
           child: NyFutureBuilder<List<Product>>(
             future: fetchRelated(),
             child: (context, relatedProducts) {
-              if (relatedProducts == null) {
+              if (relatedProducts.isEmpty) {
                 return SizedBox.shrink();
               }
               return ListView(
@@ -74,9 +74,7 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
     );
   }
 
-  Future<List<Product>> fetchRelated() async {
-    return await (appWooSignal(
-      (api) => api.getProducts(perPage: 100, include: product!.relatedIds),
-    ));
-  }
+  Future<List<Product>> fetchRelated() async => await (appWooSignal(
+        (api) => api.getProducts(perPage: 100, include: product!.relatedIds),
+  ));
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_app/app/models/payment_type.dart';
 import 'package:flutter_app/app/providers/payments/cash_on_delivery.dart';
 import 'package:flutter_app/app/providers/payments/paypal_pay.dart';
+import 'package:flutter_app/app/providers/payments/razorpay_pay.dart';
 import 'package:flutter_app/app/providers/payments/stripe_pay.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -41,6 +42,14 @@ List<PaymentType> paymentTypeList = [
     description: trans("Debit or Credit Card"),
     assetImage: "paypal_logo.png",
     pay: payPalPay,
+  ),
+
+  addPayment(
+    id: 5,
+    name: "RazorPay",
+    description: trans("Debit or Credit Card"),
+    assetImage: "razorpay.png",
+    pay: razorPay,
   ),
 
   // e.g. add more here

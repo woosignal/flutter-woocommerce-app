@@ -16,7 +16,7 @@ import 'package:flutter_app/resources/widgets/product_detail_review_tile_widget.
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_review.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailReviewsWidget extends StatefulWidget {

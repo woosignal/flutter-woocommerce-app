@@ -12,7 +12,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/product_loader_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
@@ -23,7 +22,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/models/response/product_category.dart' as ws_category;
-import 'package:woosignal/models/response/products.dart' as ws_product;
+import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class NoticHomeWidget extends StatefulWidget {
   NoticHomeWidget({Key? key, required this.wooSignalApp}) : super(key: key);
@@ -34,7 +33,7 @@ class NoticHomeWidget extends StatefulWidget {
   _NoticHomeWidgetState createState() => _NoticHomeWidgetState();
 }
 
-class _NoticHomeWidgetState extends State<NoticHomeWidget> {
+class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
   Widget? activeWidget;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -43,20 +42,16 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
       ProductLoaderController();
   List<ws_category.ProductCategory> _categories = [];
 
-  bool _shouldStopRequests = false, _isLoading = true;
-
+  bool _shouldStopRequests = false;
+  
   @override
-  void initState() {
-    super.initState();
-    _home();
+  boot() async {
+    await _home();
   }
 
   _home() async {
     await fetchProducts();
     await _fetchCategories();
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   _fetchCategories() async {
@@ -114,102 +109,98 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            (_isLoading
-                ? Expanded(child: AppLoaderWidget())
-                : Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
+            Expanded(
+              child: afterLoad(child: () => ListView(
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    child: Swiper(
+                      itemBuilder: (BuildContext context, int index) {
+                        return CachedImageWidget(
+                          image:
+                          widget.wooSignalApp!.bannerImages![index],
+                          fit: BoxFit.cover,
+                        );
+                      },
+                      itemCount:
+                      widget.wooSignalApp!.bannerImages!.length,
+                      viewportFraction: 0.8,
+                      scale: 0.9,
+                    ),
+                    height: MediaQuery.of(context).size.height / 2.5,
+                  ),
+                  Container(
+                    height: 75,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(bottom: 15),
-                          child: Swiper(
-                            itemBuilder: (BuildContext context, int index) {
-                              return CachedImageWidget(
-                                image:
-                                    widget.wooSignalApp!.bannerImages![index],
-                                fit: BoxFit.cover,
-                              );
-                            },
-                            itemCount:
-                                widget.wooSignalApp!.bannerImages!.length,
-                            viewportFraction: 0.8,
-                            scale: 0.9,
-                          ),
-                          height: MediaQuery.of(context).size.height / 2.5,
-                        ),
-                        Container(
-                          height: 100,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(trans("Must have")),
-                              Flexible(
-                                child: Text(
-                                  trans("Our selection of new items"),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 250,
-                          child: SmartRefresher(
-                            enablePullDown: true,
-                            enablePullUp: true,
-                            footer: CustomFooter(
-                              builder:
-                                  (BuildContext context, LoadStatus? mode) {
-                                Widget body;
-                                if (mode == LoadStatus.idle) {
-                                  body = Text(trans("pull up load"));
-                                } else if (mode == LoadStatus.loading) {
-                                  body = CupertinoActivityIndicator();
-                                } else if (mode == LoadStatus.failed) {
-                                  body =
-                                      Text(trans("Load Failed! Click retry!"));
-                                } else if (mode == LoadStatus.canLoading) {
-                                  body = Text(trans("release to load more"));
-                                } else {
-                                  return SizedBox.shrink();
-                                }
-                                return Container(
-                                  height: 55.0,
-                                  child: Center(child: body),
-                                );
-                              },
-                            ),
-                            controller: _refreshController,
-                            onRefresh: _onRefresh,
-                            onLoading: _onLoading,
-                            child: (products.isNotEmpty
-                                ? ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: false,
-                                    itemBuilder: (cxt, i) {
-                                      return Container(
-                                        // height: 200,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
-                                        child: ProductItemContainer(
-                                            product: products[i],
-                                            onTap: _showProduct),
-                                      );
-                                    },
-                                    itemCount: products.length,
-                                  )
-                                : NoResultsForProductsWidget()),
+                        Text(trans("Must have")),
+                        Flexible(
+                          child: Text(
+                            trans("Our selection of new items"),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         )
                       ],
                     ),
-                    flex: 1,
-                  )),
+                  ),
+                  Container(
+                    height: 380,
+                    child: SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      footer: CustomFooter(
+                        builder:
+                            (BuildContext context, LoadStatus? mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            body = Text(trans("pull up load"));
+                          } else if (mode == LoadStatus.loading) {
+                            body = CupertinoActivityIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            body =
+                                Text(trans("Load Failed! Click retry!"));
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = Text(trans("release to load more"));
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: (products.isNotEmpty
+                          ? ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: false,
+                        itemBuilder: (cxt, i) {
+                          return Container(
+                            width:
+                            MediaQuery.of(context).size.width /
+                                2.5,
+                            child: ProductItemContainer(
+                                product: products[i],
+                                onTap: _showProduct),
+                          );
+                        },
+                        itemCount: products.length,
+                      )
+                          : NoResultsForProductsWidget()),
+                    ),
+                  )
+                ],
+              ),
+            ),flex: 1,),
           ],
         ),
       ),

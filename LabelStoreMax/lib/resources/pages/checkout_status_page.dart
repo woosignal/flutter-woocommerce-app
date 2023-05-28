@@ -77,7 +77,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          "${trans("Order Ref")}. #${_order!.id.toString()}",
+                          "${trans("Order Ref")}. #${_order?.id.toString()}",
                           style: Theme.of(context).textTheme.bodyLarge,
                           textAlign: TextAlign.left,
                         ),
@@ -119,9 +119,9 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
               ),
               Expanded(
                 child: ListView.builder(
-                    itemCount: _order!.lineItems == null
+                    itemCount: _order?.lineItems == null
                         ? 0
-                        : _order!.lineItems!.length,
+                        : _order?.lineItems?.length,
                     itemBuilder: (BuildContext context, int index) {
                       ws_order.LineItems lineItem = _order!.lineItems![index];
                       return Container(

@@ -1,3 +1,9 @@
+## [6.6.1] - 2023-05-28
+
+* Refactor widgets + bug fixes
+* Refactor extensions.dart
+* Pubspec.yaml dependency updates.
+
 ## [6.6.0] - 2023-05-18
 
 * Nylo v5.0.0 migration

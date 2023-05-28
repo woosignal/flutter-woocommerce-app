@@ -14,7 +14,7 @@ import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/bootstrap/enums/wishlist_action_enums.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:woosignal/models/response/products.dart';
+import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/product_variation.dart'
     as ws_product_variation;
 
