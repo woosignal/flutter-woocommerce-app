@@ -121,7 +121,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                 child: ListView.builder(
                     itemCount: _order?.lineItems == null
                         ? 0
-                        : _order?.lineItems?.length,
+                        : _order?.lineItems?.length ?? 0,
                     itemBuilder: (BuildContext context, int index) {
                       ws_order.LineItems lineItem = _order!.lineItems![index];
                       return Container(

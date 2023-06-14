@@ -1,3 +1,8 @@
+## [6.6.2] - 2023-06-14
+
+* Page bug fixes
+* Pubspec.yaml dependency updates.
+
 ## [6.6.1] - 2023-05-28
 
 * Refactor widgets + bug fixes

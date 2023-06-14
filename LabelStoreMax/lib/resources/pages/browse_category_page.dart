@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/product_category_search_loader_controller.dart';
 import 'package:flutter_app/app/controllers/browse_category_controller.dart';
@@ -64,7 +65,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           children: <Widget>[
             Text(trans("Browse"),
                 style: Theme.of(context).textTheme.titleMedium),
-            Text(parseHtmlString(productCategory!.name))
+            afterNotNull(productCategory, child: () => Text(parseHtmlString(productCategory!.name)), loadingPlaceholder: CupertinoActivityIndicator())
           ],
         ),
         centerTitle: true,

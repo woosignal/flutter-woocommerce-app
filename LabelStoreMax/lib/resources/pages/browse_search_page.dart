@@ -8,6 +8,7 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/browse_search_controller.dart';
 import 'package:flutter_app/app/controllers/product_search_loader_controller.dart';
@@ -56,7 +57,7 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
           children: <Widget>[
             Text(trans("Search results for"),
                 style: Theme.of(context).textTheme.titleMedium),
-            Text("\"" + _search! + "\"")
+            afterNotNull(_search, child: () => Text("\"" + _search! + "\""), loadingPlaceholder: CupertinoActivityIndicator())
           ],
         ),
         centerTitle: true,
