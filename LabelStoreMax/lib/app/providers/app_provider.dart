@@ -24,30 +24,6 @@ class AppProvider implements NyProvider {
     await WooSignal.instance
         .init(appKey: getEnv('APP_KEY'), debugMode: getEnv('APP_DEBUG'));
 
-    // Notifications
-    /// await Firebase.initializeApp(
-    ///   options: DefaultFirebaseOptions.currentPlatform,
-    /// );
-    ///
-    /// FirebaseMessaging messaging = FirebaseMessaging.instance;
-    ///
-    /// NotificationSettings settings = await messaging.requestPermission(
-    ///   alert: true,
-    ///   announcement: false,
-    ///   badge: true,
-    ///   carPlay: false,
-    ///   criticalAlert: false,
-    ///   provisional: false,
-    ///   sound: true,
-    /// );
-    ///
-    /// if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    ///   String? token = await messaging.getToken();
-    ///   if (token != null) {
-    ///     WooSignal.instance.setFcmToken(token);
-    ///   }
-    /// }
-
     AppHelper.instance.appConfig = WooSignalApp();
     AppHelper.instance.appConfig!.themeFont = "Poppins";
     AppHelper.instance.appConfig!.themeColors = {

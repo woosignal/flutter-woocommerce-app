@@ -18,7 +18,7 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     print(
         'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');
     handler.next(err);

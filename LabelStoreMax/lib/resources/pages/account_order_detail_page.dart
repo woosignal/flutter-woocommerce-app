@@ -62,11 +62,10 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 8),
                     child: Text(
-                      "${trans("Date Ordered").capitalize()}: " +
-                          dateFormatted(
-                            date: _order!.dateCreated!,
-                            formatType: formatForDateTime(FormatType.date),
-                          ),
+                      "${trans("Date Ordered").capitalize()}: ${dateFormatted(
+                        date: _order?.dateCreated ?? "",
+                        formatType: formatForDateTime(FormatType.date),
+                      )}",
                     ),
                   ),
                   Container(

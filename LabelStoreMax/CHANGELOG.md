@@ -1,3 +1,9 @@
+## [6.7.0] - 2023-06-20
+
+* Refactor project for Nylo 5.x.
+* New Firebase provider for FCM.
+* Pubspec.yaml dependency updates.
+
 ## [6.6.2] - 2023-06-14
 
 * Page bug fixes
@@ -33,7 +39,7 @@
 * Fix the ThemeColor.get helper method to support ColorStyles.
 * Pubspec.yaml dependency updates
 
-* ## [6.4.0] - 2023-01-06
+## [6.4.0] - 2023-01-06
 
 * Upgrade to Nylo v4.0.0
 * Update copyright

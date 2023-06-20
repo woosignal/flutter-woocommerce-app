@@ -67,7 +67,8 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
               PrimaryButton(
                   title: trans("Yes, delete my account"),
                   isLoading: isLocked('delete_account'),
-                  action: _deleteAccount),
+                  action: _deleteAccount,
+              ),
               LinkButton(title: trans("Back"), action: pop)
             ],
           )
