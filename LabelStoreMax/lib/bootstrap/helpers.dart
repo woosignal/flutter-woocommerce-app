@@ -48,7 +48,7 @@ import 'package:flutter/services.dart' show rootBundle;
 Future<User?> getUser() async =>
     (await (NyStorage.read<User>(SharedKey.authUser)));
 
-Future appWooSignal(Function(WooSignal) api) async {
+Future appWooSignal(Function(WooSignal api) api) async {
   return await api(WooSignal.instance);
 }
 

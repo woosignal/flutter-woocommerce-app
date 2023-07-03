@@ -236,7 +236,7 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
       String? token = wpUserRegisterResponse.data!.userToken;
       String userId = wpUserRegisterResponse.data!.userId.toString();
       User user = User.fromUserAuthResponse(token: token, userId: userId);
-      await Auth.set(user, key: SharedKey.authUser);
+      await user.save(SharedKey.authUser);
 
       await WPJsonAPI.instance.api((request) => request.wpUpdateUserInfo(token,
           firstName: firstName, lastName: lastName));

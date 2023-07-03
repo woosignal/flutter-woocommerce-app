@@ -226,7 +226,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
       String? token = wpUserLoginResponse.data!.userToken;
       String userId = wpUserLoginResponse.data!.userId.toString();
       User user = User.fromUserAuthResponse(token: token, userId: userId);
-      await Auth.set(user, key: SharedKey.authUser);
+      await user.save(SharedKey.authUser);
 
       showToastNotification(context,
           title: trans("Hello"),

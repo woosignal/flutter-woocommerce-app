@@ -1,3 +1,8 @@
+## [6.8.1] - 2023-07-03
+
+* Fix auth bug.
+* Pubspec.yaml dependency updates.
+
 ## [6.8.0] - 2023-07-03
 
 * UI fixes.
