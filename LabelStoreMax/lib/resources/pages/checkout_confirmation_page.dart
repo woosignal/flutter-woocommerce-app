@@ -58,7 +58,6 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
       CheckoutSession.getInstance.paymentType = paymentTypes.firstWhere(
           (paymentType) => paymentType?.id == 20,
           orElse: () => paymentTypes.first);
-      print(CheckoutSession.getInstance.paymentType?.name);
     }
     _getTaxes();
   }
@@ -203,126 +202,124 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
       resizeToAvoidBottomInset: false,
       body: SafeAreaWidget(
         child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: ListView(
+            shrinkWrap: true,
             children: <Widget>[
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    CheckoutStoreHeadingWidget(),
-                    CheckoutUserDetailsWidget(
-                      context: context,
-                      checkoutSession: checkoutSession,
-                      resetState: () {
-                        setState(() {
-                          _showFullLoader = true;
-                        });
-                        _getTaxes();
-                      },
-                    ),
-                    CheckoutPaymentTypeWidget(
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  CheckoutStoreHeadingWidget(),
+                  CheckoutUserDetailsWidget(
+                    context: context,
+                    checkoutSession: checkoutSession,
+                    resetState: () {
+                      setState(() {
+                        _showFullLoader = true;
+                      });
+                      _getTaxes();
+                    },
+                  ),
+                  CheckoutPaymentTypeWidget(
+                    context: context,
+                    checkoutSession: checkoutSession,
+                    resetState: () => setState(() {}),
+                  ),
+                  CheckoutShippingTypeWidget(
+                    context: context,
+                    checkoutSession: checkoutSession,
+                    resetState: () => setState(() {}),
+                    wooSignalApp: _wooSignalApp,
+                  ),
+                  if (_wooSignalApp!.couponEnabled == true)
+                    CheckoutSelectCouponWidget(
                       context: context,
                       checkoutSession: checkoutSession,
                       resetState: () => setState(() {}),
                     ),
-                    CheckoutShippingTypeWidget(
-                      context: context,
-                      checkoutSession: checkoutSession,
-                      resetState: () => setState(() {}),
-                      wooSignalApp: _wooSignalApp,
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: wsBoxShadow(),
+                      color: Colors.white,
+                      // borderRadius: BorderRadius.circular(16)
                     ),
-                    if (_wooSignalApp!.couponEnabled == true)
-                      CheckoutSelectCouponWidget(
-                        context: context,
-                        checkoutSession: checkoutSession,
-                        resetState: () => setState(() {}),
-                      ),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: wsBoxShadow(),
-                        color: Colors.white,
-                        // borderRadius: BorderRadius.circular(16)
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      margin: EdgeInsets.only(top: 20),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: Row(
-                              children: [
-                                Icon(Icons.receipt),
-                                Padding(padding: EdgeInsets.only(right: 8),),
-                                Text(trans("Order Summary")).fontWeightBold()
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    margin: EdgeInsets.only(top: 20),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
                             children: [
-                              Padding(padding: EdgeInsets.only(top: 16)),
-                              CheckoutSubtotal(
-                                title: trans("Subtotal"),
-                              ),
-                              CheckoutCouponAmountWidget(
-                                  checkoutSession: checkoutSession),
-                              if (_wooSignalApp!.disableShipping != 1)
-                                CheckoutMetaLine(
-                                    title: trans("Shipping fee"),
-                                    amount: CheckoutSession
-                                                .getInstance.shippingType ==
-                                            null
-                                        ? trans("Select shipping")
-                                        : CheckoutSession
-                                            .getInstance.shippingType!
-                                            .getTotal(withFormatting: true)),
-                              if (_taxRate != null)
-                                CheckoutTaxTotal(taxRate: _taxRate),
-                              Padding(padding: EdgeInsets.only(top: 8, left: 8, right: 8)),
-                              Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: RichText(
-                                textAlign: TextAlign.left,
-                                text: TextSpan(
-                                  text:
-                                  '${trans('By completing this order, I agree to all')} ',
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontSize: 12,
-                                  ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      recognizer: TapGestureRecognizer()..onTap = _openTermsLink,
-                                      text: trans("Terms and conditions").toLowerCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                        color: ThemeColor.get(context)
-                                            .primaryAccent,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: ".",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                        color: Colors.black87,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
+                              Icon(Icons.receipt),
+                              Padding(padding: EdgeInsets.only(right: 8),),
+                              Text(trans("Order Summary")).fontWeightBold()
                             ],
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(padding: EdgeInsets.only(top: 16)),
+                            CheckoutSubtotal(
+                              title: trans("Subtotal"),
+                            ),
+                            CheckoutCouponAmountWidget(
+                                checkoutSession: checkoutSession),
+                            if (_wooSignalApp!.disableShipping != 1)
+                              CheckoutMetaLine(
+                                  title: trans("Shipping fee"),
+                                  amount: CheckoutSession
+                                      .getInstance.shippingType ==
+                                      null
+                                      ? trans("Select shipping")
+                                      : CheckoutSession
+                                      .getInstance.shippingType!
+                                      .getTotal(withFormatting: true)),
+                            if (_taxRate != null)
+                              CheckoutTaxTotal(taxRate: _taxRate),
+                            Padding(padding: EdgeInsets.only(top: 8, left: 8, right: 8)),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: RichText(
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                text:
+                                '${trans('By completing this order, I agree to all')} ',
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontSize: 12,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()..onTap = _openTermsLink,
+                                    text: trans("Terms and conditions").toLowerCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                      color: ThemeColor.get(context)
+                                          .primaryAccent,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ".",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                      color: Colors.black87,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
               Container(
                 decoration: BoxDecoration(

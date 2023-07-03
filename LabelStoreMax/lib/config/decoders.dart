@@ -1,3 +1,4 @@
+import 'package:flutter_app/app/models/user.dart';
 import 'package:flutter_app/app/networking/api_service.dart';
 import 'package:flutter_app/app/networking/dio/base_api_service.dart';
 
@@ -12,6 +13,7 @@ import 'package:flutter_app/app/networking/dio/base_api_service.dart';
 
 final Map<Type, dynamic> modelDecoders = {
   // ...
+  User: (data) => User.fromJson(data)
 };
 
 /*

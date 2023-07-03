@@ -138,72 +138,69 @@ class CheckoutRowLine extends StatelessWidget {
   final bool showBorderBottom;
 
   @override
-  Widget build(BuildContext context) => Flexible(
-        child: InkWell(
-          child: Container(
-            height: 125,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) => Container(
+    height: 125,
+    padding: EdgeInsets.all(8),
+    decoration: showBorderBottom == true
+        ? BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.black12, width: 1),
+            ),
+          )
+        : BoxDecoration(),
+    child: InkWell(
+      onTap: action,
+      borderRadius: BorderRadius.circular(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            child: Text(
+              heading,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            padding: EdgeInsets.only(bottom: 8),
+          ),
+          Flexible(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Padding(
-                  child: Text(
-                    heading,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  padding: EdgeInsets.only(bottom: 8),
-                ),
                 Flexible(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Flexible(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            leadImage,
-                            Expanded(
-                              child: Container(
-                                child: Text(
-                                  leadTitle!,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: false,
-                                ),
-                                padding: EdgeInsets.only(left: 15),
-                                margin: EdgeInsets.only(right: 10),
-                              ),
-                            ),
-                          ],
+                      leadImage,
+                      Expanded(
+                        child: Container(
+                          child: Text(
+                            leadTitle!,
+                            style:
+                                Theme.of(context).textTheme.titleMedium,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                          ),
+                          padding: EdgeInsets.only(left: 15),
+                          margin: EdgeInsets.only(right: 10),
                         ),
                       ),
-                      Icon(Icons.arrow_forward_ios),
                     ],
                   ),
-                )
+                ),
+                Icon(Icons.arrow_forward_ios),
               ],
             ),
-            padding: EdgeInsets.all(8),
-            decoration: showBorderBottom == true
-                ? BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.black12, width: 1),
-                    ),
-                  )
-                : BoxDecoration(),
-          ),
-          onTap: action,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        flex: 3,
-      );
+          )
+        ],
+      ),
+    ),
+  );
 }
 
 class TextEditingRow extends StatelessWidget {

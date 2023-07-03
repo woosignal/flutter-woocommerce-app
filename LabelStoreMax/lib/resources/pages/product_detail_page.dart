@@ -84,7 +84,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
           "${trans("Select a")} ${_product!.attributes[attributeIndex].name}",
       bodyWidget: ListView.separated(
         itemCount: _product!.attributes[attributeIndex].options!.length,
-        separatorBuilder: (BuildContext context, int index) => Divider(),
+        separatorBuilder: (BuildContext context, int index) => Divider(color: Colors.black12),
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(

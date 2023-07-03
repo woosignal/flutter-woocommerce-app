@@ -27,10 +27,11 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool hasCoupon = checkoutSession.coupon != null;
-    return InkWell(
-      onTap: _actionCoupon,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5),
+    return Container(
+      height: 50,
+      padding: EdgeInsets.symmetric(vertical: 5),
+      child: InkWell(
+        onTap: _actionCoupon,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

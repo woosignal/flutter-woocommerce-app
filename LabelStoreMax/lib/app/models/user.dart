@@ -19,7 +19,7 @@ class User extends Model {
 
   toJson() => {"token": token, "user_id": userId};
 
-  fromJson(dynamic data) {
+  User.fromJson(dynamic data) {
     token = data['token'];
     userId = data['user_id'];
   }

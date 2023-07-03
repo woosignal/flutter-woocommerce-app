@@ -34,6 +34,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
     _order = widget.controller.data();
     await Cart.getInstance.clear();
     CheckoutSession.getInstance.clear();
+    setState(() { });
   }
 
   @override
@@ -161,7 +162,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
                             ),
                             Text(
                               formatStringCurrency(
-                                total: lineItem.total.toString(),
+                                total: lineItem.subtotal.toString(),
                               ),
                               style: Theme.of(context).textTheme.bodyLarge,
                             )

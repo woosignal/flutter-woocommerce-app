@@ -6,13 +6,15 @@ import 'package:woosignal/woosignal.dart';
 
 class FirebaseProvider implements NyProvider {
 
+  @override
   boot(Nylo nylo) async {
 
     return null;
   }
 
+  @override
   afterBoot(Nylo nylo) async {
-    if (getEnv('FCM_ENABLED') != true) return;
+    if (getEnv('FCM_ENABLED', defaultValue: false) != true) return;
 
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,

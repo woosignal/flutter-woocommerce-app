@@ -1,3 +1,11 @@
+## [6.8.0] - 2023-07-03
+
+* UI fixes.
+* Fix price on coupon page error alerts.
+* Fix issue where IOS builds were not using the correct build version.
+* Small refactor to the project.
+* Pubspec.yaml dependency updates.
+
 ## [6.7.0] - 2023-06-20
 
 * Refactor project for Nylo 5.x.

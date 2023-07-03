@@ -45,7 +45,7 @@ Full documentation this available [here](https://woosignal.com/docs/app/ios/labe
 - Change app name, logo, customize default language, currency + more
 - Light and dark mode
 - Theme customization
-- Stripe, Cash On Delivery, PayPal
+- Stripe, Cash On Delivery, PayPal, RazorPay
 - Localized for en, es, pt, it, hi, fr, zh, tr, nl
 - Orders show as normal in WooCommerce
 
