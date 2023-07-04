@@ -1,3 +1,8 @@
+## [6.8.2] - 2023-07-04
+
+* Update gradle + kotlin versions.
+* Pubspec.yaml dependency updates.
+
 ## [6.8.1] - 2023-07-03
 
 * Fix auth bug.
