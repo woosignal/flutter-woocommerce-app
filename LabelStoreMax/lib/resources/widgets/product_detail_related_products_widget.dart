@@ -75,6 +75,6 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
   }
 
   Future<List<Product>> fetchRelated() async => await (appWooSignal(
-        (api) => api.getProducts(perPage: 100, include: product!.relatedIds),
+        (api) => api.getProducts(perPage: 100, include: product!.relatedIds, status: "publish"),
   ));
 }

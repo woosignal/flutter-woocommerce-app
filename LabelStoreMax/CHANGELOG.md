@@ -1,3 +1,10 @@
+## [6.9.0] - 2023-07-13
+
+* Pull firebase config via woosignal api
+* New encrypt key and secret added to .env
+* fix fetchRelated to return "publish" products
+* Pubspec.yaml dependency updates
+
 ## [6.8.2] - 2023-07-04
 
 * Update gradle + kotlin versions.

@@ -22,7 +22,10 @@ class AppProvider implements NyProvider {
     ]);
 
     await WooSignal.instance
-        .init(appKey: getEnv('APP_KEY'), debugMode: getEnv('APP_DEBUG'));
+        .init(appKey: getEnv('APP_KEY'), debugMode: getEnv('APP_DEBUG'),
+        encryptKey: getEnv('ENCRYPT_KEY', defaultValue: null),
+        encryptSecret: getEnv('ENCRYPT_SECRET', defaultValue: null)
+    );
 
     AppHelper.instance.appConfig = WooSignalApp();
     AppHelper.instance.appConfig!.themeFont = "Poppins";
@@ -46,7 +49,7 @@ class AppProvider implements NyProvider {
     };
 
     // WooSignal Setup
-    WooSignalApp? wooSignalApp = await (appWooSignal((api) => api.getApp()));
+    WooSignalApp? wooSignalApp = await (appWooSignal((api) => api.getApp(encrypted: shouldEncrypt())));
     Locale locale = Locale('en');
 
     if (wooSignalApp != null) {

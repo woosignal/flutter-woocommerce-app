@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.2"
+  asn1lib:
+    dependency: transitive
+    description:
+      name: asn1lib
+      sha256: b74e3842a52c61f8819a1ec8444b4de5419b41a7465e69d4aa681445377398b0
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
   async:
     dependency: transitive
     description:
@@ -209,6 +217,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1+1"
+  encrypt:
+    dependency: transitive
+    description:
+      name: encrypt
+      sha256: "4fd4e4fdc21b9d7d4141823e1e6515cd94e7b8d84749504c232999fba25d9bbb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
   eventify:
     dependency: transitive
     description:
@@ -617,18 +633,18 @@ packages:
     dependency: "direct main"
     description:
       name: nylo_framework
-      sha256: a10e1ea240e04aa64a90a6170bc2eebd585b9c0f85b1557e323c5a49312add2b
+      sha256: cfd9f98313672d06ccee6db7dfe75e584e1f72d7465c649b9bb765b1112f9f2a
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.1"
+    version: "5.1.2"
   nylo_support:
     dependency: transitive
     description:
       name: nylo_support
-      sha256: "09c5eace0c4fa4cef5148b3b7820fd0a8b24154c964c34c1396372315ef815d6"
+      sha256: "35e4938f7c18f518a9cc09dc02cadd85183530c95217fa05fe6de08d8f25fbfe"
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.1"
+    version: "5.4.0"
   octo_image:
     dependency: transitive
     description:
@@ -998,10 +1014,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: eb1e00ab44303d50dd487aab67ebc575456c146c6af44422f9c13889984c00f3
+      sha256: "781bd58a1eb16069412365c98597726cd8810ae27435f04b3b4d3a470bacd61e"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.11"
+    version: "6.1.12"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1142,10 +1158,10 @@ packages:
     dependency: "direct main"
     description:
       name: woosignal
-      sha256: "5059a0f531149e3bd9ee70a24e76315644663462509c84771d3bb8ca403726ab"
+      sha256: "089a373122ae0e202e64e214ce4a549af29e589128bdc8c8a54f3da68a2355aa"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.1"
+    version: "3.8.0"
   wp_json_api:
     dependency: "direct main"
     description:
@@ -1180,4 +1196,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.0.0 <4.0.0"
-  flutter: ">=3.7.0-0"
+  flutter: ">=3.10.0"

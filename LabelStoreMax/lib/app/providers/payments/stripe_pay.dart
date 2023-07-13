@@ -118,7 +118,7 @@ stripePay(context,
       return;
     }
 
-    Navigator.pushNamed(context, "/checkout-status", arguments: order);
+    routeTo('/checkout-status', navigationType: NavigationType.pushAndForgetAll, data: order);
   } on StripeException catch (e) {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
       NyLogger.error(e.error.message!);

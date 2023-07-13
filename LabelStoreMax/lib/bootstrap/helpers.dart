@@ -668,3 +668,15 @@ bool isProductNew(Product? product) {
   }
   return false;
 }
+
+bool shouldEncrypt() {
+  String? encryptKey = getEnv('ENCRYPT_KEY', defaultValue: "");
+  if (encryptKey == null || encryptKey == "") {
+    return false;
+  }
+  String? encryptSecret = getEnv('ENCRYPT_KEY', defaultValue: "");
+  if (encryptSecret == null || encryptSecret == "") {
+    return false;
+  }
+  return true;
+}
