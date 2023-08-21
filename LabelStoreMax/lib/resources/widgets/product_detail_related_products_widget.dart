@@ -55,6 +55,8 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
           child: NyFutureBuilder<List<Product>>(
             future: fetchRelated(),
             child: (context, relatedProducts) {
+              if (relatedProducts == null) return SizedBox.shrink();
+
               if (relatedProducts.isEmpty) {
                 return SizedBox.shrink();
               }

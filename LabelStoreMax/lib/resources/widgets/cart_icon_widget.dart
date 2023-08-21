@@ -41,6 +41,8 @@ class _CartIconWidgetState extends State<CartIconWidget> {
                   future: Cart.getInstance.getCart(),
                   child: (BuildContext context,
                       data) {
+                    if (data == null) return SizedBox.shrink();
+
                     List<int?> cartItems =
                     data.map((e) => e.quantity).toList();
                     String cartValue = "0";

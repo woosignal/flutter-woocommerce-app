@@ -93,6 +93,15 @@ class _ProductDetailReviewsWidgetState
               NyFutureBuilder<List<ProductReview>>(
                 future: fetchReviews(),
                 child: (context, reviews) {
+                  if (reviews == null) {
+                    return Container(
+                      child: ListTile(
+                        title: Text(
+                          trans('There are no reviews yet.'),
+                        ),
+                      ),
+                    );
+                  }
                   int reviewsCount = reviews.length;
                   List<Widget> childrenWidgets = [];
                   List<ProductDetailReviewTileWidget> children = reviews

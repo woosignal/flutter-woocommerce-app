@@ -1,3 +1,8 @@
+## [6.10.0] - 2023-08-21
+
+* Small refactor to project
+* Pubspec.yaml dependency updates
+
 ## [6.9.0] - 2023-07-13
 
 * Pull firebase config via woosignal api

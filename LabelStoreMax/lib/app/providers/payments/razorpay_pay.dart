@@ -33,16 +33,16 @@ razorPay(context,
         Order? order = await appWooSignal((api) => api.createOrder(orderWC));
 
         if (order != null) {
-          Cart.getInstance.clear();
-          Navigator.pushNamed(context, "/checkout-status", arguments: order);
-        } else {
           showToastNotification(
             context,
             title: "Error".tr(),
             description: trans("Something went wrong, please contact our store"),
           );
           state.reloadState(showLoader: false);
+          return;
         }
+        Cart.getInstance.clear();
+        Navigator.pushNamed(context, "/checkout-status", arguments: order);
       });
 
   razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (PaymentFailureResponse response) {
