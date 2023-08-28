@@ -57,7 +57,7 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
           children: <Widget>[
             Text(trans("Search results for"),
                 style: Theme.of(context).textTheme.titleMedium),
-            afterNotNull(_search, child: () => Text("\"" + _search! + "\""), loadingPlaceholder: CupertinoActivityIndicator())
+            afterNotNull(_search, child: () => Text("\"" + _search! + "\""), loading: CupertinoActivityIndicator())
           ],
         ),
         centerTitle: true,

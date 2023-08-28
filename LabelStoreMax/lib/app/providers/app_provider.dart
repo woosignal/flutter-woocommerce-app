@@ -95,6 +95,7 @@ class AppProvider implements NyProvider {
 
     nylo.addModelDecoders(modelDecoders);
     nylo.addValidationRules(validationRules);
+    nylo.toastNotification = getToastNotificationWidget;
 
     return nylo;
   }

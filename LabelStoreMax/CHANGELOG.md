@@ -1,3 +1,9 @@
+## [6.10.1] - 2023-08-28
+
+* Refactor project for Nylo 5.x.
+* Fix AndroidManifest splash screen
+* Pubspec.yaml dependency updates
+
 ## [6.10.0] - 2023-08-21
 
 * Small refactor to project

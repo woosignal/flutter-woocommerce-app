@@ -52,7 +52,7 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
           ),
           margin: EdgeInsets.only(left: 0),
         ),
-        title: afterNotNull(_orderId, child: () => Text("${trans("Order").capitalize()} #${_orderId.toString()}"), loadingPlaceholder: CupertinoActivityIndicator()),
+        title: afterNotNull(_orderId, child: () => Text("${trans("Order").capitalize()} #${_orderId.toString()}"), loading: CupertinoActivityIndicator()),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,

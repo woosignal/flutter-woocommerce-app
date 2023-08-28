@@ -65,7 +65,7 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           children: <Widget>[
             Text(trans("Browse"),
                 style: Theme.of(context).textTheme.titleMedium),
-            afterNotNull(productCategory, child: () => Text(parseHtmlString(productCategory!.name)), loadingPlaceholder: CupertinoActivityIndicator())
+            afterNotNull(productCategory, child: () => Text(parseHtmlString(productCategory!.name)), loading: CupertinoActivityIndicator())
           ],
         ),
         centerTitle: true,
