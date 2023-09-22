@@ -1,3 +1,7 @@
+## [6.10.2] - 2023-09-22
+
+* Pubspec.yaml dependency updates
+
 ## [6.10.1] - 2023-08-28
 
 * Refactor project for Nylo 5.x.
