@@ -20,7 +20,7 @@
 
 Label StoreMax is an App Template for WooCommerce stores. Your customers will be able to browse products, make orders and login via WordPress. You can also customise the look and feel of the app in the WooSignal dashboard.
 
-You can also upload the app to the IOS app store and Google play store using Flutter.
+You can upload the app to the IOS app store and Google play store using Flutter.
 
 ### Requirements
 
