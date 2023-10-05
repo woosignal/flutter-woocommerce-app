@@ -1,3 +1,8 @@
+## [6.10.3] - 2023-10-05
+
+* Update IOS directory to include RunnerTests
+* Pubspec.yaml dependency updates
+
 ## [6.10.2] - 2023-09-22
 
 * Pubspec.yaml dependency updates
