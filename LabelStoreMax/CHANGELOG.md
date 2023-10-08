@@ -1,3 +1,7 @@
+## [6.11.1] - 2023-10-08
+
+* Pubspec.yaml dependency updates
+
 ## [6.11.0] - 2023-10-08
 
 * Add `eventBus()` to provider
