@@ -110,7 +110,7 @@ class _CartPageState extends NyState<CartPage> {
     Navigator.pushNamed(context, "/checkout");
   }
 
-  actionIncrementQuantity({required CartLineItem cartLineItem}) {
+  actionIncrementQuantity({required CartLineItem cartLineItem}) async {
     if (cartLineItem.isManagedStock! &&
         cartLineItem.quantity + 1 > cartLineItem.stockQuantity!) {
       showToastNotification(
@@ -122,24 +122,24 @@ class _CartPageState extends NyState<CartPage> {
       );
       return;
     }
-    Cart.getInstance
+    await Cart.getInstance
         .updateQuantity(cartLineItem: cartLineItem, incrementQuantity: 1);
     cartLineItem.quantity += 1;
     setState(() {});
   }
 
-  actionDecrementQuantity({required CartLineItem cartLineItem}) {
+  actionDecrementQuantity({required CartLineItem cartLineItem}) async {
     if (cartLineItem.quantity - 1 <= 0) {
       return;
     }
-    Cart.getInstance
+    await Cart.getInstance
         .updateQuantity(cartLineItem: cartLineItem, incrementQuantity: -1);
     cartLineItem.quantity -= 1;
     setState(() {});
   }
 
-  actionRemoveItem({required int index}) {
-    Cart.getInstance.removeCartItemForIndex(index: index);
+  actionRemoveItem({required int index}) async {
+    await Cart.getInstance.removeCartItemForIndex(index: index);
     _cartLines.removeAt(index);
     showToastNotification(
       context,
@@ -151,8 +151,8 @@ class _CartPageState extends NyState<CartPage> {
     setState(() {});
   }
 
-  _clearCart() {
-    Cart.getInstance.clear();
+  _clearCart() async {
+    await Cart.getInstance.clear();
     _cartLines = [];
     showToastNotification(context,
         title: trans("Success"),

@@ -13,6 +13,8 @@ import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
 import 'package:flutter_app/bootstrap/enums/wishlist_action_enums.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/resources/widgets/cart_quantity_widget.dart';
+import 'package:flutter_app/resources/widgets/product_quantity_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/product_variation.dart'
@@ -37,7 +39,7 @@ class ProductDetailController extends Controller {
   }
 
   itemAddToCart(
-      {required CartLineItem cartLineItem, required Function onSuccess}) async {
+      {required CartLineItem cartLineItem, Function? onSuccess}) async {
     await Cart.getInstance.addToCart(cartLineItem: cartLineItem);
     showStatusAlert(
       context,
@@ -46,10 +48,13 @@ class ProductDetailController extends Controller {
       duration: 1,
       icon: Icons.add_shopping_cart,
     );
-    onSuccess();
+    updateState(CartQuantity.state);
+    if (onSuccess != null) {
+      onSuccess();
+    }
   }
 
-  addQuantityTapped({required Function onSuccess}) {
+  addQuantityTapped({Function? onSuccess}) {
     if (product!.manageStock != null && product!.manageStock == true) {
       if (quantity >= product!.stockQuantity!) {
         showToastNotification(context!,
@@ -62,14 +67,26 @@ class ProductDetailController extends Controller {
     }
     if (quantity != 0) {
       quantity++;
-      onSuccess();
+      if (onSuccess != null) {
+        onSuccess();
+      }
+      updateState(ProductQuantity.state, data: {
+        "product_id": product?.id,
+        "quantity": quantity
+      });
     }
   }
 
-  removeQuantityTapped({required Function onSuccess}) {
+  removeQuantityTapped({Function? onSuccess}) {
     if ((quantity - 1) >= 1) {
       quantity--;
-      onSuccess();
+      if (onSuccess != null) {
+        onSuccess();
+      }
+      updateState(ProductQuantity.state, data: {
+        "product_id": product?.id,
+        "quantity": quantity
+      });
     }
   }
 

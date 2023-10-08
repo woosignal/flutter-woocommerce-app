@@ -5,6 +5,7 @@ class EventProvider implements NyProvider {
   @override
   boot(Nylo nylo) async {
     nylo.addEvents(events);
+    nylo.addEventBus();
 
     return nylo;
   }

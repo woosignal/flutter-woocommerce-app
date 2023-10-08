@@ -12,6 +12,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/product_quantity_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 
@@ -76,10 +77,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
                       ),
                       onPressed: onRemoveQuantity as void Function()?,
                     ),
-                    Text(
-                      quantity.toString(),
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                    ProductQuantity(productId: product!.id!),
                     IconButton(
                       icon: Icon(
                         Icons.add_circle_outline,

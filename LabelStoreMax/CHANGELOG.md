@@ -1,3 +1,9 @@
+## [6.11.0] - 2023-10-08
+
+* Add `eventBus()` to provider
+* Add state managed widget `CartQuantity` and `ProductQuantity`
+* Pubspec.yaml dependency updates
+
 ## [6.10.4] - 2023-10-05
 
 * Update README

@@ -210,8 +210,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
 
                   await widget.controller.itemAddToCart(
                       cartLineItem: cartLineItem,
-                      onSuccess: () => setState(() => {}));
-                  setState(() {});
+                  );
                   Navigator.of(context).pop();
                 }),
           ],
@@ -268,9 +267,9 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
               onViewExternalProduct:
               widget.controller.viewExternalProduct,
               onAddQuantity: () => widget.controller
-                  .addQuantityTapped(onSuccess: () => setState(() {})),
+                  .addQuantityTapped(),
               onRemoveQuantity: () => widget.controller
-                  .removeQuantityTapped(onSuccess: () => setState(() {})),
+                  .removeQuantityTapped(),
               product: _product,
               quantity: widget.controller.quantity,
             )
@@ -297,6 +296,6 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     await widget.controller.itemAddToCart(
         cartLineItem: CartLineItem.fromProduct(
             quantityAmount: widget.controller.quantity, product: _product!),
-        onSuccess: () => setState(() {}));
+        );
   }
 }

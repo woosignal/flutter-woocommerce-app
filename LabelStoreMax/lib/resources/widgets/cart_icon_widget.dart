@@ -9,9 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/cart_line_item.dart';
-import 'package:nylo_framework/nylo_framework.dart';
+import 'package:flutter_app/resources/widgets/cart_quantity_widget.dart';
 
 class CartIconWidget extends StatefulWidget {
   CartIconWidget({Key? key}) : super(key: key);
@@ -37,27 +35,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
             ),
             Positioned.fill(
               child: Align(
-                child: NyFutureBuilder<List<CartLineItem>>(
-                  future: Cart.getInstance.getCart(),
-                  child: (BuildContext context,
-                      data) {
-                    if (data == null) return SizedBox.shrink();
-
-                    List<int?> cartItems =
-                    data.map((e) => e.quantity).toList();
-                    String cartValue = "0";
-                    if (cartItems.isNotEmpty) {
-                      cartValue = cartItems
-                          .reduce((value, element) => value! + element!)
-                          .toString();
-                    }
-                    return Text(
-                      cartValue,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    );
-                  },
-                ),
+                child: CartQuantity(),
                 alignment: Alignment.topCenter,
               ),
               top: 0,
