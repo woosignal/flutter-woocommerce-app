@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/bootstrap/app_helper.dart';
@@ -58,12 +56,12 @@ class AppProvider implements NyProvider {
       if (wooSignalApp.wpLoginEnabled == 1) {
         if (wooSignalApp.wpLoginBaseUrl == null) {
           AppHelper.instance.appConfig?.wpLoginEnabled = 0;
-          log('Set your stores domain on WooSignal. Go to Features > WP Login and add your domain to "Store Base Url"');
+          NyLogger.debug('Set your stores domain on WooSignal. Go to Features > WP Login and add your domain to "Store Base Url"');
         }
 
         if (wooSignalApp.wpLoginWpApiPath == null) {
           AppHelper.instance.appConfig?.wpLoginEnabled = 0;
-          log('Set your stores Wp JSON path on WooSignal. Go to Features > WP Login and add your Wp JSON path to "WP API Path"');
+          NyLogger.debug('Set your stores Wp JSON path on WooSignal. Go to Features > WP Login and add your Wp JSON path to "WP API Path"');
         }
 
         WPJsonAPI.instance.initWith(
@@ -92,6 +90,7 @@ class AppProvider implements NyProvider {
     nylo.appThemes = appThemes;
     nylo.appLoader = loader;
     nylo.appLogo = logo;
+    nylo.addControllers(controllers);
 
     nylo.addModelDecoders(modelDecoders);
     nylo.addValidationRules(validationRules);

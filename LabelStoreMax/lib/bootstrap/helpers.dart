@@ -650,9 +650,29 @@ Future<BillingDetails> billingDetailsFromWpUserInfoResponse(
 }
 
 /// API helper
-api<T>(dynamic Function(T) request, {BuildContext? context}) async =>
+api<T>(dynamic Function(T request) request,
+    {BuildContext? context,
+      Map<String, dynamic> headers = const {},
+      String? bearerToken,
+      String? baseUrl,
+      int? page,
+      String? queryNamePage,
+      String? queryNamePerPage,
+      int? perPage,
+      List<Type> events = const []}) async =>
     await nyApi<T>(
-        request: request, apiDecoders: apiDecoders, context: context);
+        request: request,
+        apiDecoders: apiDecoders,
+        context: context,
+        headers: headers,
+        bearerToken: bearerToken,
+        baseUrl: baseUrl,
+        events: events,
+        page: page,
+        perPage: perPage,
+        queryParamPage: queryNamePage ?? "page",
+        queryParamPerPage: queryNamePerPage
+    );
 
 /// Event helper
 event<T>({Map? data}) async => nyEvent<T>(params: data, events: events);

@@ -1,3 +1,10 @@
+## [6.12.0] - 2023-10-31
+
+* Update design for Toast Notifications
+* Refactor project config for Nylo 5.7.1.
+* Update minimum sdk requirements to 3.1.3
+* Pubspec.yaml dependency updates
+
 ## [6.11.1] - 2023-10-08
 
 * Pubspec.yaml dependency updates
