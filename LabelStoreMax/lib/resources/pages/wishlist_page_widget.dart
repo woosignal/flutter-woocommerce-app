@@ -50,95 +50,93 @@ class _WishListPageWidgetState extends NyState<WishListPageWidget> {
         title: Text(trans("Wishlist")),
       ),
       body: SafeArea(
-          child: afterLoad(
-              child: () => _products.isEmpty
-              ? Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.favorite,
-                  size: 40,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                ),
-                Text(trans("No items found"),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .setColor(context,
-                            (color) => color!.primaryContent))
-              ],
-            ),
-          )
-              : ListView.separated(
-              padding: EdgeInsets.only(top: 10),
-              itemBuilder: (BuildContext context, int index) {
-                Product product = _products[index];
-                return InkWell(
-                  onTap: () => Navigator.pushNamed(
-                      context, "/product-detail",
-                      arguments: product),
-                  child: Container(
-                    child: Row(
+        child: afterLoad(
+            child: () => _products.isEmpty
+                ? Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 8),
-                          child: CachedImageWidget(
-                            image: (product.images.isNotEmpty
-                                ? product.images.first.src
-                                : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
-                            fit: BoxFit.contain,
-                            width: double.infinity,
-                          ),
-                          width: MediaQuery.of(context).size.width / 4,
+                        Icon(
+                          Icons.favorite,
+                          size: 40,
                         ),
-                        Expanded(
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              mainAxisAlignment:
-                              MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  product.name!,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  formatStringCurrency(
-                                      total: product.price),
-                                ),
-                              ],
-                            ),
-                          ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width / 5,
-                          alignment: Alignment.center,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
-                            onPressed: () =>
-                                _removeFromWishlist(product),
-                          ),
-                        )
+                        Text(trans("No items found"),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .setColor(
+                                    context, (color) => color!.primaryContent))
                       ],
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Divider();
-              },
-              itemCount: _products.length)),
+                  )
+                : ListView.separated(
+                    padding: EdgeInsets.only(top: 10),
+                    itemBuilder: (BuildContext context, int index) {
+                      Product product = _products[index];
+                      return InkWell(
+                        onTap: () => Navigator.pushNamed(
+                            context, "/product-detail",
+                            arguments: product),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 8),
+                                child: CachedImageWidget(
+                                  image: (product.images.isNotEmpty
+                                      ? product.images.first.src
+                                      : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
+                                  fit: BoxFit.contain,
+                                  width: double.infinity,
+                                ),
+                                width: MediaQuery.of(context).size.width / 4,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        product.name!,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        formatStringCurrency(
+                                            total: product.price),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 5,
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () => _removeFromWishlist(product),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider();
+                    },
+                    itemCount: _products.length)),
       ),
     );
   }

@@ -24,11 +24,13 @@ import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class BrowseCategoryPage extends NyStatefulWidget {
-  final BrowseCategoryController controller = BrowseCategoryController();
-  BrowseCategoryPage({Key? key}) : super(key: key);
+  static String path = "/product-search";
 
   @override
-  _BrowseCategoryPageState createState() => _BrowseCategoryPageState();
+  final BrowseCategoryController controller = BrowseCategoryController();
+
+  BrowseCategoryPage({Key? key})
+      : super(path, key: key, child: _BrowseCategoryPageState());
 }
 
 class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
@@ -65,7 +67,9 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           children: <Widget>[
             Text(trans("Browse"),
                 style: Theme.of(context).textTheme.titleMedium),
-            afterNotNull(productCategory, child: () => Text(parseHtmlString(productCategory!.name)), loading: CupertinoActivityIndicator())
+            afterNotNull(productCategory,
+                child: () => Text(parseHtmlString(productCategory!.name)),
+                loading: CupertinoActivityIndicator())
           ],
         ),
         centerTitle: true,
@@ -81,13 +85,14 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
             ? Center(
                 child: AppLoaderWidget(),
               )
-            : refreshableScroll(context,
+            : refreshableScroll(
+                context,
                 refreshController: _refreshController,
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
                 products: _productCategorySearchLoaderController.getResults(),
                 onTap: _showProduct,
-        ),
+              ),
       ),
     );
   }

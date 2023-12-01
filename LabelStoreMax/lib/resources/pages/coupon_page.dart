@@ -179,7 +179,10 @@ class _CouponPageState extends State<CouponPage> {
       if (minimumAmount != 0 && doubleSubtotal < minimumAmount) {
         _showAlert(
             message: trans("Spend a minimum of minimumAmount to redeem",
-                arguments: {"minimumAmount": formatStringCurrency(total: minimumAmount.toString())}),
+                arguments: {
+                  "minimumAmount":
+                      formatStringCurrency(total: minimumAmount.toString())
+                }),
             style: ToastNotificationStyleType.DANGER);
         return;
       }
@@ -189,7 +192,10 @@ class _CouponPageState extends State<CouponPage> {
       if (maximumAmount != 0 && doubleSubtotal > maximumAmount) {
         _showAlert(
             message: trans("Spend less than maximumAmount to redeem",
-                arguments: {"maximumAmount": formatStringCurrency(total: maximumAmount.toString())}),
+                arguments: {
+                  "maximumAmount":
+                      formatStringCurrency(total: maximumAmount.toString())
+                }),
             style: ToastNotificationStyleType.DANGER);
         return;
       }

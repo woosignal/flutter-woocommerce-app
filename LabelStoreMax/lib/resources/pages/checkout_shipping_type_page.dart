@@ -290,12 +290,11 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                           selected: true,
                                           subtitle: NyFutureBuilder<String>(
                                             future: _getShippingPrice(index),
-                                            child: (BuildContext context,
-                                                data) {
+                                            child:
+                                                (BuildContext context, data) {
                                               Map<String, dynamic>
-                                              shippingOption =
-                                              _wsShippingOptions[
-                                              index];
+                                                  shippingOption =
+                                                  _wsShippingOptions[index];
                                               return RichText(
                                                 text: TextSpan(
                                                   text: '',
@@ -303,30 +302,29 @@ class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {
                                                       .textTheme
                                                       .bodyMedium,
                                                   children: <TextSpan>[
-                                                    (shippingOption[
-                                                    "object"]
-                                                    is FreeShipping
+                                                    (shippingOption["object"]
+                                                            is FreeShipping
                                                         ? TextSpan(
-                                                      text: trans(
-                                                          "Free postage"),
-                                                    )
+                                                            text: trans(
+                                                                "Free postage"),
+                                                          )
                                                         : TextSpan(
-                                                      text:
-                                                      "${trans("Price")}: ${formatStringCurrency(total: data)}",
-                                                    )),
+                                                            text:
+                                                                "${trans("Price")}: ${formatStringCurrency(total: data)}",
+                                                          )),
                                                     if (shippingOption[
-                                                    "min_amount"] !=
+                                                            "min_amount"] !=
                                                         null)
                                                       TextSpan(
                                                           text:
-                                                          "\n${trans("Spend a minimum of")} ${formatStringCurrency(total: shippingOption["min_amount"])}",
-                                                          style: Theme.of(
-                                                              context)
-                                                              .textTheme
-                                                              .bodyMedium!
-                                                              .copyWith(
-                                                              fontSize:
-                                                              14))
+                                                              "\n${trans("Spend a minimum of")} ${formatStringCurrency(total: shippingOption["min_amount"])}",
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          14))
                                                   ],
                                                 ),
                                               );

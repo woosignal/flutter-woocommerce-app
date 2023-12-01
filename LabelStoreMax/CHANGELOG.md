@@ -1,3 +1,10 @@
+## [6.12.1] - 2023-12-01
+
+* Migrate code to Nylo v5.11.1
+* Update `CartLineItem` model
+* Dart format in /resources/pages
+* Pubspec.yaml dependency updates
+
 ## [6.12.0] - 2023-10-31
 
 * Update design for Toast Notifications

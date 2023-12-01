@@ -24,12 +24,13 @@ import 'package:woosignal/models/response/product.dart';
 import '../../app/controllers/product_reviews_controller.dart';
 
 class ProductReviewsPage extends NyStatefulWidget {
-  final ProductReviewsController controller = ProductReviewsController();
-
-  ProductReviewsPage({Key? key}) : super(key: key);
+  static String path = "/product-images";
 
   @override
-  _ProductReviewsPageState createState() => _ProductReviewsPageState();
+  final ProductReviewsController controller = ProductReviewsController();
+
+  ProductReviewsPage({Key? key})
+      : super(path, key: key, child: _ProductReviewsPageState());
 }
 
 class _ProductReviewsPageState extends NyState<ProductReviewsPage> {

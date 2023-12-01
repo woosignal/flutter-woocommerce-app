@@ -24,12 +24,13 @@ import 'package:wp_json_api/wp_json_api.dart';
 import '../../app/controllers/leave_review_controller.dart';
 
 class LeaveReviewPage extends NyStatefulWidget {
-  final LeaveReviewController controller = LeaveReviewController();
-
-  LeaveReviewPage({Key? key}) : super(key: key);
+  static String path = "/product-leave-review";
 
   @override
-  _LeaveReviewPageState createState() => _LeaveReviewPageState();
+  final LeaveReviewController controller = LeaveReviewController();
+
+  LeaveReviewPage({Key? key})
+      : super(path, key: key, child: _LeaveReviewPageState());
 }
 
 class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
@@ -140,18 +141,18 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
         data: {"review": review},
         onSuccess: () async {
           ProductReview? productReview =
-          await (appWooSignal((api) => api.createProductReview(
-            productId: _lineItem!.productId,
-            verified: true,
-            review: review,
-            status: "approved",
-            reviewer: [
-              _order!.billing!.firstName,
-              _order!.billing!.lastName
-            ].join(" "),
-            rating: _rating,
-            reviewerEmail: _order!.billing!.email,
-          )));
+              await (appWooSignal((api) => api.createProductReview(
+                    productId: _lineItem!.productId,
+                    verified: true,
+                    review: review,
+                    status: "approved",
+                    reviewer: [
+                      _order!.billing!.firstName,
+                      _order!.billing!.lastName
+                    ].join(" "),
+                    rating: _rating,
+                    reviewerEmail: _order!.billing!.email,
+                  )));
 
           if (productReview == null) {
             showToastNotification(context,
@@ -165,7 +166,7 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
               description: trans("Your review has been submitted"),
               style: ToastNotificationStyleType.SUCCESS);
           pop(result: _lineItem);
-    });
+        });
 
     setState(() {
       _isLoading = false;

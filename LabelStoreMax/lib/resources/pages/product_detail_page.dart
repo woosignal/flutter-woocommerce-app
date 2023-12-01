@@ -26,12 +26,13 @@ import 'package:woosignal/models/response/product.dart' as ws_product;
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailPage extends NyStatefulWidget {
-  @override
-  final ProductDetailController controller = ProductDetailController();
-  ProductDetailPage({Key? key}) : super(key: key);
+  static String path = "/product-detail";
 
   @override
-  _ProductDetailState createState() => _ProductDetailState();
+  final ProductDetailController controller = ProductDetailController();
+
+  ProductDetailPage({Key? key})
+      : super(path, key: key, child: _ProductDetailState());
 }
 
 class _ProductDetailState extends NyState<ProductDetailPage> {
@@ -84,7 +85,8 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
           "${trans("Select a")} ${_product!.attributes[attributeIndex].name}",
       bodyWidget: ListView.separated(
         itemCount: _product!.attributes[attributeIndex].options!.length,
-        separatorBuilder: (BuildContext context, int index) => Divider(color: Colors.black12),
+        separatorBuilder: (BuildContext context, int index) =>
+            Divider(color: Colors.black12),
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(
@@ -209,7 +211,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                   );
 
                   await widget.controller.itemAddToCart(
-                      cartLineItem: cartLineItem,
+                    cartLineItem: cartLineItem,
                   );
                   Navigator.of(context).pop();
                 }),
@@ -251,31 +253,31 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: afterLoad(child: () => Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: ProductDetailBodyWidget(
-                wooSignalApp: _wooSignalApp,
-                product: _product,
-              ),
-            ),
-            // </Product body>
-            ProductDetailFooterActionsWidget(
-              onAddToCart: _addItemToCart,
-              onViewExternalProduct:
-              widget.controller.viewExternalProduct,
-              onAddQuantity: () => widget.controller
-                  .addQuantityTapped(),
-              onRemoveQuantity: () => widget.controller
-                  .removeQuantityTapped(),
-              product: _product,
-              quantity: widget.controller.quantity,
-            )
-          ],
-        ))
-      ),
+          child: afterLoad(
+              child: () => Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: ProductDetailBodyWidget(
+                          wooSignalApp: _wooSignalApp,
+                          product: _product,
+                        ),
+                      ),
+                      // </Product body>
+                      ProductDetailFooterActionsWidget(
+                        onAddToCart: _addItemToCart,
+                        onViewExternalProduct:
+                            widget.controller.viewExternalProduct,
+                        onAddQuantity: () =>
+                            widget.controller.addQuantityTapped(),
+                        onRemoveQuantity: () =>
+                            widget.controller.removeQuantityTapped(),
+                        product: _product,
+                        quantity: widget.controller.quantity,
+                      )
+                    ],
+                  ))),
     );
   }
 
@@ -294,8 +296,8 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
     }
 
     await widget.controller.itemAddToCart(
-        cartLineItem: CartLineItem.fromProduct(
-            quantityAmount: widget.controller.quantity, product: _product!),
-        );
+      cartLineItem: CartLineItem.fromProduct(
+          quantityAmount: widget.controller.quantity, product: _product!),
+    );
   }
 }

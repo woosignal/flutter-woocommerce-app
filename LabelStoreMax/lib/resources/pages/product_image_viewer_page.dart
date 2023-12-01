@@ -16,13 +16,14 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class ProductImageViewerPage extends NyStatefulWidget {
+  static String path = "/product-images";
+
   @override
   final ProductImageViewerController controller =
       ProductImageViewerController();
-  ProductImageViewerPage({Key? key}) : super(key: key);
 
-  @override
-  _ProductImageViewerPageState createState() => _ProductImageViewerPageState();
+  ProductImageViewerPage({Key? key})
+      : super(path, key: key, child: _ProductImageViewerPageState());
 }
 
 class _ProductImageViewerPageState extends NyState<ProductImageViewerPage> {

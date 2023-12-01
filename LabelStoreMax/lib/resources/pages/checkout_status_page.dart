@@ -19,11 +19,13 @@ import 'package:woosignal/models/response/order.dart' as ws_order;
 import '../widgets/woosignal_ui.dart';
 
 class CheckoutStatusPage extends NyStatefulWidget {
-  final CheckoutStatusController controller = CheckoutStatusController();
-  CheckoutStatusPage({Key? key}) : super(key: key);
+  static String path = "/checkout-status";
 
   @override
-  _CheckoutStatusState createState() => _CheckoutStatusState();
+  final CheckoutStatusController controller = CheckoutStatusController();
+
+  CheckoutStatusPage({Key? key})
+      : super(path, key: key, child: _CheckoutStatusState());
 }
 
 class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
@@ -34,7 +36,7 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
     _order = widget.controller.data();
     await Cart.getInstance.clear();
     CheckoutSession.getInstance.clear();
-    setState(() { });
+    setState(() {});
   }
 
   @override

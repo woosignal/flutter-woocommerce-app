@@ -196,44 +196,47 @@ class _CartPageState extends NyState<CartPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: afterLoad(child: () => _cartLines.isEmpty ? FractionallySizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Icon(
-                      Icons.shopping_cart,
-                      size: 100,
-                      color: Colors.black45,
-                    ),
-                    Padding(
-                      child: Text(
-                        trans("Empty Basket"),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      padding: EdgeInsets.only(top: 10),
-                    )
-                  ],
-                ),
-                heightFactor: 0.5,
-                widthFactor: 1,
-              ) : ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: _cartLines.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    CartLineItem cartLineItem = _cartLines[index];
-                    return CartItemContainer(
-                      cartLineItem: cartLineItem,
-                      actionIncrementQuantity: () =>
-                          actionIncrementQuantity(
-                              cartLineItem: cartLineItem),
-                      actionDecrementQuantity: () =>
-                          actionDecrementQuantity(
-                              cartLineItem: cartLineItem),
-                      actionRemoveItem: () =>
-                          actionRemoveItem(index: index),
-                    );
-                  })),
+              child: afterLoad(
+                  child: () => _cartLines.isEmpty
+                      ? FractionallySizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Icon(
+                                Icons.shopping_cart,
+                                size: 100,
+                                color: Colors.black45,
+                              ),
+                              Padding(
+                                child: Text(
+                                  trans("Empty Basket"),
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                padding: EdgeInsets.only(top: 10),
+                              )
+                            ],
+                          ),
+                          heightFactor: 0.5,
+                          widthFactor: 1,
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: _cartLines.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            CartLineItem cartLineItem = _cartLines[index];
+                            return CartItemContainer(
+                              cartLineItem: cartLineItem,
+                              actionIncrementQuantity: () =>
+                                  actionIncrementQuantity(
+                                      cartLineItem: cartLineItem),
+                              actionDecrementQuantity: () =>
+                                  actionDecrementQuantity(
+                                      cartLineItem: cartLineItem),
+                              actionRemoveItem: () =>
+                                  actionRemoveItem(index: index),
+                            );
+                          })),
             ),
             Divider(
               color: Colors.black45,

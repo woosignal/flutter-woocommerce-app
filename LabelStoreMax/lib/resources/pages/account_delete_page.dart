@@ -65,9 +65,9 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               PrimaryButton(
-                  title: trans("Yes, delete my account"),
-                  isLoading: isLocked('delete_account'),
-                  action: _deleteAccount,
+                title: trans("Yes, delete my account"),
+                isLoading: isLocked('delete_account'),
+                action: _deleteAccount,
               ),
               LinkButton(title: trans("Back"), action: pop)
             ],

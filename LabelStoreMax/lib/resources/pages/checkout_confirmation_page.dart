@@ -184,7 +184,8 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(trans("Checkout")),
-            Text(_wooSignalApp?.appName ?? getEnv('APP_NAME')).bodySmall(context),
+            Text(_wooSignalApp?.appName ?? getEnv('APP_NAME'))
+                .bodySmall(context),
           ],
         ),
         centerTitle: false,
@@ -252,7 +253,9 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                           child: Row(
                             children: [
                               Icon(Icons.receipt),
-                              Padding(padding: EdgeInsets.only(right: 8),),
+                              Padding(
+                                padding: EdgeInsets.only(right: 8),
+                              ),
                               Text(trans("Order Summary")).fontWeightBold()
                             ],
                           ),
@@ -271,49 +274,58 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                               CheckoutMetaLine(
                                   title: trans("Shipping fee"),
                                   amount: CheckoutSession
-                                      .getInstance.shippingType ==
-                                      null
+                                              .getInstance.shippingType ==
+                                          null
                                       ? trans("Select shipping")
                                       : CheckoutSession
-                                      .getInstance.shippingType!
-                                      .getTotal(withFormatting: true)),
+                                          .getInstance.shippingType!
+                                          .getTotal(withFormatting: true)),
                             if (_taxRate != null)
                               CheckoutTaxTotal(taxRate: _taxRate),
-                            Padding(padding: EdgeInsets.only(top: 8, left: 8, right: 8)),
-                            Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: RichText(
-                              textAlign: TextAlign.left,
-                              text: TextSpan(
-                                text:
-                                '${trans('By completing this order, I agree to all')} ',
-                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                  fontSize: 12,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()..onTap = _openTermsLink,
-                                    text: trans("Terms and conditions").toLowerCase(),
+                            Padding(
+                                padding:
+                                    EdgeInsets.only(top: 8, left: 8, right: 8)),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                child: RichText(
+                                  textAlign: TextAlign.left,
+                                  text: TextSpan(
+                                    text:
+                                        '${trans('By completing this order, I agree to all')} ',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
                                         .copyWith(
-                                      color: ThemeColor.get(context)
-                                          .primaryAccent,
-                                      fontSize: 12,
-                                    ),
+                                          fontSize: 12,
+                                        ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = _openTermsLink,
+                                        text: trans("Terms and conditions")
+                                            .toLowerCase(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: ThemeColor.get(context)
+                                                  .primaryAccent,
+                                              fontSize: 12,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: ".",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Colors.black87,
+                                              fontSize: 12,
+                                            ),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: ".",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                      color: Colors.black87,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
+                                )),
                           ],
                         ),
                       ],
@@ -322,9 +334,8 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                 ],
               ),
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16)
-                ),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(16)),
                 child: Column(
                   children: [
                     CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
@@ -345,7 +356,8 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
     );
   }
 
-  _openTermsLink() => openBrowserTab(url: AppHelper.instance.appConfig?.appTermsLink ?? "");
+  _openTermsLink() =>
+      openBrowserTab(url: AppHelper.instance.appConfig?.appTermsLink ?? "");
 
   _handleCheckout() async {
     CheckoutSession checkoutSession = CheckoutSession.getInstance;

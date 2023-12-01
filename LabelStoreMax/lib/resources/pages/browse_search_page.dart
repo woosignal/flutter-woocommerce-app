@@ -20,11 +20,13 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class BrowseSearchPage extends NyStatefulWidget {
-  final BrowseSearchController controller = BrowseSearchController();
-  BrowseSearchPage({Key? key}) : super(key: key);
+  static String path = "/product-search";
 
   @override
-  _BrowseSearchState createState() => _BrowseSearchState();
+  final BrowseSearchController controller = BrowseSearchController();
+
+  BrowseSearchPage({Key? key})
+      : super(path, key: key, child: _BrowseSearchState());
 }
 
 class _BrowseSearchState extends NyState<BrowseSearchPage> {
@@ -57,7 +59,9 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
           children: <Widget>[
             Text(trans("Search results for"),
                 style: Theme.of(context).textTheme.titleMedium),
-            afterNotNull(_search, child: () => Text("\"" + _search! + "\""), loading: CupertinoActivityIndicator())
+            afterNotNull(_search,
+                child: () => Text("\"" + _search! + "\""),
+                loading: CupertinoActivityIndicator())
           ],
         ),
         centerTitle: true,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/networking/dio/base_api_service.dart';
 import 'package:flutter_app/app/networking/dio/interceptors/logging_interceptor.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
@@ -12,7 +11,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 |--------------------------------------------------------------------------
 */
 
-class ApiService extends BaseApiService {
+class ApiService extends NyApiService {
   ApiService({BuildContext? buildContext}) : super(buildContext);
 
   @override

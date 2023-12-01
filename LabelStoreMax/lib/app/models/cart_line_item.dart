@@ -30,31 +30,43 @@ class CartLineItem {
   String? variationOptions;
   List<ws_product.Category>? categories;
   bool? onSale;
+  String? salePrice;
+  String? regularPrice;
   String? stockStatus;
-  Object? metaData = {};
+  List<Map<String?, dynamic>> metaData = [];
+  List<Map<String?, dynamic>> appMetaData = [];
 
   CartLineItem(
       {this.name,
-      this.productId,
-      this.variationId,
-      this.isManagedStock,
-      this.stockQuantity,
-      this.quantity = 1,
-      this.stockStatus,
-      this.shippingClassId,
-      this.taxStatus,
-      this.taxClass,
-      this.categories,
-      this.shippingIsTaxable,
-      this.variationOptions,
-      this.imageSrc,
-      this.subtotal,
-      this.onSale,
-      this.total,
-      this.metaData});
+        this.productId,
+        this.variationId,
+        this.isManagedStock,
+        this.stockQuantity,
+        this.quantity = 1,
+        this.stockStatus,
+        this.shippingClassId,
+        this.taxStatus,
+        this.taxClass,
+        this.categories,
+        this.shippingIsTaxable,
+        this.variationOptions,
+        this.imageSrc,
+        this.subtotal,
+        this.onSale,
+        this.salePrice,
+        this.regularPrice,
+        this.total,
+        this.metaData = const []});
 
   String getCartTotal() {
     return (quantity * parseWcPrice(subtotal)).toStringAsFixed(2);
+  }
+
+  String getPrice({bool formatToCurrency = false}) {
+    if (formatToCurrency) {
+      return formatStringCurrency(total: (parseWcPrice(subtotal)).toStringAsFixed(2));
+    }
+    return (parseWcPrice(subtotal)).toStringAsFixed(2);
   }
 
   CartLineItem.fromProduct(
@@ -69,18 +81,24 @@ class CartLineItem {
     categories = product.categories;
     isManagedStock = product.manageStock;
     stockQuantity = product.stockQuantity;
+    salePrice = product.salePrice;
+    onSale = product.onSale;
+    regularPrice = product.regularPrice;
     shippingIsTaxable = product.shippingTaxable;
+    List<Map<String?, String?>> data = product.metaData.map((e) => {e.key: e.value}).toList();
+    metaData.addAll(data);
     imageSrc = product.images.isEmpty
         ? getEnv("PRODUCT_PLACEHOLDER_IMAGE")
         : product.images.first.src;
     total = product.price;
+    appMetaData = product.metaData.map((e) => {e.key: e.value}).toList();
   }
 
   CartLineItem.fromProductVariation(
       {int? quantityAmount,
-      required List<String> options,
-      required ws_product.Product product,
-      required ProductVariation productVariation}) {
+        required List<String> options,
+        required ws_product.Product product,
+        required ProductVariation productVariation}) {
     String? imageSrc = getEnv("PRODUCT_PLACEHOLDER_IMAGE");
     if (product.images.isNotEmpty) {
       imageSrc = product.images.first.src;
@@ -99,38 +117,49 @@ class CartLineItem {
     isManagedStock = productVariation.manageStock;
     categories = product.categories;
     taxClass = productVariation.taxClass;
+    onSale = productVariation.onSale;
     this.imageSrc = imageSrc;
+    salePrice = productVariation.salePrice;
+    List<Map<String?, String?>> data = product.metaData.map((e) => {e.key: e.value}).toList();
+    metaData.addAll(data);
+    regularPrice = productVariation.regularPrice;
     shippingIsTaxable = product.shippingTaxable;
     variationOptions = options.join("; ");
     total = productVariation.price;
+    appMetaData = product.metaData.map((e) => {"key": e.key, "value": e.value}).toList();
   }
 
-  CartLineItem.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        productId = json['product_id'],
-        variationId = json['variation_id'],
-        quantity = json['quantity'],
-        shippingClassId = json['shipping_class_id'].toString(),
-        taxStatus = json['tax_status'],
-        stockQuantity = json['stock_quantity'],
-        isManagedStock = (json['is_managed_stock'] != null &&
-                json['is_managed_stock'] is bool)
-            ? json['is_managed_stock']
-            : false,
-        shippingIsTaxable = json['shipping_is_taxable'],
-        subtotal = json['subtotal'],
-        total = json['total'],
-        taxClass = json['tax_class'],
-        stockStatus = json['stock_status'],
-        imageSrc = json['image_src'],
-        categories = json['categories'] == null
-            ? null
-            : List.of(json['categories'] as List)
-                .map((e) => ws_product.Category.fromJson(e))
-                .toList(),
-        onSale = json['on_sale'],
-        variationOptions = json['variation_options'],
-        metaData = json['metaData'];
+  CartLineItem.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    productId = json['product_id'];
+    variationId = json['variation_id'];
+    quantity = json['quantity'];
+    shippingClassId = json['shipping_class_id'].toString();
+    taxStatus = json['tax_status'];
+    stockQuantity = json['stock_quantity'];
+    isManagedStock = (json['is_managed_stock'] != null &&
+        json['is_managed_stock'] is bool) ? json['is_managed_stock'] : false;
+    shippingIsTaxable = json['shipping_is_taxable'];
+    subtotal = json['subtotal'];
+    total = json['total'];
+    taxClass = json['tax_class'];
+    stockStatus = json['stock_status'];
+    imageSrc = json['image_src'];
+    salePrice = json['sale_price'];
+    regularPrice = json['regular_price'];
+    categories = json['categories'] == null ? null : List.of(json['categories'] as List).map((e) => ws_product.Category.fromJson(e)).toList();
+    onSale = json['on_sale'];
+    variationOptions = json['variation_options'];
+    metaData = [];
+    if (json['meta_data'] != null) {
+      metaData = List.from(json['meta_data']).cast<Map<String, dynamic>>();
+    }
+    appMetaData = [];
+    if (json['app_meta_data'] != null) {
+      appMetaData = List.from(json['app_meta_data']).cast<Map<String, dynamic>>();
+    }
+  }
+
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -153,5 +182,6 @@ class CartLineItem {
         'on_sale': onSale,
         'total': total,
         'meta_data': metaData,
+    'app_meta_data': appMetaData,
       };
 }
