@@ -1,3 +1,7 @@
+## [6.12.2] - 2023-12-02
+
+* Pubspec.yaml dependency updates
+
 ## [6.12.1] - 2023-12-01
 
 * Migrate code to Nylo v5.11.1
