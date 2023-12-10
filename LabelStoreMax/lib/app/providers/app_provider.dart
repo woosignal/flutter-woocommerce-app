@@ -87,14 +87,14 @@ class AppProvider implements NyProvider {
         assetsDirectory: assetsDirectory,
         valuesAsMap: valuesAsMap);
 
-    nylo.appThemes = appThemes;
-    nylo.appLoader = loader;
-    nylo.appLogo = logo;
-    nylo.addControllers(controllers);
-
-    nylo.addModelDecoders(modelDecoders);
+    nylo.addLoader(loader);
+    nylo.addLogo(logo);
+    nylo.addThemes(appThemes);
+    nylo.addToastNotification(getToastNotificationWidget);
     nylo.addValidationRules(validationRules);
-    nylo.toastNotification = getToastNotificationWidget;
+    nylo.addModelDecoders(modelDecoders);
+    nylo.addControllers(controllers);
+    nylo.addApiDecoders(apiDecoders);
 
     return nylo;
   }

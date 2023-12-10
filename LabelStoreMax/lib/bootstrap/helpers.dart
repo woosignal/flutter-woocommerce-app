@@ -23,8 +23,6 @@ import 'package:flutter_app/bootstrap/enums/symbol_position_enums.dart';
 import 'package:flutter_app/bootstrap/extensions.dart';
 import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
 import 'package:flutter_app/config/currency.dart';
-import 'package:flutter_app/config/decoders.dart';
-import 'package:flutter_app/config/events.dart';
 import 'package:flutter_app/config/payment_gateways.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
@@ -54,27 +52,10 @@ Future appWooSignal(Function(WooSignal api) api) async {
 
 /// helper to find correct color from the [context].
 class ThemeColor {
-  static ColorStyles get(BuildContext context, {String? themeId}) {
-    Nylo nylo = Backpack.instance.read('nylo');
-    List<BaseThemeConfig<ColorStyles>> appThemes =
-        nylo.appThemes as List<BaseThemeConfig<ColorStyles>>;
+  static ColorStyles get(BuildContext context, {String? themeId}) =>
+      nyColorStyle<ColorStyles>(context, themeId: themeId);
 
-    if (themeId == null) {
-      BaseThemeConfig<ColorStyles> themeFound = appThemes.firstWhere(
-          (theme) =>
-              theme.id ==
-              getEnv(Theme.of(context).brightness == Brightness.light
-                  ? 'LIGHT_THEME_ID'
-                  : 'DARK_THEME_ID'),
-          orElse: () => appThemes.first);
-      return themeFound.colors;
-    }
-
-    BaseThemeConfig<ColorStyles> baseThemeConfig = appThemes.firstWhere(
-        (theme) => theme.id == themeId,
-        orElse: () => appThemes.first);
-    return baseThemeConfig.colors;
-  }
+  static Color fromHex(String hexColor) => nyHexColor(hexColor);
 }
 
 /// helper to set colors on TextStyle
@@ -648,34 +629,6 @@ Future<BillingDetails> billingDetailsFromWpUserInfoResponse(
   await billingDetails.fromWpMeta(metaData);
   return billingDetails;
 }
-
-/// API helper
-api<T>(dynamic Function(T request) request,
-    {BuildContext? context,
-      Map<String, dynamic> headers = const {},
-      String? bearerToken,
-      String? baseUrl,
-      int? page,
-      String? queryNamePage,
-      String? queryNamePerPage,
-      int? perPage,
-      List<Type> events = const []}) async =>
-    await nyApi<T>(
-        request: request,
-        apiDecoders: apiDecoders,
-        context: context,
-        headers: headers,
-        bearerToken: bearerToken,
-        baseUrl: baseUrl,
-        events: events,
-        page: page,
-        perPage: perPage,
-        queryParamPage: queryNamePage ?? "page",
-        queryParamPerPage: queryNamePerPage
-    );
-
-/// Event helper
-event<T>({Map? data}) async => nyEvent<T>(params: data, events: events);
 
 /// Check if the [Product] is new.
 bool isProductNew(Product? product) {
