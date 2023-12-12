@@ -24,7 +24,7 @@ import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class BrowseCategoryPage extends NyStatefulWidget {
-  static String path = "/product-search";
+  static String path = "/browse-category";
 
   @override
   final BrowseCategoryController controller = BrowseCategoryController();

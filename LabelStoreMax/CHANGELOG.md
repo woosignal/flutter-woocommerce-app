@@ -1,3 +1,8 @@
+## [6.12.4] - 2023-12-12
+
+* Fix `BrowseCategoryPage`
+* Pubspec.yaml dependency updates
+
 ## [6.12.3] - 2023-12-09
 
 * Migrate code to Nylo v5.15.0
