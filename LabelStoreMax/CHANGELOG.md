@@ -1,3 +1,7 @@
+## [6.12.5] - 2023-12-28
+
+* Pubspec.yaml dependency updates
+
 ## [6.12.4] - 2023-12-12
 
 * Fix `BrowseCategoryPage`

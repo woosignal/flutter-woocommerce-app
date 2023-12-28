@@ -49,14 +49,14 @@ final Map<Type, NyApiService> apiDecoders = {
 | Learn more https://nylo.dev/docs/5.x/controllers#using-controllers-with-ny-page
 |--------------------------------------------------------------------------
 */
-final Map<Type, BaseController> controllers = {
-  ProductDetailController: ProductDetailController(),
-  AccountOrderDetailController: AccountOrderDetailController(),
-  BrowseCategoryController: BrowseCategoryController(),
-  CheckoutStatusController: CheckoutStatusController(),
-  LeaveReviewController: LeaveReviewController(),
-  ProductImageViewerController: ProductImageViewerController(),
-  ProductReviewsController: ProductReviewsController()
+final Map<Type, BaseController Function()> controllers = {
+  ProductDetailController: () => ProductDetailController(),
+  AccountOrderDetailController: () => AccountOrderDetailController(),
+  BrowseCategoryController: () => BrowseCategoryController(),
+  CheckoutStatusController: () => CheckoutStatusController(),
+  LeaveReviewController: () => LeaveReviewController(),
+  ProductImageViewerController: () => ProductImageViewerController(),
+  ProductReviewsController: () => ProductReviewsController()
 
   // ...
 
