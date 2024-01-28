@@ -12,7 +12,7 @@ import '/resources/themes/styles/light_theme_colors.dart';
 | Run the below in the terminal to add a new theme.
 | "dart run nylo_framework:main make:theme bright_theme"
 |
-| Learn more: https://nylo.dev/docs/5.x/themes-and-styling
+| Learn more: https://nylo.dev/docs/5.20.0/themes-and-styling
 |--------------------------------------------------------------------------
 */
 

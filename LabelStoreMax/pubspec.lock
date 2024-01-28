@@ -29,10 +29,10 @@ packages:
     dependency: "direct main"
     description:
       name: animate_do
-      sha256: "91b3e0306ba2096c7a7e1ee1ba96f491e25e92034c215f4bf8de6a7251c4bef1"
+      sha256: "7d176dee8acff0bcd298bef8e5520c25f93062fcac79b8d76b3f70dd263f0c5b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.2"
+    version: "3.3.0"
   archive:
     dependency: transitive
     description:
@@ -93,26 +93,26 @@ packages:
     dependency: "direct main"
     description:
       name: cached_network_image
-      sha256: f98972704692ba679db144261172a8e20feb145636c617af0eb4022132a6797f
+      sha256: "28ea9690a8207179c319965c13cd8df184d5ee721ae2ce60f398ced1219cea1f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0"
+    version: "3.3.1"
   cached_network_image_platform_interface:
     dependency: transitive
     description:
       name: cached_network_image_platform_interface
-      sha256: "56aa42a7a01e3c9db8456d9f3f999931f1e05535b5a424271e9a38cabf066613"
+      sha256: "9e90e78ae72caa874a323d78fa6301b3fb8fa7ea76a8f96dc5b5bf79f283bf2f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.0"
   cached_network_image_web:
     dependency: transitive
     description:
       name: cached_network_image_web
-      sha256: "759b9a9f8f6ccbb66c185df805fac107f05730b1dab9c64626d1008cca532257"
+      sha256: "42a835caa27c220d1294311ac409a43361088625a4f23c820b006dd9bffb3316"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   characters:
     dependency: transitive
     description:
@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  cli_dialog:
+    dependency: transitive
+    description:
+      name: cli_dialog
+      sha256: "47530e1c4a6190662954cefce196d35143c4ed2675ea697d6e542790bdef5641"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   cli_util:
     dependency: transitive
     description:
@@ -185,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  dart_console:
+    dependency: transitive
+    description:
+      name: dart_console
+      sha256: dfa4b63eb4382325ff975fdb6b7a0db8303bb5809ee5cb4516b44153844742ed
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   device_info_plus:
     dependency: transitive
     description:
@@ -285,10 +301,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_messaging
-      sha256: "199fe8186a5370d1cf5ce0819191079afc305914e8f38715f5e23943940dfe2d"
+      sha256: "980259425fa5e2afc03e533f33723335731d21a56fd255611083bceebf4373a8"
       url: "https://pub.dev"
     source: hosted
-    version: "14.7.9"
+    version: "14.7.10"
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
@@ -465,10 +481,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_widget_from_html_core
-      sha256: d3239b1670e83fafb209d0ddccfd19bb1cd5382b3ac9a507eb1b36274df78fec
+      sha256: "028f4989b9ff4907466af233d50146d807772600d98a3e895662fbdb09c39225"
       url: "https://pub.dev"
     source: hosted
-    version: "0.14.7"
+    version: "0.14.11"
   fluttertoast:
     dependency: transitive
     description:
@@ -617,18 +633,18 @@ packages:
     dependency: "direct main"
     description:
       name: nylo_framework
-      sha256: "93c5159eade10ed4e38db5ce127e12a62dd2621b411e2ae221e41fb61c77d5ca"
+      sha256: "46b44731f82978aee690084dc0a5ac47990c44369302189a8cdf9b46b82ec213"
       url: "https://pub.dev"
     source: hosted
-    version: "5.16.0"
+    version: "5.20.8"
   nylo_support:
     dependency: transitive
     description:
       name: nylo_support
-      sha256: "8860d620bc0de49b5f0fee22d7391a6ad240fe4bc5737f1a9287bcd5d82d3e71"
+      sha256: da5fa4e736b554dd92a52430d1c415c514908aef9bdb42ba5d3de47cfa6c0dc8
       url: "https://pub.dev"
     source: hosted
-    version: "5.23.0"
+    version: "5.38.1"
   octo_image:
     dependency: transitive
     description:
@@ -793,10 +809,10 @@ packages:
     dependency: "direct main"
     description:
       name: razorpay_flutter
-      sha256: d73a536032f6939f0a6706cff958904d471eb1acb3dc957c8cc4e1628f0fbc28
+      sha256: eadd633997183286e924157ce5033f3b3d953530632f3e3c6057dc7b1f605fb7
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.5"
+    version: "1.3.6"
   recase:
     dependency: transitive
     description:
@@ -817,10 +833,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences
-      sha256: b7f41bad7e521d205998772545de63ff4e6c97714775902c199353f8bf1511ac
+      sha256: "81429e4481e1ccfb51ede496e916348668fd0921627779233bd24cc3ff6abd02"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -869,6 +885,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  skeletonizer:
+    dependency: transitive
+    description:
+      name: skeletonizer
+      sha256: "86f373126d9a887a2d63f2463a9913a973ce7f282efa7f0d9d06a17e3f19838c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1006,10 +1030,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: e9aa5ea75c84cf46b3db4eea212523591211c3cf2e13099ee4ec147f54201c86
+      sha256: c512655380d241a337521703af62d2c122bf7b77a46ff7dd750092aa9433499c
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.2"
+    version: "6.2.4"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1158,18 +1182,18 @@ packages:
     dependency: "direct main"
     description:
       name: woosignal
-      sha256: d32d587a85d8a89040d5ea48be70c07c37e174bc2013519fc43a47e47684e7c2
+      sha256: c87ee44e672973f1b457cd4cc340c75507e29638ff39cee235de0cb5c0858126
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.1"
+    version: "3.8.2"
   wp_json_api:
     dependency: "direct main"
     description:
       name: wp_json_api
-      sha256: c0c8260bc43b32d4cd47d5aa2c6c503c11f5cc9e59efb054c0f683dc2129091a
+      sha256: b633b86ad0f79114197a134359351f587f6373637cbecf055e00f1d025c96a7e
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.3"
+    version: "3.3.4"
   xdg_directories:
     dependency: transitive
     description:

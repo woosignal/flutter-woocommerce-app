@@ -34,6 +34,7 @@ ThemeData darkTheme(ColorStyles darkColors) {
     focusColor: darkColors.primaryContent,
     scaffoldBackgroundColor: darkColors.background,
     appBarTheme: AppBarTheme(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: darkColors.appBarBackground,
         titleTextStyle: darkTheme.titleLarge!
             .copyWith(color: darkColors.appBarPrimaryContent),
@@ -65,7 +66,7 @@ ThemeData darkTheme(ColorStyles darkColors) {
       selectedItemColor: darkColors.bottomTabBarLabelSelected,
     ),
     textTheme: darkTheme,
-    colorScheme: ColorScheme.dark().copyWith(background: darkColors.background),
+    colorScheme: ColorScheme.dark(background: darkColors.background),
   );
 }
 

@@ -10,7 +10,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 | Design
 | Contains widgets used in the Nylo framework.
 |
-| Learn more: https://nylo.dev/docs/5.x/themes
+| Learn more: https://nylo.dev/docs/5.20.0/themes
 |--------------------------------------------------------------------------
 */
 

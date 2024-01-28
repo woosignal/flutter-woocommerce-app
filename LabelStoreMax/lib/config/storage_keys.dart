@@ -5,7 +5,7 @@
 | E.g. static String userCoins = "USER_COINS";
 | String coins = NyStorage.read( StorageKey.userCoins );
 |
-| Learn more: https://nylo.dev/docs/5.x/storage#storage-keys
+| Learn more: https://nylo.dev/docs/5.20.0/storage#storage-keys
 |--------------------------------------------------------------------------
 */
 

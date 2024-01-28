@@ -36,6 +36,7 @@ ThemeData lightTheme(ColorStyles lightColors) {
     scaffoldBackgroundColor: lightColors.background,
     hintColor: lightColors.primaryAccent,
     appBarTheme: AppBarTheme(
+      surfaceTintColor: Colors.transparent,
       backgroundColor: lightColors.appBarBackground,
       titleTextStyle: lightTheme.titleLarge!
           .copyWith(color: lightColors.appBarPrimaryContent),
@@ -69,7 +70,7 @@ ThemeData lightTheme(ColorStyles lightColors) {
     ),
     textTheme: lightTheme,
     colorScheme:
-        ColorScheme.light().copyWith(background: lightColors.background),
+        ColorScheme.light(background: lightColors.background),
   );
 }
 
