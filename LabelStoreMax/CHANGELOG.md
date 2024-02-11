@@ -1,3 +1,7 @@
+## [6.12.7] - 2024-02-11
+
+* Pubspec.yaml dependency updates
+
 ## [6.12.6] - 2024-01-28
 
 * Update default themes
