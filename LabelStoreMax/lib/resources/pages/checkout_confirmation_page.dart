@@ -32,10 +32,11 @@ import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CheckoutConfirmationPage extends StatefulWidget {
+  static String path = '/checkout';
   CheckoutConfirmationPage({Key? key}) : super(key: key);
 
   @override
-  CheckoutConfirmationPageState createState() =>
+  createState() =>
       CheckoutConfirmationPageState();
 }
 
@@ -49,7 +50,6 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
 
   @override
   init() async {
-    super.init();
     CheckoutSession.getInstance.coupon = null;
     List<PaymentType?> paymentTypes = await getPaymentTypes();
 
@@ -60,6 +60,17 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
           orElse: () => paymentTypes.first);
     }
     _getTaxes();
+  }
+
+  @override
+  stateUpdated(dynamic data) async {
+    if (data == null) return;
+    if (data['reloadState'] != null) {
+      reloadState(showLoader: data['reloadState']);
+    }
+    if (data['refresh'] != null) {
+      setState(() {});
+    }
   }
 
   reloadState({required bool showLoader}) {
