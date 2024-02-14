@@ -1,3 +1,11 @@
+## [6.13.2] - 2024-02-15
+
+* Pubspec.yaml dependency updates
+
+## [6.13.1] - 2024-02-13
+
+* Update .env
+
 ## [6.13.0] - 2024-02-12
 
 * Update PayPal integration
