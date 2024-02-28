@@ -33,7 +33,7 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CheckoutConfirmationPage extends StatefulWidget {
   static String path = '/checkout';
-  CheckoutConfirmationPage({Key? key}) : super(key: key);
+  CheckoutConfirmationPage({super.key});
 
   @override
   createState() =>

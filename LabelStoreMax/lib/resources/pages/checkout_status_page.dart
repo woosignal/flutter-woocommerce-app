@@ -36,14 +36,12 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
     _order = widget.controller.data();
     await Cart.getInstance.clear();
     CheckoutSession.getInstance.clear();
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
         title: StoreLogo(height: 60),
         automaticallyImplyLeading: false,
         centerTitle: true,

@@ -25,11 +25,8 @@ import 'package:flutter_app/resources/pages/product_reviews_page.dart';
 import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-/*
-|--------------------------------------------------------------------------
-| App Router
-|--------------------------------------------------------------------------
-*/
+/* App Router
+|-------------------------------------------------------------------------- */
 
 appRouter() => nyRoutes((router) {
       router.route("/home", (context) => HomePage());
