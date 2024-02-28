@@ -221,10 +221,10 @@ packages:
     dependency: transitive
     description:
       name: device_meta
-      sha256: "07d5d226a483609b735b3c67e654fdf0a00545a16a5c909f7ce6230f1e0280aa"
+      sha256: "356a8f6e09c03ec832a701f007c158d4e2e83c41773bdcd6ea39335d7743b35c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.10"
+    version: "1.1.11"
   dio:
     dependency: transitive
     description:
@@ -705,10 +705,10 @@ packages:
     dependency: transitive
     description:
       name: nylo_support
-      sha256: "3d1bf4f95d3a4ac7aa240064ee1b8eb570cc93ebdb38e1689861a9b4e4cd8aa0"
+      sha256: "049a8f69a349a2f038fb95637320798e409de8287138b47a3c85784462e45388"
       url: "https://pub.dev"
     source: hosted
-    version: "5.49.0"
+    version: "5.50.0"
   octo_image:
     dependency: transitive
     description:
@@ -1230,10 +1230,10 @@ packages:
     dependency: "direct main"
     description:
       name: woosignal
-      sha256: "8dfaaa6ac78a7b137c8829568b1973444d0f94026f8ab1eec59c2637e8a1cbe8"
+      sha256: ad0381d78c4fe563edb7d95df23645bff7bb0dbe20881b6ed363004ddded0eab
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.1"
+    version: "3.9.2"
   wp_json_api:
     dependency: "direct main"
     description:
