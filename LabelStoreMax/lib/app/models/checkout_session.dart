@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,13 +9,13 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'dart:convert';
-import 'package:flutter_app/app/models/billing_details.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/customer_address.dart';
-import 'package:flutter_app/app/models/payment_type.dart';
-import 'package:flutter_app/app/models/shipping_type.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
+import '/app/models/billing_details.dart';
+import '/app/models/cart.dart';
+import '/app/models/customer_address.dart';
+import '/app/models/payment_type.dart';
+import '/app/models/shipping_type.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/shared_key.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/coupon.dart';
 import 'package:woosignal/models/response/tax_rate.dart';

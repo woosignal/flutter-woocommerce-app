@@ -229,5 +229,13 @@
   "Account deleted": "Account verwijderd",
   "Shipping is not supported for your location, sorry": "Verzending wordt niet ondersteund voor uw locatie, sorry",
   "Order Summary": "Overzicht van de bestelling",
+  "Checkout as guest": "Check uit als gast",
+  "Logout?": "Uitloggen?",
+  "Checkout as guest or login to continue": "Afrekenen als gast of inloggen om verder te gaan",
+  "Login / Create an account": "Inloggen / Maak een account aan",
+  "Contact us for any questions on your order.": "Neem contact met ons op voor eventuele vragen over uw bestelling.",
+  "Delete my account": "Verwijder mijn account",
+  "({{itemCount}}) items from {{appName}}": "({{itemCount}}) artikelen van {{appName}}",
+  "Invalid email address": "Ongeldig e-mailadres",
   "By completing this order, I agree to all": "Door deze bestelling te voltooien, ga ik akkoord met alles"
 }

@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "737321f9be522620ed3794937298fb0027a48a402624fa2500f7532f94aea810"
+      sha256: fe4c077084ddda88f327dc1c96d16631cd68d4948644593fcbcd911c2c89e2fa
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.22"
+    version: "1.3.23"
   analyzer:
     dependency: "direct main"
     description:
@@ -29,10 +29,10 @@ packages:
     dependency: "direct main"
     description:
       name: animate_do
-      sha256: "8a9d0f91d066d5f86bd9de9455e5741e6bbb284b114c76375f01584065dd3da1"
+      sha256: "7a3162729f0ea042f9dd84da217c5bde5472ad9cef644079929d4304a5dc4ca0"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.3"
+    version: "3.3.4"
   archive:
     dependency: transitive
     description:
@@ -285,10 +285,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "7e049e32a9d347616edb39542cf92cd53fdb4a99fb6af0a0bff327c14cd76445"
+      sha256: "797379ea206eaeeb62499775de812761493d0692890fdc7f90b6183a3369176d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.25.4"
+    version: "2.25.5"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -301,34 +301,34 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: "57e61d6010e253b36d38191cefd6199d7849152cdcd234b61ca290cdb278a0ba"
+      sha256: c8e1d59385eee98de63c92f961d2a7062c5d9a65e7f45bdc7f1b0b205aab2492
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.4"
+    version: "2.11.5"
   firebase_messaging:
     dependency: "direct main"
     description:
       name: firebase_messaging
-      sha256: "799922b57d09fe89b5634be2a7fea66a2683eb1a02502c71fe90c212240f89ef"
+      sha256: "1e15c5d90cd1dab98cdd169e258bceece1e98d3855350abe4196146443bbb08a"
       url: "https://pub.dev"
     source: hosted
-    version: "14.7.16"
+    version: "14.7.17"
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
       name: firebase_messaging_platform_interface
-      sha256: "789a3b26097e2bdad15a407dc552d6af74287b477ceb4aa6ec0d8aa967caf9e5"
+      sha256: "5e00f3e5c8b3f24b082dc20edb0c80d653ca87a87757db71218e045070fc7f8e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.24"
+    version: "4.5.25"
   firebase_messaging_web:
     dependency: transitive
     description:
       name: firebase_messaging_web
-      sha256: "156a83d281bbcc92b17496f323c747802287520aece51a893a5fdb8078bccbe7"
+      sha256: "59de3f85715416f97a842f307b54c23540cbba4a109a7125e2150082bb041966"
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.5"
+    version: "3.6.6"
   fixnum:
     dependency: transitive
     description:
@@ -471,10 +471,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_stripe
-      sha256: "3a88b6001e62d93588a8d11294027a8ad43a56ae94a65a98623edb368d5b2a06"
+      sha256: dfa4f0cf2f64cf82fde57357283819688c3b985c6cd10c26f50dd4a5476e4924
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.0"
   flutter_styled_toast:
     dependency: transitive
     description:
@@ -553,10 +553,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: f0b8d115a13ecf827013ec9fc883390ccc0e87a96ed5347a3114cac177ef18e8
+      sha256: "5b1726fee554d1cc9db1baef8061b126567ff0a1140a03ed7de936e62f2ab98b"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.2.0"
   html:
     dependency: "direct main"
     description:
@@ -697,18 +697,18 @@ packages:
     dependency: "direct main"
     description:
       name: nylo_framework
-      sha256: "67c6cf8458645ac586a1e9741711e11df78401e281f02e464e9169d8b8610943"
+      sha256: "7973671a9f840b2d183e812a7c4e2f084e5fd43574c2c08aba5278a23d17057b"
       url: "https://pub.dev"
     source: hosted
-    version: "5.21.4"
+    version: "5.21.7"
   nylo_support:
     dependency: transitive
     description:
       name: nylo_support
-      sha256: "049a8f69a349a2f038fb95637320798e409de8287138b47a3c85784462e45388"
+      sha256: ca1ed13234368429abb5c371c4258c2413ba65d0a98d38a090ab3a62f8b6f912
       url: "https://pub.dev"
     source: hosted
-    version: "5.50.0"
+    version: "5.51.0"
   octo_image:
     dependency: transitive
     description:
@@ -953,10 +953,10 @@ packages:
     dependency: transitive
     description:
       name: skeletonizer
-      sha256: "86f373126d9a887a2d63f2463a9913a973ce7f282efa7f0d9d06a17e3f19838c"
+      sha256: "2eb80153c80507359ff05f6a18ed50ae0bafa1b999aa867a8cef0a53387b5650"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1030,26 +1030,26 @@ packages:
     dependency: transitive
     description:
       name: stripe_android
-      sha256: "5602ebef79e013dec95403abfd4a3bcb5428cce6b9b92675bd9624fafc3b197e"
+      sha256: a1ba929247d9accd9d8b201740cc005f66ad2f739ce5323679fa408d5296338c
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.0"
   stripe_ios:
     dependency: transitive
     description:
       name: stripe_ios
-      sha256: dbacecab6c77148835a5c9875d74f6f4f7bfb867bfbe88a3ca089b8f0abc2fd2
+      sha256: "67994171a29301d12d6a557177d02b12f0d400edd3041ecbdad5fd5c25b43569"
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.0"
   stripe_platform_interface:
     dependency: transitive
     description:
       name: stripe_platform_interface
-      sha256: "62b87be6e11c0bdbdb463cf491780da34e6c23b7eea4e9d458f748dc22a42ef9"
+      sha256: "78d7f0b8d39df3b296283dd5eebbe936b1bd82a4b7252be4dbcbddb02a2175e1"
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.0"
   synchronized:
     dependency: transitive
     description:

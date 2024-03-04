@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,10 +9,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/resources/widgets/woosignal_ui.dart';
 
 class CheckoutStoreHeadingWidget extends StatelessWidget {
-  const CheckoutStoreHeadingWidget({Key? key}) : super(key: key);
+  const CheckoutStoreHeadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

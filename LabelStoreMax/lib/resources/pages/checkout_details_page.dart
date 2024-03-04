@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,19 +9,19 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/billing_details.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/app/models/customer_address.dart';
-import 'package:flutter_app/app/models/customer_country.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/customer_address_input.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_app/resources/widgets/switch_address_tab.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/billing_details.dart';
+import '/app/models/checkout_session.dart';
+import '/app/models/customer_address.dart';
+import '/app/models/customer_country.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/customer_address_input.dart';
+import '/resources/widgets/safearea_widget.dart';
+import '/resources/widgets/switch_address_tab.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:validated/validated.dart' as validate;
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
@@ -29,10 +29,11 @@ import 'package:wp_json_api/wp_json_api.dart';
 import '../../app/models/default_shipping.dart';
 
 class CheckoutDetailsPage extends StatefulWidget {
+  static String path = "/checkout-details";
   CheckoutDetailsPage();
 
   @override
-  _CheckoutDetailsPageState createState() => _CheckoutDetailsPageState();
+  createState() => _CheckoutDetailsPageState();
 }
 
 class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {

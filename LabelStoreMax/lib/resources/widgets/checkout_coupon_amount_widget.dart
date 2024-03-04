@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,15 +9,14 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/cart.dart';
+import '/app/models/checkout_session.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutCouponAmountWidget extends StatelessWidget {
-  const CheckoutCouponAmountWidget({Key? key, required this.checkoutSession})
-      : super(key: key);
+  const CheckoutCouponAmountWidget({super.key, required this.checkoutSession});
 
   final CheckoutSession checkoutSession;
 
@@ -31,7 +30,7 @@ class CheckoutCouponAmountWidget extends StatelessWidget {
       child: (BuildContext context, data) => Padding(
         child: CheckoutMetaLine(
           title: "${trans('Coupon')}: ${checkoutSession.coupon?.code}",
-          amount: "-" + formatStringCurrency(total: data),
+          amount: "-${formatStringCurrency(total: data)}",
         ),
         padding: EdgeInsets.only(bottom: 0, top: 0),
       ),

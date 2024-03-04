@@ -1,12 +1,12 @@
-import 'package:flutter_app/app/controllers/account_order_detail_controller.dart';
-import 'package:flutter_app/app/controllers/browse_category_controller.dart';
-import 'package:flutter_app/app/controllers/checkout_status_controller.dart';
-import 'package:flutter_app/app/controllers/leave_review_controller.dart';
-import 'package:flutter_app/app/controllers/product_detail_controller.dart';
-import 'package:flutter_app/app/controllers/product_image_viewer_controller.dart';
-import 'package:flutter_app/app/controllers/product_reviews_controller.dart';
-import 'package:flutter_app/app/models/user.dart';
-import 'package:flutter_app/app/networking/api_service.dart';
+import '/app/controllers/account_order_detail_controller.dart';
+import '/app/controllers/browse_category_controller.dart';
+import '/app/controllers/checkout_status_controller.dart';
+import '/app/controllers/leave_review_controller.dart';
+import '/app/controllers/product_detail_controller.dart';
+import '/app/controllers/product_image_viewer_controller.dart';
+import '/app/controllers/product_reviews_controller.dart';
+import '/app/models/user.dart';
+import '/app/networking/api_service.dart';
 
 /*
 |--------------------------------------------------------------------------

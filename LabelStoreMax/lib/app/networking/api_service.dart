@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/networking/dio/interceptors/logging_interceptor.dart';
+import '/app/networking/dio/interceptors/logging_interceptor.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /*

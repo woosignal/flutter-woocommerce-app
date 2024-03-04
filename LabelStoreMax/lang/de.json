@@ -229,5 +229,13 @@
   "Account deleted": "Konto gelöscht",
   "Shipping is not supported for your location, sorry": "Der Versand wird für Ihren Standort nicht unterstützt, tut mir leid",
   "Order Summary": "Bestellübersicht",
+  "Checkout as guest": "Als Gast auschecken",
+  "Logout?": "Ausloggen?",
+  "Checkout as guest or login to continue": "Bezahlen Sie als Gast oder melden Sie sich an, um fortzufahren",
+  "Login / Create an account": "Anmelden / Konto erstellen",
+  "Contact us for any questions on your order.": "Kontaktieren Sie uns bei Fragen zu Ihrer Bestellung.",
+  "Delete my account": "Mein Konto löschen",
+  "({{itemCount}}) items from {{appName}}": "({{itemCount}}) artikel aus {{appName}}",
+  "Invalid email address": "Ungültige E-Mail-Adresse",
   "By completing this order, I agree to all": "Mit Abschluss dieser Bestellung stimme ich allem zu"
 }

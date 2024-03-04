@@ -3,14 +3,14 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class ProductQuantity extends StatefulWidget {
   
-  ProductQuantity({Key? key, required this.productId}) : super(key: key);
+  ProductQuantity({super.key, required this.productId});
 
   final int productId;
 
   static String state = "product_quantity";
 
   @override
-  _ProductQuantityState createState() => _ProductQuantityState(productId);
+  createState() => _ProductQuantityState(productId);
 }
 
 class _ProductQuantityState extends NyState<ProductQuantity> {
@@ -22,10 +22,6 @@ class _ProductQuantityState extends NyState<ProductQuantity> {
     stateName = ProductQuantity.state;
   }
 
-  @override
-  init() async {
-    super.init();
-  }
   
   @override
   stateUpdated(dynamic data) async {

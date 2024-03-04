@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,12 +9,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/product_loader_controller.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
-import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/controllers/product_loader_controller.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/cart_icon_widget.dart';
+import '/resources/widgets/home_drawer_widget.dart';
+import '/resources/widgets/safearea_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -23,13 +23,12 @@ import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class MelloThemeWidget extends StatefulWidget {
   MelloThemeWidget(
-      {Key? key, required this.globalKey, required this.wooSignalApp})
-      : super(key: key);
+      {super.key, required this.globalKey, required this.wooSignalApp});
   final GlobalKey globalKey;
   final WooSignalApp? wooSignalApp;
 
   @override
-  _MelloThemeWidgetState createState() => _MelloThemeWidgetState();
+  createState() => _MelloThemeWidgetState();
 }
 
 class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {

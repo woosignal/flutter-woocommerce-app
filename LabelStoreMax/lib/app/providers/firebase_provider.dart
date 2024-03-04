@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/firebase_options.dart';
+import '/bootstrap/app_helper.dart';
+import '/firebase_options.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/woosignal.dart';
 
@@ -16,9 +16,7 @@ class FirebaseProvider implements NyProvider {
   @override
   afterBoot(Nylo nylo) async {
     bool? firebaseFcmIsEnabled = AppHelper.instance.appConfig?.firebaseFcmIsEnabled;
-    if (firebaseFcmIsEnabled == null) {
-      firebaseFcmIsEnabled = getEnv('FCM_ENABLED', defaultValue: false);
-    }
+    firebaseFcmIsEnabled ??= getEnv('FCM_ENABLED', defaultValue: false);
 
     if (firebaseFcmIsEnabled != true) return;
 

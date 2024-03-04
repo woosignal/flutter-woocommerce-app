@@ -229,5 +229,13 @@
   "Account deleted": "Hesap silindi",
   "Shipping is not supported for your location, sorry": "Bulunduğunuz yer için gönderim desteklenmiyor, üzgünüm",
   "Order Summary": "Sipariş özeti",
+  "Checkout as guest": "Misafir olarak ödeme yap",
+  "Logout?": "Çıkış Yap?",
+  "Checkout as guest or login to continue": "Devam etmek için misafir olarak ödeme yapın veya giriş yapın",
+  "Login / Create an account": "Giriş yap / Hesap oluştur",
+  "Contact us for any questions on your order.": "Siparişinizle ilgili sorularınız için bizimle iletişime geçin.",
+  "Delete my account": "Hesabımı sil",
+  "({{itemCount}}) items from {{appName}}": "({{itemCount}}) gelen öğeler {{appName}}",
+  "Invalid email address": "Geçersiz e-posta adresi",
   "By completing this order, I agree to all": "Bu siparişi tamamlayarak, tümünü kabul ediyorum"
 }

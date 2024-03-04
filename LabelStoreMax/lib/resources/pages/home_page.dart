@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,17 +9,19 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/resources/widgets/compo_theme_widget.dart';
-import 'package:flutter_app/resources/widgets/mello_theme_widget.dart';
-import 'package:flutter_app/resources/widgets/notic_theme_widget.dart';
+import '/bootstrap/app_helper.dart';
+import '/resources/widgets/compo_theme_widget.dart';
+import '/resources/widgets/mello_theme_widget.dart';
+import '/resources/widgets/notic_theme_widget.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class HomePage extends StatefulWidget {
+  
+  static String path = "/home";
   HomePage();
 
   @override
-  _HomePageState createState() => _HomePageState();
+  createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {

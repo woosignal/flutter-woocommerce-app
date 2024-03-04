@@ -1,7 +1,7 @@
 import '/app/providers/firebase_provider.dart';
-import 'package:flutter_app/app/providers/app_provider.dart';
-import 'package:flutter_app/app/providers/event_provider.dart';
-import 'package:flutter_app/app/providers/route_provider.dart';
+import '/app/providers/app_provider.dart';
+import '/app/providers/event_provider.dart';
+import '/app/providers/route_provider.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /*

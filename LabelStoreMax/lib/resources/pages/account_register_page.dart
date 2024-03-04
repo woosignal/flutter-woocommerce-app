@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,13 +11,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/user.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/user.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/shared_key.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/safearea_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:wp_json_api/exceptions/empty_username_exception.dart';
@@ -30,10 +30,11 @@ import 'package:wp_json_api/models/responses/wp_user_register_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountRegistrationPage extends StatefulWidget {
+  static String path = "/account-register";
   AccountRegistrationPage();
 
   @override
-  _AccountRegistrationPageState createState() =>
+  createState() =>
       _AccountRegistrationPageState();
 }
 

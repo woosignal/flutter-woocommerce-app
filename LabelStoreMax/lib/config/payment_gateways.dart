@@ -1,9 +1,9 @@
-import 'package:flutter_app/app/models/payment_type.dart';
-import 'package:flutter_app/app/providers/payments/cash_on_delivery.dart';
-import 'package:flutter_app/app/providers/payments/paypal_pay.dart';
-import 'package:flutter_app/app/providers/payments/razorpay_pay.dart';
-import 'package:flutter_app/app/providers/payments/stripe_pay.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
+import '/app/models/payment_type.dart';
+import '/app/providers/payments/cash_on_delivery.dart';
+import '/app/providers/payments/paypal_pay.dart';
+import '/app/providers/payments/razorpay_pay.dart';
+import '/app/providers/payments/stripe_pay.dart';
+import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /*

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,18 +9,19 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
+import '/bootstrap/app_helper.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 import '../widgets/woosignal_ui.dart';
 
 class HomeSearchPage extends StatefulWidget {
+  static String path = "/home-search";
   HomeSearchPage();
 
   @override
-  _HomeSearchPageState createState() => _HomeSearchPageState();
+  createState() => _HomeSearchPageState();
 }
 
 class _HomeSearchPageState extends State<HomeSearchPage> {

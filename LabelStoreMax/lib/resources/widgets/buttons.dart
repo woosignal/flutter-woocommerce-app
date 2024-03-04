@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,13 +10,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/app_loader_widget.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton(
-      {Key? key, this.title, this.action, this.isLoading = false})
-      : super(key: key);
+      {super.key, this.title, this.action, this.isLoading = false});
 
   final String? title;
   final Function? action;
@@ -38,10 +37,10 @@ class PrimaryButton extends StatelessWidget {
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
-    Key? key,
+    super.key,
     this.title,
     this.action,
-  }) : super(key: key);
+  });
 
   final String? title;
   final Function? action;
@@ -60,10 +59,10 @@ class SecondaryButton extends StatelessWidget {
 
 class LinkButton extends StatelessWidget {
   const LinkButton({
-    Key? key,
+    super.key,
     this.title,
     this.action,
-  }) : super(key: key);
+  });
 
   final String? title;
   final Function? action;
@@ -93,13 +92,13 @@ class LinkButton extends StatelessWidget {
 
 class WooSignalButton extends StatelessWidget {
   const WooSignalButton({
-    Key? key,
+    super.key,
     this.title,
     this.action,
     this.textStyle,
     this.isLoading = false,
     this.bgColor,
-  }) : super(key: key);
+  });
 
   final String? title;
   final Function? action;

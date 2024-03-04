@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,12 +9,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/user.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/user.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/shared_key.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/exceptions/incorrect_password_exception.dart';
 import 'package:wp_json_api/exceptions/invalid_email_exception.dart';
@@ -24,11 +24,12 @@ import 'package:wp_json_api/models/responses/wp_user_login_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountLandingPage extends StatefulWidget {
+  static String path = "/account-landing";
   final bool showBackButton;
   AccountLandingPage({this.showBackButton = true});
 
   @override
-  _AccountLandingPageState createState() => _AccountLandingPageState();
+  createState() => _AccountLandingPageState();
 }
 
 class _AccountLandingPageState extends NyState<AccountLandingPage> {

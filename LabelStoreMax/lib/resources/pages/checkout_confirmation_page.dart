@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,22 +11,22 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/app/models/customer_country.dart';
-import 'package:flutter_app/app/models/payment_type.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/checkout_coupon_amount_widget.dart';
-import 'package:flutter_app/resources/widgets/checkout_payment_type_widget.dart';
-import 'package:flutter_app/resources/widgets/checkout_select_coupon_widget.dart';
-import 'package:flutter_app/resources/widgets/checkout_shipping_type_widget.dart';
-import 'package:flutter_app/resources/widgets/checkout_store_heading_widget.dart';
-import 'package:flutter_app/resources/widgets/checkout_user_details_widget.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/cart.dart';
+import '/app/models/checkout_session.dart';
+import '/app/models/customer_country.dart';
+import '/app/models/payment_type.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/checkout_coupon_amount_widget.dart';
+import '/resources/widgets/checkout_payment_type_widget.dart';
+import '/resources/widgets/checkout_select_coupon_widget.dart';
+import '/resources/widgets/checkout_shipping_type_widget.dart';
+import '/resources/widgets/checkout_store_heading_widget.dart';
+import '/resources/widgets/checkout_user_details_widget.dart';
+import '/resources/widgets/safearea_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';

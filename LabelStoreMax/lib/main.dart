@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/app.dart';
-import 'package:flutter_app/bootstrap/boot.dart';
+import '/bootstrap/app.dart';
+import '/bootstrap/boot.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 void main() async {

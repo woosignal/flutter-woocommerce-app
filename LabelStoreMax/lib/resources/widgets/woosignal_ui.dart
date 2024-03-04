@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,14 +11,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/cart_line_item.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
-import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
-import 'package:flutter_app/resources/widgets/top_nav_widget.dart';
+import '/app/models/cart.dart';
+import '/app/models/cart_line_item.dart';
+import '/app/models/checkout_session.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/cached_image_widget.dart';
+import '/resources/widgets/no_results_for_products_widget.dart';
+import '/resources/widgets/top_nav_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -28,7 +28,7 @@ import 'package:woosignal/models/response/tax_rate.dart';
 
 class RefreshableScrollContainer extends StatelessWidget {
   const RefreshableScrollContainer(
-      {Key? key,
+      {super.key,
       this.controller,
       this.onRefresh,
       this.onLoading,
@@ -36,8 +36,7 @@ class RefreshableScrollContainer extends StatelessWidget {
       this.onTap,
       this.bannerHeight,
       this.bannerImages,
-      this.modalBottomSheetMenu})
-      : super(key: key);
+      this.modalBottomSheetMenu});
 
   final RefreshController? controller;
   final Function? onRefresh;
@@ -114,7 +113,7 @@ class RefreshableScrollContainer extends StatelessWidget {
                                 onTap: onTap,
                               ),
                             )))
-                        .toList()
+                        
                 ],
               )
             : NoResultsForProductsWidget()),
@@ -123,13 +122,12 @@ class RefreshableScrollContainer extends StatelessWidget {
 
 class CheckoutRowLine extends StatelessWidget {
   const CheckoutRowLine(
-      {Key? key,
+      {super.key,
       required this.heading,
       required this.leadImage,
       required this.leadTitle,
       required this.action,
-      this.showBorderBottom = true})
-      : super(key: key);
+      this.showBorderBottom = true});
 
   final String heading;
   final String? leadTitle;
@@ -205,13 +203,13 @@ class CheckoutRowLine extends StatelessWidget {
 
 class TextEditingRow extends StatelessWidget {
   const TextEditingRow({
-    Key? key,
+    super.key,
     this.heading,
     this.controller,
     this.shouldAutoFocus,
     this.keyboardType,
     this.obscureText,
-  }) : super(key: key);
+  });
 
   final String? heading;
   final TextEditingController? controller;
@@ -255,7 +253,7 @@ class TextEditingRow extends StatelessWidget {
 }
 
 class CheckoutMetaLine extends StatelessWidget {
-  const CheckoutMetaLine({Key? key, this.title, this.amount}) : super(key: key);
+  const CheckoutMetaLine({super.key, this.title, this.amount});
 
   final String? title, amount;
 
@@ -299,10 +297,10 @@ List<BoxShadow> wsBoxShadow({double? blurRadius}) => [
 
 class ProductItemContainer extends StatelessWidget {
   const ProductItemContainer({
-    Key? key,
+    super.key,
     this.product,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final Product? product;
   final Function? onTap;
@@ -501,7 +499,7 @@ wsModalBottom(BuildContext context,
 }
 
 class CheckoutTotal extends StatelessWidget {
-  const CheckoutTotal({Key? key, this.title, this.taxRate}) : super(key: key);
+  const CheckoutTotal({super.key, this.title, this.taxRate});
 
   final String? title;
   final TaxRate? taxRate;
@@ -519,7 +517,7 @@ class CheckoutTotal extends StatelessWidget {
 }
 
 class CheckoutTaxTotal extends StatelessWidget {
-  const CheckoutTaxTotal({Key? key, this.taxRate}) : super(key: key);
+  const CheckoutTaxTotal({super.key, this.taxRate});
 
   final TaxRate? taxRate;
 
@@ -539,7 +537,7 @@ class CheckoutTaxTotal extends StatelessWidget {
 }
 
 class CheckoutSubtotal extends StatelessWidget {
-  const CheckoutSubtotal({Key? key, this.title}) : super(key: key);
+  const CheckoutSubtotal({super.key, this.title});
 
   final String? title;
 
@@ -559,12 +557,12 @@ class CheckoutSubtotal extends StatelessWidget {
 
 class CartItemContainer extends StatelessWidget {
   const CartItemContainer({
-    Key? key,
+    super.key,
     required this.cartLineItem,
     required this.actionIncrementQuantity,
     required this.actionDecrementQuantity,
     required this.actionRemoveItem,
-  }) : super(key: key);
+  });
 
   final CartLineItem cartLineItem;
   final void Function() actionIncrementQuantity;
@@ -689,13 +687,12 @@ class CartItemContainer extends StatelessWidget {
 
 class StoreLogo extends StatelessWidget {
   const StoreLogo(
-      {Key? key,
+      {super.key,
       this.height = 100,
       this.width = 100,
       this.placeholder = const CircularProgressIndicator(),
       this.fit = BoxFit.contain,
-      this.showBgWhite = true})
-      : super(key: key);
+      this.showBgWhite = true});
 
   final bool showBgWhite;
   final double height;

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,11 +10,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/browse_search_controller.dart';
-import 'package:flutter_app/app/controllers/product_search_loader_controller.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
+import '/app/controllers/browse_search_controller.dart';
+import '/app/controllers/product_search_loader_controller.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/product.dart' as ws_product;
@@ -44,10 +44,6 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
     await fetchProducts();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +56,7 @@ class _BrowseSearchState extends NyState<BrowseSearchPage> {
             Text(trans("Search results for"),
                 style: Theme.of(context).textTheme.titleMedium),
             afterNotNull(_search,
-                child: () => Text("\"" + _search! + "\""),
+                child: () => Text("\"${_search!}\""),
                 loading: CupertinoActivityIndicator())
           ],
         ),

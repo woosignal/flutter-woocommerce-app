@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,8 +11,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/product_detail_review_tile_widget.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/product_detail_review_tile_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_review.dart';
@@ -26,7 +26,7 @@ class ProductDetailReviewsWidget extends StatefulWidget {
   final WooSignalApp? wooSignalApp;
 
   @override
-  _ProductDetailReviewsWidgetState createState() =>
+  createState() =>
       _ProductDetailReviewsWidgetState();
 }
 

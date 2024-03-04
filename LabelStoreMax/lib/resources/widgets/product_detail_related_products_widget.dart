@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,16 +9,15 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailRelatedProductsWidget extends StatelessWidget {
   const ProductDetailRelatedProductsWidget(
-      {Key? key, required this.product, required this.wooSignalApp})
-      : super(key: key);
+      {super.key, required this.product, required this.wooSignalApp});
 
   final Product? product;
   final WooSignalApp? wooSignalApp;

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/cart_line_item.dart';
+import '/app/models/cart.dart';
+import '/app/models/cart_line_item.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CartQuantity extends StatefulWidget {
   
-  CartQuantity({Key? key, this.childOfNavBar = false}) : super(key: key);
+  CartQuantity({super.key, this.childOfNavBar = false});
 
   final bool childOfNavBar;
   
   static String state = "cart_quantity";
 
   @override
-  _CartQuantityState createState() => _CartQuantityState(childOfNavBar);
+  createState() => _CartQuantityState(childOfNavBar);
 }
 
 class _CartQuantityState extends NyState<CartQuantity> {
@@ -24,11 +24,6 @@ class _CartQuantityState extends NyState<CartQuantity> {
     _childOfNavBar = childOfNavBar;
   }
 
-  @override
-  init() async {
-    super.init();
-    
-  }
   
   @override
   stateUpdated(dynamic data) async {

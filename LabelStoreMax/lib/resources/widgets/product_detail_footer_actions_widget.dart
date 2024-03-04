@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,22 +10,21 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/product_quantity_widget.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/product_quantity_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 
 class ProductDetailFooterActionsWidget extends StatelessWidget {
   const ProductDetailFooterActionsWidget(
-      {Key? key,
+      {super.key,
       required this.product,
       required this.quantity,
       required this.onAddToCart,
       required this.onViewExternalProduct,
       required this.onAddQuantity,
-      required this.onRemoveQuantity})
-      : super(key: key);
+      required this.onRemoveQuantity});
   final Product? product;
   final Function onViewExternalProduct;
   final Function onAddToCart;

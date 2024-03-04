@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -17,6 +17,7 @@ class User extends Model {
   User();
   User.fromUserAuthResponse({this.userId, this.token});
 
+  @override
   toJson() => {"token": token, "user_id": userId};
 
   User.fromJson(dynamic data) {

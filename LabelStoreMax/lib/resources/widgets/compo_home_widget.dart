@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,12 +10,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
-import 'package:flutter_app/resources/widgets/home_drawer_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/cached_image_widget.dart';
+import '/resources/widgets/home_drawer_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_category.dart';
@@ -23,12 +23,12 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/models/response/product.dart';
 
 class CompoHomeWidget extends StatefulWidget {
-  CompoHomeWidget({Key? key, required this.wooSignalApp}) : super(key: key);
+  CompoHomeWidget({super.key, required this.wooSignalApp});
 
   final WooSignalApp? wooSignalApp;
 
   @override
-  _CompoHomeWidgetState createState() => _CompoHomeWidgetState();
+  createState() => _CompoHomeWidgetState();
 }
 
 class _CompoHomeWidgetState extends State<CompoHomeWidget> {

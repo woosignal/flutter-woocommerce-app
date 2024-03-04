@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,10 +11,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/product_reviews_loader_controller.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
-import 'package:flutter_app/resources/widgets/product_review_item_container_widget.dart';
+import '/app/controllers/product_reviews_loader_controller.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/no_results_for_products_widget.dart';
+import '/resources/widgets/product_review_item_container_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -24,7 +24,7 @@ import 'package:woosignal/models/response/product.dart';
 import '../../app/controllers/product_reviews_controller.dart';
 
 class ProductReviewsPage extends NyStatefulWidget {
-  static String path = "/product-images";
+  static String path = "/product-reviews";
 
   @override
   final ProductReviewsController controller = ProductReviewsController();
@@ -47,10 +47,6 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
     await fetchProductReviews();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +83,7 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            _product!.ratingCount.toString() + " Reviews",
+                            "${_product!.ratingCount} Reviews",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
@@ -96,7 +92,7 @@ class _ProductReviewsPageState extends NyState<ProductReviewsPage> {
                             Container(
                               margin: EdgeInsets.only(right: 8),
                               child: Text(
-                                _product!.averageRating! + " Stars",
+                                "${_product!.averageRating!} Stars",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),

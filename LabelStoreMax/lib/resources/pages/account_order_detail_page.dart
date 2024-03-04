@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,10 +10,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/account_order_detail_controller.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/controllers/account_order_detail_controller.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/safearea_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/order.dart';
 
@@ -32,10 +32,6 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
   int? _orderId;
   Order? _order;
 
-  @override
-  init() async {
-    super.init();
-  }
 
   @override
   boot() async {
@@ -218,10 +214,6 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   _fetchOrder() async {
     _order = await (appWooSignal((api) => api.retrieveOrder(_orderId!)));

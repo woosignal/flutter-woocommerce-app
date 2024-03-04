@@ -1,3 +1,9 @@
+## [6.14.0] - 2024-03-04
+
+* Refactor project
+* Add new translations for id and th
+* Pubspec.yaml dependency updates
+
 ## [6.13.5] - 2024-02-28
 
 * Pubspec.yaml dependency updates

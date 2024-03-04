@@ -229,5 +229,13 @@
   "Account deleted": "khaata hataaya gaya",
   "Shipping is not supported for your location, sorry": "aapake sthaan ke lie shiping samarthit nahin hai, kshama karen",
   "Order Summary": "aadesh saaraansh",
+  "Checkout as guest": "atithi ke roop mein chekaut karen",
+  "Logout?": "log aaut?",
+  "Checkout as guest or login to continue": "atithi ke roop mein chekaut karen ya jaaree rakhane ke lie login karen",
+  "Login / Create an account": "log in karen / ek khaata banaen",
+  "Contact us for any questions on your order.": "apane ordar par kisee bhee prashn ke lie hamase sampark karen.",
+  "Delete my account": "mera ekaunt hata do",
+  "({{itemCount}}) items from {{appName}}": "({{itemCount}}) se aaitam {{appName}}",
+  "Invalid email address": "amaany eemel pata",
   "By completing this order, I agree to all": "is aadesh ko poora karake, main sabhee ke lie sahamat hoon"
 }

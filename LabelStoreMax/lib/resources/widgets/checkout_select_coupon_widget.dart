@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,16 +9,15 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
+import '/app/models/checkout_session.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutSelectCouponWidget extends StatelessWidget {
   const CheckoutSelectCouponWidget(
-      {Key? key,
+      {super.key,
       required this.context,
       required this.checkoutSession,
-      required this.resetState})
-      : super(key: key);
+      required this.resetState});
 
   final CheckoutSession checkoutSession;
   final BuildContext context;
@@ -46,7 +45,7 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
                   )),
             Text(
               hasCoupon
-                  ? "Coupon Applied: " + checkoutSession.coupon!.code!
+                  ? "Coupon Applied: ${checkoutSession.coupon!.code!}"
                   : trans('Apply Coupon'),
               style: Theme.of(context).textTheme.titleSmall,
             ),

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,12 +9,11 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class AccountDetailSettingsWidget extends StatelessWidget {
-  const AccountDetailSettingsWidget({Key? key, required this.refreshAccount})
-      : super(key: key);
+  const AccountDetailSettingsWidget({super.key, required this.refreshAccount});
   final Function refreshAccount;
   @override
   Widget build(BuildContext context) {

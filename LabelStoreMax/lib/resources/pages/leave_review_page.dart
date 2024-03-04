@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,11 +9,11 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/safearea_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/order.dart';
@@ -49,10 +49,6 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
     _rating = 5;
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

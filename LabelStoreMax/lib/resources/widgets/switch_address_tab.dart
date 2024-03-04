@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,12 +12,12 @@ import 'package:flutter/material.dart';
 
 class SwitchAddressTab extends StatelessWidget {
   const SwitchAddressTab({
-    Key? key,
+    super.key,
     required this.type,
     required this.title,
     required this.currentTabIndex,
     required this.onTapAction,
-  }) : super(key: key);
+  });
 
   final String type;
   final String title;

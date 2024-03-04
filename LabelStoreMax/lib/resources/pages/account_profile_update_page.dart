@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,20 +9,21 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_updated_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
 class AccountProfileUpdatePage extends StatefulWidget {
+  static String path = "/account-update";
   AccountProfileUpdatePage();
 
   @override
-  _AccountProfileUpdatePageState createState() =>
+  createState() =>
       _AccountProfileUpdatePageState();
 }
 

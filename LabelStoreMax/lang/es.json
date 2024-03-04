@@ -229,5 +229,13 @@
   "Account deleted": "Cuenta borrada",
   "Shipping is not supported for your location, sorry": "El envío no es compatible para su ubicación, lo siento",
   "Order Summary": "Resumen del pedido",
+  "Checkout as guest": "Pagar como invitado",
+  "Logout?": "¿Cerrar sesión?",
+  "Checkout as guest or login to continue": "Pagar como invitado o iniciar sesión para continuar",
+  "Login / Create an account": "Iniciar sesión / Crear una cuenta",
+  "Contact us for any questions on your order.": "Contáctenos para cualquier pregunta sobre su pedido.",
+  "Delete my account": "Borrar mi cuenta",
+  "({{itemCount}}) items from {{appName}}": "({{itemCount}}) items from {{appName}}",
+  "Invalid email address": "Dirección de correo electrónico no válida",
   "By completing this order, I agree to all": "Al completar este pedido, acepto todos"
 }

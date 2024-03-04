@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,7 +13,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppVersionWidget extends StatelessWidget {
-  const AppVersionWidget({Key? key}) : super(key: key);
+  const AppVersionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

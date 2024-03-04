@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 
 class SafeAreaWidget extends StatelessWidget {
   final Widget? child;
-  const SafeAreaWidget({Key? key, this.child}) : super(key: key);
+  const SafeAreaWidget({super.key, this.child});
 
   @override
   Widget build(BuildContext context) {

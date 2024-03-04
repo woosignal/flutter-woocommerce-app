@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,16 +9,16 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/product_detail_controller.dart';
-import 'package:flutter_app/app/models/cart_line_item.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/enums/wishlist_action_enums.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/cart_icon_widget.dart';
-import 'package:flutter_app/resources/widgets/product_detail_body_widget.dart';
-import 'package:flutter_app/resources/widgets/product_detail_footer_actions_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/controllers/product_detail_controller.dart';
+import '/app/models/cart_line_item.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/enums/wishlist_action_enums.dart';
+import '/bootstrap/helpers.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/cart_icon_widget.dart';
+import '/resources/widgets/product_detail_body_widget.dart';
+import '/resources/widgets/product_detail_footer_actions_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_variation.dart'
     as ws_product_variation;
@@ -42,10 +42,6 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   final Map<int, dynamic> _tmpAttributeObj = {};
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
-  @override
-  init() async {
-    super.init();
-  }
 
   @override
   boot() async {

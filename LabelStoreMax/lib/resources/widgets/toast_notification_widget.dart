@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class ToastNotification extends StatelessWidget {
-  const ToastNotification(ToastMeta toastMeta, {Function? onDismiss, Key? key})
+  const ToastNotification(ToastMeta toastMeta, {Function? onDismiss, super.key})
       : _toastMeta = toastMeta,
-        _dismiss = onDismiss,
-        super(key: key);
+        _dismiss = onDismiss;
 
   final Function? _dismiss;
   final ToastMeta _toastMeta;

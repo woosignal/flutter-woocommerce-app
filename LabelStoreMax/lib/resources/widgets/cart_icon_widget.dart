@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,13 +9,13 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/resources/widgets/cart_quantity_widget.dart';
+import '/resources/widgets/cart_quantity_widget.dart';
 
 class CartIconWidget extends StatefulWidget {
-  CartIconWidget({Key? key}) : super(key: key);
+  CartIconWidget({super.key});
 
   @override
-  _CartIconWidgetState createState() => _CartIconWidgetState();
+  createState() => _CartIconWidgetState();
 }
 
 class _CartIconWidgetState extends State<CartIconWidget> {

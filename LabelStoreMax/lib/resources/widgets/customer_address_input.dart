@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,14 +9,14 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/customer_country.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/customer_country.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CustomerAddressInput extends StatelessWidget {
   const CustomerAddressInput(
-      {Key? key,
+      {super.key,
       required this.txtControllerFirstName,
       required this.txtControllerLastName,
       required this.txtControllerAddressLine,
@@ -25,8 +25,7 @@ class CustomerAddressInput extends StatelessWidget {
       this.txtControllerEmailAddress,
       this.txtControllerPhoneNumber,
       required this.customerCountry,
-      required this.onTapCountry})
-      : super(key: key);
+      required this.onTapCountry});
 
   final TextEditingController? txtControllerFirstName,
       txtControllerLastName,

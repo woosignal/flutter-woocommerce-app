@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AppLoaderWidget extends StatelessWidget {
-  const AppLoaderWidget({Key? key}) : super(key: key);
+  const AppLoaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

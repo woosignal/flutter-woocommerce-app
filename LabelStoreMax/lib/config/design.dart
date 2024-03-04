@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/config/toast_notification.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/toast_notification_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/config/toast_notification.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/toast_notification_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /*

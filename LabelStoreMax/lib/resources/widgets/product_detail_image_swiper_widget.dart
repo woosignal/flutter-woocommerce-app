@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,15 +9,14 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
+import '/resources/widgets/cached_image_widget.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 
 class ProductDetailImageSwiperWidget extends StatelessWidget {
   const ProductDetailImageSwiperWidget(
-      {Key? key, required this.product, required this.onTapImage})
-      : super(key: key);
+      {super.key, required this.product, required this.onTapImage});
 
   final Product? product;
   final void Function(int i) onTapImage;

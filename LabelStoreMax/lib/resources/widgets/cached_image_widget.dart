@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 class CachedImageWidget extends StatelessWidget {
   const CachedImageWidget({
-    Key? key,
+    super.key,
     this.image,
     this.height = 70,
     this.width = 70,
@@ -24,7 +24,7 @@ class CachedImageWidget extends StatelessWidget {
           color: Colors.black54),
     ),
     this.fit = BoxFit.contain,
-  }) : super(key: key);
+  });
 
   final String? image;
   final double height;

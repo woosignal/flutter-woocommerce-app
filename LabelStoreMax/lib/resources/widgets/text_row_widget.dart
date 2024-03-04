@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,8 +11,7 @@
 import 'package:flutter/material.dart';
 
 class TextRowWidget extends StatelessWidget {
-  const TextRowWidget({Key? key, required this.title, required this.text})
-      : super(key: key);
+  const TextRowWidget({super.key, required this.title, required this.text});
 
   final String? title, text;
 
@@ -31,7 +30,7 @@ class TextRowWidget extends StatelessWidget {
         Flexible(
           child: Container(
             child: Text(
-              text!,
+              text ?? "",
               style:
                   Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
             ),

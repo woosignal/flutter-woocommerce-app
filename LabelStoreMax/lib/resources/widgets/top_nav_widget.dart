@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,8 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class TopNavWidget extends StatelessWidget {
-  const TopNavWidget({Key? key, this.onPressBrowseCategories})
-      : super(key: key);
+  const TopNavWidget({super.key, this.onPressBrowseCategories});
   final Function()? onPressBrowseCategories;
 
   @override

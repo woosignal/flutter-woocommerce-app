@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,12 +9,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/app_version_widget.dart';
-import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/widgets/app_version_widget.dart';
+import '/resources/widgets/cached_image_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/theme/helper/ny_theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/menu_link.dart';
@@ -22,13 +22,12 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawerWidget extends StatefulWidget {
-  const HomeDrawerWidget({Key? key, required this.wooSignalApp})
-      : super(key: key);
+  const HomeDrawerWidget({super.key, required this.wooSignalApp});
 
   final WooSignalApp? wooSignalApp;
 
   @override
-  _HomeDrawerWidgetState createState() => _HomeDrawerWidgetState();
+  createState() => _HomeDrawerWidgetState();
 }
 
 class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
@@ -185,7 +184,7 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                       onTap: () async =>
                           await launchUrl(Uri.parse(menuLink.linkUrl)),
                     ))
-                .toList(),
+                ,
             ListTile(
               title: AppVersionWidget(),
             ),

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,17 +10,17 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/controllers/customer_orders_loader_controller.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
+import '/app/controllers/customer_orders_loader_controller.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/widgets/app_loader_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/order.dart';
 
 class AccountDetailOrdersWidget extends StatefulWidget {
   @override
-  _AccountDetailOrdersWidgetState createState() =>
+  createState() =>
       _AccountDetailOrdersWidgetState();
 }
 
@@ -146,9 +146,7 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          order.lineItems!.length.toString() +
-                              " " +
-                              trans("items"),
+                          "${order.lineItems!.length} ${trans("items")}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -158,15 +156,13 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                       ],
                     ),
                     Text(
-                      dateFormatted(
+                      "${dateFormatted(
                             date: order.dateCreated!,
                             formatType: formatForDateTime(FormatType.date),
-                          ) +
-                          "\n" +
-                          dateFormatted(
+                          )}\n${dateFormatted(
                             date: order.dateCreated!,
                             formatType: formatForDateTime(FormatType.time),
-                          ),
+                          )}",
                       textAlign: TextAlign.right,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.w400,

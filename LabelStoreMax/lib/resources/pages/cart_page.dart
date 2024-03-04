@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,24 +9,27 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/cart_line_item.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/app/models/customer_address.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/widgets/buttons.dart';
-import 'package:flutter_app/resources/widgets/safearea_widget.dart';
-import 'package:flutter_app/resources/widgets/text_row_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import 'package:flutter_app/resources/pages/account_landing_page.dart';
+import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
+import '/app/models/cart.dart';
+import '/app/models/cart_line_item.dart';
+import '/app/models/checkout_session.dart';
+import '/app/models/customer_address.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/widgets/buttons.dart';
+import '/resources/widgets/safearea_widget.dart';
+import '/resources/widgets/text_row_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CartPage extends StatefulWidget {
+  static String path = "/cart";
   CartPage();
 
   @override
-  _CartPageState createState() => _CartPageState();
+  createState() => _CartPageState();
 }
 
 class _CartPageState extends NyState<CartPage> {
@@ -34,6 +37,7 @@ class _CartPageState extends NyState<CartPage> {
 
   List<CartLineItem> _cartLines = [];
 
+  @override
   boot() async {
     await _cartCheck();
     CheckoutSession.getInstance.coupon = null;
@@ -50,12 +54,12 @@ class _CartPageState extends NyState<CartPage> {
     List<dynamic> cartRes =
         await (appWooSignal((api) => api.cartCheck(cartJSON)));
     if (cartRes.isEmpty) {
-      Cart.getInstance.saveCartToPref(cartLineItems: []);
+      await Cart.getInstance.saveCartToPref(cartLineItems: []);
       return;
     }
     _cartLines = cartRes.map((json) => CartLineItem.fromJson(json)).toList();
     if (_cartLines.isNotEmpty) {
-      Cart.getInstance.saveCartToPref(cartLineItems: _cartLines);
+      await Cart.getInstance.saveCartToPref(cartLineItems: _cartLines);
     }
   }
 
@@ -100,10 +104,38 @@ class _CartPageState extends NyState<CartPage> {
           sfCustomerAddress;
     }
 
-    if (AppHelper.instance.appConfig!.wpLoginEnabled == 1 &&
-        !(await authCheck())) {
-      UserAuth.instance.redirect = "/checkout";
-      Navigator.pushNamed(context, "/account-landing");
+    if (!(await authCheck())) {
+      // show modal to ask customer if they would like to checkout as guest or login
+      showAdaptiveDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog.adaptive(
+              content: Text("Checkout as guest or login to continue".tr())
+                  .headingMedium(context),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    routeTo(CheckoutConfirmationPage.path);
+                  },
+                  child: Text("Checkout as guest".tr()),
+                ),
+                if (AppHelper.instance.appConfig!.wpLoginEnabled == 1)
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    UserAuth.instance.redirect = CheckoutConfirmationPage.path;
+                    routeTo(AccountLandingPage.path);
+                  },
+                  child: Text("Login / Create an account".tr()),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Cancel".tr()),
+                )
+              ],
+            );
+          });
       return;
     }
 

@@ -3,7 +3,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,28 +12,27 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/models/bottom_nav_item.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
-import 'package:flutter_app/resources/pages/account_detail_page.dart';
-import 'package:flutter_app/resources/pages/account_landing_page.dart';
-import 'package:flutter_app/resources/pages/cart_page.dart';
-import 'package:flutter_app/resources/pages/wishlist_page_widget.dart';
-import 'package:flutter_app/resources/pages/home_search_page.dart';
-import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
-import 'package:flutter_app/resources/widgets/notic_home_widget.dart';
+import '/app/models/bottom_nav_item.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/shared_pref/sp_auth.dart';
+import '/resources/pages/account_detail_page.dart';
+import '/resources/pages/account_landing_page.dart';
+import '/resources/pages/cart_page.dart';
+import '/resources/pages/wishlist_page_widget.dart';
+import '/resources/pages/home_search_page.dart';
+import '/resources/widgets/app_loader_widget.dart';
+import '/resources/widgets/notic_home_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class NoticThemeWidget extends StatefulWidget {
   NoticThemeWidget(
-      {Key? key, required this.globalKey, required this.wooSignalApp})
-      : super(key: key);
+      {super.key, required this.globalKey, required this.wooSignalApp});
   final GlobalKey globalKey;
   final WooSignalApp? wooSignalApp;
 
   @override
-  _NoticThemeWidgetState createState() => _NoticThemeWidgetState();
+  createState() => _NoticThemeWidgetState();
 }
 
 class _NoticThemeWidgetState extends State<NoticThemeWidget> {

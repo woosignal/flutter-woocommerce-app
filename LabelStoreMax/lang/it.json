@@ -229,5 +229,13 @@
   "Account deleted": "Account cancellato",
   "Shipping is not supported for your location, sorry": "La spedizione non è supportata per la tua posizione, mi dispiace",
   "Order Summary": "Riepilogo dell'ordine",
+  "Checkout as guest": "Checkout come ospite",
+  "Logout?": "Disconnettersi?",
+  "Checkout as guest or login to continue": "Acquista come ospite o accedi per continuare",
+  "Login / Create an account": "Accedi / Crea un account",
+  "Contact us for any questions on your order.": "Contattaci per qualsiasi domanda sul tuo ordine.",
+  "Delete my account": "Cancella il mio account",
+  "({{itemCount}}) items from {{appName}}": "({{itemCount}}) elementi da {{appName}}",
+  "Invalid email address": "indirizzo email non valido",
   "By completing this order, I agree to all": "Completando questo ordine, accetto tutto"
 }

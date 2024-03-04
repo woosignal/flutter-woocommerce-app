@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,7 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bootstrap/helpers.dart';
+import '/bootstrap/helpers.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_review.dart';
@@ -19,7 +19,7 @@ class ProductDetailReviewTileWidget extends StatefulWidget {
   final ProductReview productReview;
 
   @override
-  _ProductDetailReviewTileWidgetState createState() =>
+  createState() =>
       _ProductDetailReviewTileWidgetState();
 }
 

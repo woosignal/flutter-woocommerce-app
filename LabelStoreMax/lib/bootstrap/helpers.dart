@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2023, WooSignal Ltd. All rights reserved.
+//  2024, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,21 +11,21 @@
 import 'dart:convert';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/app/models/billing_details.dart';
-import 'package:flutter_app/app/models/cart.dart';
-import 'package:flutter_app/app/models/cart_line_item.dart';
-import 'package:flutter_app/app/models/checkout_session.dart';
-import 'package:flutter_app/app/models/default_shipping.dart';
-import 'package:flutter_app/app/models/payment_type.dart';
-import 'package:flutter_app/app/models/user.dart';
-import 'package:flutter_app/bootstrap/app_helper.dart';
-import 'package:flutter_app/bootstrap/enums/symbol_position_enums.dart';
-import 'package:flutter_app/bootstrap/extensions.dart';
-import 'package:flutter_app/bootstrap/shared_pref/shared_key.dart';
-import 'package:flutter_app/config/currency.dart';
-import 'package:flutter_app/config/payment_gateways.dart';
-import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
-import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
+import '/app/models/billing_details.dart';
+import '/app/models/cart.dart';
+import '/app/models/cart_line_item.dart';
+import '/app/models/checkout_session.dart';
+import '/app/models/default_shipping.dart';
+import '/app/models/payment_type.dart';
+import '/app/models/user.dart';
+import '/bootstrap/app_helper.dart';
+import '/bootstrap/enums/symbol_position_enums.dart';
+import '/bootstrap/extensions.dart';
+import '/bootstrap/shared_pref/shared_key.dart';
+import '/config/currency.dart';
+import '/config/payment_gateways.dart';
+import '/resources/widgets/no_results_for_products_widget.dart';
+import '/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -232,11 +232,7 @@ Future<double?> workoutShippingCostWC({required String? sum}) async {
     String percentVal = newSum.replaceAllMapped(
         defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
       if (replacePercent.groupCount >= 1) {
-        String strPercentage = "( (" +
-            orderTotal.toString() +
-            " * " +
-            replacePercent.group(1).toString() +
-            ") / 100 )";
+        String strPercentage = "( ($orderTotal * ${replacePercent.group(1)}) / 100 )";
         double? calPercentage = strCal(sum: strPercentage);
 
         // MIN
@@ -247,7 +243,7 @@ Future<double?> workoutShippingCostWC({required String? sum}) async {
           double doubleMinFee = double.parse(strMinFee);
 
           if (calPercentage! < doubleMinFee) {
-            return "(" + doubleMinFee.toString() + ")";
+            return "($doubleMinFee)";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMinFee), "");
         }
@@ -260,11 +256,11 @@ Future<double?> workoutShippingCostWC({required String? sum}) async {
           double doubleMaxFee = double.parse(strMaxFee);
 
           if (calPercentage! > doubleMaxFee) {
-            return "(" + doubleMaxFee.toString() + ")";
+            return "($doubleMaxFee)";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMaxFee), "");
         }
-        return "(" + calPercentage.toString() + ")";
+        return "($calPercentage)";
       }
       return "";
     });
@@ -305,11 +301,7 @@ Future<double?> workoutShippingClassCostWC(
     String percentVal = newSum.replaceAllMapped(
         defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
       if (replacePercent.groupCount >= 1) {
-        String strPercentage = "( (" +
-            orderTotal.toString() +
-            " * " +
-            replacePercent.group(1).toString() +
-            ") / 100 )";
+        String strPercentage = "( ($orderTotal * ${replacePercent.group(1)}) / 100 )";
         double? calPercentage = strCal(sum: strPercentage);
 
         // MIN
@@ -320,7 +312,7 @@ Future<double?> workoutShippingClassCostWC(
           double doubleMinFee = double.parse(strMinFee);
 
           if (calPercentage! < doubleMinFee) {
-            return "(" + doubleMinFee.toString() + ")";
+            return "($doubleMinFee)";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMinFee), "");
         }
@@ -333,11 +325,11 @@ Future<double?> workoutShippingClassCostWC(
           double doubleMaxFee = double.parse(strMaxFee);
 
           if (calPercentage! > doubleMaxFee) {
-            return "(" + doubleMaxFee.toString() + ")";
+            return "($doubleMaxFee)";
           }
           newSum = newSum.replaceAll(defaultRegex(strRegexMaxFee), "");
         }
-        return "(" + calPercentage.toString() + ")";
+        return "($calPercentage)";
       }
       return "";
     });
