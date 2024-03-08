@@ -54,27 +54,26 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
       ),
       body: SafeAreaWidget(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
+          children: [
+            NyTextField.compact(
               decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
               controller: _txtSearchController,
               style: Theme.of(context).textTheme.displaySmall,
               keyboardType: TextInputType.text,
               autocorrect: false,
-              autofocus: true,
+              autoFocus: true,
               textCapitalization: TextCapitalization.sentences,
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
               child: PrimaryButton(
                 title: trans("Search"),
                 action: _actionSearch,
               ),
             )
           ],
-        ),
+        ).withGap(20),
       ),
     );
   }

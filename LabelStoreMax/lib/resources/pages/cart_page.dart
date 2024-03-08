@@ -138,8 +138,7 @@ class _CartPageState extends NyState<CartPage> {
           });
       return;
     }
-
-    Navigator.pushNamed(context, "/checkout");
+    routeTo(CheckoutConfirmationPage.path);
   }
 
   actionIncrementQuantity({required CartLineItem cartLineItem}) async {

@@ -1,3 +1,11 @@
+## [6.15.0] - 2024-03-08
+
+* Increase minimum ios version to 14.0
+* Ability to deep link notifications on new products or orders using wp notify
+* Ability to order product categories from WooSignal dashboard
+* Update android config that fixes https://github.com/nylo-core/nylo/issues/112
+* Pubspec.yaml dependency updates
+
 ## [6.14.0] - 2024-03-04
 
 * Refactor project

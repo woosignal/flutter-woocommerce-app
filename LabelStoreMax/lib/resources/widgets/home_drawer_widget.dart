@@ -9,6 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/browse_category_page.dart';
+import 'package:woosignal/models/response/product_category.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
 import '/bootstrap/shared_pref/sp_auth.dart';
@@ -22,9 +24,10 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawerWidget extends StatefulWidget {
-  const HomeDrawerWidget({super.key, required this.wooSignalApp});
+  const HomeDrawerWidget({super.key, required this.wooSignalApp, this.productCategories = const []});
 
   final WooSignalApp? wooSignalApp;
+  final List<ProductCategory> productCategories;
 
   @override
   createState() => _HomeDrawerWidgetState();
@@ -56,6 +59,37 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 color: ThemeColor.get(context).background,
               ),
             ),
+            if (widget.wooSignalApp?.productCategoryCollections.isNotEmpty ?? false)
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      child: Text(
+                        trans("Categories".tr()),
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                    ),
+                    ...widget.productCategories.map((collection) {
+                      return ListTile(
+                        title: Text(
+                          collection.name ?? "",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontSize: 16),
+                        ),
+                        trailing: Icon(Icons.keyboard_arrow_right_rounded),
+                        onTap: () {
+                          routeTo(BrowseCategoryPage.path, data: collection);
+                        },
+                      );
+                    })
+                  ]),
             if (["compo"].contains(_themeType) == false)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

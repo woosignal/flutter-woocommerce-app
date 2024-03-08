@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: fe4c077084ddda88f327dc1c96d16631cd68d4948644593fcbcd911c2c89e2fa
+      sha256: "4eec93681221723a686ad580c2e7d960e1017cf1a4e0a263c2573c2c6b0bf5cd"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.23"
+    version: "1.3.25"
   analyzer:
     dependency: "direct main"
     description:
@@ -221,10 +221,10 @@ packages:
     dependency: transitive
     description:
       name: device_meta
-      sha256: "356a8f6e09c03ec832a701f007c158d4e2e83c41773bdcd6ea39335d7743b35c"
+      sha256: "47db98335069624bd6538abe5710a89732f27d7e0d1bf681f374a74f4f42b2ef"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.11"
+    version: "1.1.12"
   dio:
     dependency: transitive
     description:
@@ -285,10 +285,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "797379ea206eaeeb62499775de812761493d0692890fdc7f90b6183a3369176d"
+      sha256: "53316975310c8af75a96e365f9fccb67d1c544ef0acdbf0d88bbe30eedd1c4f9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.25.5"
+    version: "2.27.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -309,26 +309,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_messaging
-      sha256: "1e15c5d90cd1dab98cdd169e258bceece1e98d3855350abe4196146443bbb08a"
+      sha256: e41586e0fd04fe9a40424f8b0053d0832e6d04f49e020cdaf9919209a28497e9
       url: "https://pub.dev"
     source: hosted
-    version: "14.7.17"
+    version: "14.7.19"
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
       name: firebase_messaging_platform_interface
-      sha256: "5e00f3e5c8b3f24b082dc20edb0c80d653ca87a87757db71218e045070fc7f8e"
+      sha256: f7a9d74ff7fc588a924f6b2eaeaa148b0db521b13a9db55f6ad45864fa98c06e
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.25"
+    version: "4.5.27"
   firebase_messaging_web:
     dependency: transitive
     description:
       name: firebase_messaging_web
-      sha256: "59de3f85715416f97a842f307b54c23540cbba4a109a7125e2150082bb041966"
+      sha256: fc21e771166860c55b103701c5ac7cdb2eec28897b97c42e6e5703cbedf9e02e
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.6"
+    version: "3.6.8"
   fixnum:
     dependency: transitive
     description:
@@ -471,10 +471,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_stripe
-      sha256: dfa4f0cf2f64cf82fde57357283819688c3b985c6cd10c26f50dd4a5476e4924
+      sha256: bee4046750d813dc77ef1cdc954c8a0d70a21a7e089b86edf3929aebe33921fe
       url: "https://pub.dev"
     source: hosted
-    version: "10.1.0"
+    version: "10.1.1"
   flutter_styled_toast:
     dependency: transitive
     description:
@@ -697,18 +697,18 @@ packages:
     dependency: "direct main"
     description:
       name: nylo_framework
-      sha256: "7973671a9f840b2d183e812a7c4e2f084e5fd43574c2c08aba5278a23d17057b"
+      sha256: f0767b8acfc8c8770645833d3bf10123ffd609172211f6a2a9acd41a58265e2a
       url: "https://pub.dev"
     source: hosted
-    version: "5.21.7"
+    version: "5.21.9"
   nylo_support:
     dependency: transitive
     description:
       name: nylo_support
-      sha256: ca1ed13234368429abb5c371c4258c2413ba65d0a98d38a090ab3a62f8b6f912
+      sha256: "3e1a303adf0bbe38887534125b17364eeea36543f4e9f8b80a1c8c45de8f8e1d"
       url: "https://pub.dev"
     source: hosted
-    version: "5.51.0"
+    version: "5.53.0"
   octo_image:
     dependency: transitive
     description:
@@ -1230,10 +1230,10 @@ packages:
     dependency: "direct main"
     description:
       name: woosignal
-      sha256: ad0381d78c4fe563edb7d95df23645bff7bb0dbe20881b6ed363004ddded0eab
+      sha256: "85a3343bd02163bf78e7cc59877fb4f4c3806bfbfdeb3ca032e9e803585c589f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.2"
+    version: "3.10.0"
   wp_json_api:
     dependency: "direct main"
     description:

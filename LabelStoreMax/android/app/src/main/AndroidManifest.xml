@@ -13,6 +13,8 @@
     <application
         android:name="${applicationName}"
         android:label="Label StoreMax"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

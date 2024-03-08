@@ -8,8 +8,10 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:woosignal/models/response/product_category_collection.dart';
 import '/app/controllers/product_loader_controller.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/cached_image_widget.dart';
@@ -55,8 +57,28 @@ class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
   }
 
   _fetchCategories() async {
-    _categories =
-        await (appWooSignal((api) => api.getProductCategories(perPage: 100)));
+    if ((widget.wooSignalApp?.productCategoryCollections ?? []).isNotEmpty) {
+      List<int> productCategoryId = widget.wooSignalApp?.productCategoryCollections.map((e) => int.parse(e.collectionId!)).toList() ?? [];
+      _categories = await (appWooSignal((api) =>
+          api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true, include: productCategoryId)));
+      _categories.sort((category1, category2) {
+        ProductCategoryCollection? productCategoryCollection1 = widget.wooSignalApp?.productCategoryCollections.firstWhereOrNull((element) => element.collectionId == category1.id.toString());
+        ProductCategoryCollection? productCategoryCollection2 = widget.wooSignalApp?.productCategoryCollections.firstWhereOrNull((element) => element.collectionId == category2.id.toString());
+
+        if (productCategoryCollection1 == null) return 0;
+        if (productCategoryCollection2 == null) return 0;
+
+        if (productCategoryCollection1.position == null) return 0;
+        if (productCategoryCollection2.position == null) return 0;
+
+        return productCategoryCollection1.position!.compareTo(productCategoryCollection2.position!);
+      });
+    } else {
+      _categories = await (appWooSignal((api) =>
+          api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true)));
+      _categories.sort((category1, category2) =>
+          category1.menuOrder!.compareTo(category2.menuOrder!));
+    }
   }
 
   _modalBottomSheetMenu() {

@@ -9,7 +9,9 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:woosignal/models/response/product_category_collection.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons.dart';
@@ -39,10 +41,28 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
   }
 
   _loadHome() async {
-    categories = await (appWooSignal((api) =>
-        api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true)));
-    categories.sort((category1, category2) =>
-        category1.menuOrder!.compareTo(category2.menuOrder!));
+    if ((widget.wooSignalApp?.productCategoryCollections ?? []).isNotEmpty) {
+      List<int> productCategoryId = widget.wooSignalApp?.productCategoryCollections.map((e) => int.parse(e.collectionId!)).toList() ?? [];
+      categories = await (appWooSignal((api) =>
+          api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true, include: productCategoryId)));
+      categories.sort((category1, category2) {
+        ProductCategoryCollection? productCategoryCollection1 = widget.wooSignalApp?.productCategoryCollections.firstWhereOrNull((element) => element.collectionId == category1.id.toString());
+        ProductCategoryCollection? productCategoryCollection2 = widget.wooSignalApp?.productCategoryCollections.firstWhereOrNull((element) => element.collectionId == category2.id.toString());
+
+        if (productCategoryCollection1 == null) return 0;
+        if (productCategoryCollection2 == null) return 0;
+
+        if (productCategoryCollection1.position == null) return 0;
+        if (productCategoryCollection2.position == null) return 0;
+
+        return productCategoryCollection1.position!.compareTo(productCategoryCollection2.position!);
+      });
+    } else {
+      categories = await (appWooSignal((api) =>
+          api.getProductCategories(parent: 0, perPage: 50, hideEmpty: true)));
+      categories.sort((category1, category2) =>
+          category1.menuOrder!.compareTo(category2.menuOrder!));
+    }
 
     for (var category in categories) {
       List<Product> products = await (appWooSignal(
@@ -73,7 +93,7 @@ class _CompoHomeWidgetState extends State<CompoHomeWidget> {
     Size size = MediaQuery.of(context).size;
     List<String>? bannerImages = widget.wooSignalApp!.bannerImages;
     return Scaffold(
-      drawer: HomeDrawerWidget(wooSignalApp: widget.wooSignalApp),
+      drawer: HomeDrawerWidget(wooSignalApp: widget.wooSignalApp, productCategories: categories),
       appBar: AppBar(
         centerTitle: true,
         title: StoreLogo(),
