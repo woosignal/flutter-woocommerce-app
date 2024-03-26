@@ -9,7 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/resources/widgets/woosignal_ui.dart';
+import 'package:flutter_app/resources/widgets/store_logo_widget.dart';
 
 class CheckoutStoreHeadingWidget extends StatelessWidget {
   const CheckoutStoreHeadingWidget({super.key});

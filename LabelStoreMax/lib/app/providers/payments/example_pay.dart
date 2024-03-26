@@ -1,5 +1,3 @@
-//
-//  LabelCore
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
@@ -9,9 +7,8 @@
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//
 
-import 'package:flutter/widgets.dart';
+import '/resources/pages/checkout_status_page.dart';
 import '/bootstrap/data/order_wc.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/pages/checkout_confirmation_page.dart';
@@ -56,13 +53,13 @@ examplePay(context,
 
   // CHECK IF ORDER IS NULL
   if (order != null) {
-    Navigator.pushNamed(context, "/checkout-status", arguments: order);
-  } else {
     showToastNotification(
       context,
       title: trans("Error"),
       description: trans("Something went wrong, please contact our store"),
     );
     state.reloadState(showLoader: false);
+    return;
   }
+  routeTo(CheckoutStatusPage.path, data: order);
 }

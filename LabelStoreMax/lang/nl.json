@@ -237,5 +237,7 @@
   "Delete my account": "Verwijder mijn account",
   "({{itemCount}}) items from {{appName}}": "({{itemCount}}) artikelen van {{appName}}",
   "Invalid email address": "Ongeldig e-mailadres",
-  "By completing this order, I agree to all": "Door deze bestelling te voltooien, ga ik akkoord met alles"
+  "By completing this order, I agree to all": "Door deze bestelling te voltooien, ga ik akkoord met alles",
+  "Change language": "Taal wijzigen",
+  "Select your language": "Selecteer je taal"
 }

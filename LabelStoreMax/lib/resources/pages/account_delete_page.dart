@@ -9,7 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
+import '/app/events/logout_event.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -27,7 +27,6 @@ class AccountDeletePage extends StatefulWidget {
 class _AccountDeletePageState extends NyState<AccountDeletePage> {
   @override
   init() async {}
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +75,10 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
 
   _deleteAccount() async {
     await lockRelease('delete_account', perform: () async {
-      String? userToken = await readAuthToken();
-
       WPUserDeleteResponse? wpUserDeleteResponse;
       try {
-        wpUserDeleteResponse = await WPJsonAPI.instance
-            .api((request) => request.wpUserDelete(userToken));
+        wpUserDeleteResponse =
+            await WPJsonAPI.instance.api((request) => request.wpUserDelete());
       } on Exception catch (e) {
         NyLogger.error(e.toString());
         showToastNotification(
@@ -95,7 +92,7 @@ class _AccountDeletePageState extends NyState<AccountDeletePage> {
       if (wpUserDeleteResponse != null) {
         showToast(
             title: trans("Success"), description: trans("Account deleted"));
-        await authLogout(context);
+        await event<LogoutEvent>();
       }
     });
   }

@@ -35,9 +35,9 @@ extension DateTimeExtension on DateTime? {
   }
 
   bool? isBetween(
-      DateTime fromDateTime,
-      DateTime toDateTime,
-      ) {
+    DateTime fromDateTime,
+    DateTime toDateTime,
+  ) {
     final date = this;
     if (date != null) {
       final isAfter = date.isAfterOrEqualTo(fromDateTime) ?? false;

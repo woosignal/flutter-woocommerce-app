@@ -9,6 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/checkout_confirmation_page.dart';
+import '/resources/pages/checkout_shipping_type_page.dart';
 import '/app/models/checkout_session.dart';
 import '/app/models/customer_address.dart';
 import '/resources/widgets/woosignal_ui.dart';
@@ -59,7 +61,8 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
       );
       return;
     }
-    Navigator.pushNamed(context, "/checkout-shipping-type")
-        .then((value) => resetState!());
+    routeTo(CheckoutShippingTypePage.path, onPop: (value) {
+      StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
+    });
   }
 }

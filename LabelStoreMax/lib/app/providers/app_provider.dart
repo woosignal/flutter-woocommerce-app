@@ -18,10 +18,11 @@ class AppProvider implements NyProvider {
       DeviceOrientation.portraitUp,
     ]);
 
-    await WooSignal.instance
-        .init(appKey: getEnv('APP_KEY'), debugMode: getEnv('APP_DEBUG'),
+    await WooSignal.instance.init(
+        appKey: getEnv('APP_KEY'),
+        debugMode: getEnv('APP_DEBUG'),
         encryptKey: getEnv('ENCRYPT_KEY', defaultValue: null),
-        encryptSecret: getEnv('ENCRYPT_SECRET', defaultValue: null)
+        encryptSecret: getEnv('ENCRYPT_SECRET', defaultValue: null),
     );
 
     AppHelper.instance.appConfig = WooSignalApp();
@@ -46,7 +47,8 @@ class AppProvider implements NyProvider {
     };
 
     // WooSignal Setup
-    WooSignalApp? wooSignalApp = await (appWooSignal((api) => api.getApp(encrypted: shouldEncrypt())));
+    WooSignalApp? wooSignalApp =
+        await (appWooSignal((api) => api.getApp(encrypted: shouldEncrypt())));
     Locale locale = Locale('en');
 
     if (wooSignalApp != null) {
@@ -55,15 +57,17 @@ class AppProvider implements NyProvider {
       if (wooSignalApp.wpLoginEnabled == 1) {
         if (wooSignalApp.wpLoginBaseUrl == null) {
           AppHelper.instance.appConfig?.wpLoginEnabled = 0;
-          NyLogger.debug('Set your stores domain on WooSignal. Go to Features > WP Login and add your domain to "Store Base Url"');
+          NyLogger.debug(
+              'Set your stores domain on WooSignal. Go to Features > WP Login and add your domain to "Store Base Url"');
         }
 
         if (wooSignalApp.wpLoginWpApiPath == null) {
           AppHelper.instance.appConfig?.wpLoginEnabled = 0;
-          NyLogger.debug('Set your stores Wp JSON path on WooSignal. Go to Features > WP Login and add your Wp JSON path to "WP API Path"');
+          NyLogger.debug(
+              'Set your stores Wp JSON path on WooSignal. Go to Features > WP Login and add your Wp JSON path to "WP API Path"');
         }
 
-        WPJsonAPI.instance.initWith(
+        WPJsonAPI.instance.init(
           baseUrl: wooSignalApp.wpLoginBaseUrl ?? "",
           shouldDebug: getEnv('APP_DEBUG'),
           wpJsonPath: wooSignalApp.wpLoginWpApiPath ?? "",
@@ -80,11 +84,10 @@ class AppProvider implements NyProvider {
 
     /// NyLocalization
     await NyLocalization.instance.init(
-        localeType: localeType,
-        languageCode: locale.languageCode,
-        languagesList: languagesList,
-        assetsDirectory: assetsDirectory,
-        valuesAsMap: valuesAsMap);
+      localeType: localeType,
+      languageCode: locale.languageCode,
+      assetsDirectory: assetsDirectory,
+    );
 
     nylo.addLoader(loader);
     nylo.addLogo(logo);
@@ -95,11 +98,11 @@ class AppProvider implements NyProvider {
     nylo.addControllers(controllers);
     nylo.addApiDecoders(apiDecoders);
 
+    await WPJsonAPI.wpAuth();
+
     return nylo;
   }
 
   @override
-  afterBoot(Nylo nylo) async {
-
-  }
+  afterBoot(Nylo nylo) async {}
 }

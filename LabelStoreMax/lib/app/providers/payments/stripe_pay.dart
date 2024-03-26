@@ -1,5 +1,3 @@
-//
-//  LabelCore
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
@@ -9,9 +7,9 @@
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//
 
 import 'package:flutter/material.dart';
+import '/resources/pages/checkout_status_page.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/data/order_wc.dart';
 import '/bootstrap/helpers.dart';
@@ -23,8 +21,7 @@ import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
-stripePay(context,
-    {required CheckoutConfirmationPageState state, TaxRate? taxRate}) async {
+stripePay(context, {TaxRate? taxRate}) async {
   WooSignalApp? wooSignalApp = AppHelper.instance.appConfig;
 
   bool liveMode = getEnv('STRIPE_LIVE_MODE') == null
@@ -67,13 +64,13 @@ stripePay(context,
           description: trans("Something went wrong, please try again."),
           icon: Icons.payment,
           style: ToastNotificationStyleType.WARNING);
-      state.reloadState(showLoader: false);
+      updateState(CheckoutConfirmationPage.path, data: {"reloadState": false});
       return;
     }
 
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
-          style: Theme.of(state.context).brightness == Brightness.light
+          style: Theme.of(context).brightness == Brightness.light
               ? ThemeMode.light
               : ThemeMode.dark,
           merchantDisplayName:
@@ -103,7 +100,7 @@ stripePay(context,
       return;
     }
 
-    state.reloadState(showLoader: true);
+    updateState(CheckoutConfirmationPage.path, data: {"reloadState": true});
 
     OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
     Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
@@ -114,11 +111,12 @@ stripePay(context,
         title: trans("Error"),
         description: trans("Something went wrong, please contact our store"),
       );
-      state.reloadState(showLoader: false);
+      updateState(CheckoutConfirmationPage.path, data: {"reloadState": false});
       return;
     }
 
-    routeTo('/checkout-status', navigationType: NavigationType.pushAndForgetAll, data: order);
+    routeTo(CheckoutStatusPage.path,
+        navigationType: NavigationType.pushAndForgetAll, data: order);
   } on StripeException catch (e) {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
       NyLogger.error(e.error.message!);
@@ -130,7 +128,7 @@ stripePay(context,
       icon: Icons.payment,
       style: ToastNotificationStyleType.WARNING,
     );
-    state.reloadState(showLoader: false);
+    updateState(CheckoutConfirmationPage.path, data: {"reloadState": false});
   } catch (ex) {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
       NyLogger.error(ex.toString());
@@ -142,6 +140,6 @@ stripePay(context,
       icon: Icons.payment,
       style: ToastNotificationStyleType.WARNING,
     );
-    state.reloadState(showLoader: false);
+    updateState(CheckoutConfirmationPage.path, data: {"reloadState": false});
   }
 }

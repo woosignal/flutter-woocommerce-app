@@ -12,9 +12,10 @@ class RouteProvider implements NyProvider {
 
   @override
   afterBoot(Nylo nylo) async {
-    String initialRoute = AppHelper.instance.appConfig!.appStatus != null
-        ? '/home'
-        : '/no-connection';
-    nylo.setInitialRoute(initialRoute);
+    if (AppHelper.instance.appConfig?.appStatus == null) {
+      nylo.initRoutes(initialRoute: '/no-connection');
+      return;
+    }
+    nylo.initRoutes();
   }
 }

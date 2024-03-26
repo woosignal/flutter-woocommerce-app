@@ -237,5 +237,7 @@
   "Delete my account": "mera ekaunt hata do",
   "({{itemCount}}) items from {{appName}}": "({{itemCount}}) se aaitam {{appName}}",
   "Invalid email address": "amaany eemel pata",
-  "By completing this order, I agree to all": "is aadesh ko poora karake, main sabhee ke lie sahamat hoon"
+  "By completing this order, I agree to all": "is aadesh ko poora karake, main sabhee ke lie sahamat hoon",
+  "Change language": "bhaasha badalen",
+  "Select your language": "apanee bhaasha ka chayan karen"
 }

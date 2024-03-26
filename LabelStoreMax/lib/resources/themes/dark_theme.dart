@@ -63,7 +63,8 @@ ThemeData darkTheme(ColorStyles darkColors) {
       selectedItemColor: darkColors.bottomTabBarLabelSelected,
     ),
     textTheme: darkTheme,
-    colorScheme: ColorScheme.dark(background: darkColors.background),
+    colorScheme: ColorScheme.dark(
+        background: darkColors.background, primary: darkColors.primaryContent),
   );
 }
 

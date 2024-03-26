@@ -9,8 +9,9 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/product_detail_page.dart';
+import '/resources/widgets/product_item_container_widget.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -63,9 +64,14 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 children: relatedProducts
-                    .map((e) => Container(
+                    .map((product) => Container(
                         width: MediaQuery.of(context).size.width / 2.2,
-                        child: ProductItemContainer(product: e)))
+                        child: ProductItemContainer(
+                          product: product,
+                          onTap: () {
+                            routeTo(ProductDetailPage.path, data: product);
+                          },
+                        )))
                     .toList(),
               );
             },
@@ -76,6 +82,10 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
   }
 
   Future<List<Product>> fetchRelated() async => await (appWooSignal(
-        (api) => api.getProducts(perPage: 100, include: product!.relatedIds, status: "publish"),
-  ));
+        (api) => api.getProducts(
+            perPage: 100,
+            include: product?.relatedIds,
+            stockStatus: "instock",
+            status: "publish"),
+      ));
 }

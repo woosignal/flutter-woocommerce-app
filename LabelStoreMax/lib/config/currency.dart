@@ -1,11 +1,8 @@
-/*
+/* CURRENCY
 |--------------------------------------------------------------------------
-| CURRENCY
-|
 | Configure which currency you want to use.
 | Docs here: https://woosignal.com/docs/app/label-storemax
-|--------------------------------------------------------------------------
-*/
+|-------------------------------------------------------------------------- */
 
 import '/bootstrap/enums/symbol_position_enums.dart';
 

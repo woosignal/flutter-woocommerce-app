@@ -29,8 +29,7 @@ class CheckoutShippingTypePage extends StatefulWidget {
   CheckoutShippingTypePage();
 
   @override
-  createState() =>
-      _CheckoutShippingTypePageState();
+  createState() => _CheckoutShippingTypePageState();
 }
 
 class _CheckoutShippingTypePageState extends State<CheckoutShippingTypePage> {

@@ -9,12 +9,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/customer_countries_page.dart';
 import '/app/models/billing_details.dart';
 import '/app/models/customer_address.dart';
 import '/app/models/customer_country.dart';
 import '/app/models/default_shipping.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/customer_address_input.dart';
@@ -32,8 +32,7 @@ class AccountShippingDetailsPage extends StatefulWidget {
   AccountShippingDetailsPage();
 
   @override
-  createState() =>
-      _AccountShippingDetailsPageState();
+  createState() => _AccountShippingDetailsPageState();
 }
 
 class _AccountShippingDetailsPageState
@@ -85,12 +84,8 @@ class _AccountShippingDetailsPageState
       );
 
   @override
-  init() async {
-    super.init();
-
-    await awaitData(perform: () async {
-      await _fetchUserDetails();
-    });
+  boot() async {
+    await _fetchUserDetails();
   }
 
   _setFieldsFromCustomerAddress(CustomerAddress? customerAddress,
@@ -275,12 +270,10 @@ class _AccountShippingDetailsPageState
             customerCountry: _shippingCountry,
           );
 
-      String? userToken = await readAuthToken();
-
       WPUserInfoUpdatedResponse? wpUserInfoUpdatedResponse;
       try {
         wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api(
-          (request) => request.wpUpdateUserInfo(userToken, metaData: [
+          (request) => request.wpUpdateUserInfo(metaData: [
             ...userBillingAddress.toUserMetaDataItem('billing'),
             ...userShippingAddress.toUserMetaDataItem('shipping'),
           ]),
@@ -327,7 +320,7 @@ class _AccountShippingDetailsPageState
   }
 
   _navigateToSelectCountry({required String type}) {
-    Navigator.pushNamed(context, "/customer-countries").then((value) {
+    routeTo(CustomerCountriesPage.path, onPop: (value) {
       if (value == null) {
         return;
       }
@@ -346,12 +339,10 @@ class _AccountShippingDetailsPageState
   }
 
   _fetchUserDetails() async {
-    String? userToken = await readAuthToken();
-
     WPUserInfoResponse? wpUserInfoResponse;
     try {
-      wpUserInfoResponse = await WPJsonAPI.instance
-          .api((request) => request.wpGetUserInfo(userToken!));
+      wpUserInfoResponse =
+          await WPJsonAPI.instance.api((request) => request.wpGetUserInfo());
     } on Exception catch (e) {
       print(e.toString());
       showToastNotification(
@@ -371,8 +362,6 @@ class _AccountShippingDetailsPageState
           type: "shipping");
       _setFieldsFromCustomerAddress(billingDetails.billingAddress,
           type: "billing");
-
-      setState(() {});
     }
   }
 }

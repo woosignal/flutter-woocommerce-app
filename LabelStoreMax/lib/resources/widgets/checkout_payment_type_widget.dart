@@ -9,6 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/checkout_confirmation_page.dart';
+import '/resources/pages/checkout_payment_type_page.dart';
 import '/app/models/checkout_session.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -46,7 +48,8 @@ class CheckoutPaymentTypeWidget extends StatelessWidget {
   }
 
   _actionPayWith() {
-    Navigator.pushNamed(context, "/checkout-payment-type")
-        .then((value) => resetState!());
+    routeTo(CheckoutPaymentTypePage.path, onPop: (value) {
+      StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
+    });
   }
 }

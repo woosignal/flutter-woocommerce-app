@@ -9,11 +9,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/app/controllers/product_loader_controller.dart';
-import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/woosignal_ui.dart';
+import '/resources/pages/product_detail_page.dart';
+import '/resources/widgets/product_item_container_widget.dart';
+import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailUpsellWidget extends StatefulWidget {
@@ -23,33 +22,19 @@ class ProductDetailUpsellWidget extends StatefulWidget {
   final WooSignalApp? wooSignalApp;
 
   @override
-  createState() =>
-      _ProductDetailUpsellWidgetState();
+  createState() => _ProductDetailUpsellWidgetState();
 }
 
-class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
-  final ProductLoaderController _productLoaderController =
-      ProductLoaderController();
-
-  bool _isLoading = true;
-
+class _ProductDetailUpsellWidgetState
+    extends NyState<ProductDetailUpsellWidget> {
   @override
-  void initState() {
-    super.initState();
-    fetchProducts();
-  }
+  boot() async {}
 
   @override
   Widget build(BuildContext context) {
-    List<Product> products = _productLoaderController.getResults();
     if (widget.productIds!.isEmpty ||
-        products.isEmpty ||
         widget.wooSignalApp!.showUpsellProducts == false) {
       return SizedBox.shrink();
-    }
-
-    if (_isLoading == true) {
-      return AppLoaderWidget();
     }
 
     return ListView(
@@ -75,39 +60,23 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
           ),
         ),
         Container(
-          height: 300,
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            children: products
-                .map(
-                  (e) => Container(
+            height: 300,
+            child: NyListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                child: (context, product) {
+                  return Container(
                     width: MediaQuery.of(context).size.width / 2.2,
-                    child: ProductItemContainer(product: e),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
+                    child: ProductItemContainer(product: product, onTap: () {
+                      routeTo(ProductDetailPage.path, data: product);
+                    },),
+                  );
+                },
+                data: () {
+                  return appWooSignal(
+                      (api) => api.getProducts(include: widget.productIds));
+                })),
       ],
     );
-  }
-
-  Future fetchProducts() async {
-    await _productLoaderController.loadProducts(
-        hasResults: (result) {
-          if (result == false) {
-            return false;
-          }
-          return true;
-        },
-        didFinish: () {
-          if (mounted) {
-            setState(() {
-              _isLoading = false;
-            });
-          }
-        },
-        productIds: widget.productIds);
   }
 }

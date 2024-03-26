@@ -9,6 +9,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/product_image_viewer_page.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import '/resources/widgets/product_detail_description_widget.dart';
 import '/resources/widgets/product_detail_header_widget.dart';
 import '/resources/widgets/product_detail_image_swiper_widget.dart';
@@ -57,9 +59,10 @@ class ProductDetailBodyWidget extends StatelessWidget {
     );
   }
 
-  _viewProductImages(BuildContext context, int i) =>
-      Navigator.pushNamed(context, "/product-images", arguments: {
-        "index": i,
-        "images": product!.images.map((f) => f.src).toList()
-      });
+  _viewProductImages(BuildContext context, int i) {
+    routeTo(ProductImageViewerPage.path, data: {
+      "index": i,
+      "images": product!.images.map((f) => f.src).toList()
+    });
+  }
 }

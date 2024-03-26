@@ -9,23 +9,38 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/checkout_confirmation_page.dart';
+import 'package:woosignal/models/response/coupon.dart';
+import '/resources/pages/coupon_page.dart';
 import '/app/models/checkout_session.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-class CheckoutSelectCouponWidget extends StatelessWidget {
-  const CheckoutSelectCouponWidget(
-      {super.key,
-      required this.context,
-      required this.checkoutSession,
-      required this.resetState});
+class CheckoutSelectCouponWidget extends StatefulWidget {
+  const CheckoutSelectCouponWidget({
+    super.key,
+    required this.context,
+    required this.checkoutSession,
+  });
 
   final CheckoutSession checkoutSession;
   final BuildContext context;
-  final Function resetState;
+
+  static String state = "checkout_select_coupon_widget";
+
+  @override
+  State<CheckoutSelectCouponWidget> createState() =>
+      _CheckoutSelectCouponWidgetState();
+}
+
+class _CheckoutSelectCouponWidgetState
+    extends NyState<CheckoutSelectCouponWidget> {
+  _CheckoutSelectCouponWidgetState() {
+    stateName = CheckoutSelectCouponWidget.state;
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool hasCoupon = checkoutSession.coupon != null;
+    bool hasCoupon = widget.checkoutSession.coupon != null;
     return Container(
       height: 50,
       padding: EdgeInsets.symmetric(vertical: 5),
@@ -33,8 +48,14 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
         onTap: _actionCoupon,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text(
+              hasCoupon
+                  ? "Coupon Applied: ${widget.checkoutSession.coupon!.code!}"
+                  : trans('Apply Coupon'),
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
             if (hasCoupon == true)
               IconButton(
                   padding: EdgeInsets.symmetric(vertical: 3),
@@ -43,27 +64,24 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
                     Icons.close,
                     size: 19,
                   )),
-            Text(
-              hasCoupon
-                  ? "Coupon Applied: ${checkoutSession.coupon!.code!}"
-                  : trans('Apply Coupon'),
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            if (hasCoupon == false)
+              Icon(Icons.arrow_forward_ios,
+                  size: 16, color: Colors.grey.shade600),
           ],
-        ),
+        ).paddingSymmetric(horizontal: 16),
       ),
     );
   }
 
   _clearCoupon() {
     CheckoutSession.getInstance.coupon = null;
-    resetState();
+    StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
   }
 
   _actionCoupon() {
-    if (checkoutSession.billingDetails!.billingAddress == null) {
+    if (widget.checkoutSession.billingDetails!.billingAddress == null) {
       showToastNotification(
-        context,
+        widget.context,
         title: trans("Oops"),
         description:
             trans("Please select add your billing/shipping address to proceed"),
@@ -73,10 +91,11 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
 
       return;
     }
-    if (checkoutSession.billingDetails?.billingAddress?.hasMissingFields() ??
+    if (widget.checkoutSession.billingDetails?.billingAddress
+            ?.hasMissingFields() ??
         true) {
       showToastNotification(
-        context,
+        widget.context,
         title: trans("Oops"),
         description: trans("Your billing/shipping details are incomplete"),
         style: ToastNotificationStyleType.WARNING,
@@ -84,7 +103,10 @@ class CheckoutSelectCouponWidget extends StatelessWidget {
       );
       return;
     }
-    Navigator.pushNamed(context, "/checkout-coupons")
-        .then((value) => resetState());
+    routeTo(CouponPage.path, onPop: (value) {
+      if (value is Coupon) {
+        StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
+      }
+    });
   }
 }

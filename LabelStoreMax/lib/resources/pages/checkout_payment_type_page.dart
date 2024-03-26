@@ -22,8 +22,7 @@ class CheckoutPaymentTypePage extends StatefulWidget {
   CheckoutPaymentTypePage();
 
   @override
-  createState() =>
-      _CheckoutPaymentTypePageState();
+  createState() => _CheckoutPaymentTypePageState();
 }
 
 class _CheckoutPaymentTypePageState extends NyState<CheckoutPaymentTypePage> {

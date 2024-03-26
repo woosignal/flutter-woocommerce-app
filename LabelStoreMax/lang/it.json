@@ -237,5 +237,7 @@
   "Delete my account": "Cancella il mio account",
   "({{itemCount}}) items from {{appName}}": "({{itemCount}}) elementi da {{appName}}",
   "Invalid email address": "indirizzo email non valido",
-  "By completing this order, I agree to all": "Completando questo ordine, accetto tutto"
+  "By completing this order, I agree to all": "Completando questo ordine, accetto tutto",
+  "Change language": "Cambia lingua",
+  "Select your language": "seleziona la tua lingua"
 }

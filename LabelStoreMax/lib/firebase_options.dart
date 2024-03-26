@@ -10,7 +10,7 @@ class DefaultFirebaseOptions {
     if (kIsWeb) {
       throw UnsupportedError(
         'DefaultFirebaseOptions have not been configured for web - '
-            'you can reconfigure this by running the FlutterFire CLI again.',
+        'you can reconfigure this by running the FlutterFire CLI again.',
       );
     }
     switch (defaultTargetPlatform) {
@@ -21,11 +21,15 @@ class DefaultFirebaseOptions {
           );
         }
         return FirebaseOptions(
-          apiKey: AppHelper.instance.appConfig!.firebaseOptionsAndroid!['apiKey'],
+          apiKey:
+              AppHelper.instance.appConfig!.firebaseOptionsAndroid!['apiKey'],
           appId: AppHelper.instance.appConfig!.firebaseOptionsAndroid!['appId'],
-          messagingSenderId: AppHelper.instance.appConfig!.firebaseOptionsAndroid!['messagingSenderId'],
-          projectId: AppHelper.instance.appConfig!.firebaseOptionsAndroid!['projectId'],
-          storageBucket: AppHelper.instance.appConfig!.firebaseOptionsAndroid!['storageBucket'],
+          messagingSenderId: AppHelper
+              .instance.appConfig!.firebaseOptionsAndroid!['messagingSenderId'],
+          projectId: AppHelper
+              .instance.appConfig!.firebaseOptionsAndroid!['projectId'],
+          storageBucket: AppHelper
+              .instance.appConfig!.firebaseOptionsAndroid!['storageBucket'],
         );
       case TargetPlatform.iOS:
         if (AppHelper.instance.appConfig?.firebaseOptionsIos == null) {
@@ -36,26 +40,31 @@ class DefaultFirebaseOptions {
         return FirebaseOptions(
           apiKey: AppHelper.instance.appConfig!.firebaseOptionsIos!['apiKey'],
           appId: AppHelper.instance.appConfig!.firebaseOptionsIos!['appId'],
-          messagingSenderId: AppHelper.instance.appConfig!.firebaseOptionsIos!['messagingSenderId'],
-          projectId: AppHelper.instance.appConfig!.firebaseOptionsIos!['projectId'],
-          storageBucket: AppHelper.instance.appConfig!.firebaseOptionsIos!['storageBucket'],
-          iosClientId: AppHelper.instance.appConfig!.firebaseOptionsIos!['iosClientId'],
-          iosBundleId: AppHelper.instance.appConfig!.firebaseOptionsIos!['iosBundleId'],
+          messagingSenderId: AppHelper
+              .instance.appConfig!.firebaseOptionsIos!['messagingSenderId'],
+          projectId:
+              AppHelper.instance.appConfig!.firebaseOptionsIos!['projectId'],
+          storageBucket: AppHelper
+              .instance.appConfig!.firebaseOptionsIos!['storageBucket'],
+          iosClientId:
+              AppHelper.instance.appConfig!.firebaseOptionsIos!['iosClientId'],
+          iosBundleId:
+              AppHelper.instance.appConfig!.firebaseOptionsIos!['iosBundleId'],
         );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(

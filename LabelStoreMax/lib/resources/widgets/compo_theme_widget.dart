@@ -1,5 +1,3 @@
-//
-//  LabelCore
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
@@ -9,14 +7,13 @@
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//
 
 import 'package:flutter/material.dart';
+import 'package:wp_json_api/wp_json_api.dart';
 import '/app/models/bottom_nav_item.dart';
 import '/bootstrap/app_helper.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import '/resources/pages/account_detail_page.dart';
-import '/resources/pages/account_landing_page.dart';
+import '/resources/pages/account_login_page.dart';
 import '/resources/pages/cart_page.dart';
 import '/resources/pages/wishlist_page_widget.dart';
 import '/resources/pages/home_search_page.dart';
@@ -26,10 +23,8 @@ import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class CompoThemeWidget extends StatefulWidget {
-  CompoThemeWidget(
-      {super.key, required this.globalKey, required this.wooSignalApp});
+  CompoThemeWidget({super.key, required this.wooSignalApp});
   final WooSignalApp? wooSignalApp;
-  final GlobalKey globalKey;
 
   @override
   CompoThemeWidgetState createState() => CompoThemeWidgetState();
@@ -123,11 +118,11 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
     if (AppHelper.instance.appConfig!.wpLoginEnabled == 1) {
       items.add(BottomNavItem(
         id: 5,
-        bottomNavigationBarItem:
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'.tr()),
-        tabWidget: (await authCheck())
+        bottomNavigationBarItem: BottomNavigationBarItem(
+            icon: Icon(Icons.person), label: 'Account'.tr()),
+        tabWidget: (await WPJsonAPI.wpUserLoggedIn())
             ? AccountDetailPage(showLeadingBackButton: false)
-            : AccountLandingPage(
+            : AccountLoginPage(
                 showBackButton: false,
               ),
       ));

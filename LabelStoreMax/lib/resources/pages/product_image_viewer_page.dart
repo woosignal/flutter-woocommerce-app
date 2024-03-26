@@ -9,7 +9,6 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/app/controllers/product_image_viewer_controller.dart';
 import '/resources/widgets/cached_image_widget.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
@@ -17,10 +16,6 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class ProductImageViewerPage extends NyStatefulWidget {
   static String path = "/product-images";
-
-  @override
-  final ProductImageViewerController controller =
-      ProductImageViewerController();
 
   ProductImageViewerPage({Key? key})
       : super(path, key: key, child: _ProductImageViewerPageState());

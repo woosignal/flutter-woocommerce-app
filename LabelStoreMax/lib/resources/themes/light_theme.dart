@@ -66,8 +66,9 @@ ThemeData lightTheme(ColorStyles lightColors) {
       selectedItemColor: lightColors.bottomTabBarLabelSelected,
     ),
     textTheme: lightTheme,
-    colorScheme:
-        ColorScheme.light(background: lightColors.background),
+    colorScheme: ColorScheme.light(
+        background: lightColors.background,
+        primary: lightColors.primaryContent),
   );
 }
 

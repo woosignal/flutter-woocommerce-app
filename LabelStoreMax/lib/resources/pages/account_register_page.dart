@@ -8,13 +8,10 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import '/app/models/user.dart';
+import '/app/events/login_event.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/shared_key.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
@@ -34,8 +31,7 @@ class AccountRegistrationPage extends StatefulWidget {
   AccountRegistrationPage();
 
   @override
-  createState() =>
-      _AccountRegistrationPageState();
+  createState() => _AccountRegistrationPageState();
 }
 
 class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
@@ -166,27 +162,18 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
     }
 
     await lockRelease('register_user', perform: () async {
-      String username =
-          (email.replaceAll(RegExp(r'([@.])'), "")) + _randomStr(4);
-
       WPUserRegisterResponse? wpUserRegisterResponse;
       try {
         wpUserRegisterResponse = await WPJsonAPI.instance.api(
-          (request) => request.wpRegister(
+          (request) => request.wcRegister(
             email: email.toLowerCase(),
             password: password,
-            username: username,
+            args: {
+              "first_name": firstName,
+              "last_name": lastName,
+            },
           ),
         );
-
-        if (wpUserRegisterResponse?.data?.userToken != null) {
-          await WPJsonAPI.instance.api((request) => request.wpUserAddRole(
-              wpUserRegisterResponse!.data!.userToken,
-              role: "customer"));
-          await WPJsonAPI.instance.api((request) => request.wpUserRemoveRole(
-              wpUserRegisterResponse!.data!.userToken,
-              role: "subscriber"));
-        }
       } on UsernameTakenException catch (e) {
         showToastNotification(context,
             title: trans("Oops!"),
@@ -233,14 +220,7 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
         return;
       }
 
-      // Save user to shared preferences
-      String? token = wpUserRegisterResponse.data!.userToken;
-      String userId = wpUserRegisterResponse.data!.userId.toString();
-      User user = User.fromUserAuthResponse(token: token, userId: userId);
-      await user.save(SharedKey.authUser);
-
-      await WPJsonAPI.instance.api((request) => request.wpUpdateUserInfo(token,
-          firstName: firstName, lastName: lastName));
+      event<LoginEvent>();
 
       showToastNotification(context,
           title: "${trans("Hello")} $firstName",
@@ -269,24 +249,12 @@ class _AccountRegistrationPageState extends NyState<AccountRegistrationPage> {
           ),
           Divider(),
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: pop,
             child: Text('Close'),
           ),
         ],
       ),
     );
-  }
-
-  String _randomStr(int strLen) {
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-    Random rnd = Random(DateTime.now().millisecondsSinceEpoch);
-    String result = "";
-    for (var i = 0; i < strLen; i++) {
-      result += chars[rnd.nextInt(chars.length)];
-    }
-    return result;
   }
 
   void _viewTermsConditions() {

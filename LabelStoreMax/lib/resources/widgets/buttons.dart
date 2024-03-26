@@ -58,14 +58,11 @@ class SecondaryButton extends StatelessWidget {
 }
 
 class LinkButton extends StatelessWidget {
-  const LinkButton({
-    super.key,
-    this.title,
-    this.action,
-  });
+  const LinkButton({super.key, this.title, this.action, this.selected});
 
   final String? title;
   final Function? action;
+  final bool? selected;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +79,11 @@ class LinkButton extends StatelessWidget {
             child: Text(
           title!,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: selected == true
+              ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  )
+              : Theme.of(context).textTheme.bodyLarge,
         )),
       ),
       onTap: action == null ? null : () async => await action!(),

@@ -13,7 +13,6 @@ import '/app/models/cart.dart';
 import '/app/models/cart_line_item.dart';
 import '/app/models/checkout_session.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -25,9 +24,8 @@ class CouponPage extends StatefulWidget {
   createState() => _CouponPageState();
 }
 
-class _CouponPageState extends State<CouponPage> {
+class _CouponPageState extends NyState<CouponPage> {
   List<Coupon> _coupons = [];
-  bool _isLoading = false;
 
   final couponController = TextEditingController();
 
@@ -45,28 +43,16 @@ class _CouponPageState extends State<CouponPage> {
     _showAlert(message: trans("Added to checkout"));
     CheckoutSession.getInstance.coupon = coupon;
 
-    Navigator.of(context).pop();
+    pop(result: coupon);
   }
 
   Future<void> findCoupon(String couponCode) async {
-    setState(() {
-      _isLoading = true;
-    });
-
     _coupons = await (appWooSignal(
       (api) => api.getCoupons(code: couponCode, perPage: 100),
     ));
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   final _formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,14 +106,16 @@ class _CouponPageState extends State<CouponPage> {
             SizedBox(
               height: 25,
             ),
-            (_isLoading == true)
-                ? AppLoaderWidget()
-                : PrimaryButton(
-                    action: () => _applyCoupon(checkoutSession),
-                    title: trans('Apply'),
-                  ),
+            PrimaryButton(
+              isLoading: isLocked('find_coupon'),
+              action: () => _applyCoupon(checkoutSession),
+              title: trans('Apply'),
+            ),
             LinkButton(
-                title: trans("Cancel"), action: () => Navigator.pop(context)),
+                title: trans("Cancel"),
+                action: () {
+                  pop();
+                }),
           ],
         ),
       ),
@@ -135,7 +123,9 @@ class _CouponPageState extends State<CouponPage> {
   }
 
   _applyCoupon(CheckoutSession checkoutSession) async {
-    await findCoupon(couponController.text);
+    await lockRelease('find_coupon', perform: () async {
+      await findCoupon(couponController.text);
+    });
 
     if (_formKey.currentState!.validate()) {
       // No coupons found

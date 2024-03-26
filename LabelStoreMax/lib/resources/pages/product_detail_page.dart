@@ -9,6 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/resources/widgets/store_logo_widget.dart';
 import '/app/controllers/product_detail_controller.dart';
 import '/app/models/cart_line_item.dart';
 import '/bootstrap/app_helper.dart';
@@ -25,11 +26,8 @@ import 'package:woosignal/models/response/product_variation.dart'
 import 'package:woosignal/models/response/product.dart' as ws_product;
 import 'package:woosignal/models/response/woosignal_app.dart';
 
-class ProductDetailPage extends NyStatefulWidget {
+class ProductDetailPage extends NyStatefulWidget<ProductDetailController> {
   static String path = "/product-detail";
-
-  @override
-  final ProductDetailController controller = ProductDetailController();
 
   ProductDetailPage({Key? key})
       : super(path, key: key, child: _ProductDetailState());
@@ -41,7 +39,6 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   List<ws_product_variation.ProductVariation> _productVariations = [];
   final Map<int, dynamic> _tmpAttributeObj = {};
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
-
 
   @override
   boot() async {

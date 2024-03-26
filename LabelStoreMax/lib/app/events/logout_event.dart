@@ -1,4 +1,6 @@
+import '/app/models/cart.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:wp_json_api/wp_json_api.dart';
 
 class LogoutEvent implements NyEvent {
   @override
@@ -8,6 +10,8 @@ class LogoutEvent implements NyEvent {
 class DefaultListener extends NyListener {
   @override
   handle(dynamic event) async {
-    // handle the payload from event
+    await WPJsonAPI.wpLogout();
+    await Cart.getInstance.clear();
+    routeToInitial();
   }
 }

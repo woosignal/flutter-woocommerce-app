@@ -9,13 +9,13 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/product_detail_page.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/cached_image_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 
 class WishListPageWidget extends StatefulWidget {
-
   static String path = "/wishlist";
 
   @override
@@ -81,9 +81,8 @@ class _WishListPageWidgetState extends NyState<WishListPageWidget> {
                     itemBuilder: (BuildContext context, int index) {
                       Product product = _products[index];
                       return InkWell(
-                        onTap: () => Navigator.pushNamed(
-                            context, "/product-detail",
-                            arguments: product),
+                        onTap: () =>
+                            routeTo(ProductDetailPage.path, data: product),
                         child: Container(
                           child: Row(
                             children: [

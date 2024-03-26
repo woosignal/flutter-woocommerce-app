@@ -9,19 +9,19 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/resources/pages/account_landing_page.dart';
-import 'package:flutter_app/resources/pages/checkout_confirmation_page.dart';
+import 'package:flutter_app/resources/widgets/cart_item_container_widget.dart';
+import '/resources/pages/account_login_page.dart';
+import '/resources/pages/checkout_confirmation_page.dart';
+import 'package:wp_json_api/wp_json_api.dart';
 import '/app/models/cart.dart';
 import '/app/models/cart_line_item.dart';
 import '/app/models/checkout_session.dart';
 import '/app/models/customer_address.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/text_row_widget.dart';
-import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CartPage extends StatefulWidget {
@@ -104,7 +104,7 @@ class _CartPageState extends NyState<CartPage> {
           sfCustomerAddress;
     }
 
-    if (!(await authCheck())) {
+    if (!(await WPJsonAPI.wpUserLoggedIn())) {
       // show modal to ask customer if they would like to checkout as guest or login
       showAdaptiveDialog(
           context: context,
@@ -121,14 +121,15 @@ class _CartPageState extends NyState<CartPage> {
                   child: Text("Checkout as guest".tr()),
                 ),
                 if (AppHelper.instance.appConfig!.wpLoginEnabled == 1)
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    UserAuth.instance.redirect = CheckoutConfirmationPage.path;
-                    routeTo(AccountLandingPage.path);
-                  },
-                  child: Text("Login / Create an account".tr()),
-                ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      UserAuth.instance.redirect =
+                          CheckoutConfirmationPage.path;
+                      routeTo(AccountLoginPage.path);
+                    },
+                    child: Text("Login / Create an account".tr()),
+                  ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text("Cancel".tr()),

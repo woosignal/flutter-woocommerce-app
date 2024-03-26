@@ -1,12 +1,8 @@
-
-/*
+/* Validation Rules
 |--------------------------------------------------------------------------
-| Validation Rules
-| -------------------------------------------------------------------------
 | Add custom validation rules for your project in this file.
 | Learn more https://nylo.dev/docs/5.20.0/validation#custom-validation-rules
-|--------------------------------------------------------------------------
-*/
+|-------------------------------------------------------------------------- */
 
 final Map<String, dynamic> validationRules = {
   /// Example

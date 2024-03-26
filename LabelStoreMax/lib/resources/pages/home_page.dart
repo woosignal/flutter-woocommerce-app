@@ -10,9 +10,12 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/resources/pages/account_order_detail_page.dart';
-import 'package:flutter_app/resources/pages/product_detail_page.dart';
+import '/resources/pages/account_order_detail_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import '/app/events/firebase_on_message_order_event.dart';
+import '/app/events/order_notification_event.dart';
+import '/app/events/product_notification_event.dart';
+import '/bootstrap/helpers.dart';
 import '/bootstrap/app_helper.dart';
 import '/resources/widgets/compo_theme_widget.dart';
 import '/resources/widgets/mello_theme_widget.dart';
@@ -20,7 +23,6 @@ import '/resources/widgets/notic_theme_widget.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class HomePage extends StatefulWidget {
-  
   static String path = "/home";
   HomePage();
 
@@ -31,7 +33,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends NyState<HomePage> {
   _HomePageState();
 
-  final GlobalKey _key = GlobalKey();
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
@@ -40,7 +41,8 @@ class _HomePageState extends NyState<HomePage> {
   }
 
   _enableFcmNotifications() async {
-    bool? firebaseFcmIsEnabled = AppHelper.instance.appConfig?.firebaseFcmIsEnabled;
+    bool? firebaseFcmIsEnabled =
+        AppHelper.instance.appConfig?.firebaseFcmIsEnabled;
     firebaseFcmIsEnabled ??= getEnv('FCM_ENABLED', defaultValue: false);
 
     if (firebaseFcmIsEnabled != true) return;
@@ -48,25 +50,70 @@ class _HomePageState extends NyState<HomePage> {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       /// WP Notify - Product notification
       if (message.data.containsKey('product_id')) {
-        routeTo(ProductDetailPage.path, data: int.parse(message.data['product_id']));
+        event<ProductNotificationEvent>(data: {"RemoteMessage": message});
       }
+
       /// WP Notify - Order notification
       if (message.data.containsKey('order_id')) {
-        routeTo(AccountOrderDetailPage.path, data: int.parse(message.data['order_id']));
+        event<OrderNotificationEvent>(data: {"RemoteMessage": message});
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      /// WP Notify - Order notification
+      if (message.data.containsKey('order_id')) {
+        event<FirebaseOnMessageOrderEvent>(data: {"RemoteMessage": message});
+        _maybeShowSnackBar(message);
       }
     });
   }
 
+  /// Attempt to show a snackbar if the user is on the same page
+  _maybeShowSnackBar(RemoteMessage message) async {
+    if (!(await canSeeRemoteMessage(message))) {
+      return;
+    }
+    _showSnackBar(message.notification?.body, onPressed: () {
+      routeTo(AccountOrderDetailPage.path,
+          data: int.parse(message.data['order_id']));
+    });
+  }
+
+  _showSnackBar(String? message, {Function()? onPressed}) {
+    SnackBar snackBar = SnackBar(
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '${'New notification received'.tr()} 🚨',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          if (message != null) Text(message)
+        ],
+      ),
+      action: onPressed == null
+          ? null
+          : SnackBarAction(
+              label: 'View'.tr(),
+              onPressed: onPressed,
+            ),
+      duration: Duration(milliseconds: 4500),
+    );
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget theme =
-        MelloThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
-    if (AppHelper.instance.appConfig!.theme == "notic") {
-      theme = NoticThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
-    }
-    if (AppHelper.instance.appConfig!.theme == "compo") {
-      theme = CompoThemeWidget(globalKey: _key, wooSignalApp: _wooSignalApp);
-    }
-    return theme;
+    return match(
+        AppHelper.instance.appConfig?.theme,
+        () => {
+              "notic": NoticThemeWidget(wooSignalApp: _wooSignalApp),
+              "compo": CompoThemeWidget(wooSignalApp: _wooSignalApp),
+              "mello": MelloThemeWidget(wooSignalApp: _wooSignalApp),
+            },
+        defaultValue: MelloThemeWidget(wooSignalApp: _wooSignalApp));
   }
 }

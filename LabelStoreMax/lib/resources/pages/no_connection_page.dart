@@ -75,6 +75,6 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
     }
 
     AppHelper.instance.appConfig = wooSignalApp;
-    Navigator.pushNamed(context, "/home");
+    routeToInitial();
   }
 }

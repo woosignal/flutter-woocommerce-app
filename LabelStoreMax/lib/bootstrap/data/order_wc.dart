@@ -10,13 +10,15 @@
 
 import 'dart:io';
 
+import 'package:wp_json_api/models/wp_user.dart';
+import 'package:wp_json_api/wp_json_api.dart';
+
 import '/app/models/billing_details.dart';
 import '/app/models/cart.dart';
 import '/app/models/cart_line_item.dart';
 import '/app/models/checkout_session.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -37,9 +39,10 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
   orderWC.setPaid = markPaid;
   orderWC.status = "pending";
   orderWC.currency = wooSignalApp.currencyMeta!.code!.toUpperCase();
-  orderWC.customerId = (wooSignalApp.wpLoginEnabled == 1)
-      ? int.parse(await (readUserId()) ?? "0")
-      : 0;
+  WpUser? wpUser = await WPJsonAPI.wpUser();
+  if (wpUser != null && wooSignalApp.wpLoginEnabled == 1) {
+    orderWC.customerId = int.parse(wpUser.id.toString());
+  }
 
   List<LineItems> lineItems = [];
   List<CartLineItem> cartItems = await Cart.getInstance.getCart();
@@ -52,7 +55,9 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
       tmpLineItem.variationId = cartItem.variationId;
     }
 
-    tmpLineItem.subtotal = (parseWcPrice(cartItem.subtotal) * parseWcPrice(cartItem.quantity.toString())).toString();
+    tmpLineItem.subtotal = (parseWcPrice(cartItem.subtotal) *
+            parseWcPrice(cartItem.quantity.toString()))
+        .toString();
     lineItems.add(tmpLineItem);
   }
 

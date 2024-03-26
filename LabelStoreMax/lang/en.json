@@ -237,5 +237,7 @@
   "({{itemCount}}) items from {{appName}}": "({{itemCount}}) items from {{appName}}",
   "Contact us for any questions on your order.": "Contact us for any questions on your order.",
   "Invalid email address": "Invalid email address",
-  "By completing this order, I agree to all": "By completing this order, I agree to all"
+  "By completing this order, I agree to all": "By completing this order, I agree to all",
+  "Change language": "Change language",
+  "Select your language": "Select your language"
 }

@@ -129,7 +129,7 @@ class Cart {
     await saveCartToPref(cartLineItems: cartLineItems);
   }
 
-  clear() async => NyStorage.delete(SharedKey.cart);
+  clear() async => await NyStorage.delete(SharedKey.cart);
 
   saveCartToPref({required List<CartLineItem> cartLineItems}) async {
     String json = jsonEncode(cartLineItems.map((i) => i.toJson()).toList());

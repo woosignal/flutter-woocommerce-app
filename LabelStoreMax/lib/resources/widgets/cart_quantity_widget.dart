@@ -4,11 +4,10 @@ import '/app/models/cart_line_item.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CartQuantity extends StatefulWidget {
-  
   CartQuantity({super.key, this.childOfNavBar = false});
 
   final bool childOfNavBar;
-  
+
   static String state = "cart_quantity";
 
   @override
@@ -16,7 +15,6 @@ class CartQuantity extends StatefulWidget {
 }
 
 class _CartQuantityState extends NyState<CartQuantity> {
-
   bool _childOfNavBar = false;
 
   _CartQuantityState(childOfNavBar) {
@@ -24,10 +22,9 @@ class _CartQuantityState extends NyState<CartQuantity> {
     _childOfNavBar = childOfNavBar;
   }
 
-  
   @override
   stateUpdated(dynamic data) async {
-    setState(() { });
+    setState(() {});
   }
 
   @override

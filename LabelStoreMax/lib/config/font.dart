@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/*
+/* Font
 |--------------------------------------------------------------------------
-| Font
-|
 | Uses Google Fonts - https://pub.dev/packages/google_fonts
 |
 | e.g. updating the font from "montserrat" to "lato"
 | before: final TextStyle appThemeFont = GoogleFonts.montserrat();
 | after:  final TextStyle appThemeFont = GoogleFonts.lato();
-|--------------------------------------------------------------------------
-*/
+|-------------------------------------------------------------------------- */
 
 TextStyle appFont = GoogleFonts.poppins();
 

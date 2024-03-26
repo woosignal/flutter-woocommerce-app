@@ -31,20 +31,19 @@ import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
-class CheckoutConfirmationPage extends StatefulWidget {
+class CheckoutConfirmationPage extends NyStatefulWidget {
   static String path = '/checkout';
-  CheckoutConfirmationPage({super.key});
+  CheckoutConfirmationPage({super.key}) : super(path);
 
   @override
-  createState() =>
-      CheckoutConfirmationPageState();
+  createState() => CheckoutConfirmationPageState();
 }
 
 class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
   CheckoutConfirmationPageState();
 
-  bool _showFullLoader = true, _isProcessingPayment = false;
-  final List<TaxRate> _taxRates = [];
+  bool _showFullLoader = false;
+  List<TaxRate> _taxRates = [];
   TaxRate? _taxRate;
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
@@ -80,6 +79,7 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
   }
 
   _getTaxes() async {
+    _taxRates = [];
     int pageIndex = 1;
     bool fetchMore = true;
     while (fetchMore == true) {
@@ -95,19 +95,15 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
         fetchMore = false;
       }
     }
+  }
 
+  _getUserTax() {
     if (_taxRates.isEmpty) {
-      setState(() {
-        _showFullLoader = false;
-      });
       return;
     }
 
     if (CheckoutSession.getInstance.billingDetails == null ||
         CheckoutSession.getInstance.billingDetails!.shippingAddress == null) {
-      setState(() {
-        _showFullLoader = false;
-      });
       return;
     }
     CustomerCountry? shippingCountry = CheckoutSession
@@ -116,8 +112,6 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
         CheckoutSession.getInstance.billingDetails!.shippingAddress!.postalCode;
 
     if (shippingCountry == null) {
-      _showFullLoader = false;
-      setState(() {});
       return;
     }
 
@@ -159,9 +153,6 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
     if (taxRate != null) {
       _taxRate = taxRate;
     }
-    setState(() {
-      _showFullLoader = false;
-    });
   }
 
   @override
@@ -225,35 +216,25 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                   CheckoutUserDetailsWidget(
                     context: context,
                     checkoutSession: checkoutSession,
-                    resetState: () {
-                      setState(() {
-                        _showFullLoader = true;
-                      });
-                      _getTaxes();
-                    },
                   ),
                   CheckoutPaymentTypeWidget(
                     context: context,
                     checkoutSession: checkoutSession,
-                    resetState: () => setState(() {}),
                   ),
                   CheckoutShippingTypeWidget(
                     context: context,
                     checkoutSession: checkoutSession,
-                    resetState: () => setState(() {}),
                     wooSignalApp: _wooSignalApp,
                   ),
                   if (_wooSignalApp!.couponEnabled == true)
                     CheckoutSelectCouponWidget(
                       context: context,
                       checkoutSession: checkoutSession,
-                      resetState: () => setState(() {}),
                     ),
                   Container(
                     decoration: BoxDecoration(
                       boxShadow: wsBoxShadow(),
                       color: Colors.white,
-                      // borderRadius: BorderRadius.circular(16)
                     ),
                     padding: EdgeInsets.symmetric(vertical: 16),
                     margin: EdgeInsets.only(top: 20),
@@ -297,46 +278,47 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                                 padding:
                                     EdgeInsets.only(top: 8, left: 8, right: 8)),
                             Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: RichText(
-                                  textAlign: TextAlign.left,
-                                  text: TextSpan(
-                                    text:
-                                        '${trans('By completing this order, I agree to all')} ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                          fontSize: 12,
-                                        ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = _openTermsLink,
-                                        text: trans("Terms and conditions")
-                                            .toLowerCase(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: ThemeColor.get(context)
-                                                  .primaryAccent,
-                                              fontSize: 12,
-                                            ),
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: RichText(
+                                textAlign: TextAlign.left,
+                                text: TextSpan(
+                                  text:
+                                      '${trans('By completing this order, I agree to all')} ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontSize: 12,
                                       ),
-                                      TextSpan(
-                                        text: ".",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: Colors.black87,
-                                              fontSize: 12,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                )),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = _openTermsLink,
+                                      text: trans("Terms and conditions")
+                                          .toLowerCase(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            color: ThemeColor.get(context)
+                                                .primaryAccent,
+                                            fontSize: 12,
+                                          ),
+                                    ),
+                                    TextSpan(
+                                      text: ".",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            color: Colors.black87,
+                                            fontSize: 12,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -352,10 +334,13 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
                     CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
                     Padding(padding: EdgeInsets.only(bottom: 8)),
                     PrimaryButton(
-                      title: _isProcessingPayment
-                          ? "${trans("PROCESSING")}..."
-                          : trans("CHECKOUT"),
-                      action: _isProcessingPayment ? null : _handleCheckout,
+                      isLoading: isLocked('payment'),
+                      title: trans("CHECKOUT"),
+                      action: () async {
+                        lockRelease('payment', perform: () async {
+                          await _handleCheckout();
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -371,6 +356,8 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
       openBrowserTab(url: AppHelper.instance.appConfig?.appTermsLink ?? "");
 
   _handleCheckout() async {
+    _getUserTax();
+
     CheckoutSession checkoutSession = CheckoutSession.getInstance;
     if (checkoutSession.billingDetails!.billingAddress == null) {
       showToastNotification(
@@ -450,23 +437,10 @@ class CheckoutConfirmationPageState extends NyState<CheckoutConfirmationPage> {
       return;
     }
 
-    if (_isProcessingPayment == true) {
-      return;
-    }
-
-    setState(() {
-      _isProcessingPayment = true;
-    });
-
     try {
-      await checkoutSession.paymentType!
-          .pay(context, state: this, taxRate: _taxRate);
+      await checkoutSession.paymentType!.pay(context, taxRate: _taxRate);
     } on Exception catch (e) {
       print(e.toString());
     }
-
-    setState(() {
-      _isProcessingPayment = false;
-    });
   }
 }

@@ -1,3 +1,9 @@
+## [7.0.0] - 2024-03-26
+
+* Refactor project
+* New Notifications page
+* Pubspec.yaml dependency updates
+
 ## [6.15.0] - 2024-03-08
 
 * Increase minimum ios version to 14.0

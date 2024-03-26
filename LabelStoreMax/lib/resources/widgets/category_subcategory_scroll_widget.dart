@@ -12,8 +12,7 @@ import 'package:flutter/material.dart';
 
 class CategorySubcategoryScrollWidget extends StatefulWidget {
   @override
-  createState() =>
-      _CategorySubcategoryScrollWidgetState();
+  createState() => _CategorySubcategoryScrollWidgetState();
 }
 
 class _CategorySubcategoryScrollWidgetState

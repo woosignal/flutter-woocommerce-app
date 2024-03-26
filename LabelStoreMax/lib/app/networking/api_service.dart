@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import '/app/networking/dio/interceptors/logging_interceptor.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-/*
+/* ApiService
 |--------------------------------------------------------------------------
-| ApiService
-| -------------------------------------------------------------------------
 | Define your API endpoints
 | Learn more https://nylo.dev/docs/5.20.0/networking
-|--------------------------------------------------------------------------
-*/
+|-------------------------------------------------------------------------- */
 
 class ApiService extends NyApiService {
   ApiService({BuildContext? buildContext}) : super(buildContext);

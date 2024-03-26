@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
@@ -21,13 +20,9 @@ import 'package:woosignal/models/response/product_review.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart'
     as wc_customer_info;
 import 'package:wp_json_api/wp_json_api.dart';
-import '../../app/controllers/leave_review_controller.dart';
 
 class LeaveReviewPage extends NyStatefulWidget {
   static String path = "/product-leave-review";
-
-  @override
-  final LeaveReviewController controller = LeaveReviewController();
 
   LeaveReviewPage({Key? key})
       : super(path, key: key, child: _LeaveReviewPageState());
@@ -48,7 +43,6 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
     _textEditingController = TextEditingController();
     _rating = 5;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,12 +164,10 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
   }
 
   Future<wc_customer_info.Data?> _fetchWpUserData() async {
-    String? userToken = await readAuthToken();
-
     wc_customer_info.WCCustomerInfoResponse? wcCustomerInfoResponse;
     try {
-      wcCustomerInfoResponse = await WPJsonAPI.instance
-          .api((request) => request.wcCustomerInfo(userToken!));
+      wcCustomerInfoResponse =
+          await WPJsonAPI.instance.api((request) => request.wcCustomerInfo());
 
       if (wcCustomerInfoResponse == null) {
         return null;

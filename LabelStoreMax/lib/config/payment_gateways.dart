@@ -6,14 +6,11 @@ import '/app/providers/payments/stripe_pay.dart';
 import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-/*
+/* PAYMENT GATEWAYS
 |--------------------------------------------------------------------------
-| PAYMENT GATEWAYS
-|
 | Configure which payment gateways you want to use.
 | Docs here: https://woosignal.com/docs/app/label-storemax
-|--------------------------------------------------------------------------
-*/
+|-------------------------------------------------------------------------- */
 
 const appPaymentGateways = [];
 // Available: "Stripe", "CashOnDelivery", "PayPal", "RazorPay"

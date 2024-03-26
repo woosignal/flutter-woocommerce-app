@@ -9,13 +9,13 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import '/resources/pages/customer_countries_page.dart';
 import '/app/models/billing_details.dart';
 import '/app/models/checkout_session.dart';
 import '/app/models/customer_address.dart';
 import '/app/models/customer_country.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/customer_address_input.dart';
@@ -95,7 +95,7 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
 
     _wpLoginEnabled = AppHelper.instance.appConfig?.wpLoginEnabled == 1;
 
-    if (_wpLoginEnabled == true) {
+    if (_wpLoginEnabled == true && (await WPJsonAPI.wpUserLoggedIn())) {
       await awaitData(perform: () async {
         await _fetchUserDetails();
       });
@@ -391,12 +391,10 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
       }
 
       // Update WP shipping info for user
-      if (_wpLoginEnabled == true) {
-        String? userToken = await readAuthToken();
-
+      if (_wpLoginEnabled == true && (await WPJsonAPI.wpUserLoggedIn())) {
         try {
           await WPJsonAPI.instance.api(
-            (request) => request.wpUpdateUserInfo(userToken, metaData: [
+            (request) => request.wpUpdateUserInfo(metaData: [
               ...?billingDetails.billingAddress?.toUserMetaDataItem('billing'),
               ...?billingDetails.shippingAddress
                   ?.toUserMetaDataItem('shipping'),
@@ -476,7 +474,7 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
   }
 
   _navigateToSelectCountry({required String type}) {
-    Navigator.pushNamed(context, "/customer-countries").then((value) {
+    routeTo(CustomerCountriesPage.path, onPop: (value) {
       if (value == null) {
         return;
       }
@@ -495,12 +493,10 @@ class _CheckoutDetailsPageState extends NyState<CheckoutDetailsPage> {
 
   _fetchUserDetails() async {
     await lockRelease('load_shipping_info', perform: () async {
-      String? userToken = await readAuthToken();
-
       WPUserInfoResponse? wpUserInfoResponse;
       try {
-        wpUserInfoResponse = await WPJsonAPI.instance
-            .api((request) => request.wpGetUserInfo(userToken!));
+        wpUserInfoResponse =
+            await WPJsonAPI.instance.api((request) => request.wpGetUserInfo());
       } on Exception catch (e) {
         print(e.toString());
         showToastNotification(

@@ -237,5 +237,7 @@
   "Delete my account": "删除我的账户",
   "({{itemCount}}) items from {{appName}}": "({{itemCount}}) 物品来自 {{appName}}",
   "Invalid email address": "无效的邮件地址",
-  "By completing this order, I agree to all": "通过完成此订单，我同意所有"
+  "By completing this order, I agree to all": "通过完成此订单，我同意所有",
+  "Change language": "改变语言",
+  "Select your language": "选择你的语言"
 }

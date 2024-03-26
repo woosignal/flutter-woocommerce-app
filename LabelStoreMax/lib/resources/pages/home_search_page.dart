@@ -9,12 +9,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/resources/widgets/store_logo_widget.dart';
+import '/resources/pages/browse_search_page.dart';
 import '/bootstrap/app_helper.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-
-import '../widgets/woosignal_ui.dart';
 
 class HomeSearchPage extends StatefulWidget {
   static String path = "/home-search";
@@ -29,15 +29,9 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
 
   final TextEditingController _txtSearchController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   _actionSearch() {
-    Navigator.pushNamed(context, "/product-search",
-            arguments: _txtSearchController.text)
-        .then((search) {
+    routeTo(BrowseSearchPage.path, data: _txtSearchController.text,
+        onPop: (value) {
       if (["notic", "compo"].contains(AppHelper.instance.appConfig!.theme) ==
           false) {
         Navigator.pop(context);

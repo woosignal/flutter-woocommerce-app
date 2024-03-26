@@ -13,4 +13,6 @@ enum SortByType {
   highToLow,
   nameAZ,
   nameZA,
+  dateAsc,
+  dateDesc,
 }

@@ -16,7 +16,7 @@ class NoResultsForProductsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: <Widget>[
+        children: [
           Text(
             trans("No results"),
             style: Theme.of(context).textTheme.bodyMedium,

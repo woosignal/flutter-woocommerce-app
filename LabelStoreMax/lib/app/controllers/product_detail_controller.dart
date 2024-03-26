@@ -70,10 +70,8 @@ class ProductDetailController extends Controller {
       if (onSuccess != null) {
         onSuccess();
       }
-      updateState(ProductQuantity.state, data: {
-        "product_id": product?.id,
-        "quantity": quantity
-      });
+      updateState(ProductQuantity.state,
+          data: {"product_id": product?.id, "quantity": quantity});
     }
   }
 
@@ -83,10 +81,8 @@ class ProductDetailController extends Controller {
       if (onSuccess != null) {
         onSuccess();
       }
-      updateState(ProductQuantity.state, data: {
-        "product_id": product?.id,
-        "quantity": quantity
-      });
+      updateState(ProductQuantity.state,
+          data: {"product_id": product?.id, "quantity": quantity});
     }
   }
 
@@ -134,6 +130,39 @@ class ProductDetailController extends Controller {
       }
     }
 
-    return tmpProductVariation;
+    if (tmpProductVariation != null) {
+      return tmpProductVariation;
+    }
+
+    // attempt to find product variation
+    List<String> tmpKeys = [];
+    for (var productVariation in productVariations) {
+      for (var attr in productVariation.attributes) {
+        String? attrName = attr.name;
+        if (attrName == null) continue;
+        tmpKeys.add(attrName);
+      }
+    }
+
+    // Find matching product variation
+    tmpSelectedObj.removeWhere((key, value) => !tmpKeys.contains(key));
+
+    for (var productVariation in productVariations) {
+      bool hasMatch = false;
+      for (var attr in productVariation.attributes) {
+        if (tmpSelectedObj[attr.name] == attr.option) {
+          hasMatch = true;
+        } else {
+          hasMatch = false;
+          break;
+        }
+      }
+
+      if (hasMatch) {
+        return productVariation;
+      }
+    }
+
+    return null;
   }
 }

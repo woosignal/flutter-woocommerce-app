@@ -1,3 +1,13 @@
+//  Label StoreMax
+//
+//  Created by Anthony Gordon.
+//  2024, WooSignal Ltd. All rights reserved.
+//
+
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
 import 'package:flutter/material.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
@@ -21,7 +31,9 @@ class ToastNotification extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: context.isDarkMode ? Colors.black12 : Colors.grey.withOpacity(0.1),
+              color: context.isDarkMode
+                  ? Colors.black12
+                  : Colors.grey.withOpacity(0.1),
               spreadRadius: 3,
               blurRadius: 5,
               offset: Offset(0, 2),
@@ -42,8 +54,9 @@ class ToastNotification extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       color: _toastMeta.color,
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), topLeft: Radius.circular(8))
-                  ),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          topLeft: Radius.circular(8))),
                   alignment: Alignment.center,
                   child: Center(child: _toastMeta.icon),
                   padding: EdgeInsets.symmetric(horizontal: 12),
@@ -61,7 +74,10 @@ class ToastNotification extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
-                              .copyWith(color: context.isDarkMode ? Colors.white.withOpacity(0.8) : "#171717".toHexColor()),
+                              .copyWith(
+                                  color: context.isDarkMode
+                                      ? Colors.white.withOpacity(0.8)
+                                      : "#171717".toHexColor()),
                         ).fontWeightBold(),
                         Flexible(
                           child: Text(
@@ -71,7 +87,10 @@ class ToastNotification extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!
-                                .copyWith(color: context.isDarkMode ? Colors.white70 : "#5d626b".toHexColor()),
+                                .copyWith(
+                                    color: context.isDarkMode
+                                        ? Colors.white70
+                                        : "#5d626b".toHexColor()),
                           ),
                         ),
                       ],
@@ -91,9 +110,10 @@ class ToastNotification extends StatelessWidget {
                 width: 30,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: context.isDarkMode ? Colors.white30 : "#f2f2f2".toHexColor(),
-                    borderRadius: BorderRadius.circular(20)
-                ),
+                    color: context.isDarkMode
+                        ? Colors.white30
+                        : "#f2f2f2".toHexColor(),
+                    borderRadius: BorderRadius.circular(20)),
                 child: Center(
                   child: IconButton(
                       padding: EdgeInsets.zero,
@@ -104,9 +124,9 @@ class ToastNotification extends StatelessWidget {
                       },
                       icon: Icon(
                         Icons.close,
-                        color: context.isDarkMode ?
-                        Colors.white :
-                        "#878787".toHexColor(),
+                        color: context.isDarkMode
+                            ? Colors.white
+                            : "#878787".toHexColor(),
                         size: 18,
                       )),
                 ),

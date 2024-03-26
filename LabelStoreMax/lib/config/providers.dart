@@ -4,21 +4,17 @@ import '/app/providers/event_provider.dart';
 import '/app/providers/route_provider.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-/*
+/* Providers
 |--------------------------------------------------------------------------
-| Providers
 | Add your "app/providers" here.
 | Providers are booted when your application start.
 |
 | Learn more: https://nylo.dev/docs/5.20.0/providers
-|--------------------------------------------------------------------------
-*/
+|-------------------------------------------------------------------------- */
 
 final Map<Type, NyProvider> providers = {
   AppProvider: AppProvider(),
   RouteProvider: RouteProvider(),
   EventProvider: EventProvider(),
   FirebaseProvider: FirebaseProvider(),
-
 };
-

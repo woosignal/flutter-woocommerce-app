@@ -9,10 +9,11 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/app/models/user.dart';
+import 'package:flutter_app/resources/widgets/store_logo_widget.dart';
+import '/app/events/login_event.dart';
+import '/resources/pages/account_register_page.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/shared_key.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -23,16 +24,16 @@ import 'package:wp_json_api/exceptions/invalid_username_exception.dart';
 import 'package:wp_json_api/models/responses/wp_user_login_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
-class AccountLandingPage extends StatefulWidget {
-  static String path = "/account-landing";
+class AccountLoginPage extends StatefulWidget {
+  static String path = "/account-login";
   final bool showBackButton;
-  AccountLandingPage({this.showBackButton = true});
+  AccountLoginPage({this.showBackButton = true});
 
   @override
-  createState() => _AccountLandingPageState();
+  createState() => _AccountLoginPageState();
 }
 
-class _AccountLandingPageState extends NyState<AccountLandingPage> {
+class _AccountLoginPageState extends NyState<AccountLoginPage> {
   final TextEditingController _tfEmailController = TextEditingController(),
       _tfPasswordController = TextEditingController();
 
@@ -125,8 +126,7 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
                   )
                 ],
               ),
-              onPressed: () =>
-                  Navigator.pushNamed(context, "/account-register"),
+              onPressed: () => routeTo(AccountRegistrationPage.path),
             ),
             LinkButton(
                 title: trans("Forgot Password"),
@@ -224,10 +224,8 @@ class _AccountLandingPageState extends NyState<AccountLandingPage> {
       if (wpUserLoginResponse.status != 200) {
         return;
       }
-      String? token = wpUserLoginResponse.data!.userToken;
-      String userId = wpUserLoginResponse.data!.userId.toString();
-      User user = User.fromUserAuthResponse(token: token, userId: userId);
-      await user.save(SharedKey.authUser);
+
+      event<LoginEvent>();
 
       showToastNotification(context,
           title: trans("Hello"),

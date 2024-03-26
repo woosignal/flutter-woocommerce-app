@@ -9,14 +9,18 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/resources/widgets/store_logo_widget.dart';
+import '/resources/pages/account_detail_page.dart';
+import '/resources/pages/account_login_page.dart';
+import '/resources/pages/cart_page.dart';
+import '/resources/pages/wishlist_page_widget.dart';
+import 'package:wp_json_api/wp_json_api.dart';
 import '/resources/pages/browse_category_page.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/sp_auth.dart';
 import '/resources/widgets/app_version_widget.dart';
 import '/resources/widgets/cached_image_widget.dart';
-import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/theme/helper/ny_theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/menu_link.dart';
@@ -24,7 +28,10 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawerWidget extends StatefulWidget {
-  const HomeDrawerWidget({super.key, required this.wooSignalApp, this.productCategories = const []});
+  const HomeDrawerWidget(
+      {super.key,
+      required this.wooSignalApp,
+      this.productCategories = const []});
 
   final WooSignalApp? wooSignalApp;
   final List<ProductCategory> productCategories;
@@ -59,37 +66,6 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                 color: ThemeColor.get(context).background,
               ),
             ),
-            if (widget.wooSignalApp?.productCategoryCollections.isNotEmpty ?? false)
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      child: Text(
-                        trans("Categories".tr()),
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                    ),
-                    ...widget.productCategories.map((collection) {
-                      return ListTile(
-                        title: Text(
-                          collection.name ?? "",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(fontSize: 16),
-                        ),
-                        trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                        onTap: () {
-                          routeTo(BrowseCategoryPage.path, data: collection);
-                        },
-                      );
-                    })
-                  ]),
             if (["compo"].contains(_themeType) == false)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +74,9 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                   Padding(
                     child: Text(
                       trans("Menu"),
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
                   ),
@@ -139,6 +117,38 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                   ),
                 ],
               ),
+            if (widget.wooSignalApp?.productCategoryCollections.isNotEmpty ??
+                false)
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      child: Text(
+                        trans("Categories".tr()),
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                        textAlign: TextAlign.left,
+                      ),
+                      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                    ),
+                    ...widget.productCategories.map((collection) {
+                      return ListTile(
+                        title: Text(
+                          collection.name ?? "",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontSize: 16),
+                        ),
+                        trailing: Icon(Icons.keyboard_arrow_right_rounded),
+                        onTap: () {
+                          routeTo(BrowseCategoryPage.path, data: collection);
+                        },
+                      );
+                    })
+                  ]),
             if (widget.wooSignalApp!.appTermsLink != null &&
                 widget.wooSignalApp!.appPrivacyLink != null)
               Padding(
@@ -217,8 +227,14 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                       ),
                       onTap: () async =>
                           await launchUrl(Uri.parse(menuLink.linkUrl)),
-                    ))
-                ,
+                    )),
+            ListTile(
+              title: Text("Change language".tr()),
+              leading: Icon(Icons.language),
+              onTap: () {
+                NyLanguageSwitcher.showBottomModal(context);
+              },
+            ),
             ListTile(
               title: AppVersionWidget(),
             ),
@@ -234,21 +250,24 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
 
   _actionProfile() async {
     Navigator.pop(context);
-    if (widget.wooSignalApp!.wpLoginEnabled == 1 && !(await authCheck())) {
-      UserAuth.instance.redirect = "/account-detail";
-      Navigator.pushNamed(context, "/account-landing");
+    if (widget.wooSignalApp!.wpLoginEnabled == 1 &&
+        !(await WPJsonAPI.wpUserLoggedIn())) {
+      UserAuth.instance.redirect = AccountDetailPage.path;
+      routeTo(AccountLoginPage.path);
       return;
     }
-    Navigator.pushNamed(context, "/account-detail");
+    routeTo(AccountDetailPage.path);
   }
 
+  /// Wishlist action
   _actionWishlist() async {
     Navigator.pop(context);
-    Navigator.pushNamed(context, "/wishlist");
+    routeTo(WishListPageWidget.path);
   }
 
+  /// Cart action
   _actionCart() {
     Navigator.pop(context);
-    Navigator.pushNamed(context, "/cart");
+    routeTo(CartPage.path);
   }
 }

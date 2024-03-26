@@ -11,6 +11,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '/resources/pages/product_reviews_page.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/product_detail_review_tile_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -26,8 +27,7 @@ class ProductDetailReviewsWidget extends StatefulWidget {
   final WooSignalApp? wooSignalApp;
 
   @override
-  createState() =>
-      _ProductDetailReviewsWidgetState();
+  createState() => _ProductDetailReviewsWidgetState();
 }
 
 class _ProductDetailReviewsWidgetState
@@ -113,16 +113,14 @@ class _ProductDetailReviewsWidgetState
                   if (reviewsCount >= 5) {
                     childrenWidgets.add(
                       Container(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                          title: Text(
-                            trans('See More Reviews'),
-                          ),
-                          onTap: () => Navigator.pushNamed(
-                              context, "/product-reviews",
-                              arguments: widget.product),
-                        ),
-                      ),
+                          child: ListTile(
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 16),
+                              title: Text(
+                                trans('See More Reviews'),
+                              ),
+                              onTap: () => routeTo(ProductReviewsPage.path,
+                                  data: widget.product))),
                     );
                   }
                   return ListView(

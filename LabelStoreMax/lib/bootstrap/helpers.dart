@@ -10,23 +10,21 @@
 
 import 'dart:convert';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:wp_json_api/models/wp_user.dart';
+import 'package:wp_json_api/wp_json_api.dart';
 import '/app/models/billing_details.dart';
 import '/app/models/cart.dart';
 import '/app/models/cart_line_item.dart';
 import '/app/models/checkout_session.dart';
 import '/app/models/default_shipping.dart';
 import '/app/models/payment_type.dart';
-import '/app/models/user.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/enums/symbol_position_enums.dart';
 import '/bootstrap/extensions.dart';
 import '/bootstrap/shared_pref/shared_key.dart';
 import '/config/currency.dart';
 import '/config/payment_gateways.dart';
-import '/resources/widgets/no_results_for_products_widget.dart';
-import '/resources/widgets/woosignal_ui.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
@@ -34,7 +32,6 @@ import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:money_formatter/money_formatter.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -43,8 +40,9 @@ import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import '../resources/themes/styles/color_styles.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-Future<User?> getUser() async =>
-    (await (NyStorage.read<User>(SharedKey.authUser)));
+Future<WpUser?> getUser() async {
+  return await WPJsonAPI.wpUser();
+}
 
 Future appWooSignal(Function(WooSignal api) api) async {
   return await api(WooSignal.instance);
@@ -137,9 +135,8 @@ String moneyFormatter(double amount) {
   MoneyFormatter fmf = MoneyFormatter(
     amount: amount,
     settings: MoneyFormatterSettings(
-      symbol: AppHelper.instance.appConfig!.currencyMeta!.symbolNative,
-        symbolAndNumberSeparator: ""
-    ),
+        symbol: AppHelper.instance.appConfig!.currencyMeta!.symbolNative,
+        symbolAndNumberSeparator: ""),
   );
   if (appCurrencySymbolPosition == SymbolPositionType.left) {
     return fmf.output.symbolOnLeft;
@@ -232,7 +229,8 @@ Future<double?> workoutShippingCostWC({required String? sum}) async {
     String percentVal = newSum.replaceAllMapped(
         defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
       if (replacePercent.groupCount >= 1) {
-        String strPercentage = "( ($orderTotal * ${replacePercent.group(1)}) / 100 )";
+        String strPercentage =
+            "( ($orderTotal * ${replacePercent.group(1)}) / 100 )";
         double? calPercentage = strCal(sum: strPercentage);
 
         // MIN
@@ -301,7 +299,8 @@ Future<double?> workoutShippingClassCostWC(
     String percentVal = newSum.replaceAllMapped(
         defaultRegex(r'percent="([0-9\.]+)"'), (replacePercent) {
       if (replacePercent.groupCount >= 1) {
-        String strPercentage = "( ($orderTotal * ${replacePercent.group(1)}) / 100 )";
+        String strPercentage =
+            "( ($orderTotal * ${replacePercent.group(1)}) / 100 )";
         double? calPercentage = strCal(sum: strPercentage);
 
         // MIN
@@ -417,60 +416,6 @@ String formatForDateTime(FormatType formatType) {
 }
 
 double parseWcPrice(String? price) => (double.tryParse(price ?? "0") ?? 0);
-
-Widget refreshableScroll(context,
-    {required refreshController,
-    required VoidCallback onRefresh,
-    required VoidCallback onLoading,
-    required List<Product> products,
-    required onTap,
-    key}) {
-  return SmartRefresher(
-    enablePullDown: true,
-    enablePullUp: true,
-    footer: CustomFooter(
-      builder: (BuildContext context, LoadStatus? mode) {
-        Widget body;
-        if (mode == LoadStatus.idle) {
-          body = Text(trans("pull up load"));
-        } else if (mode == LoadStatus.loading) {
-          body = CupertinoActivityIndicator();
-        } else if (mode == LoadStatus.failed) {
-          body = Text(trans("Load Failed! Click retry!"));
-        } else if (mode == LoadStatus.canLoading) {
-          body = Text(trans("release to load more"));
-        } else {
-          body = Text(trans("No more products"));
-        }
-        return Container(
-          height: 55.0,
-          child: Center(child: body),
-        );
-      },
-    ),
-    controller: refreshController,
-    onRefresh: onRefresh,
-    onLoading: onLoading,
-    child: products.isEmpty
-        ? NoResultsForProductsWidget()
-        : StaggeredGrid.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-            children: products.map((product) {
-              return StaggeredGridTile.fit(
-                crossAxisCellCount: 1,
-                child: Container(
-                  height: 350,
-                  child: ProductItemContainer(
-                    product: product,
-                    onTap: onTap,
-                  ),
-                ),
-              );
-            }).toList()),
-  );
-}
 
 class UserAuth {
   UserAuth._privateConstructor();
@@ -627,7 +572,9 @@ bool isProductNew(Product? product) {
   if (product?.dateCreatedGMT == null) false;
   try {
     DateTime dateTime = DateTime.parse(product!.dateCreatedGMT!);
-    return dateTime.isBetween(DateTime.now().subtract(Duration(days: 2)), DateTime.now()) ?? false;
+    return dateTime.isBetween(
+            DateTime.now().subtract(Duration(days: 2)), DateTime.now()) ??
+        false;
   } on Exception catch (e) {
     NyLogger.error(e.toString());
   }
@@ -641,6 +588,220 @@ bool shouldEncrypt() {
   }
   String? encryptSecret = getEnv('ENCRYPT_KEY', defaultValue: "");
   if (encryptSecret == null || encryptSecret == "") {
+    return false;
+  }
+  return true;
+}
+
+bool isFirebaseEnabled() {
+  bool? firebaseFcmIsEnabled =
+      AppHelper.instance.appConfig?.firebaseFcmIsEnabled;
+  firebaseFcmIsEnabled ??= getEnv('FCM_ENABLED', defaultValue: false);
+
+  return firebaseFcmIsEnabled == true;
+}
+
+class NotificationItem extends Model {
+  String? id;
+  String? title;
+  String? message;
+  bool? hasRead;
+  String? type;
+  Map<String, dynamic>? meta;
+  String? createdAt;
+
+  NotificationItem(
+      {this.title,
+      this.message,
+      this.id,
+      this.type,
+      this.meta,
+      this.createdAt,
+      this.hasRead = false});
+
+  NotificationItem.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        title = json['title'],
+        type = json['type'],
+        meta = json['meta'],
+        message = json['message'],
+        hasRead = json['has_read'],
+        createdAt = json['created_at'];
+
+  fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    type = json['type'];
+    meta = json['meta'];
+    message = json['message'];
+    hasRead = json['has_read'];
+    createdAt = json['created_at'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'type': type,
+        'meta': meta,
+        'message': message,
+        'has_read': hasRead,
+        "created_at": createdAt
+      };
+}
+
+class NyNotification {
+  static final String _storageKey = "app_notifications";
+
+  static String storageKey() => _storageKey;
+
+  /// Add a notification
+  static addNotification(String title, String message,
+      {String? id, Map<String, dynamic>? meta}) async {
+    NotificationItem notificationItem = NotificationItem.fromJson({
+      "id": id,
+      "title": title,
+      "message": message,
+      "meta": meta,
+      "has_read": false,
+      "created_at": DateTime.now().toDateTimeString()
+    });
+    await NyStorage.addToCollection<NotificationItem>(storageKey(),
+        item: notificationItem,
+        allowDuplicates: false,
+        modelDecoders: {
+          NotificationItem: (data) => NotificationItem.fromJson(data),
+        });
+  }
+
+  /// Get all notifications
+  static Future<List<NotificationItem>> allNotifications() async {
+    List<NotificationItem> notifications =
+        await NyStorage.readCollection<NotificationItem>("app_notifications",
+            modelDecoders: {
+          NotificationItem: (data) => NotificationItem.fromJson(data),
+        });
+    String? userId = await WPJsonAPI.wpUserId();
+    notifications.removeWhere((notification) {
+      if (notification.meta != null &&
+          notification.meta!.containsKey('user_id')) {
+        if (notification.meta?['user_id'] != userId) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    await NyStorage.saveCollection(storageKey(), notifications);
+
+    return notifications;
+  }
+
+  /// Get all notifications not read
+  static Future<List<NotificationItem>> allNotificationsNotRead() async {
+    List<NotificationItem> notifications = await allNotifications();
+    return notifications.where((element) => element.hasRead == false).toList();
+  }
+
+  /// Mark notification as read by index
+  static markReadByIndex(int index) async {
+    await NyStorage.updateCollectionByIndex(index, (item) {
+      item as NotificationItem;
+      item.hasRead = true;
+      return item;
+    }, key: storageKey());
+  }
+
+  /// Mark all notifications as read
+  static markReadAll() async {
+    List<NotificationItem> notifications = await allNotifications();
+    for (var i = 0; i < notifications.length; i++) {
+      await markReadByIndex(i);
+    }
+  }
+
+  /// Clear all notifications
+  static clearAllNotifications() async {
+    await NyStorage.deleteCollection(storageKey());
+  }
+
+  /// Render notifications
+  static Widget renderNotifications(
+      Widget Function(List<NotificationItem> notificationItems) child,
+      {Widget? loading}) {
+    return NyFutureBuilder(
+        future: allNotifications(),
+        child: (context, data) {
+          if (data == null) {
+            return SizedBox.shrink();
+          }
+          return child(data);
+        },
+        loading: loading);
+  }
+
+  /// Render list of notifications
+  static Widget renderListNotifications(
+      Widget Function(NotificationItem notificationItems) child,
+      {Widget? loading}) {
+    return NyFutureBuilder(
+        future: allNotifications(),
+        child: (context, data) {
+          if (data == null) {
+            return SizedBox.shrink();
+          }
+          return NyListView(child: (context, item) {
+            item as NotificationItem;
+            return child(item);
+          }, data: () async {
+            return data.reversed.toList();
+          });
+        },
+        loading: loading);
+  }
+
+  /// Render list of notifications
+  static Widget renderListNotificationsWithSeparator(
+      Widget Function(NotificationItem notificationItems) child,
+      {Widget? loading}) {
+    return NyFutureBuilder(
+        future: allNotifications(),
+        child: (context, data) {
+          if (data == null) {
+            return SizedBox.shrink();
+          }
+          return NyListView.separated(
+            child: (context, item) {
+              item as NotificationItem;
+              return child(item);
+            },
+            data: () async {
+              return data.reversed.toList();
+            },
+            separatorBuilder: (context, index) {
+              return Divider(
+                color: Colors.grey.shade100,
+              );
+            },
+          );
+        },
+        loading: loading);
+  }
+}
+
+Future<bool> canSeeRemoteMessage(RemoteMessage message) async {
+  if (!message.data.containsKey('user_id')) {
+    return true;
+  }
+
+  String userId = message.data['user_id'];
+
+  if ((await WPJsonAPI.wpUserLoggedIn()) != true) {
+    return false;
+  }
+
+  String? currentUserId = await WPJsonAPI.wpUserId();
+  if (currentUserId != userId) {
     return false;
   }
   return true;

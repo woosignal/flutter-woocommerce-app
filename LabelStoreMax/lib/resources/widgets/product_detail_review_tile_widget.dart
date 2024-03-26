@@ -19,8 +19,7 @@ class ProductDetailReviewTileWidget extends StatefulWidget {
   final ProductReview productReview;
 
   @override
-  createState() =>
-      _ProductDetailReviewTileWidgetState();
+  createState() => _ProductDetailReviewTileWidgetState();
 }
 
 class _ProductDetailReviewTileWidgetState

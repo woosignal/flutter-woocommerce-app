@@ -9,7 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/app/controllers/checkout_status_controller.dart';
+import 'package:flutter_app/resources/widgets/store_logo_widget.dart';
 import '/app/models/cart.dart';
 import '/app/models/checkout_session.dart';
 import '/bootstrap/helpers.dart';
@@ -20,9 +20,6 @@ import '../widgets/woosignal_ui.dart';
 
 class CheckoutStatusPage extends NyStatefulWidget {
   static String path = "/checkout-status";
-
-  @override
-  final CheckoutStatusController controller = CheckoutStatusController();
 
   CheckoutStatusPage({Key? key})
       : super(path, key: key, child: _CheckoutStatusState());
@@ -176,8 +173,9 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
               Align(
                 child: LinkButton(
                   title: trans("Back to Home"),
-                  action: () =>
-                      Navigator.pushReplacementNamed(context, "/home"),
+                  action: () {
+                    routeToInitial();
+                  },
                 ),
                 alignment: Alignment.bottomCenter,
               ),

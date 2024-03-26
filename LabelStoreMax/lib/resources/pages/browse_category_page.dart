@@ -10,24 +10,19 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/app/controllers/product_category_search_loader_controller.dart';
-import '/app/controllers/browse_category_controller.dart';
+import '/resources/widgets/product_item_container_widget.dart';
+import '/resources/pages/product_detail_page.dart';
 import '/bootstrap/enums/sort_enums.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class BrowseCategoryPage extends NyStatefulWidget {
   static String path = "/browse-category";
-
-  @override
-  final BrowseCategoryController controller = BrowseCategoryController();
 
   BrowseCategoryPage({Key? key})
       : super(path, key: key, child: _BrowseCategoryPageState());
@@ -37,21 +32,12 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
   ProductCategory? productCategory;
   _BrowseCategoryPageState();
 
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-  final ProductCategorySearchLoaderController
-      _productCategorySearchLoaderController =
-      ProductCategorySearchLoaderController();
-
-  bool _shouldStopRequests = false;
-  bool _isLoading = true;
+  SortByType? _sortByType;
 
   @override
   init() async {
     productCategory = widget.controller.data();
-    await fetchProducts();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,48 +63,37 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
         ],
       ),
       body: SafeAreaWidget(
-        child: _isLoading
-            ? Center(
-                child: AppLoaderWidget(),
-              )
-            : refreshableScroll(
-                context,
-                refreshController: _refreshController,
-                onRefresh: _onRefresh,
-                onLoading: _onLoading,
-                products: _productCategorySearchLoaderController.getResults(),
-                onTap: _showProduct,
-              ),
-      ),
+          child: NyPullToRefresh.grid(
+        data: (page) async {
+          List<ws_product.Product> products =
+              await appWooSignal((api) => api.getProducts(
+                    perPage: 25,
+                    category: productCategory?.id.toString(),
+                    page: page,
+                    status: "publish",
+                    stockStatus: "instock",
+                  ));
+          return products;
+        },
+        child: (context, product) {
+          return Container(
+            height: 300,
+            child: ProductItemContainer(
+              product: product,
+              onTap: () => _showProduct(product),
+            ),
+          );
+        },
+        stateName: 'browse_category_pull_to_refresh',
+        sort: (products) {
+          return _sortProducts(products,
+              by: _sortByType ?? SortByType.dateDesc);
+        },
+      )),
     );
   }
 
-  void _onRefresh() async {
-    _productCategorySearchLoaderController.clear();
-    await fetchProducts();
-
-    setState(() {
-      _shouldStopRequests = false;
-      _refreshController.refreshCompleted(resetFooterState: true);
-    });
-  }
-
-  void _onLoading() async {
-    await fetchProducts();
-
-    if (mounted) {
-      setState(() {});
-      if (_shouldStopRequests) {
-        _refreshController.loadNoData();
-      } else {
-        _refreshController.loadComplete();
-      }
-    }
-  }
-
-  _sortProducts({required SortByType by}) {
-    List<ws_product.Product> products =
-        _productCategorySearchLoaderController.getResults();
+  _sortProducts(List<ws_product.Product> products, {required SortByType by}) {
     switch (by) {
       case SortByType.lowToHigh:
         products.sort(
@@ -142,10 +117,21 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
           (product1, product2) => product2.name!.compareTo(product1.name!),
         );
         break;
+      case SortByType.dateAsc:
+        products.sort((product1, product2) {
+          DateTime? date1 = product1.dateCreated.toDateTime();
+          DateTime? date2 = product2.dateCreated.toDateTime();
+          return date1.compareTo(date2);
+        });
+      case SortByType.dateDesc:
+        products.sort((product1, product2) {
+          DateTime? date1 = product1.dateCreated.toDateTime();
+          DateTime? date2 = product2.dateCreated.toDateTime();
+          return date2.compareTo(date1);
+        });
+        break;
     }
-    setState(() {
-      Navigator.pop(context);
-    });
+    return products;
   }
 
   _modalSheetTune() {
@@ -153,63 +139,92 @@ class _BrowseCategoryPageState extends NyState<BrowseCategoryPage> {
       context,
       title: trans("Sort results"),
       bodyWidget: ListView(
-        children: <Widget>[
+        children: [
           LinkButton(
             title: trans("Sort: Low to high"),
-            action: () => _sortProducts(by: SortByType.lowToHigh),
+            selected: _sortByType == SortByType.lowToHigh,
+            action: () {
+              _sortByType = SortByType.lowToHigh;
+              StateAction.refreshPage('browse_category_pull_to_refresh',
+                  setState: () {});
+              pop();
+            },
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
             title: trans("Sort: High to low"),
-            action: () => _sortProducts(by: SortByType.highToLow),
+            selected: _sortByType == SortByType.highToLow,
+            action: () {
+              _sortByType = SortByType.highToLow;
+              StateAction.refreshPage('browse_category_pull_to_refresh',
+                  setState: () {});
+              pop();
+            },
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
             title: trans("Sort: Name A-Z"),
-            action: () => _sortProducts(by: SortByType.nameAZ),
+            selected: _sortByType == SortByType.nameAZ,
+            action: () {
+              _sortByType = SortByType.nameAZ;
+              StateAction.refreshPage('browse_category_pull_to_refresh',
+                  setState: () {});
+              pop();
+            },
           ),
           Divider(
             height: 0,
           ),
           LinkButton(
             title: trans("Sort: Name Z-A"),
-            action: () => _sortProducts(by: SortByType.nameZA),
+            selected: _sortByType == SortByType.nameZA,
+            action: () {
+              _sortByType = SortByType.nameZA;
+              StateAction.refreshPage('browse_category_pull_to_refresh',
+                  setState: () {});
+              pop();
+            },
           ),
           Divider(
             height: 0,
           ),
-          LinkButton(title: trans("Cancel"), action: _dismissModal)
+          LinkButton(
+            title: trans("Sort: Date New to Old"),
+            selected: _sortByType == SortByType.dateDesc,
+            action: () {
+              _sortByType = SortByType.dateDesc;
+              StateAction.refreshPage('browse_category_pull_to_refresh',
+                  setState: () {});
+              pop();
+            },
+          ),
+          Divider(
+            height: 0,
+          ),
+          LinkButton(
+            title: trans("Sort: Date Old to New"),
+            selected: _sortByType == SortByType.dateAsc,
+            action: () {
+              _sortByType = SortByType.dateAsc;
+              StateAction.refreshPage('browse_category_pull_to_refresh',
+                  setState: () {});
+              pop();
+            },
+          ),
+          Divider(
+            height: 0,
+          ),
+          LinkButton(title: trans("Cancel"), action: pop)
         ],
       ),
     );
   }
 
-  Future fetchProducts() async {
-    await _productCategorySearchLoaderController.loadProducts(
-      hasResults: (result) {
-        if (result == false) {
-          setState(() {
-            _isLoading = false;
-            _shouldStopRequests = true;
-          });
-          return false;
-        }
-        return true;
-      },
-      didFinish: () => setState(() {
-        _isLoading = false;
-      }),
-      productCategory: productCategory,
-    );
-  }
-
-  _dismissModal() => Navigator.pop(context);
-
   _showProduct(ws_product.Product product) {
-    Navigator.pushNamed(context, "/product-detail", arguments: product);
+    routeTo(ProductDetailPage.path, data: product);
   }
 }
