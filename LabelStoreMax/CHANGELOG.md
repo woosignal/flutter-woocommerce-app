@@ -1,3 +1,7 @@
+## [7.0.2] - 2024-03-28
+
+* Small refactor to project
+
 ## [7.0.1] - 2024-03-27
 
 * Pubspec.yaml dependency updates

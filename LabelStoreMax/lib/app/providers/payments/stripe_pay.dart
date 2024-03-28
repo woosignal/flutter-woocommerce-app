@@ -74,7 +74,7 @@ stripePay(context, {TaxRate? taxRate}) async {
               ? ThemeMode.light
               : ThemeMode.dark,
           merchantDisplayName:
-              envVal('APP_NAME', defaultValue: wooSignalApp?.appName),
+          getEnv('APP_NAME', defaultValue: wooSignalApp?.appName),
           customerId: rsp!['customer'],
           paymentIntentClientSecret: rsp!['client_secret'],
           customerEphemeralKeySecret: rsp!['ephemeral_key'],

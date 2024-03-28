@@ -1,3 +1,5 @@
+import 'package:woosignal/woosignal.dart';
+
 import '/app/models/cart.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/wp_json_api.dart';
@@ -12,6 +14,7 @@ class DefaultListener extends NyListener {
   handle(dynamic event) async {
     await WPJsonAPI.wpLogout();
     await Cart.getInstance.clear();
-    routeToInitial();
+    WooSignal.instance.setWpUserId("");
+    await routeToInitial();
   }
 }

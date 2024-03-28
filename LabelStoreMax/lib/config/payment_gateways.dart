@@ -14,7 +14,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 const appPaymentGateways = [];
 // Available: "Stripe", "CashOnDelivery", "PayPal", "RazorPay"
-// e.g. app_payment_gateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
+// e.g. appPaymentGateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
 
 List<PaymentType> paymentTypeList = [
   addPayment(

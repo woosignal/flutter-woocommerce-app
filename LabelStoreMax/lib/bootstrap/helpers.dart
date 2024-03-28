@@ -95,9 +95,6 @@ Future<List<PaymentType?>> getPaymentTypes() async {
   return paymentTypes.where((v) => v != null).toList();
 }
 
-dynamic envVal(String envVal, {dynamic defaultValue}) =>
-    (getEnv(envVal) ?? defaultValue);
-
 PaymentType addPayment(
         {required int id,
         required String name,

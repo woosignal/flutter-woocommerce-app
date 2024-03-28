@@ -25,7 +25,9 @@ final List<String> languagesList = const [
   'hi',
   'it',
   'pt',
-  'zh'
+  'zh',
+  'th',
+  'id'
 ];
 
 /* assetsDirectory
@@ -33,10 +35,3 @@ final List<String> languagesList = const [
 | Asset directory for your languages.
 |-------------------------------------------------------------------------- */
 final String assetsDirectory = 'lang/';
-
-/* valuesAsMap
-|--------------------------------------------------------------------------
-| If you want to define your own language map in code rather than using
-| the asset json files.
-|--------------------------------------------------------------------------*/
-final Map<String, String> valuesAsMap = {};
