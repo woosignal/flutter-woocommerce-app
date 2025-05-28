@@ -36,9 +36,10 @@ appRouter() => nyRoutes((router) {
 
       router.add(CheckoutConfirmationPage.path);
 
-      router.add(BrowseCategoryPage.path, transition: PageTransitionType.fade);
+      router.add(BrowseCategoryPage.path,
+          transitionType: TransitionType.fade());
 
-      router.add(BrowseSearchPage.path, transition: PageTransitionType.fade);
+      router.add(BrowseSearchPage.path, transitionType: TransitionType.fade());
 
       router.add(ProductDetailPage.path);
 
@@ -47,7 +48,7 @@ appRouter() => nyRoutes((router) {
       router.add(LeaveReviewPage.path);
 
       router.add(ProductImageViewerPage.path,
-          transition: PageTransitionType.fade);
+          transitionType: TransitionType.fade());
 
       router.add(WishListPageWidget.path);
 
@@ -56,28 +57,28 @@ appRouter() => nyRoutes((router) {
       router.add(CheckoutStatusPage.path);
 
       router.add(CheckoutDetailsPage.path,
-          transition: PageTransitionType.bottomToTop);
+          transitionType: TransitionType.bottomToTop());
 
       router.add(CheckoutPaymentTypePage.path,
-          transition: PageTransitionType.bottomToTop);
+          transitionType: TransitionType.bottomToTop());
 
       router.add(CheckoutShippingTypePage.path,
-          transition: PageTransitionType.bottomToTop);
+          transitionType: TransitionType.bottomToTop());
 
-      router.add(CouponPage.path, transition: PageTransitionType.bottomToTop);
+      router.add(CouponPage.path, transitionType: TransitionType.bottomToTop());
 
       router.add(HomeSearchPage.path,
-          transition: PageTransitionType.bottomToTop);
+          transitionType: TransitionType.bottomToTop());
 
       router.add(CustomerCountriesPage.path,
-          transition: PageTransitionType.bottomToTop);
+          transitionType: TransitionType.bottomToTop());
 
       router.add(NoConnectionPage.path);
 
       // Account Section
 
       router.add(AccountLoginPage.path,
-          transition: PageTransitionType.bottomToTop);
+          transitionType: TransitionType.bottomToTop());
 
       router.add(AccountRegistrationPage.path);
 

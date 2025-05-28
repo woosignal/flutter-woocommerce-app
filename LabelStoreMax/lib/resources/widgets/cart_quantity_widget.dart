@@ -15,7 +15,6 @@ class CartQuantity extends StatefulWidget {
 }
 
 class _CartQuantityState extends NyState<CartQuantity> {
-
   int total = 0;
 
   _CartQuantityState() {
@@ -27,14 +26,14 @@ class _CartQuantityState extends NyState<CartQuantity> {
 
   @override
   get init => () async {
-    List<CartLineItem> cartItems = await Cart.getInstance.getCart();
-    List<int?> cartItemQuantity = cartItems.map((e) => e.quantity).toList();
+        List<CartLineItem> cartItems = await Cart.getInstance.getCart();
+        List<int?> cartItemQuantity = cartItems.map((e) => e.quantity).toList();
 
-    if (cartItemQuantity.isEmpty) return;
+        if (cartItemQuantity.isEmpty) return;
 
-    total = cartItemQuantity
-        .reduce((value, element) => value! + element!) ?? 0;
-  };
+        total =
+            cartItemQuantity.reduce((value, element) => value! + element!) ?? 0;
+      };
 
   @override
   stateUpdated(dynamic data) async {
@@ -43,8 +42,7 @@ class _CartQuantityState extends NyState<CartQuantity> {
 
     if (cartItemQuantity.isEmpty) return;
 
-    total = cartItemQuantity
-        .reduce((value, element) => value! + element!) ?? 0;
+    total = cartItemQuantity.reduce((value, element) => value! + element!) ?? 0;
 
     setState(() {});
   }

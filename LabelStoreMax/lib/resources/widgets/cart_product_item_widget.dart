@@ -32,14 +32,10 @@ class _CartProductItemState extends NyState<CartProductItem> {
   }
 
   @override
-  get init => () {
-
-      };
+  get init => () {};
 
   @override
-  stateUpdated(dynamic data) async {
-
-  }
+  stateUpdated(dynamic data) async {}
 
   @override
   Widget view(BuildContext context) {

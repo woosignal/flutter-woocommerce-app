@@ -8,11 +8,10 @@ import '../../bootstrap/enums/wishlist_action_enums.dart';
 import '../../bootstrap/helpers.dart';
 
 class WishlistIcon extends StatefulWidget {
-  
   const WishlistIcon(this.product, {super.key});
 
   final Product? product;
-  
+
   static String state = "wishlist_icon";
 
   @override
@@ -20,7 +19,6 @@ class WishlistIcon extends StatefulWidget {
 }
 
 class _WishlistIconState extends NyState<WishlistIcon> {
-
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   bool? _isInFavourites;
@@ -31,9 +29,9 @@ class _WishlistIconState extends NyState<WishlistIcon> {
 
   @override
   get init => () async {
-    _isInFavourites = await hasAddedWishlistProduct(widget.product?.id);
-  };
-  
+        _isInFavourites = await hasAddedWishlistProduct(widget.product?.id);
+      };
+
   @override
   stateUpdated(dynamic data) async {
     _isInFavourites = await hasAddedWishlistProduct(widget.product?.id);
@@ -68,7 +66,7 @@ class _WishlistIconState extends NyState<WishlistIcon> {
 
   toggleWishList(
       {required Function onSuccess,
-        required WishlistAction wishlistAction}) async {
+      required WishlistAction wishlistAction}) async {
     String subtitleMsg;
     if (wishlistAction == WishlistAction.remove) {
       await removeWishlistProduct(product: widget.product);

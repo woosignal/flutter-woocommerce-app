@@ -74,13 +74,13 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       boxShadow:
-                      (Theme.of(context).brightness == Brightness.light)
-                          ? wsBoxShadow()
-                          : null,
+                          (Theme.of(context).brightness == Brightness.light)
+                              ? wsBoxShadow()
+                              : null,
                       color: ThemeColor.get(context).backgroundContainer,
                     ),
-                    padding:
-                    EdgeInsets.only(top: 20, bottom: 15, left: 16, right: 16),
+                    padding: EdgeInsets.only(
+                        top: 20, bottom: 15, left: 16, right: 16),
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     child: NyForm(
                         form: form,
@@ -90,14 +90,13 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
                             child: Button.primary(
                               text: trans("Login"),
                               submitForm: (
-                              form,
-                                  (data) async {
-                                await _loginUser(
-                                    data['email'], data['password']);
-                              }
+                                form,
+                                (data) async {
+                                  await _loginUser(
+                                      data['email'], data['password']);
+                                }
                               ),
-                            ))
-                    ),
+                            ))),
                   ),
                 ],
               ),

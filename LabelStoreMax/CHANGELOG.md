@@ -1,3 +1,12 @@
+## [8.2.2] - 2025-05-28
+
+* Upgrade Project
+* Dependency updates
+
+## [8.2.1] - 2025-03-27
+
+* Dependency updates
+
 ## [8.2.0] - 2025-02-07
 
 * Dependency updates
