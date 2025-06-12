@@ -47,10 +47,8 @@ class FirebaseProvider implements NyProvider {
 
     try {
       String? token = await messaging.getToken();
-      if (token != null) {
-        WooSignal.instance.setFcmToken(token);
-      }
-    } catch (e) {
+      WooSignal.instance.setFcmToken(token!);
+        } catch (e) {
       printError(e);
     }
   }

@@ -13,8 +13,6 @@ class DefaultListener extends NyListener {
   @override
   handle(dynamic event) async {
     String? userId = await WPJsonAPI.wpUserId();
-    if (userId != null) {
-      WooSignal.instance.setWpUserId(userId);
+    WooSignal.instance.setWpUserId(userId!);
     }
-  }
 }

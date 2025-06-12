@@ -184,15 +184,9 @@ class _AccountDetailPageState extends NyPage<AccountDetailPage>
 
   Widget getAvatar() {
     String? avatarUrl = _wcCustomerInfoResponse?.data?.avatar;
-    if (avatarUrl == null) {
-      return Icon(
-        Icons.account_circle_rounded,
-        size: 65,
-      );
-    }
 
     return CircleAvatar(
-      backgroundImage: NetworkImage(avatarUrl),
+      backgroundImage: NetworkImage(avatarUrl!),
     );
   }
 }

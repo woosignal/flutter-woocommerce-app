@@ -61,8 +61,8 @@ class CheckoutSession {
     String? strCheckoutDetails =
         await (NyStorage.read(SharedKey.customerBillingDetails));
 
-    if (strCheckoutDetails != null && strCheckoutDetails != "") {
-      return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
+    if (strCheckoutDetails != "") {
+      return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails!));
     }
     return null;
   }
@@ -83,8 +83,8 @@ class CheckoutSession {
   Future<CustomerAddress?> getShippingAddress() async {
     String? strCheckoutDetails =
         await (NyStorage.read(SharedKey.customerShippingDetails));
-    if (strCheckoutDetails != null && strCheckoutDetails != "") {
-      return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
+    if (strCheckoutDetails != "") {
+      return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails!));
     }
     return null;
   }

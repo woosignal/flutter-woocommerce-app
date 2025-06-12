@@ -110,8 +110,7 @@ class ProductDetailController extends Controller {
     for (var productVariation in productVariations) {
       for (var attr in productVariation.attributes) {
         String? attrName = attr.name;
-        if (attrName == null) continue;
-        tmpKeys.add(attrName);
+        tmpKeys.add(attrName!);
       }
     }
 

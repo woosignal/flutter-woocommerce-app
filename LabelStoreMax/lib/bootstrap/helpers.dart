@@ -471,8 +471,8 @@ String fetchValueInMeta(WPUserInfoResponse wpUserInfoResponse, String key) {
       .where((meta) => meta.key == key)
       .first
       .value;
-  if (metaDataValue != null && metaDataValue.isNotEmpty) {
-    return metaDataValue.first ?? "";
+  if (metaDataValue!.isNotEmpty) {
+    return metaDataValue!.first ?? "";
   }
   return value;
 }
@@ -485,9 +485,7 @@ Future<List<dynamic>> getWishlistProducts() async {
   List<dynamic> favouriteProducts = [];
   String? currentProductsJSON =
       await (NyStorage.read(SharedKey.wishlistProducts));
-  if (currentProductsJSON != null) {
-    favouriteProducts = (jsonDecode(currentProductsJSON)).toList();
-  }
+  favouriteProducts = (jsonDecode(currentProductsJSON!)).toList();
   return favouriteProducts;
 }
 
@@ -575,11 +573,11 @@ bool isProductNew(Product? product) {
 
 bool shouldEncrypt() {
   String? encryptKey = getEnv('ENCRYPT_KEY', defaultValue: "");
-  if (encryptKey == null || encryptKey == "") {
+  if (encryptKey == "") {
     return false;
   }
   String? encryptSecret = getEnv('ENCRYPT_KEY', defaultValue: "");
-  if (encryptSecret == null || encryptSecret == "") {
+  if (encryptSecret == "") {
     return false;
   }
   return true;

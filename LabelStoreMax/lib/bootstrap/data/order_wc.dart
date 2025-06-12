@@ -101,14 +101,12 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
   if (wooSignalApp.disableShipping != 1) {
     Map<String, dynamic>? shippingLineFeeObj =
         checkoutSession.shippingType!.toShippingLineFee();
-    if (shippingLineFeeObj != null) {
-      ShippingLines shippingLine = ShippingLines();
-      shippingLine.methodId = shippingLineFeeObj['method_id'];
-      shippingLine.methodTitle = shippingLineFeeObj['method_title'];
-      shippingLine.total = shippingLineFeeObj['total'];
-      orderWC.shippingLines!.add(shippingLine);
+    ShippingLines shippingLine = ShippingLines();
+    shippingLine.methodId = shippingLineFeeObj?['method_id'];
+    shippingLine.methodTitle = shippingLineFeeObj?['method_title'];
+    shippingLine.total = shippingLineFeeObj?['total'];
+    orderWC.shippingLines!.add(shippingLine);
     }
-  }
 
   if (taxRate != null) {
     orderWC.feeLines = [];

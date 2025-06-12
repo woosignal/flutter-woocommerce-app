@@ -212,12 +212,11 @@ class _CouponPageState extends NyPage<CouponPage> {
 
       // Check usage limit per user
       int? limitPerUser = coupon.usageLimitPerUser;
-      if (limitPerUser != null &&
-          coupon.usedBy!
+      if (coupon.usedBy!
                   .map((e) => e.toLowerCase())
                   .where((usedBy) => usedBy == emailAddress!.toLowerCase())
                   .length >=
-              limitPerUser) {
+              limitPerUser!) {
         _showAlert(
             message: "${trans('You cannot redeem this coupon')}.",
             style: ToastNotificationStyleType.warning);

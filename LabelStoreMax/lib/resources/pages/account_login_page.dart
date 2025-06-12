@@ -128,13 +128,8 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
                 action: () {
                   String? forgotPasswordUrl =
                       AppHelper.instance.appConfig!.wpLoginForgotPasswordUrl;
-                  if (forgotPasswordUrl != null) {
-                    openBrowserTab(url: forgotPasswordUrl);
-                  } else {
-                    NyLogger.info(
-                        "No URL found for \"forgot password\".\nAdd your forgot password URL here https://woosignal.com/dashboard/apps");
-                  }
-                }),
+                  openBrowserTab(url: forgotPasswordUrl ?? "");
+                                }),
             widget.showBackButton
                 ? Column(
                     children: [
