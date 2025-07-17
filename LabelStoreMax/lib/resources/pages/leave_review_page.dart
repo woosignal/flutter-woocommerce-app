@@ -122,7 +122,7 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
       return;
     }
 
-    await validate(
+    validate(
         rules: {"review": "min:5"},
         data: {"review": review},
         onSuccess: () async {
@@ -144,6 +144,9 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
             showToastOops(
                 title: trans("Oops"),
                 description: trans("Something went wrong"));
+            setState(() {
+              _isLoading = false;
+            });
             return;
           }
           showToast(
@@ -152,11 +155,15 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
               icon: Icons.check,
               style: ToastNotificationStyleType.success);
           pop(result: _lineItem);
+          setState(() {
+            _isLoading = false;
+          });
+        },
+        onFailure: (errors) {
+          setState(() {
+            _isLoading = false;
+          });
         });
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   Future<wc_customer_info.Data?> _fetchWpUserData() async {

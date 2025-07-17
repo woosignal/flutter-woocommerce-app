@@ -171,7 +171,7 @@ class _CartPageState extends NyPage<CartPage> {
   }
 
   @override
-  stateUpdated(data) {
+  stateUpdated(data) async {
     if (data["action"] == "showToastMaximumStockReached") {
       _showToastMaximumStockReached();
       return;
