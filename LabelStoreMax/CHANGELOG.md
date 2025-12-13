@@ -1,3 +1,10 @@
+## [8.2.6] - 2025-12-13
+
+* Update Android Project config
+* Update IOS Project config
+* Remove RazorPay dependency
+* Dependency updates
+
 ## [8.2.4] - 2025-09-06
 
 * Dependency updates

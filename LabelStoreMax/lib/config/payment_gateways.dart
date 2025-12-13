@@ -41,13 +41,13 @@ List<PaymentType> paymentTypeList = [
     pay: payPalPay,
   ),
 
-  addPayment(
-    id: 5,
-    name: "RazorPay",
-    description: trans("Debit or Credit Card"),
-    assetImage: "razorpay.png",
-    pay: razorPay,
-  ),
+  // addPayment(
+  //   id: 5,
+  //   name: "RazorPay",
+  //   description: trans("Debit or Credit Card"),
+  //   assetImage: "razorpay.png",
+  //   pay: razorPay,
+  // ),
 
   // e.g. add more here
 
