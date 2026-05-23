@@ -1,3 +1,8 @@
+## [8.2.7] - 2026-05-23
+
+* Update copyright year
+* Dependency updates
+
 ## [8.2.6] - 2025-12-13
 
 * Update Android Project config
