@@ -66,6 +66,21 @@ void main() {
     nyTest('can be given a name of its own', () async {
       expect(LoginForm(name: "second_login").formName, "second_login");
     });
+
+    nyTest('accepts any WordPress password, but not an empty one', () async {
+      // Existing customers' WordPress passwords don't need capitals or
+      // digits, so login only checks a password was entered.
+      Field password =
+          fieldsOf(LoginForm()).firstWhere((field) => field.key == "Password");
+      FormValidator validator = password.validator!;
+
+      for (String simple in ["hunter", "abc", "lowercase only"]) {
+        expect(validator.check(simple).isValid, isTrue,
+            reason: '"$simple" must be accepted at login');
+      }
+      expect(validator.check("").isValid, isFalse);
+      expect(validator.check(null).isValid, isFalse);
+    });
   });
 
   nyGroup('the registration form', () {

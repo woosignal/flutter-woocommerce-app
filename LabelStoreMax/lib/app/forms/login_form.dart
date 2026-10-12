@@ -25,10 +25,12 @@ class LoginForm extends NyFormWidget {
           "Email",
           validator: FormValidator.email(),
         ),
+        // Any WordPress password: WordPress checks it, and doesn't require
+        // capitals or digits like the register form does
         Field.password(
           "Password",
           viewable: true,
-          validator: FormValidator.password(strength: 1),
+          validator: FormValidator.notEmpty(),
         ),
       ];
 

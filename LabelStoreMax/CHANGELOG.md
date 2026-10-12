@@ -1,4 +1,4 @@
-## Unreleased
+## [9.0.0] - 2026-10-12
 
 Label StoreMax now runs on **Nylo 7** and requires the **WP JSON API WordPress
 plugin 5.0 or later** (`wp_json_api` 5.x). This release contains breaking
@@ -56,11 +56,12 @@ changes - read the steps below before upgrading an existing project.
 * `WishListPageWidget` is now `WishlistPage`
   (`lib/resources/pages/wishlist_page.dart`). Its `/wishlist` route is unchanged.
 * Registration is now a Nylo form (`lib/app/forms/register_form.dart`). New
-  passwords must be at least 8 characters with an uppercase letter and a digit,
-  matching the login form.
+  passwords must be at least 8 characters with an uppercase letter and a digit.
 
 ### Fixed
 
+* The login form accepts any password. It required an uppercase letter and a
+  digit, so customers whose WordPress password didn't have them couldn't sign in.
 * Category push notifications from the WooSignal dashboard now open the right
   category. They were dropped before, because the handler required an `order_id`
   that a category push never carries.
