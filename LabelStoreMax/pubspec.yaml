@@ -29,10 +29,9 @@ dependencies:
   google_fonts: ^8.2.1
   intl: ^0.20.3
   nylo_framework: ^7.1.30
-  woosignal: ^4.2.3
-  # 4.3.7 is the first (and only) wp_json_api release that pins nylo_support ^7.0.0.
-  # 4.3.6 pins ^6.38.1 and hard-blocks the nylo_framework v7 upgrade at `pub get`.
-  wp_json_api: ^4.3.7
+  woosignal: ^4.5.0
+  # 5.x requires the WP JSON API WordPress plugin 5.0+ (`wpapp/v4` API).
+  wp_json_api: ^5.0.2
   cached_network_image: ^4.0.0
   package_info_plus: ^10.2.1
   flutter_inappwebview: ^6.1.5
@@ -51,7 +50,6 @@ dependencies:
   firebase_core: ^4.14.0
   collection: ^1.19.1
   flutter_stripe: ^14.0.0
-#  razorpay_flutter: ^1.4.0 # Disabled due to issues with latest Flutter versions
   animate_do: ^5.1.0
   flutter:
     sdk: flutter
@@ -66,20 +64,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-
-# TEMPORARY - remove once woosignal >= 4.3.x is published on pub.dev.
-#
-# woosignal 4.2.3 (currently the latest release) depends on device_meta ^2.1.10,
-# which in turn pins nylo_support ^6.38.1. That transitively blocks
-# nylo_framework ^7.x at `pub get`, even though woosignal itself declares no
-# Nylo dependency.
-#
-# device_meta 3.x dropped nylo_support entirely (it persists the device UUID via
-# flutter_secure_storage instead) and its public API - init/fromJson/toJson/
-# getData/getMetaData and every field - is unchanged from 2.1.10, so
-# woosignal 4.2.3 compiles and runs against it untouched.
-dependency_overrides:
-  device_meta: ^3.0.4
 
 # APP ICON
 flutter_launcher_icons:

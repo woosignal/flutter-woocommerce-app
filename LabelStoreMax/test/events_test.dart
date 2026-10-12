@@ -12,6 +12,7 @@ import 'package:flutter_app/app/events/product_notification_event.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/bootstrap/events.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
+import 'package:flutter_app/resources/pages/account_login_page.dart';
 import 'package:flutter_app/resources/pages/account_order_detail_page.dart';
 import 'package:flutter_app/resources/pages/browse_category_page.dart';
 import 'package:flutter_app/resources/pages/home_page.dart';
@@ -110,6 +111,23 @@ void main() {
       await fireAndSettle(tester, () => event<LogoutEvent>());
 
       expect(Nylo.getCurrentRouteName(), HomePage.path.name);
+    });
+
+    nyWidgetTest(
+        'an expired session clears the device, keeps the cart and asks the '
+        'customer to login', (tester) async {
+      // The store answered InvalidUserTokenException: the token expired, was
+      // revoked, or the password changed elsewhere.
+      await seedWpUser();
+      await seedCart([cartLineItemFixture()]);
+
+      await pumpAppRouter(tester);
+      await fireAndSettle(
+          tester, () => event<LogoutEvent>(data: {"session_expired": true}));
+
+      expect(await WPJsonAPI.wpUser(), isNull);
+      expect(await Cart.getInstance.getCart(), isNotEmpty);
+      expect(Nylo.getCurrentRouteName(), AccountLoginPage.path.name);
     });
 
     nyWidgetTest('leaves the saved addresses alone', (tester) async {

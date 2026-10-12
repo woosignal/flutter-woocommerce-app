@@ -22,6 +22,7 @@ import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/switch_address_tab.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import '/bootstrap/extensions.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_updated_response.dart';
@@ -269,6 +270,8 @@ class _AccountShippingDetailsPageState
 
       WPUserInfoUpdatedResponse? wpUserInfoUpdatedResponse;
       try {
+        // Only billing_* and shipping_* keys are sent, which are on the WP
+        // JSON API plugin's default meta allow-list.
         wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api(
           (request) => request.wpUpdateUserInfo(metaData: [
             ...userBillingAddress.toUserMetaDataItem('billing'),
@@ -276,15 +279,11 @@ class _AccountShippingDetailsPageState
           ]),
         );
       } on Exception catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Oops!"),
-            description: trans("Something went wrong"),
-            id: 'danger');
+        await showWpJsonApiError(e);
+        return;
       }
 
-      if (wpUserInfoUpdatedResponse != null &&
-          wpUserInfoUpdatedResponse.status == 200) {
+      if (wpUserInfoUpdatedResponse != null) {
         showToast(
             title: trans("Success"),
             description: trans("Account updated"),
@@ -342,16 +341,12 @@ class _AccountShippingDetailsPageState
       wpUserInfoResponse =
           await WPJsonAPI.instance.api((request) => request.wpGetUserInfo());
     } on Exception catch (e) {
-      printError(e.toString());
-      showToast(
-        title: trans("Oops!"),
-        description: trans("Something went wrong"),
-        id: 'danger',
-      );
+      if (await showWpJsonApiError(e)) return;
       pop();
+      return;
     }
 
-    if (wpUserInfoResponse != null && wpUserInfoResponse.status == 200) {
+    if (wpUserInfoResponse != null) {
       BillingDetails billingDetails =
           await billingDetailsFromWpUserInfoResponse(wpUserInfoResponse);
 

@@ -16,13 +16,8 @@ import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/routes/guards/auth_route_guard.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
-import 'package:wp_json_api/exceptions/empty_username_exception.dart';
-import 'package:wp_json_api/exceptions/existing_user_email_exception.dart';
-import 'package:wp_json_api/exceptions/existing_user_login_exception.dart';
-import 'package:wp_json_api/exceptions/invalid_nonce_exception.dart';
-import 'package:wp_json_api/exceptions/user_already_exist_exception.dart';
-import 'package:wp_json_api/exceptions/username_taken_exception.dart';
 import 'package:wp_json_api/models/responses/wp_user_register_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -121,60 +116,27 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
     await lockRelease('register_user', perform: () async {
       WPUserRegisterResponse? wpUserRegisterResponse;
       try {
+        // No username is sent: the store generates one from the email.
         wpUserRegisterResponse = await WPJsonAPI.instance.api(
           (request) => request.wcRegister(
             email: email.toLowerCase(),
             password: password,
-            args: {
-              "first_name": firstName,
-              "last_name": lastName,
-            },
+            firstName: firstName.isEmpty ? null : firstName,
+            lastName: lastName.isEmpty ? null : lastName,
           ),
         );
-      } on UsernameTakenException catch (e) {
-        showToast(
-            title: trans("Oops!"),
-            description: trans(e.message),
-            id: 'danger');
-      } on InvalidNonceException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Invalid details"),
-            description:
-                trans("Something went wrong, please contact our store"),
-            id: 'danger');
-      } on ExistingUserLoginException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Oops!"),
-            description: trans("A user already exists"),
-            id: 'danger');
-      } on ExistingUserEmailException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Oops!"),
-            description: trans("That email is taken, try another"),
-            id: 'danger');
-      } on UserAlreadyExistException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Oops!"),
-            description: trans("A user already exists"),
-            id: 'danger');
-      } on EmptyUsernameException catch (e) {
-        showToast(
-            title: trans("Oops!"),
-            description: trans(e.message),
-            id: 'danger');
       } on Exception catch (e) {
-        printError(e.toString());
+        await showWpJsonApiError(e);
+        return;
+      }
+
+      // Registering answers HTTP 201, so check for the session token rather
+      // than a 200 status. Errors throw above.
+      if (wpUserRegisterResponse?.data?.token == null) {
         showToast(
             title: trans("Oops!"),
             description: trans("Something went wrong"),
             id: 'danger');
-      }
-
-      if (wpUserRegisterResponse?.status != 200) {
         return;
       }
 

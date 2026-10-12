@@ -8,7 +8,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 |-------------------------------------------------------------------------- */
 
 class LoginForm extends NyFormWidget {
-  LoginForm({
+  const LoginForm({
     super.key,
     super.header,
     super.footer,

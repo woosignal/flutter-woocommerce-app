@@ -5,10 +5,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:flutter_app/app/models/checkout_session.dart';
 import 'package:flutter_app/app/models/payment_type.dart';
+import 'package:flutter_app/app/providers/payments/paypal_pay.dart';
+import 'package:flutter_app/bootstrap/app_helper.dart';
+import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/data/order_wc.dart';
 import 'package:flutter_app/bootstrap/paypal/paypal_service.dart';
 import 'package:flutter_app/config/payment_gateways.dart';
 import 'package:woosignal/models/payload/order_wc.dart';
+import 'package:woosignal/models/response/woosignal_app.dart';
 import 'support/boot_test_app.dart';
 import 'support/fixtures.dart';
 
@@ -83,7 +87,6 @@ void main() {
         "Stripe": "stripe",
         "CashOnDelivery": "cod",
         "PayPal": "paypal",
-        "RazorPay": "razorpay",
       };
 
       for (MapEntry<String, String> entry in expected.entries) {
@@ -106,11 +109,99 @@ void main() {
 
         OrderWC orderWC = await buildOrderWC();
 
-        expect(["stripe", "cod", "paypal", "razorpay"],
+        expect(["stripe", "cod", "paypal"],
             contains(orderWC.paymentMethod),
             reason: '"${paymentType.name}" must map to a WooCommerce '
                 'gateway id');
       }
+    });
+  });
+
+  nyGroup('Razorpay', () {
+    nyTest('is not offered, even if the store config still mentions it',
+        () async {
+      // Older WooSignal backends still send `razorpay_active`.
+      AppHelper.instance.appConfig = WooSignalApp.fromJson({
+        "banner_images": [],
+        "stripe_enabled": 1,
+        "paypal_enabled": 1,
+        "cod_enabled": 1,
+        "razorpay_active": 1,
+      });
+
+      List<String?> names =
+          (await getPaymentTypes()).map((type) => type?.name).toList();
+
+      expect(names, ["Stripe", "PayPal", "CashOnDelivery"]);
+      expect(paymentTypeList.map((type) => type.name),
+          isNot(contains("RazorPay")));
+    });
+  });
+
+  nyGroup('the PayPal transaction id', () {
+    // WooSignal verifies this id with PayPal before it marks the order paid.
+
+    nyTest('is the sale id from the executed payment', () async {
+      expect(
+          payPalTransactionId({
+            'error': false,
+            'data': {
+              'id': "PAYID-TEST",
+              'transactions': [
+                {
+                  'related_resources': [
+                    {
+                      'sale': {'id': "5TY12345AB678901C", 'state': "completed"}
+                    }
+                  ]
+                }
+              ]
+            }
+          }),
+          "5TY12345AB678901C");
+    });
+
+    nyTest('falls back to the payment id when there is no sale', () async {
+      expect(
+          payPalTransactionId({
+            'data': {
+              'id': "PAYID-TEST",
+              'transactions': [
+                {'related_resources': []}
+              ]
+            }
+          }),
+          "PAYID-TEST");
+    });
+
+    nyTest('is null when the response has no data', () async {
+      expect(payPalTransactionId({'data': null}), isNull);
+      expect(payPalTransactionId({}), isNull);
+    });
+
+    nyTest('ends up on the order as the transaction id', () async {
+      seedCheckoutSession();
+      CheckoutSession.getInstance.paymentType = paymentTypeList
+          .firstWhere((paymentType) => paymentType.name == "PayPal");
+
+      OrderWC orderWC = await buildOrderWC(
+          transactionId: payPalTransactionId({
+        'data': {
+          'transactions': [
+            {
+              'related_resources': [
+                {
+                  'sale': {'id': "5TY12345AB678901C"}
+                }
+              ]
+            }
+          ]
+        }
+      }));
+
+      expect(orderWC.paymentMethod, "paypal");
+      expect(orderWC.transactionId, "5TY12345AB678901C");
+      expect(orderWC.setPaid, isTrue);
     });
   });
 

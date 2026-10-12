@@ -8,7 +8,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 |-------------------------------------------------------------------------- */
 
 class RegisterForm extends NyFormWidget {
-  RegisterForm({
+  const RegisterForm({
     super.key,
     super.header,
     super.footer,
@@ -37,6 +37,8 @@ class RegisterForm extends NyFormWidget {
           label: "Email address",
           validator: FormValidator.email(),
         ),
+        // Strength 1 needs 8+ characters with a capital and a digit, which
+        // covers the store's own minimum (WP JSON API: 8 characters).
         Field.password(
           "Password",
           viewable: true,

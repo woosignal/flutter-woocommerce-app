@@ -597,15 +597,29 @@ Future<T> withEnv<T>(
 /// keeps the session in secure storage - which `NyMockChannels` backs with an
 /// in-memory map. Writing through [WPJsonAPI.wpLogin] uses the same path the
 /// app does.
+///
+/// wp_json_api 5 tokens always expire, so the session is valid for a day
+/// unless [expiresAt] (Unix seconds) says otherwise. Pass [legacySession] to
+/// store a session the way wp_json_api 4.x did - with no expiry - which 5.x
+/// treats as logged out.
 Future<WpUser> seedWpUser(
     {int id = 42,
     String token = "test-token",
     String email = "test@example.test",
     String firstName = "Anthony",
-    String lastName = "Gordon"}) async {
+    String lastName = "Gordon",
+    int? expiresAt,
+    bool legacySession = false}) async {
   WpUser wpUser = WpUser(
       id: id,
       token: token,
+      expiresAt: legacySession
+          ? null
+          : expiresAt ??
+              DateTime.now()
+                      .add(const Duration(days: 1))
+                      .millisecondsSinceEpoch ~/
+                  1000,
       email: email,
       username: email,
       firstName: firstName,

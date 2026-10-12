@@ -48,7 +48,6 @@ void main() {
         "Stripe": "stripe",
         "CashOnDelivery": "cod",
         "PayPal": "paypal",
-        "RazorPay": "razorpay",
       };
 
       for (MapEntry<String, String> entry in expected.entries) {
@@ -82,7 +81,6 @@ void main() {
         "Stripe": "Stripe",
         "CashOnDelivery": "Cash on delivery",
         "PayPal": "PayPal",
-        "RazorPay": "RazorPay",
       };
 
       for (MapEntry<String, String> entry in expected.entries) {
@@ -167,6 +165,32 @@ void main() {
       OrderWC orderWC = await buildOrderWC();
 
       expect(orderWC.customerId, 42);
+    });
+
+    nyTest('an expired session is not attached to the order', () async {
+      // wp_json_api 5 tokens expire; the order goes through as a guest one.
+      await seedWpUser(
+          id: 42,
+          expiresAt: DateTime.now()
+                  .subtract(const Duration(minutes: 1))
+                  .millisecondsSinceEpoch ~/
+              1000);
+      seedCheckoutSession();
+      useGateway("Stripe");
+
+      OrderWC orderWC = await buildOrderWC();
+
+      expect(orderWC.customerId, isNull);
+    });
+
+    nyTest('a session saved by wp_json_api 4.x is not attached', () async {
+      await seedWpUser(id: 42, legacySession: true);
+      seedCheckoutSession();
+      useGateway("Stripe");
+
+      OrderWC orderWC = await buildOrderWC();
+
+      expect(orderWC.customerId, isNull);
     });
 
     nyTest('a signed in customer is ignored when WordPress logins are off',

@@ -25,6 +25,7 @@ import '/resources/widgets/woosignal_ui.dart';
 import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:validated/validated.dart' as validate;
+import '/bootstrap/wp_json_api_errors.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 import '../../app/models/default_shipping.dart';
@@ -391,13 +392,9 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
             ]),
           );
         } on Exception catch (e) {
-          showToast(
-              title: trans("Oops!"),
-              description: trans("Something went wrong"),
-              id: 'danger');
-          if (getEnv('APP_DEBUG', defaultValue: true) == true) {
-            NyLogger.error(e.toString());
-          }
+          // The checkout carries on with the details entered; only saving
+          // them to the customer's account failed.
+          if (await showWpJsonApiError(e)) return;
         }
       }
 
@@ -488,16 +485,12 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
         wpUserInfoResponse =
             await WPJsonAPI.instance.api((request) => request.wpGetUserInfo());
       } on Exception catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Oops!"),
-            description: trans("Something went wrong"),
-            id: 'danger');
+        if (await showWpJsonApiError(e)) return;
         pop();
         return;
       }
 
-      if (wpUserInfoResponse != null && wpUserInfoResponse.status == 200) {
+      if (wpUserInfoResponse != null) {
         BillingDetails billingDetails =
             await billingDetailsFromWpUserInfoResponse(wpUserInfoResponse);
 

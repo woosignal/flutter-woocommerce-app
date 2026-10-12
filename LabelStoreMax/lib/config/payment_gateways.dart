@@ -1,7 +1,6 @@
 import '/app/models/payment_type.dart';
 import '/app/providers/payments/cash_on_delivery.dart';
 import '/app/providers/payments/paypal_pay.dart';
-// import '/app/providers/payments/razorpay_pay.dart'; // Disabled: see razorpay_flutter in pubspec.yaml
 import '/app/providers/payments/stripe_pay.dart';
 import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -13,7 +12,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 |-------------------------------------------------------------------------- */
 
 const List<String> appPaymentGateways = [];
-// Available: "Stripe", "CashOnDelivery", "PayPal", "RazorPay"
+// Available: "Stripe", "CashOnDelivery", "PayPal"
 // e.g. appPaymentGateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
 
 List<PaymentType> paymentTypeList = [
@@ -40,14 +39,6 @@ List<PaymentType> paymentTypeList = [
     assetImage: "paypal_logo.png",
     pay: payPalPay,
   ),
-
-  // addPayment(
-  //   id: 5,
-  //   name: "RazorPay",
-  //   description: trans("Debit or Credit Card"),
-  //   assetImage: "razorpay.png",
-  //   pay: razorPay,
-  // ),
 
   // e.g. add more here
 

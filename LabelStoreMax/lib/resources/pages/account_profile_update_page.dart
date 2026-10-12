@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_updated_response.dart';
@@ -34,13 +35,17 @@ class _AccountProfileUpdatePageState extends NyPage<AccountProfileUpdatePage> {
       };
 
   Future<void> _fetchUserDetails() async {
-    WPUserInfoResponse wpUserInfoResponse =
-        await WPJsonAPI.instance.api((request) async {
-      return request.wpGetUserInfo();
-    });
+    WPUserInfoResponse? wpUserInfoResponse;
+    try {
+      wpUserInfoResponse =
+          await WPJsonAPI.instance.api((request) => request.wpGetUserInfo());
+    } on Exception catch (e) {
+      await showWpJsonApiError(e);
+      return;
+    }
 
-    _tfFirstName.text = wpUserInfoResponse.data!.firstName!;
-    _tfLastName.text = wpUserInfoResponse.data!.lastName!;
+    _tfFirstName.text = wpUserInfoResponse?.data?.firstName ?? "";
+    _tfLastName.text = wpUserInfoResponse?.data?.lastName ?? "";
   }
 
   @override
@@ -122,14 +127,11 @@ class _AccountProfileUpdatePageState extends NyPage<AccountProfileUpdatePage> {
               request.wpUpdateUserInfo(
                   firstName: firstName, lastName: lastName));
         } on Exception catch (e) {
-          printError(e.toString());
-          showToast(
-              title: trans("Invalid details"),
-              description: trans("Please check your email and password"),
-              id: 'danger');
+          await showWpJsonApiError(e);
+          return;
         }
 
-        if (wpUserInfoUpdatedResponse?.status == 200) {
+        if (wpUserInfoUpdatedResponse != null) {
           showToast(
               title: trans("Success"),
               description: trans("Account updated"),

@@ -5,10 +5,10 @@ import '/bootstrap/helpers.dart';
 import '/bootstrap/decoders.dart';
 import '/config/design.dart';
 import '/bootstrap/theme.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import '/config/toast_notification.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '/config/localization.dart';
-import 'package:woosignal/models/response/woosignal_app.dart';
 import 'package:woosignal/woosignal.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -112,5 +112,11 @@ class AppProvider implements NyProvider {
   }
 
   @override
-  boot(Nylo nylo) async {}
+  boot(Nylo nylo) async {
+    if (AppHelper.instance.appConfig?.wpLoginEnabled == 1) {
+      // Sessions saved before WP JSON API 5.0 (or with an expired token) can't
+      // be used any more, so the customer starts logged out.
+      await clearExpiredWpSession();
+    }
+  }
 }

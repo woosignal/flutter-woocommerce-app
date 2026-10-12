@@ -144,6 +144,15 @@ void main() {
       }
     });
 
+    nyTest('refuses fewer than the store\'s 8 characters', () async {
+      // WP JSON API 5 rejects passwords under 8 characters
+      // (wpapp_weak_password), so registration must not let one through.
+      expect(FormValidator.password(strength: 1).check("Secre12").isValid,
+          isFalse);
+      expect(FormValidator.password(strength: 1).check("Secre123").isValid,
+          isTrue);
+    });
+
     nyTest('rejects a weak or missing password', () async {
       for (String? password in ["", "ab", "abcdefgh", "secret123", null]) {
         expect(FormValidator.password(strength: 1).check(password).isValid,

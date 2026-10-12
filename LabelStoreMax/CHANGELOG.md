@@ -1,9 +1,36 @@
 ## Unreleased
 
-Label StoreMax now runs on **Nylo 7**. This release contains breaking changes -
-read the steps below before upgrading an existing project.
+Label StoreMax now runs on **Nylo 7** and requires the **WP JSON API WordPress
+plugin 5.0 or later** (`wp_json_api` 5.x). This release contains breaking
+changes - read the steps below before upgrading an existing project.
 
 ### Breaking - you must do this
+
+* **Update the WP JSON API plugin on your store to 5.0 or later before you
+  release this version.** The app now uses `wp_json_api: ^5.0.2`, which talks to
+  the plugin's new `wpapp/v4` API (the plugin's security release). With an
+  older plugin, customer login, registration and the account pages stop
+  working. Get it from
+  [woosignal.com](https://woosignal.com/plugins/wordpress/wpapp-json-api).
+* **Customers have to log in once after they update the app.** Sessions saved
+  by earlier versions can't be used with the v4 API, so they are cleared when
+  the app starts. Login sessions now expire (90 days by default, set on your
+  store), and one that has expired or been revoked logs the customer out and
+  takes them to the login page - their cart is kept.
+* **Razorpay has been removed.** The (already disabled) `razorpay_pay.dart`
+  provider, the commented-out `RazorPay` entry in `config/payment_gateways.dart`,
+  the `razorpay` gateway ids in `bootstrap/data/order_wc.dart`,
+  `assets/images/razorpay.png` and `RAZORPAY_API_KEY` in `.env` /
+  `.env-example` are gone. Remove `RAZORPAY_API_KEY` from your own `.env` and
+  re-run `dart run nylo_framework:main make:env`. A WooSignal app config that
+  still reports Razorpay as active is ignored, so it is never offered at
+  checkout.
+* **Deleting an account now asks for the customer's password**, which the store
+  checks before it deletes anything.
+* Administrators and shop managers can't log in through the app unless the
+  store allows it (WP JSON API filter
+  `wpapp_json_api_allow_privileged_users`); they see "This account can't be
+  used in the app".
 
 * **Your WooSignal app key moved to `WOOSIGNAL_APP_KEY`.** Nylo 7 reserves
   `APP_KEY` for environment encryption, so `.env` now holds your WooSignal key
@@ -62,11 +89,43 @@ read the steps below before upgrading an existing project.
 * A product or category whose name is empty no longer throws when its title is
   rendered.
 * Chinese: the checkout button read 查看 ("view") instead of 结账.
+* Password fields built with `TextEditingRow` (e.g. the delete account
+  confirmation) no longer auto-capitalise or suggest words, so the password goes
+  in exactly as typed.
+* A profile with no first or last name no longer fails to load on the "Update
+  details" page.
 
 ### Changed
 
 * Upgraded to `nylo_framework: ^7.1.28`; dropped `flutter_dotenv`,
   `pretty_dio_logger` and the direct `url_launcher` dependency.
+* Upgraded to `wp_json_api: ^5.0.2` and `woosignal: ^4.5.0`. The temporary
+  `device_meta` dependency override is no longer needed and was removed.
+* Login, registration and account errors now tell the customer what went wrong
+  instead of a generic message: wrong login details, too many attempts (with
+  how long to wait), a login blocked by a security plugin on the store
+  (showing that plugin's message), registration switched off, email already
+  registered, password too short, wrong password, details the store would not
+  save, no connection, and an expired session. All 12 languages are updated.
+  The mapping lives in `lib/bootstrap/wp_json_api_errors.dart`.
+* Logging out now also revokes the login token on the store. The customer is
+  always logged out on the device, even if the store can't be reached.
+* Registration no longer sends a username; the store creates one from the
+  email address.
+* An order is only linked to the customer's account while their login session
+  is still valid.
+* Translation keys added: "Too many attempts, please try again later", "Too
+  many attempts, please try again in seconds seconds", "Too many attempts,
+  please try again in minutes minutes", "Login is not available right now,
+  please try again later", "This account can't be used in the app",
+  "Registration is currently disabled for this store", "Password must be at
+  least minLength characters", "That username is taken, try another", "Some of
+  your details could not be saved, please contact our store", "Unable to
+  connect, please check your connection and try again", "Your session has
+  expired, please login again" and "Enter your password to confirm". Removed
+  (no longer used): "Invalid details", "Please check your email and password",
+  "That email does not match our records", "That username does not match our
+  records", "A user already exists" and "Username taken, try another."
 * Framework files moved to the Nylo 7 layout: `lib/bootstrap/` holds
   `boot`, `decoders`, `events`, `providers` and `theme`; `lib/config/` holds
   `app`, `design`, `localization`, `storage_keys` and `toast_notification`;
@@ -83,8 +142,8 @@ The order payload the app sends to WooCommerce was corrected to match the REST
 API's order schema. Nothing needs to change on your side, but orders placed by
 the app will look different in WooCommerce admin from this release on:
 
-* **`payment_method` is now a real gateway id** - `stripe`, `cod`, `paypal` or
-  `razorpay` - instead of a label like `Stripe - Android App`. WooCommerce can
+* **`payment_method` is now a real gateway id** - `stripe`, `cod` or
+  `paypal` - instead of a label like `Stripe - Android App`. WooCommerce can
   now match the order to the gateway, so gateway-specific refunds and any
   plugin that branches on the payment method work on app orders. Custom
   gateways fall back to their lowercased `name`, so name yours after its
@@ -105,8 +164,9 @@ the app will look different in WooCommerce admin from this release on:
   shipping zones, tax rates and address formatting now match app orders the
   same way they match orders placed on the website.
 * **The gateway's transaction reference is recorded.** Stripe sends its
-  PaymentIntent id and PayPal its sale id in the order's `transaction_id`, and
-  a copy is kept in order meta under `_woosignal_payment_ref`. (That key starts
+  PaymentIntent id and PayPal its sale id in the order's `transaction_id`
+  (WooSignal verifies the payment before it marks an app order as paid), and a
+  copy is kept in order meta under `_woosignal_payment_ref`. (That key starts
   with an underscore, so it is hidden meta - you will not see it on the order
   screen, but it is readable via the REST API and by plugins.)
 

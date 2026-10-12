@@ -10,14 +10,13 @@
 
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
-import '/app/events/logout_event.dart';
 import '/resources/widgets/account_detail_orders_widget.dart';
 import '/resources/widgets/account_detail_settings_widget.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import '/bootstrap/extensions.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:wp_json_api/exceptions/invalid_user_token_exception.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -46,26 +45,12 @@ class _AccountDetailPageState extends NyPage<AccountDetailPage>
     try {
       wcCustomerInfoResponse =
           await WPJsonAPI.instance.api((request) => request.wcCustomerInfo());
-    } on InvalidUserTokenException catch (e) {
-      printError(e.toString());
-      showToast(
-        title: trans("Oops!"),
-        description: trans("Something went wrong"),
-        id: 'danger',
-      );
-      await event<LogoutEvent>();
     } on Exception catch (e) {
-      printError(e.toString());
-      showToast(
-        title: trans("Oops!"),
-        description: trans("Something went wrong"),
-        id: 'danger',
-      );
-    }
-
-    if (wcCustomerInfoResponse?.status != 200) {
+      // An expired session logs the customer out and sends them to login.
+      await showWpJsonApiError(e);
       return;
     }
+
     _wcCustomerInfoResponse = wcCustomerInfoResponse;
   }
 

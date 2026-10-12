@@ -26,6 +26,7 @@ You can also upload the app to the IOS app store and Google play store using Flu
 ### Requirements
 
 - WooCommerce Store 3.5+
+- [WP JSON API](https://woosignal.com/plugins/wordpress/wpapp-json-api) WordPress plugin 5.0+ (for customer login/registration)
 - Flutter 3.44+ / Dart 3.12+
 - Android Studio/VSCode (for running the app)
 
@@ -59,7 +60,7 @@ Full documentation this available [here](https://woosignal.com/docs/app/ios/labe
 - Change app name, logo, customize default language, currency + more
 - Light and dark mode
 - Theme customization
-- Stripe, Cash On Delivery and PayPal (RazorPay ships disabled - see `pubspec.yaml`)
+- Stripe, Cash On Delivery and PayPal
 - Localized for en, es, pt, it, hi, fr, zh, tr, nl, de, id, th
 - Orders show as normal in WooCommerce
 

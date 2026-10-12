@@ -27,7 +27,11 @@ import 'package:nylo_framework/nylo_framework.dart';
 /// Digs the capture reference out of a PayPal execute payment response. The
 /// sale id is the one PayPal shows against the transaction, so prefer it and
 /// fall back to the payment id when the response isn't shaped as expected.
-String? _payPalTransactionId(Map params) {
+///
+/// It is sent as the order's `transaction_id`: WooSignal looks the sale up
+/// with PayPal before it marks the order as paid.
+@visibleForTesting
+String? payPalTransactionId(Map params) {
   dynamic data = params['data'];
   if (data is! Map) {
     return null;
@@ -134,8 +138,16 @@ Future<void> payPalPay(BuildContext context, {TaxRate? taxRate}) async {
             }
           ],
           onSuccess: (Map params) async {
+            String? transactionId = payPalTransactionId(params);
+            if (transactionId == null) {
+              // The payment went through but PayPal's response had no id, so
+              // WooSignal can't verify it. The order is still created (unpaid)
+              // so the store can match it up by hand.
+              NyLogger.error(
+                  "PayPal payment succeeded without a sale or payment id");
+            }
             OrderWC orderWC = await buildOrderWC(
-                taxRate: taxRate, transactionId: _payPalTransactionId(params));
+                taxRate: taxRate, transactionId: transactionId);
             Order? order =
                 await (appWooSignal((api) => api.createOrder(orderWC)));
 

@@ -142,7 +142,11 @@ class TextEditingRow extends StatelessWidget {
                 autocorrect: false,
                 autofocus: shouldAutoFocus ?? false,
                 obscureText: obscureText ?? false,
-                textCapitalization: TextCapitalization.sentences,
+                // A password must go in exactly as typed.
+                enableSuggestions: !(obscureText ?? false),
+                textCapitalization: (obscureText ?? false)
+                    ? TextCapitalization.none
+                    : TextCapitalization.sentences,
               ),
             )
           ],

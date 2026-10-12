@@ -18,11 +18,8 @@ import '/routes/guards/auth_route_guard.dart';
 import '/bootstrap/app_helper.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import '/bootstrap/extensions.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:wp_json_api/exceptions/incorrect_password_exception.dart';
-import 'package:wp_json_api/exceptions/invalid_email_exception.dart';
-import 'package:wp_json_api/exceptions/invalid_nonce_exception.dart';
-import 'package:wp_json_api/exceptions/invalid_username_exception.dart';
 import 'package:wp_json_api/models/responses/wp_user_login_response.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 
@@ -159,46 +156,20 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
     await lockRelease('login_button', perform: () async {
       WPUserLoginResponse? wpUserLoginResponse;
       try {
+        // `login` takes the username or the email address.
         wpUserLoginResponse = await WPJsonAPI.instance.api(
-            (request) => request.wpLogin(email: email, password: password));
-      } on InvalidNonceException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Invalid details"),
-            description:
-                trans("Something went wrong, please contact our store"),
-            id: 'danger');
-      } on InvalidEmailException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Invalid details"),
-            description: trans("That email does not match our records"),
-            id: 'danger');
-      } on InvalidUsernameException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Invalid details"),
-            description: trans("That username does not match our records"),
-            id: 'danger');
-      } on IncorrectPasswordException catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Invalid details"),
-            description: trans("That password does not match our records"),
-            id: 'danger');
+            (request) => request.wpLogin(login: email, password: password));
       } on Exception catch (e) {
-        printError(e.toString());
-        showToast(
-            title: trans("Oops!"),
-            description: trans("Invalid login credentials"),
-            id: 'danger');
-      }
-
-      if (wpUserLoginResponse == null) {
+        await showWpJsonApiError(e, fallback: "Invalid login credentials");
         return;
       }
 
-      if (wpUserLoginResponse.status != 200) {
+      // Errors throw above; a successful login always carries a token.
+      if (wpUserLoginResponse?.data?.token == null) {
+        showToast(
+            title: trans("Oops!"),
+            description: trans("Something went wrong"),
+            id: 'danger');
         return;
       }
 

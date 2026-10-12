@@ -32,7 +32,6 @@ const Map<String, String> _wcPaymentMethodIds = {
   "stripe": "stripe",
   "cashondelivery": "cod",
   "paypal": "paypal",
-  "razorpay": "razorpay",
 };
 
 /// Human readable labels for the same gateways, used for
@@ -41,7 +40,6 @@ const Map<String, String> _wcPaymentMethodTitles = {
   "stripe": "Stripe",
   "cashondelivery": "Cash on delivery",
   "paypal": "PayPal",
-  "razorpay": "RazorPay",
 };
 
 /// `DefaultShippingState.code` is stored as `<country>:<state>` (e.g. `US:AL`),
@@ -92,9 +90,13 @@ Future<OrderWC> buildOrderWC(
   // send no new-order email, reduce no stock and be auto-cancelled).
   orderWC.status = markPaid ? "pending" : "processing";
   orderWC.currency = wooSignalApp.currencyMeta!.code!.toUpperCase();
-  WpUser? wpUser = await WPJsonAPI.wpUser();
-  if (wpUser != null && wooSignalApp.wpLoginEnabled == 1) {
-    orderWC.customerId = int.parse(wpUser.id.toString());
+  // Only attribute the order to a customer whose session is still valid
+  // (wpUserLoggedIn is false once the token has expired).
+  if (wooSignalApp.wpLoginEnabled == 1 && await WPJsonAPI.wpUserLoggedIn()) {
+    WpUser? wpUser = await WPJsonAPI.wpUser();
+    if (wpUser?.id != null) {
+      orderWC.customerId = wpUser!.id;
+    }
   }
 
   List<LineItems> lineItems = [];

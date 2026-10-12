@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import '/bootstrap/helpers.dart';
+import '/bootstrap/wp_json_api_errors.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
@@ -106,10 +107,6 @@ class _LeaveReviewPageState extends NyPage<LeaveReviewPage> {
       String review = _textEditingController!.text;
       wc_customer_info.Data? wcCustomerInfo = await _fetchWpUserData();
       if (wcCustomerInfo == null) {
-        showToast(
-            title: trans("Oops!"),
-            description: trans("Something went wrong"),
-            id: 'danger');
         return;
       }
 
@@ -150,22 +147,24 @@ class _LeaveReviewPageState extends NyPage<LeaveReviewPage> {
     });
   }
 
+  /// Returns null (after telling the customer why) if it could not be loaded.
   Future<wc_customer_info.Data?> _fetchWpUserData() async {
     wc_customer_info.WCCustomerInfoResponse? wcCustomerInfoResponse;
     try {
       wcCustomerInfoResponse =
           await WPJsonAPI.instance.api((request) => request.wcCustomerInfo());
-
-      if (wcCustomerInfoResponse == null) {
-        return null;
-      }
-      if (wcCustomerInfoResponse.status != 200) {
-        return null;
-      }
-      return wcCustomerInfoResponse.data;
     } on Exception catch (e) {
-      printError(e.toString());
+      await showWpJsonApiError(e);
       return null;
     }
+
+    if (wcCustomerInfoResponse?.data == null) {
+      showToast(
+          title: trans("Oops!"),
+          description: trans("Something went wrong"),
+          id: 'danger');
+      return null;
+    }
+    return wcCustomerInfoResponse!.data;
   }
 }
