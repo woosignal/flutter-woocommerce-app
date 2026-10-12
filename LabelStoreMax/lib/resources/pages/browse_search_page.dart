@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -49,8 +49,9 @@ class _BrowseSearchState extends NyPage<BrowseSearchPage> {
         centerTitle: true,
       ),
       body: SafeAreaWidget(
-          child: NyPullToRefresh.grid(child: (context, product) {
-        product as ws_product.Product;
+          child: CollectionView<ws_product.Product>.pullableGrid(
+              builder: (context, item) {
+        ws_product.Product product = item.data;
         return SizedBox(
           height: 300,
           child: ProductItemContainer(

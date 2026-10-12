@@ -74,8 +74,12 @@
 
 /ios/Flutter/Flutter.podspec
 /ios/Podfile.lock
-/ios/Podfile
 
 .flutter-plugins-dependencies
 
-.env
+# Environment files
+# NOTE: .env is intentionally NOT ignored - this template ships a ready .env.
+lib/bootstrap/env.g.dart
+
+# Test coverage output ("flutter test --coverage")
+coverage/

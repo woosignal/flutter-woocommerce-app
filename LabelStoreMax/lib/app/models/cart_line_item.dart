@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -93,7 +93,8 @@ class CartLineItem {
         ? getEnv("PRODUCT_PLACEHOLDER_IMAGE")
         : product.images.first.src;
     total = product.price;
-    appMetaData = product.metaData.map((e) => {e.key: e.value}).toList();
+    appMetaData =
+        product.metaData.map((e) => {"key": e.key, "value": e.value}).toList();
   }
 
   CartLineItem.fromProductVariation(

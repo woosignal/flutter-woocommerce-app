@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -23,21 +23,74 @@ import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
-Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
+/// WooCommerce gateway ids, keyed by the lowercased payment names used in
+/// config/payment_gateways.dart. `payment_method` has to match a registered
+/// gateway id, otherwise the admin cannot refund through it and any plugin
+/// branching on get_payment_method() never fires. Gateways that aren't listed
+/// fall back to the lowercased name, so name custom ones after their id.
+const Map<String, String> _wcPaymentMethodIds = {
+  "stripe": "stripe",
+  "cashondelivery": "cod",
+  "paypal": "paypal",
+  "razorpay": "razorpay",
+};
+
+/// Human readable labels for the same gateways, used for
+/// `payment_method_title`.
+const Map<String, String> _wcPaymentMethodTitles = {
+  "stripe": "Stripe",
+  "cashondelivery": "Cash on delivery",
+  "paypal": "PayPal",
+  "razorpay": "RazorPay",
+};
+
+/// `DefaultShippingState.code` is stored as `<country>:<state>` (e.g. `US:AL`),
+/// but WooCommerce wants the state on its own. Mirrors the split the tax rate
+/// lookup does in checkout_confirmation_page.dart, so the order records the
+/// same identifiers the tax was worked out from.
+String? _wcStateCode(String? stateCode) {
+  if (stateCode == null || stateCode == "") {
+    return null;
+  }
+  return stateCode.split(":").last;
+}
+
+Future<OrderWC> buildOrderWC(
+    {TaxRate? taxRate, bool markPaid = true, String? transactionId}) async {
   CheckoutSession checkoutSession = CheckoutSession.getInstance;
   OrderWC orderWC = OrderWC();
   WooSignalApp wooSignalApp = AppHelper.instance.appConfig!;
 
   String paymentMethodName = checkoutSession.paymentType!.name;
+  String paymentMethodKey = paymentMethodName.toLowerCase();
+  String paymentMethodTitle =
+      _wcPaymentMethodTitles[paymentMethodKey] ?? paymentMethodName;
+  String platformName = Platform.isAndroid ? "Android App" : "iOS App";
 
-  orderWC.paymentMethod = Platform.isAndroid
-      ? "$paymentMethodName - Android App"
-      : "$paymentMethodName - IOS App";
+  orderWC.paymentMethod =
+      _wcPaymentMethodIds[paymentMethodKey] ?? paymentMethodKey;
 
-  orderWC.paymentMethodTitle = paymentMethodName.toLowerCase();
+  orderWC.paymentMethodTitle = "$paymentMethodTitle ($platformName)";
+
+  // Order level meta, assigned once at the end so everything can contribute.
+  List<MetaData> metaData = [];
+
+  if (transactionId != null && transactionId != "") {
+    orderWC.transactionId = transactionId;
+    // Kept under our own key as well as the core `transaction_id` field.
+    // Gateway plugins write that field freely, so reconciliation needs a copy
+    // that stays put.
+    metaData.add(MetaData(key: "_woosignal_payment_ref", value: transactionId));
+  }
 
   orderWC.setPaid = markPaid;
-  orderWC.status = "pending";
+  // Paid orders start as `pending` with `set_paid`, which WooCommerce itself
+  // advances to processing/completed. Unpaid orders (Cash on Delivery) are
+  // created as `processing`, matching WooCommerce's own COD gateway: stock is
+  // reduced and the order is ready to fulfil. Use "on-hold" instead if you
+  // want to confirm COD orders manually before fulfilment (`pending` would
+  // send no new-order email, reduce no stock and be auto-cancelled).
+  orderWC.status = markPaid ? "pending" : "processing";
   orderWC.currency = wooSignalApp.currencyMeta!.code!.toUpperCase();
   WpUser? wpUser = await WPJsonAPI.wpUser();
   if (wpUser != null && wooSignalApp.wpLoginEnabled == 1) {
@@ -76,9 +129,10 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
     billing.phone = billingDetails.billingAddress?.phoneNumber;
   }
   if (billingDetails.billingAddress?.customerCountry?.hasState() ?? false) {
-    billing.state = billingDetails.billingAddress?.customerCountry!.state!.name;
+    billing.state = _wcStateCode(
+        billingDetails.billingAddress?.customerCountry?.state?.code);
   }
-  billing.country = billingDetails.billingAddress?.customerCountry!.name;
+  billing.country = billingDetails.billingAddress?.customerCountry?.countryCode;
 
   orderWC.billing = billing;
 
@@ -90,17 +144,23 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
   shipping.city = billingDetails.shippingAddress?.city;
   shipping.postcode = billingDetails.shippingAddress?.postalCode;
   if (billingDetails.shippingAddress?.customerCountry?.hasState() ?? false) {
-    shipping.state =
-        billingDetails.shippingAddress?.customerCountry?.state?.name;
+    shipping.state = _wcStateCode(
+        billingDetails.shippingAddress?.customerCountry?.state?.code);
   }
-  shipping.country = billingDetails.shippingAddress?.customerCountry?.name;
+  shipping.country =
+      billingDetails.shippingAddress?.customerCountry?.countryCode;
 
   orderWC.shipping = shipping;
 
   orderWC.shippingLines = [];
   if (wooSignalApp.disableShipping != 1) {
+    // `?.`, not `!`: the customer can reach the confirmation page with no
+    // shipping method chosen - the shipping methods call failed, the store
+    // enabled shipping after they started, or nothing matched their address.
+    // The order is still placeable, it just carries no shipping line, which is
+    // what the null check below already handles.
     Map<String, dynamic>? shippingLineFeeObj =
-        checkoutSession.shippingType!.toShippingLineFee();
+        checkoutSession.shippingType?.toShippingLineFee();
     if (shippingLineFeeObj != null) {
       ShippingLines shippingLine = ShippingLines();
       shippingLine.methodId = shippingLineFeeObj['method_id'];
@@ -128,6 +188,10 @@ Future<OrderWC> buildOrderWC({TaxRate? taxRate, bool markPaid = true}) async {
 
   if (checkoutSession.customerNote?.isNotEmpty ?? false) {
     orderWC.customerNote = checkoutSession.customerNote;
+  }
+
+  if (metaData.isNotEmpty) {
+    orderWC.metaData = metaData;
   }
 
   return orderWC;

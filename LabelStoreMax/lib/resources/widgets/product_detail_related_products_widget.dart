@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -29,16 +29,28 @@ class ProductDetailRelatedProductsWidget extends StatefulWidget {
 }
 
 class _ProductDetailRelatedProductsWidgetState
-    extends State<ProductDetailRelatedProductsWidget> {
-  bool hasRelatedProducts = true;
+    extends NyState<ProductDetailRelatedProductsWidget> {
+  List<Product> _relatedProducts = [];
+
+  /// The heading renders straight away and the row below it uses [afterLoad].
+  @override
+  LoadingStyle loadingStyle = LoadingStyle.none();
 
   @override
-  Widget build(BuildContext context) {
+  get init => () async {
+        if (widget.wooSignalApp!.showRelatedProducts == false) {
+          return;
+        }
+        _relatedProducts = await fetchRelated();
+      };
+
+  @override
+  Widget view(BuildContext context) {
     if (widget.wooSignalApp!.showRelatedProducts == false) {
       return SizedBox.shrink();
     }
 
-    if (hasRelatedProducts == false) {
+    if (hasInitComplete && _relatedProducts.isEmpty) {
       return SizedBox.shrink();
     }
 
@@ -66,32 +78,24 @@ class _ProductDetailRelatedProductsWidgetState
         ),
         SizedBox(
           height: 300,
-          child: NyFutureBuilder<List<Product>>(
-            future: fetchRelated(),
-            child: (context, relatedProducts) {
-              if (relatedProducts == null) return SizedBox.shrink();
-
-              if (relatedProducts.isEmpty) {
-                return SizedBox.shrink();
-              }
-              return ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: relatedProducts
-                    .map(
-                      (product) => SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.2,
-                        child: ProductItemContainer(
-                          product: product,
-                          onTap: () {
-                            routeTo(ProductDetailPage.path, data: product);
-                          },
-                        ),
+          child: afterLoad(
+            child: () => ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: _relatedProducts
+                  .map(
+                    (product) => SizedBox(
+                      width: MediaQuery.of(context).size.width / 2.2,
+                      child: ProductItemContainer(
+                        product: product,
+                        onTap: () {
+                          routeTo(ProductDetailPage.path, data: product);
+                        },
                       ),
-                    )
-                    .toList(),
-              );
-            },
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
         ),
       ],
@@ -99,20 +103,12 @@ class _ProductDetailRelatedProductsWidgetState
   }
 
   Future<List<Product>> fetchRelated() async {
-    List<Product> products = await appWooSignal(
+    return await appWooSignal(
       (api) => api.getProducts(
           perPage: 25,
           include: widget.product?.relatedIds,
           stockStatus: "instock",
           status: "publish"),
     );
-
-    if (products.isEmpty) {
-      setState(() {
-        hasRelatedProducts = false;
-      });
-      return [];
-    }
-    return products;
   }
 }

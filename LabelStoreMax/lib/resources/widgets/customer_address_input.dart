@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,7 +10,7 @@
 
 import 'package:flutter/material.dart';
 import '/app/models/customer_country.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
@@ -128,12 +128,11 @@ class CustomerAddressInput extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.all(8),
-                        child: SecondaryButton(
-                          title: (customerCountry!.state != null
+                        child: Button.secondary(
+                          text: (customerCountry!.state != null
                               ? (customerCountry?.state?.name ?? "")
                               : trans("Select state")),
-                          action: onTapCountry,
-                        ),
+                          onPressed: onTapCountry),
                       ),
                     ],
                   ),
@@ -152,13 +151,12 @@ class CustomerAddressInput extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.all(8),
-                      child: SecondaryButton(
-                        title: (customerCountry != null &&
+                      child: Button.secondary(
+                        text: (customerCountry != null &&
                                 (customerCountry?.name ?? "").isNotEmpty
-                            ? customerCountry!.name
+                            ? customerCountry!.name!
                             : trans("Select country")),
-                        action: onTapCountry,
-                      ),
+                        onPressed: onTapCountry),
                     ),
                   ],
                 ),

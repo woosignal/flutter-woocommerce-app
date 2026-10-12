@@ -13,14 +13,14 @@ class FirebaseOnMessageOrderEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
-    RemoteMessage message = event['RemoteMessage'];
+  handle(dynamic data) async {
+    RemoteMessage message = data['RemoteMessage'];
 
     await _updateNotificationIconState(message);
   }
 
   /// Update the notification icon state
-  _updateNotificationIconState(RemoteMessage message) async {
+  Future<void> _updateNotificationIconState(RemoteMessage message) async {
     String title = getEnv('APP_NAME');
     if (message.notification?.title != null) {
       title = message.notification!.title!;
@@ -31,7 +31,7 @@ class DefaultListener extends NyListener {
     }
 
     await NyNotification.addNotification(title, body, meta: message.data);
-    updateState(NotificationIcon.state);
-    StateAction.refreshPage(NotificationsPage.path);
+    stateAction("refresh", state: NotificationIcon.state);
+    stateAction("refresh", state: NotificationsPage.path);
   }
 }

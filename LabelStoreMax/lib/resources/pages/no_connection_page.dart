@@ -1,7 +1,7 @@
 //  StoreMob
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,7 +11,7 @@
 import 'package:flutter/material.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -54,7 +54,7 @@ class _NoConnectionPageState extends NyPage<NoConnectionPage> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              LinkButton(title: trans("Retry"), action: _retry),
+              Button.textOnly(text: trans("Retry"), onPressed: _retry),
             ],
           ),
         ),
@@ -62,15 +62,14 @@ class _NoConnectionPageState extends NyPage<NoConnectionPage> {
     );
   }
 
-  _retry() async {
+  Future<void> _retry() async {
     WooSignalApp? wooSignalApp = await (appWooSignal((api) => api.getApp()));
 
     if (wooSignalApp == null) {
       showToast(
           title: trans("Oops"),
           description: trans("Retry later"),
-          icon: Icons.info_outline,
-          style: ToastNotificationStyleType.info);
+          id: 'info');
       return;
     }
 

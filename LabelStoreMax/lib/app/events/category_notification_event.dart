@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '/resources/pages/browse_category_page.dart';
+import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:wp_json_api/wp_json_api.dart';
 
 class CategoryNotificationEvent implements NyEvent {
   @override
@@ -12,24 +12,16 @@ class CategoryNotificationEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
-    RemoteMessage message = event['RemoteMessage'];
+  handle(dynamic data) async {
+    RemoteMessage message = data['RemoteMessage'];
 
-    if (!message.data.containsKey('order_id')) {
-      return;
-    }
-    if (!message.data.containsKey('user_id')) {
+    if (!message.data.containsKey('category_id')) {
       return;
     }
 
-    String userId = message.data['user_id'];
-
-    if ((await WPJsonAPI.wpUserLoggedIn()) != true) {
-      return;
-    }
-
-    String? currentUserId = await WPJsonAPI.wpUserId();
-    if (currentUserId != userId) {
+    /// A category push is usually a broadcast, so it carries no `user_id`.
+    /// When it does target a user, only that user should be routed.
+    if (!(await canSeeRemoteMessage(message))) {
       return;
     }
 

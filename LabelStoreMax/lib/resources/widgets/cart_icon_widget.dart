@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,14 +13,9 @@ import '/resources/pages/cart_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '/resources/widgets/cart_quantity_widget.dart';
 
-class CartIconWidget extends StatefulWidget {
+class CartIconWidget extends StatelessWidget {
   const CartIconWidget({super.key});
 
-  @override
-  createState() => _CartIconWidgetState();
-}
-
-class _CartIconWidgetState extends State<CartIconWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

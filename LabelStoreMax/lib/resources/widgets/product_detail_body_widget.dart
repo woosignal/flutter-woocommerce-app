@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -60,7 +60,7 @@ class ProductDetailBodyWidget extends StatelessWidget {
     );
   }
 
-  _viewProductImages(BuildContext context, int i) {
+  void _viewProductImages(BuildContext context, int i) {
     routeTo(ProductImageViewerPage.path, data: {
       "index": i,
       "images": product?.images.map((f) => f.src).toList()

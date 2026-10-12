@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,7 +11,7 @@
 import 'package:nylo_framework/nylo_framework.dart';
 
 /// Base Controller for the Nylo
-/// See more on controllers here - https://nylo.dev/docs/6.x/controllers
+/// See more on controllers here - https://nylo.dev/docs/7.x/controllers
 class Controller extends NyController {
   Controller();
 }

@@ -4,14 +4,14 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class RouteProvider implements NyProvider {
   @override
-  boot(Nylo nylo) async {
+  setup(Nylo nylo) async {
     nylo.addRouter(appRouter());
 
     return nylo;
   }
 
   @override
-  afterBoot(Nylo nylo) async {
+  boot(Nylo nylo) async {
     if (AppHelper.instance.appConfig?.appStatus == null) {
       nylo.initRoutes(initialRoute: '/no-connection');
       return;

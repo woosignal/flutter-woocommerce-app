@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -19,7 +19,7 @@ import '/app/models/payment_type.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/checkout_coupon_amount_widget.dart';
 import '/resources/widgets/checkout_payment_type_widget.dart';
 import '/resources/widgets/checkout_select_coupon_widget.dart';
@@ -28,6 +28,7 @@ import '/resources/widgets/checkout_store_heading_widget.dart';
 import '/resources/widgets/checkout_user_details_widget.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -40,13 +41,48 @@ class CheckoutConfirmationPage extends NyStatefulWidget {
 }
 
 class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
-  bool _showFullLoader = false;
   List<TaxRate> _taxRates = [];
   TaxRate? _taxRate;
   final WooSignalApp? _wooSignalApp = AppHelper.instance.appConfig;
 
   @override
   bool get stateManaged => true;
+
+  /// Shown while `init` runs and while a payment gateway is working.
+  @override
+  LoadingStyle get loadingStyle => LoadingStyle.normal(
+        child: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                AppLoaderWidget(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(
+                    "${trans("One moment")}...",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+
+  /// Actions the payment gateways send to this page.
+  @override
+  Map<String, Function> get stateActions => {
+        "payment_started": () => setLoading(true),
+        "payment_finished": () => setLoading(false),
+        "payment_failed": (data) {
+          setLoading(false);
+          showToast(
+            title: data['title'],
+            description: data['description'],
+          );
+        },
+      };
 
   @override
   get init => () async {
@@ -62,31 +98,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
         _getTaxes();
       };
 
-  @override
-  stateUpdated(dynamic data) async {
-    super.stateUpdated(data);
-    if (data == null) return;
-    if (data['reloadState'] != null) {
-      reloadState(showLoader: data['reloadState']);
-    }
-    if (data['refresh'] != null) {
-      setState(() {});
-    }
-    if (data['toast'] != null) {
-      showToast(
-        title: data['toast']['title'],
-        description: data['toast']['description'],
-      );
-    }
-  }
-
-  reloadState({required bool showLoader}) {
-    setState(() {
-      _showFullLoader = showLoader;
-    });
-  }
-
-  _getTaxes() async {
+  Future<void> _getTaxes() async {
     _taxRates = [];
     int pageIndex = 1;
     bool fetchMore = true;
@@ -105,7 +117,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
     }
   }
 
-  _getUserTax() {
+  void _getUserTax() {
     if (_taxRates.isEmpty) {
       return;
     }
@@ -167,26 +179,6 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
   Widget view(BuildContext context) {
     CheckoutSession checkoutSession = CheckoutSession.getInstance;
 
-    if (_showFullLoader == true) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AppLoaderWidget(),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Text(
-                  "${trans("One moment")}...",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              )
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -223,21 +215,17 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
               children: [
                 CheckoutStoreHeadingWidget(),
                 CheckoutUserDetailsWidget(
-                  context: context,
                   checkoutSession: checkoutSession,
                 ),
                 CheckoutPaymentTypeWidget(
-                  context: context,
                   checkoutSession: checkoutSession,
                 ),
                 CheckoutShippingTypeWidget(
-                  context: context,
                   checkoutSession: checkoutSession,
                   wooSignalApp: _wooSignalApp,
                 ),
                 if (_wooSignalApp?.couponEnabled == true)
                   CheckoutSelectCouponWidget(
-                    context: context,
                     checkoutSession: checkoutSession,
                   ),
                 CheckoutCustomerNote(checkoutSession: checkoutSession),
@@ -309,8 +297,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
                                         .textTheme
                                         .bodySmall!
                                         .copyWith(
-                                          color: ThemeColor.get(context)
-                                              .primaryAccent,
+                                          color: context.color.general.primaryAccent,
                                           fontSize: 12,
                                         ),
                                   ),
@@ -342,15 +329,13 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
                 children: [
                   CheckoutTotal(title: trans("Total"), taxRate: _taxRate),
                   Padding(padding: EdgeInsets.only(bottom: 8)),
-                  PrimaryButton(
-                    isLoading: isLocked('payment'),
-                    title: trans("CHECKOUT"),
-                    action: () async {
-                      lockRelease('payment', perform: () async {
+                  Button.primary(
+                    text: trans("CHECKOUT"),
+                    onPressed: () async {
+                      await lockRelease('payment', perform: () async {
                         await _handleCheckout();
                       });
-                    },
-                  ),
+                    }),
                 ],
               ),
             )
@@ -360,10 +345,10 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
     );
   }
 
-  _openTermsLink() =>
-      openBrowserTab(url: AppHelper.instance.appConfig?.appTermsLink ?? "");
+  Future<bool> _openTermsLink() =>
+      openUrl(AppHelper.instance.appConfig?.appTermsLink ?? "");
 
-  _handleCheckout() async {
+  Future<void> _handleCheckout() async {
     _getUserTax();
 
     CheckoutSession checkoutSession = CheckoutSession.getInstance;
@@ -372,8 +357,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
         title: trans("Oops"),
         description:
             trans("Please select add your billing/shipping address to proceed"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.local_shipping,
+        id: 'warning',
       );
       return;
     }
@@ -383,8 +367,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
       showToast(
         title: trans("Oops"),
         description: trans("Your billing/shipping details are incomplete"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.local_shipping,
+        id: 'warning',
       );
       return;
     }
@@ -394,8 +377,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
       showToast(
         title: trans("Oops"),
         description: trans("Please select a shipping method to proceed"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.local_shipping,
+        id: 'warning',
       );
       return;
     }
@@ -404,8 +386,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
       showToast(
         title: trans("Oops"),
         description: trans("Please select a payment method to proceed"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.payment,
+        id: 'warning',
       );
       return;
     }
@@ -424,7 +405,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
             title: trans("Sorry"),
             description:
                 "${trans("Spend a minimum of")} ${formatDoubleCurrency(total: doubleMinimumValue)} ${trans("for")} ${checkoutSession.shippingType!.getTitle()}",
-            style: ToastNotificationStyleType.info,
+            id: 'info',
             duration: Duration(seconds: 3));
         return;
       }
@@ -436,8 +417,7 @@ class _CheckoutConfirmationPageState extends NyPage<CheckoutConfirmationPage> {
       showToast(
           title: trans("Sorry"),
           description: trans("Retry later"),
-          icon: Icons.info_outline,
-          style: ToastNotificationStyleType.info,
+          id: 'info',
           duration: Duration(seconds: 3));
       return;
     }

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -25,57 +25,47 @@ class ProductDetailController extends Controller {
   int quantity = 1;
   Product? product;
 
-  viewExternalProduct() {
+  void viewExternalProduct() {
     if (product?.externalUrl?.isNotEmpty ?? false) {
-      openBrowserTab(url: product!.externalUrl!);
+      openUrl(product!.externalUrl!);
     }
   }
 
-  itemAddToCart(
-      {required CartLineItem cartLineItem, Function? onSuccess}) async {
+  Future<void> itemAddToCart({required CartLineItem cartLineItem}) async {
     await Cart.getInstance.addToCart(cartLineItem: cartLineItem);
     showStatusAlert(
-      context,
+      context!,
       title: trans("Success"),
       subtitle: trans("Added to cart"),
       duration: 1,
       icon: Icons.add_shopping_cart,
     );
-    updateState(CartQuantity.state);
-    if (onSuccess != null) {
-      onSuccess();
-    }
+    stateAction("refresh", state: CartQuantity.state);
   }
 
-  addQuantityTapped({Function? onSuccess}) {
+  void addQuantityTapped() {
     if (product?.manageStock == true) {
       if (quantity >= (product?.stockQuantity ?? 0)) {
         showToastNotification(context!,
             title: trans("Maximum quantity reached"),
             description:
                 "${trans("Sorry, only")} ${product?.stockQuantity ?? "0"} ${trans("left")}",
-            style: ToastNotificationStyleType.info);
+            id: 'info');
         return;
       }
     }
     if (quantity != 0) {
       quantity++;
-      if (onSuccess != null) {
-        onSuccess();
-      }
-      updateState(ProductQuantity.state,
-          data: {"product_id": product?.id, "quantity": quantity});
+      stateAction("set_quantity",
+          state: ProductQuantity.state, data: quantity);
     }
   }
 
-  removeQuantityTapped({Function? onSuccess}) {
+  void removeQuantityTapped() {
     if ((quantity - 1) >= 1) {
       quantity--;
-      if (onSuccess != null) {
-        onSuccess();
-      }
-      updateState(ProductQuantity.state,
-          data: {"product_id": product?.id, "quantity": quantity});
+      stateAction("set_quantity",
+          state: ProductQuantity.state, data: quantity);
     }
   }
 
@@ -85,14 +75,14 @@ class ProductDetailController extends Controller {
     ws_product_variation.ProductVariation? tmpProductVariation;
 
     Map<String?, dynamic> tmpSelectedObj = {};
-    for (var attributeObj in tmpAttributeObj.values) {
+    for (Map attributeObj in tmpAttributeObj.values) {
       tmpSelectedObj[attributeObj["name"]] = attributeObj["value"];
     }
 
     for (var productVariation in productVariations) {
       Map<String?, dynamic> tmpVariations = {};
 
-      for (var attr in productVariation.attributes) {
+      for (ws_product_variation.Attribute attr in productVariation.attributes) {
         tmpVariations[attr.name] = attr.option;
       }
 
@@ -108,7 +98,7 @@ class ProductDetailController extends Controller {
     // attempt to find product variation
     List<String> tmpKeys = [];
     for (var productVariation in productVariations) {
-      for (var attr in productVariation.attributes) {
+      for (ws_product_variation.Attribute attr in productVariation.attributes) {
         String? attrName = attr.name;
         if (attrName == null) continue;
         tmpKeys.add(attrName);
@@ -120,7 +110,7 @@ class ProductDetailController extends Controller {
 
     for (var productVariation in productVariations) {
       bool hasMatch = false;
-      for (var attr in productVariation.attributes) {
+      for (ws_product_variation.Attribute attr in productVariation.attributes) {
         if (tmpSelectedObj[attr.name] == attr.option) {
           hasMatch = true;
         } else {

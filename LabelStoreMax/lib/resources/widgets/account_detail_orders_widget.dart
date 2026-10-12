@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -25,11 +25,16 @@ class AccountDetailOrdersWidget extends StatefulWidget {
 
 class _AccountDetailOrdersWidgetState
     extends NyState<AccountDetailOrdersWidget> {
+  /// Filler for the loading skeleton. Skeletonizer paints each text line as a
+  /// placeholder bone instead of glyphs, so this is never visible and is kept
+  /// out of the lang files on purpose.
+  static const String _skeletonText = "Some Text";
+
   @override
   Widget view(BuildContext context) {
-    return NyPullToRefresh(
-        child: (context, order) {
-          order as Order;
+    return CollectionView<Order>.pullable(
+        builder: (context, item) {
+          Order order = item.data;
           return Card(
             child: ListTile(
               contentPadding: EdgeInsets.only(
@@ -167,12 +172,12 @@ class _AccountDetailOrdersWidgetState
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Some Text",
+                            _skeletonText,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            "Some Text",
+                            _skeletonText,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -190,7 +195,7 @@ class _AccountDetailOrdersWidgetState
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                formatStringCurrency(total: "Some Text"),
+                                formatStringCurrency(total: _skeletonText),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
@@ -198,7 +203,7 @@ class _AccountDetailOrdersWidgetState
                                 textAlign: TextAlign.left,
                               ),
                               Text(
-                                "Some Text",
+                                _skeletonText,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
@@ -208,7 +213,7 @@ class _AccountDetailOrdersWidgetState
                             ],
                           ),
                           Text(
-                            "Some Text",
+                            _skeletonText,
                             textAlign: TextAlign.right,
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -232,7 +237,7 @@ class _AccountDetailOrdersWidgetState
         ));
   }
 
-  _viewOrderDetail(int? orderId) {
+  void _viewOrderDetail(int? orderId) {
     routeTo(AccountOrderDetailPage.path, data: orderId);
   }
 }

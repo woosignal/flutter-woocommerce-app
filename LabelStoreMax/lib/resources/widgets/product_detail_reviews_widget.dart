@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -15,6 +15,7 @@ import '/resources/pages/product_reviews_page.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/product_detail_review_tile_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product_review.dart';
 import 'package:woosignal/models/response/product.dart';
@@ -31,11 +32,14 @@ class ProductDetailReviewsWidget extends StatefulWidget {
 }
 
 class _ProductDetailReviewsWidgetState
-    extends State<ProductDetailReviewsWidget> {
+    extends NyState<ProductDetailReviewsWidget> {
   bool _ratingExpanded = false;
 
+  /// Fetched once, the first time the customer expands the reviews tile.
+  Future<List<ProductReview>>? _reviews;
+
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     if (widget.product?.reviewsAllowed == false ||
         widget.wooSignalApp?.showProductReviews == false) {
       return SizedBox.shrink();
@@ -45,8 +49,8 @@ class _ProductDetailReviewsWidgetState
       children: <Widget>[
         Expanded(
             child: ExpansionTile(
-          textColor: ThemeColor.get(context).primaryAccent,
-          iconColor: ThemeColor.get(context).primaryAccent,
+          textColor: context.color.general.primaryAccent,
+          iconColor: context.color.general.primaryAccent,
           tilePadding: EdgeInsets.symmetric(horizontal: 16),
           childrenPadding: EdgeInsets.all(0),
           title: AutoSizeText(
@@ -54,6 +58,9 @@ class _ProductDetailReviewsWidgetState
             maxLines: 1,
           ),
           onExpansionChanged: (value) {
+            if (value == true) {
+              _reviews ??= fetchReviews();
+            }
             setState(() {
               _ratingExpanded = value;
             });
@@ -85,8 +92,8 @@ class _ProductDetailReviewsWidgetState
           initiallyExpanded: false,
           children: [
             if (_ratingExpanded == true)
-              NyFutureBuilder<List<ProductReview>>(
-                future: fetchReviews(),
+              FutureWidget<List<ProductReview>>(
+                future: _reviews!,
                 child: (context, reviews) {
                   if (reviews == null) {
                     return ListTile(

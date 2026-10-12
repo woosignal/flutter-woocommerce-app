@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -17,11 +17,12 @@ import '/app/models/customer_country.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/customer_address_input.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/switch_address_tab.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:validated/validated.dart' as validate;
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
@@ -88,14 +89,10 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
 
   @override
   get init => () async {
-        super.init();
-
         _wpLoginEnabled = AppHelper.instance.appConfig?.wpLoginEnabled == 1;
 
         if (_wpLoginEnabled == true && (await WPJsonAPI.wpUserLoggedIn())) {
-          await awaitData(perform: () async {
-            await _fetchUserDetails();
-          });
+          await _fetchUserDetails();
           return;
         }
 
@@ -121,10 +118,9 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
           await _setCustomersDetailsFromRemember();
           return;
         }
-        setState(() {});
       };
 
-  _setCustomersDetailsFromRemember() async {
+  Future<void> _setCustomersDetailsFromRemember() async {
     CustomerAddress? sfCustomerBillingAddress =
         await CheckoutSession.getInstance.getBillingAddress();
     _setFieldsFromCustomerAddress(sfCustomerBillingAddress, type: "billing");
@@ -135,7 +131,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
     setState(() {});
   }
 
-  _setFieldsFromCustomerAddress(CustomerAddress? customerAddress,
+  void _setFieldsFromCustomerAddress(CustomerAddress? customerAddress,
       {required String type}) {
     assert(type != "");
     if (customerAddress == null) {
@@ -154,7 +150,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
     );
   }
 
-  _setFields(
+  void _setFields(
       {required String? firstName,
       required String? lastName,
       required String? addressLine,
@@ -195,9 +191,9 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
         centerTitle: true,
       ),
       body: SafeAreaWidget(
-        child: (isLoading() || isLocked('load_shipping_info'))
-            ? AppLoaderWidget()
-            : GestureDetector(
+        child: afterLoad(
+            loading: AppLoaderWidget(),
+            child: () => GestureDetector(
                 onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -252,8 +248,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
                           Expanded(
                             child: Container(
                                 decoration: BoxDecoration(
-                                  color: ThemeColor.get(context)
-                                      .backgroundContainer,
+                                  color: context.color.container.background,
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: (Theme.of(context).brightness ==
                                           Brightness.light)
@@ -305,22 +300,20 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
                                 )
                               ],
                             ),
-                          PrimaryButton(
-                            title: trans("USE DETAILS"),
-                            action: _useDetailsTapped,
-                            isLoading: isLocked('update_shipping'),
-                          ),
+                          Button.primary(
+                            text: trans("USE DETAILS"),
+                            onPressed: _useDetailsTapped),
                         ],
                       ),
                     ),
                   ],
                 ),
-              ),
+              )),
       ),
     );
   }
 
-  _useDetailsTapped() async {
+  Future<void> _useDetailsTapped() async {
     await lockRelease('update_shipping', perform: () async {
       CustomerAddress customerBillingAddress = _setCustomerAddress(
         firstName: _txtBillingFirstName.text,
@@ -353,7 +346,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
             title: trans("Oops"),
             description: trans(
                 "Invalid shipping address, please check your shipping details"),
-            style: ToastNotificationStyleType.warning,
+            id: 'warning',
           );
           return;
         }
@@ -373,7 +366,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
         showToast(
           title: trans("Oops"),
           description: trans("Please enter a valid billing email"),
-          style: ToastNotificationStyleType.warning,
+          id: 'warning',
         );
         return;
       }
@@ -382,7 +375,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
         showToast(
           title: trans("Oops"),
           description: trans("Please enter a valid shipping email"),
-          style: ToastNotificationStyleType.warning,
+          id: 'warning',
         );
         return;
       }
@@ -401,8 +394,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
           showToast(
               title: trans("Oops!"),
               description: trans("Something went wrong"),
-              icon: Icons.info_outline,
-              style: ToastNotificationStyleType.danger);
+              id: 'danger');
           if (getEnv('APP_DEBUG', defaultValue: true) == true) {
             NyLogger.error(e.toString());
           }
@@ -427,7 +419,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
     });
   }
 
-  _onChangeShipping(bool? value) async {
+  Future<void> _onChangeShipping(bool? value) async {
     _hasDifferentShippingAddress = value;
     activeTabIndex = 1;
     activeTab = value == true ? tabShippingDetails() : tabBillingDetails();
@@ -471,7 +463,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
     return customerShippingAddress;
   }
 
-  _navigateToSelectCountry({required String type}) {
+  void _navigateToSelectCountry({required String type}) {
     routeTo(CustomerCountriesPage.path, onPop: (value) {
       if (value == null) {
         return;
@@ -489,7 +481,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
     });
   }
 
-  _fetchUserDetails() async {
+  Future<void> _fetchUserDetails() async {
     await lockRelease('load_shipping_info', perform: () async {
       WPUserInfoResponse? wpUserInfoResponse;
       try {
@@ -500,8 +492,7 @@ class _CheckoutDetailsPageState extends NyPage<CheckoutDetailsPage> {
         showToast(
             title: trans("Oops!"),
             description: trans("Something went wrong"),
-            icon: Icons.info_outline,
-            style: ToastNotificationStyleType.danger);
+            id: 'danger');
         pop();
         return;
       }

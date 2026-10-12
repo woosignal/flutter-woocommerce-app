@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -18,12 +18,10 @@ import 'package:nylo_framework/nylo_framework.dart';
 class CheckoutSelectCouponWidget extends StatefulWidget {
   const CheckoutSelectCouponWidget({
     super.key,
-    required this.context,
     required this.checkoutSession,
   });
 
   final CheckoutSession checkoutSession;
-  final BuildContext context;
 
   static String state = "checkout_select_coupon_widget";
 
@@ -39,13 +37,13 @@ class _CheckoutSelectCouponWidgetState
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     bool hasCoupon = widget.checkoutSession.coupon != null;
     return Container(
       height: 50,
       padding: EdgeInsets.symmetric(vertical: 5),
       child: InkWell(
-        onTap: _actionCoupon,
+        onTap: () => _actionCoupon(context),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,20 +71,19 @@ class _CheckoutSelectCouponWidgetState
     );
   }
 
-  _clearCoupon() {
+  void _clearCoupon() {
     CheckoutSession.getInstance.coupon = null;
     StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
   }
 
-  _actionCoupon() {
+  void _actionCoupon(BuildContext context) {
     if (widget.checkoutSession.billingDetails!.billingAddress == null) {
       showToastNotification(
-        widget.context,
+        context,
         title: trans("Oops"),
         description:
             trans("Please select add your billing/shipping address to proceed"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.local_shipping,
+        id: 'warning',
       );
 
       return;
@@ -95,11 +92,10 @@ class _CheckoutSelectCouponWidgetState
             ?.hasMissingFields() ??
         true) {
       showToastNotification(
-        widget.context,
+        context,
         title: trans("Oops"),
         description: trans("Your billing/shipping details are incomplete"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.local_shipping,
+        id: 'warning',
       );
       return;
     }

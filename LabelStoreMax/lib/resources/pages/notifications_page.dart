@@ -17,6 +17,16 @@ class _NotificationsPageState extends NyPage<NotificationsPage> {
   WpUser? _wpUser;
 
   @override
+  bool get stateManaged => true;
+
+  /// Actions this page accepts. `refresh` is fired when a push notification
+  /// arrives while the page is open.
+  @override
+  Map<String, Function> get stateActions => {
+        "refresh": () => setState(() {}),
+      };
+
+  @override
   get init => () async {
         _wpUser = (await WPJsonAPI.wpUser());
       };
@@ -26,7 +36,7 @@ class _NotificationsPageState extends NyPage<NotificationsPage> {
     return PopScope(
       onPopInvokedWithResult: (bool didPop, result) async {
         await NyNotification.markReadAll();
-        updateState(NotificationIcon.state);
+        stateAction("refresh", state: NotificationIcon.state);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -38,8 +48,7 @@ class _NotificationsPageState extends NyPage<NotificationsPage> {
                 showToast(
                     title: trans('Success'),
                     description: trans("All notifications marked as read"),
-                    icon: Icons.notifications,
-                    style: ToastNotificationStyleType.success);
+                    id: 'success');
                 setState(() {});
               },
               child: Text(
@@ -101,7 +110,7 @@ class _NotificationsPageState extends NyPage<NotificationsPage> {
                     ),
                     child: Icon(Icons.shopping_bag_outlined),
                   ),
-                  subtitle: NyRichText(
+                  subtitle: StyledText(
                     style: TextStyle(color: Colors.black),
                     children: [
                       Text(

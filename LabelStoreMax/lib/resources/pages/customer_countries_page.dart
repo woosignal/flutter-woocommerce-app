@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,6 +13,7 @@ import '/app/models/default_shipping.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CustomerCountriesPage extends NyStatefulWidget {
@@ -28,18 +29,13 @@ class _CustomerCountriesPageState extends NyPage<CustomerCountriesPage> {
   final TextEditingController _tfSearchCountry = TextEditingController();
 
   @override
-  get init => () {
-        _getDefaultShipping();
+  get init => () async {
+        _defaultShipping = await getDefaultShipping();
+        _activeShippingResults = _defaultShipping;
       };
 
-  _getDefaultShipping() async {
-    _defaultShipping = await getDefaultShipping();
-    _activeShippingResults = _defaultShipping;
-    setState(() {});
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -56,13 +52,13 @@ class _CustomerCountriesPageState extends NyPage<CustomerCountriesPage> {
                   borderRadius: BorderRadius.circular(18),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey.withValues(alpha: 0.1),
                       spreadRadius: 2,
                       blurRadius: 3,
                       offset: Offset(0, 2),
                     ),
                   ],
-                  color: ThemeColor.get(context).background),
+                  color: context.color.general.background),
               height: 60,
               child: Row(
                 children: [
@@ -120,7 +116,7 @@ class _CustomerCountriesPageState extends NyPage<CustomerCountriesPage> {
     );
   }
 
-  _handleOnChanged(String value) {
+  void _handleOnChanged(String value) {
     _activeShippingResults = _defaultShipping
         .where((element) =>
             element.country!.toLowerCase().contains(value.toLowerCase()))
@@ -128,7 +124,7 @@ class _CustomerCountriesPageState extends NyPage<CustomerCountriesPage> {
     setState(() {});
   }
 
-  _handleCountryTapped(DefaultShipping defaultShipping) {
+  void _handleCountryTapped(DefaultShipping defaultShipping) {
     if (defaultShipping.states.isNotEmpty) {
       _handleStates(defaultShipping);
       return;
@@ -136,7 +132,7 @@ class _CustomerCountriesPageState extends NyPage<CustomerCountriesPage> {
     _popWithShippingResult(defaultShipping);
   }
 
-  _handleStates(DefaultShipping defaultShipping) {
+  void _handleStates(DefaultShipping defaultShipping) {
     FocusScope.of(context).unfocus();
     wsModalBottom(
       context,
@@ -170,7 +166,7 @@ class _CustomerCountriesPageState extends NyPage<CustomerCountriesPage> {
     );
   }
 
-  _popWithShippingResult(DefaultShipping defaultShipping,
+  void _popWithShippingResult(DefaultShipping defaultShipping,
       {DefaultShippingState? state}) {
     if (state != null) {
       defaultShipping.states = [];

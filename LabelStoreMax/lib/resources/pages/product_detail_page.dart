@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -15,7 +15,7 @@ import '/app/controllers/product_detail_controller.dart';
 import '/app/models/cart_line_item.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/cart_icon_widget.dart';
 import '/resources/widgets/product_detail_body_widget.dart';
 import '/resources/widgets/product_detail_footer_actions_widget.dart';
@@ -41,7 +41,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
 
   @override
   get init => () async {
-        final data = widget.controller.data();
+        final dynamic data = widget.controller.data();
         if (data is Map && data.containsKey("productId")) {
           _product = await appWooSignal(
               (api) => api.retrieveProduct(id: data["productId"]));
@@ -57,7 +57,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
   @override
   LoadingStyle loadingStyle = LoadingStyle.skeletonizer();
 
-  _fetchProductVariations() async {
+  Future<void> _fetchProductVariations() async {
     List<ws_product_variation.ProductVariation> tmpVariations = [];
     int currentPage = 1;
 
@@ -83,7 +83,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
     _productVariations = tmpVariations;
   }
 
-  _modalBottomSheetOptionsForAttribute(int attributeIndex) {
+  void _modalBottomSheetOptionsForAttribute(int attributeIndex) {
     wsModalBottom(
       context,
       title:
@@ -119,7 +119,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
     );
   }
 
-  _modalBottomSheetAttributes() {
+  void _modalBottomSheetAttributes() {
     ws_product_variation.ProductVariation? productVariation = widget.controller
         .findProductVariation(
             tmpAttributeObj: _tmpAttributeObj,
@@ -176,15 +176,15 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
                   : ""),
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            PrimaryButton(
-                title: trans("Add to cart"),
-                action: () async {
+            Button.primary(
+                text: trans("Add to cart"),
+                onPressed: () async {
                   if (_product?.attributes.length !=
                       _tmpAttributeObj.values.length) {
                     showToast(
                         title: trans("Oops"),
                         description: trans("Please select valid options first"),
-                        style: ToastNotificationStyleType.warning);
+                        id: 'warning');
                     return;
                   }
 
@@ -192,7 +192,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
                     showToast(
                         title: trans("Oops"),
                         description: trans("Product variation does not exist"),
-                        style: ToastNotificationStyleType.warning);
+                        id: 'warning');
                     return;
                   }
 
@@ -200,7 +200,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
                     showToast(
                         title: trans("Sorry"),
                         description: trans("This item is not in stock"),
-                        style: ToastNotificationStyleType.warning);
+                        id: 'warning');
                     return;
                   }
 
@@ -265,7 +265,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
     );
   }
 
-  _addItemToCart() async {
+  Future<void> _addItemToCart() async {
     if (_product?.type != "simple") {
       _modalBottomSheetAttributes();
       return;
@@ -274,8 +274,7 @@ class _ProductDetailState extends NyPage<ProductDetailPage> {
       showToast(
           title: trans("Sorry"),
           description: trans("This item is out of stock"),
-          style: ToastNotificationStyleType.warning,
-          icon: Icons.local_shipping);
+          id: 'warning');
       return;
     }
 

@@ -26,14 +26,28 @@ You can also upload the app to the IOS app store and Google play store using Flu
 ### Requirements
 
 - WooCommerce Store 3.5+
+- Flutter 3.44+ / Dart 3.12+
 - Android Studio/VSCode (for running the app)
-- Flutter installed
+
+Label StoreMax is built on [Nylo](https://nylo.dev) - the framework
+documentation is at [nylo.dev/docs/7.x](https://nylo.dev/docs/7.x).
 
 ### Getting Started
 
 1. Download/Clone this repository
 2. Sign up for free on [WooSignal](https://woosignal.com) and link your WooCommerce store
-3. Add your app key into the **.env** file and hit play (with Android Studio) to build the app 🥳
+3. Copy your app key from the WooSignal dashboard into **WOOSIGNAL_APP_KEY** in the **.env** file
+4. Build the encrypted environment file:
+
+```bash
+dart run nylo_framework:main make:env
+```
+
+   This generates `lib/bootstrap/env.g.dart`, which is not committed to git.
+   **Re-run this command after every change you make to `.env`**, or the app
+   will keep using the previous values.
+
+5. Hit play (with Android Studio) to build the app 🥳
 
 Full documentation this available [here](https://woosignal.com/docs/app/ios/label-storemax)
 
@@ -45,8 +59,8 @@ Full documentation this available [here](https://woosignal.com/docs/app/ios/labe
 - Change app name, logo, customize default language, currency + more
 - Light and dark mode
 - Theme customization
-- Stripe, Cash On Delivery, PayPal, RazorPay
-- Localized for en, es, pt, it, hi, fr, zh, tr, nl
+- Stripe, Cash On Delivery and PayPal (RazorPay ships disabled - see `pubspec.yaml`)
+- Localized for en, es, pt, it, hi, fr, zh, tr, nl, de, id, th
 - Orders show as normal in WooCommerce
 
 ## Security Vulnerabilities

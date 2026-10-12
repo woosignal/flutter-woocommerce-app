@@ -54,7 +54,7 @@ class ProductItemContainer extends StatelessWidget {
                         padding: EdgeInsets.all(4),
                         decoration: BoxDecoration(color: Colors.black),
                         child: Text(
-                          "New",
+                          trans("New"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

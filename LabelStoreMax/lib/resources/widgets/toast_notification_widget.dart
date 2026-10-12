@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -35,7 +35,7 @@ class ToastNotification extends StatelessWidget {
             BoxShadow(
               color: context.isDeviceInDarkMode
                   ? Colors.black12
-                  : Colors.grey.withOpacity(0.1),
+                  : Colors.grey.withValues(alpha: 0.1),
               spreadRadius: 3,
               blurRadius: 5,
               offset: Offset(0, 2),
@@ -78,7 +78,7 @@ class ToastNotification extends StatelessWidget {
                               .headlineSmall!
                               .copyWith(
                                   color: context.isDeviceInDarkMode
-                                      ? Colors.white.withOpacity(0.8)
+                                      ? Colors.white.withValues(alpha: 0.8)
                                       : "#171717".toHexColor()),
                         ).fontWeightBold(),
                         Flexible(

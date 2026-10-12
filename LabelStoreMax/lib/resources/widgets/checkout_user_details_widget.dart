@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -17,12 +17,8 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutUserDetailsWidget extends StatelessWidget {
   const CheckoutUserDetailsWidget(
-      {super.key,
-      required this.context,
-      required this.checkoutSession,
-      this.resetState});
+      {super.key, required this.checkoutSession, this.resetState});
   final CheckoutSession checkoutSession;
-  final BuildContext context;
   final Function? resetState;
 
   @override
@@ -45,7 +41,7 @@ class CheckoutUserDetailsWidget extends StatelessWidget {
     );
   }
 
-  _actionCheckoutDetails() {
+  void _actionCheckoutDetails() {
     routeTo(CheckoutDetailsPage.path, onPop: (value) {
       StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
     });

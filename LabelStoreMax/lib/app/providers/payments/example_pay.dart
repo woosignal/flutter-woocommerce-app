@@ -1,13 +1,14 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import 'package:flutter/material.dart';
 import '/resources/pages/checkout_status_page.dart';
 import '/bootstrap/data/order_wc.dart';
 import '/bootstrap/helpers.dart';
@@ -17,8 +18,9 @@ import 'package:woosignal/models/payload/order_wc.dart';
 import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
-// CALL THE BELOW METHOD TO SHOW AND HIDE LOADER
-// state.reloadState(showLoader: false);
+// CALL THE BELOW ACTIONS TO SHOW AND HIDE THE CHECKOUT PAGE LOADER
+// stateAction("payment_started", state: CheckoutConfirmationPage.path);
+// stateAction("payment_finished", state: CheckoutConfirmationPage.path);
 
 // CHECKOUT HELPER
 // IT WILL RETURN THE ORDER TOTAL, BILLING DETAILS AND CART
@@ -33,11 +35,11 @@ import 'package:woosignal/models/response/tax_rate.dart';
 //     id: 6,
 //     name: "My Payment",
 //     description: trans("Debit or Credit Card"),
-//     assetImage: "payment_logo.png",  E.g. /public/images/payment_logo.png
+//     assetImage: "payment_logo.png",  E.g. /assets/images/payment_logo.png
 //     pay: examplePay,
 //   ),
 
-examplePay(context, {TaxRate? taxRate}) async {
+Future<void> examplePay(BuildContext context, {TaxRate? taxRate}) async {
   // HANDLE YOUR PAYMENT INTEGRATION HERE
   // ...
   // ...
@@ -45,20 +47,25 @@ examplePay(context, {TaxRate? taxRate}) async {
   // THEN ON SUCCESS OF A PAYMENT YOU CAN DO SOMETHING SIMILAR BELOW
 
   // CREATES ORDER MODEL
+  // PASS THE REFERENCE YOUR GATEWAY RETURNED AS `transactionId` SO THE
+  // MERCHANT CAN MATCH THE ORDER BACK TO THE CHARGE
+  // E.g. buildOrderWC(taxRate: taxRate, markPaid: true, transactionId: "ch_1")
   OrderWC orderWC = await buildOrderWC(taxRate: taxRate, markPaid: true);
 
   // CREATES ORDER IN WOOCOMMERCE
   Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
 
   // CHECK IF ORDER IS NULL
-  if (order != null) {
-    showToastNotification(
-      context,
-      title: trans("Error"),
-      description: trans("Something went wrong, please contact our store"),
-    );
-    updateState(CheckoutConfirmationPage.path.nyPageName(),
-        data: {"reloadState": false});
+  if (order == null) {
+    // THE CHECKOUT PAGE MAY HAVE CLOSED WHILE THE ORDER WAS BEING CREATED
+    if (context.mounted) {
+      showToastNotification(
+        context,
+        title: trans("Error"),
+        description: trans("Something went wrong, please contact our store"),
+      );
+    }
+    stateAction("payment_finished", state: CheckoutConfirmationPage.path);
     return;
   }
   routeTo(CheckoutStatusPage.path, data: order);

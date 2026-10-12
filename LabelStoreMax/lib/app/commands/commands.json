@@ -1,0 +1,7 @@
+[
+  {
+    "name": "download_fonts",
+    "category": "app",
+    "script": "download_fonts.dart"
+  }
+]

@@ -8,22 +8,31 @@ import 'package:nylo_framework/nylo_framework.dart';
 class PaypalServices {
   final String clientId, secretKey;
   final bool sandboxMode;
+
+  /// The client the two PayPal payment calls go out on.
+  ///
+  /// Defaults to a plain [Dio], which is what it was before. It is injectable
+  /// only so a test can hand in a client with a mock adapter: these two calls
+  /// do not go through [ApiService], so Nylo's API mocking cannot reach them.
+  final Dio _client;
+
   PaypalServices({
     required this.clientId,
     required this.secretKey,
     required this.sandboxMode,
-  });
+    Dio? client,
+  }) : _client = client ?? Dio();
 
-  getAccessToken() async {
+  Future<Map> getAccessToken() async {
     String baseUrl = sandboxMode
         ? "https://api-m.sandbox.paypal.com"
         : "https://api.paypal.com";
 
     try {
-      var authToken = base64.encode(
+      String authToken = base64.encode(
         utf8.encode("$clientId:$secretKey"),
       );
-      final body = await api<ApiService>(
+      final dynamic body = await api<ApiService>(
           (request) => request
               .post('$baseUrl/v1/oauth2/token?grant_type=client_credentials'),
           headers: {
@@ -36,49 +45,68 @@ class PaypalServices {
         'message': "Success",
         'token': body["access_token"]
       };
-    } on DioException {
+    } on DioException catch (e, stackTrace) {
+      // Only 401/403 actually mean bad credentials. Reporting a timeout or a
+      // 5xx as "credentials incorrect" sends merchants hunting a config problem
+      // that isn't there.
+      int? statusCode = e.response?.statusCode;
+      bool isAuthFailure = statusCode == 401 || statusCode == 403;
+
+      NyLogger.error(
+        "PayPal getAccessToken failed "
+        "(status: ${statusCode ?? 'none'}, type: ${e.type}): ${e.message}\n"
+        "$stackTrace",
+      );
+
       return {
         'error': true,
-        'message': "Your PayPal credentials seems incorrect"
+        'message': isAuthFailure
+            ? "Your PayPal credentials seems incorrect"
+            : "Unable to reach PayPal, please try again shortly."
       };
-    } catch (e) {
+    } catch (e, stackTrace) {
+      // Previously swallowed silently and blamed the user's connection, which
+      // is wrong for a PayPal API or parsing failure and left nothing to debug.
+      NyLogger.error("PayPal getAccessToken failed: $e\n$stackTrace");
+
       return {
         'error': true,
-        'message': "Unable to proceed, check your internet connection."
+        'message': "Unable to proceed, please try again shortly."
       };
     }
   }
 
   Future<Map> createPaypalPayment(
-    transactions,
-    accessToken,
+    Map transactions,
+    String accessToken,
   ) async {
     String domain = sandboxMode
         ? "https://api.sandbox.paypal.com"
         : "https://api.paypal.com";
 
     try {
-      final response = await Dio().post('$domain/v1/payments/payment',
-          data: jsonEncode(transactions),
-          options: Options(
-            headers: {
-              'Authorization': 'Bearer $accessToken',
-              'Content-Type': 'application/json'
-            },
-          ));
+      final Response<dynamic> response =
+          await _client.post('$domain/v1/payments/payment',
+              data: jsonEncode(transactions),
+              options: Options(
+                headers: {
+                  'Authorization': 'Bearer $accessToken',
+                  'Content-Type': 'application/json'
+                },
+              ));
 
-      final body = response.data;
+      final dynamic body = response.data;
       if (body["links"] != null && body["links"].length > 0) {
         List links = body["links"];
 
         String executeUrl = "";
         String approvalUrl = "";
-        final item = links.firstWhere((o) => o["rel"] == "approval_url",
+        final dynamic item = links.firstWhere((o) => o["rel"] == "approval_url",
             orElse: () => null);
         if (item != null) {
           approvalUrl = item["href"];
         }
-        final item1 =
+        final dynamic item1 =
             links.firstWhere((o) => o["rel"] == "execute", orElse: () => null);
         if (item1 != null) {
           executeUrl = item1["href"];
@@ -86,24 +114,33 @@ class PaypalServices {
         return {"executeUrl": executeUrl, "approvalUrl": approvalUrl};
       }
       return {};
-    } on DioException catch (e) {
+    } on DioException catch (e, stackTrace) {
+      NyLogger.error(
+        "PayPal createPaypalPayment failed "
+        "(status: ${e.response?.statusCode ?? 'none'}, type: ${e.type}): "
+        "${e.message}\n${e.response?.data}\n$stackTrace",
+      );
+
       return {
         'error': true,
         'message': "Payment Failed.",
         'data': e.response?.data,
       };
-    } catch (e) {
+    } catch (e, stackTrace) {
+      // Rethrown deliberately, but log first — callers do not wrap this and an
+      // uncaught error here surfaces with no record of what actually failed.
+      NyLogger.error("PayPal createPaypalPayment failed: $e\n$stackTrace");
       rethrow;
     }
   }
 
   Future<Map> executePayment(
-    url,
-    payerId,
-    accessToken,
+    String url,
+    String payerId,
+    String accessToken,
   ) async {
     try {
-      final response = await Dio().post(url,
+      final Response<dynamic> response = await _client.post(url,
           data: convert.jsonEncode({"payer_id": payerId}),
           options: Options(
             headers: {
@@ -112,16 +149,35 @@ class PaypalServices {
             },
           ));
 
-      final body = response.data;
+      final dynamic body = response.data;
       return {'error': false, 'message': "Success", 'data': body};
-    } on DioException catch (e) {
+    } on DioException catch (e, stackTrace) {
+      // Payment CAPTURE path. If this fails the buyer may already have approved
+      // the payment, so the log is the only record tying the attempt to a payer.
+      NyLogger.error(
+        "PayPal executePayment failed for payerId=$payerId "
+        "(status: ${e.response?.statusCode ?? 'none'}, type: ${e.type}): "
+        "${e.message}\n${e.response?.data}\n$stackTrace",
+      );
+
       return {
         'error': true,
         'message': "Payment Failed.",
         'data': e.response?.data,
       };
-    } catch (e) {
-      return {'error': true, 'message': e, 'exception': true, 'data': null};
+    } catch (e, stackTrace) {
+      NyLogger.error(
+        "PayPal executePayment failed for payerId=$payerId: $e\n$stackTrace",
+      );
+
+      // 'message' must stay a String — it is rendered to the user, and a raw
+      // exception object here leaks "Exception: ..." into the UI.
+      return {
+        'error': true,
+        'message': "Payment Failed.",
+        'exception': true,
+        'data': null,
+      };
     }
   }
 }

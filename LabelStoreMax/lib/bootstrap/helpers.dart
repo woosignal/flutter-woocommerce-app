@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,13 +11,13 @@
 import 'dart:convert';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_app/bootstrap/status_alert/models/status_alert_media_configuration.dart';
-import 'package:flutter_app/bootstrap/status_alert/status_alert.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import '/bootstrap/status_alert/models/status_alert_media_configuration.dart';
+import '/bootstrap/status_alert/status_alert.dart';
 import 'package:woosignal/money_formatter/money_formatter.dart';
 import 'package:wp_json_api/models/wp_user.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 import '/app/models/billing_details.dart';
+import '/app/models/notification_item.dart';
 import '/app/models/cart.dart';
 import '/app/models/cart_line_item.dart';
 import '/app/models/checkout_session.dart';
@@ -26,11 +26,12 @@ import '/app/models/payment_type.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/enums/symbol_position_enums.dart';
 import '/bootstrap/extensions.dart';
-import '/bootstrap/shared_pref/shared_key.dart';
+import '/config/storage_keys.dart';
 import '/config/currency.dart';
 import '/config/payment_gateways.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:html/dom.dart' show Document;
 import 'package:html/parser.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -38,7 +39,7 @@ import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/woosignal.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
-import '../resources/themes/styles/color_styles.dart';
+import '../resources/themes/color_styles.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 Future<WpUser?> getUser() async {
@@ -49,25 +50,17 @@ Future appWooSignal(Function(WooSignal api) api) async {
   return await api(WooSignal.instance);
 }
 
-/// helper to find correct color from the [context].
-class ThemeColor {
-  static ColorStyles get(BuildContext context, {String? themeId}) =>
-      nyColorStyle<ColorStyles>(context, themeId: themeId);
-
-  static Color fromHex(String hexColor) => nyHexColor(hexColor);
-}
-
 /// helper to set colors on TextStyle
 extension ColorsHelper on TextStyle {
   TextStyle setColor(
       BuildContext context, Color Function(ColorStyles? color) newColor) {
-    return copyWith(color: newColor(ThemeColor.get(context)));
+    return copyWith(color: newColor(nyColorStyle<ColorStyles>(context)));
   }
 }
 
 Future<List<PaymentType?>> getPaymentTypes() async {
   List<PaymentType?> paymentTypes = [];
-  for (var appPaymentGateway in appPaymentGateways) {
+  for (String appPaymentGateway in appPaymentGateways) {
     if (paymentTypes.firstWhere(
             (paymentType) => paymentType!.name != appPaymentGateway,
             orElse: () => null) ==
@@ -110,7 +103,7 @@ PaymentType addPayment(
       pay: pay,
     );
 
-showStatusAlert(context,
+void showStatusAlert(BuildContext context,
     {required String title,
     required String subtitle,
     IconData? icon,
@@ -125,7 +118,10 @@ showStatusAlert(context,
 }
 
 String parseHtmlString(String? htmlString) {
-  var document = parse(htmlString);
+  // The parameter is nullable and the call sites pass nullable WooCommerce
+  // fields (a category name, a product name) straight in, but `parse` throws
+  // on null rather than returning an empty document.
+  Document document = parse(htmlString ?? "");
   return parse(document.body!.text).documentElement!.text;
 }
 
@@ -164,14 +160,6 @@ String workoutSaleDiscount(
       .toStringAsFixed(0);
 }
 
-openBrowserTab({required String url}) async {
-  try {
-    await InAppBrowser.openWithSystemBrowser(url: WebUri(url));
-  } catch (e) {
-    printError('Error opening InAppWebView: $e');
-  }
-}
-
 bool isNumeric(String? str) {
   if (str == null) {
     return false;
@@ -179,7 +167,7 @@ bool isNumeric(String? str) {
   return double.tryParse(str) != null;
 }
 
-checkout(
+Future<dynamic> checkout(
     TaxRate? taxRate,
     Function(String total, BillingDetails? billingDetails, Cart cart)
         completeCheckout) async {
@@ -194,10 +182,10 @@ double? strCal({required String sum}) {
   if (sum == "") {
     return 0;
   }
-  Parser p = Parser();
+  ShuntingYardParser p = ShuntingYardParser();
   Expression exp = p.parse(sum);
   ContextModel cm = ContextModel();
-  return exp.evaluate(EvaluationType.REAL, cm);
+  return RealEvaluator(cm).evaluate(exp).toDouble();
 }
 
 Future<double?> workoutShippingCostWC({required String? sum}) async {
@@ -358,25 +346,6 @@ bool isEmail(String em) {
   return regExp.hasMatch(em);
 }
 
-navigatorPush(BuildContext context,
-    {required String routeName,
-    Object? arguments,
-    bool forgetAll = false,
-    int? forgetLast}) {
-  if (forgetAll) {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        routeName, (Route<dynamic> route) => false,
-        arguments: arguments);
-  }
-  if (forgetLast != null) {
-    int count = 0;
-    Navigator.of(context).popUntil((route) {
-      return count++ == forgetLast;
-    });
-  }
-  Navigator.of(context).pushNamed(routeName, arguments: arguments);
-}
-
 DateTime parseDateTime(String strDate) => DateTime.parse(strDate);
 
 DateFormat formatDateTime(String format) => DateFormat(format);
@@ -409,16 +378,9 @@ String formatForDateTime(FormatType formatType) {
 
 double parseWcPrice(String? price) => (double.tryParse(price ?? "0") ?? 0);
 
-class UserAuth {
-  UserAuth._privateConstructor();
-  static final UserAuth instance = UserAuth._privateConstructor();
-
-  String redirect = "/home";
-}
-
 Future<List<DefaultShipping>> getDefaultShipping() async {
   String data =
-      await rootBundle.loadString('public/json/default_shipping.json');
+      await rootBundle.loadString(getAsset('json/default_shipping.json'));
   dynamic dataJson = json.decode(data);
   List<DefaultShipping> shipping = [];
 
@@ -484,7 +446,7 @@ String truncateString(String data, int length) {
 Future<List<dynamic>> getWishlistProducts() async {
   List<dynamic> favouriteProducts = [];
   String? currentProductsJSON =
-      await (NyStorage.read(SharedKey.wishlistProducts));
+      await (NyStorage.read(StorageKeysConfig.wishlistProducts));
   if (currentProductsJSON != null) {
     favouriteProducts = (jsonDecode(currentProductsJSON)).toList();
   }
@@ -501,26 +463,26 @@ Future<bool> hasAddedWishlistProduct(int? productId) async {
   return productIds.contains(productId);
 }
 
-saveWishlistProduct({required Product? product}) async {
+Future<void> saveWishlistProduct({required Product? product}) async {
   List<dynamic> products = await getWishlistProducts();
   if (products.any((wishListProduct) => wishListProduct['id'] == product?.id) ==
       false) {
     products.add({"id": product!.id});
   }
   String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
-  await NyStorage.save(SharedKey.wishlistProducts, json);
+  await NyStorage.save(StorageKeysConfig.wishlistProducts, json);
 }
 
-removeWishlistProduct({required Product? product}) async {
+Future<void> removeWishlistProduct({required Product? product}) async {
   List<dynamic> products = await getWishlistProducts();
   products.removeWhere((element) => element['id'] == product?.id);
 
   String json = jsonEncode(products.map((i) => {"id": i['id']}).toList());
-  await NyStorage.save(SharedKey.wishlistProducts, json);
+  await NyStorage.save(StorageKeysConfig.wishlistProducts, json);
 }
 
 Future<BillingDetails> billingDetailsFromWpUserInfoResponse(
-    wpUserInfoResponse) async {
+    WPUserInfoResponse wpUserInfoResponse) async {
   List<String> metaDataAddress = [
     'billing_first_name',
     'billing_last_name',
@@ -561,7 +523,10 @@ Future<BillingDetails> billingDetailsFromWpUserInfoResponse(
 
 /// Check if the [Product] is new.
 bool isProductNew(Product? product) {
-  if (product?.dateCreatedGMT == null) false;
+  // Without the `return` this guard was a no-op, and the `!` below then threw a
+  // TypeError - which is an Error, not an Exception, so the catch underneath
+  // never saw it and a product with no creation date took the grid down.
+  if (product?.dateCreatedGMT == null) return false;
   try {
     DateTime dateTime = DateTime.parse(product!.dateCreatedGMT!);
     return dateTime.isBetween(
@@ -578,7 +543,7 @@ bool shouldEncrypt() {
   if (encryptKey == null || encryptKey == "") {
     return false;
   }
-  String? encryptSecret = getEnv('ENCRYPT_KEY', defaultValue: "");
+  String? encryptSecret = getEnv('ENCRYPT_SECRET', defaultValue: "");
   if (encryptSecret == null || encryptSecret == "") {
     return false;
   }
@@ -593,62 +558,13 @@ bool isFirebaseEnabled() {
   return firebaseFcmIsEnabled == true;
 }
 
-class NotificationItem extends Model {
-  String? id;
-  String? title;
-  String? message;
-  bool? hasRead;
-  String? type;
-  Map<String, dynamic>? meta;
-  String? createdAt;
-
-  NotificationItem(
-      {this.title,
-      this.message,
-      this.id,
-      this.type,
-      this.meta,
-      this.createdAt,
-      this.hasRead = false});
-
-  NotificationItem.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = json['title'],
-        type = json['type'],
-        meta = json['meta'],
-        message = json['message'],
-        hasRead = json['has_read'],
-        createdAt = json['created_at'];
-
-  fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    type = json['type'];
-    meta = json['meta'];
-    message = json['message'];
-    hasRead = json['has_read'];
-    createdAt = json['created_at'];
-  }
-
-  @override
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'type': type,
-        'meta': meta,
-        'message': message,
-        'has_read': hasRead,
-        "created_at": createdAt
-      };
-}
-
 class NyNotification {
   static final String _storageKey = "app_notifications";
 
   static String storageKey() => _storageKey;
 
   /// Add a notification
-  static addNotification(String title, String message,
+  static Future<void> addNotification(String title, String message,
       {String? id, Map<String, dynamic>? meta}) async {
     NotificationItem notificationItem = NotificationItem.fromJson({
       "id": id,
@@ -696,7 +612,7 @@ class NyNotification {
   }
 
   /// Mark notification as read by index
-  static markReadByIndex(int index) async {
+  static Future<void> markReadByIndex(int index) async {
     await NyStorage.updateCollectionByIndex(index, (item) {
       item as NotificationItem;
       item.hasRead = true;
@@ -705,7 +621,7 @@ class NyNotification {
   }
 
   /// Mark all notifications as read
-  static markReadAll() async {
+  static Future<void> markReadAll() async {
     List<NotificationItem> notifications = await allNotifications();
     for (var i = 0; i < notifications.length; i++) {
       await markReadByIndex(i);
@@ -713,15 +629,15 @@ class NyNotification {
   }
 
   /// Clear all notifications
-  static clearAllNotifications() async {
-    await NyStorage.deleteCollection(storageKey());
+  static Future<void> clearAllNotifications() async {
+    await NyStorage.delete(storageKey());
   }
 
   /// Render notifications
   static Widget renderNotifications(
       Widget Function(List<NotificationItem> notificationItems) child,
       {Widget? loading}) {
-    return NyFutureBuilder(
+    return FutureWidget(
         future: allNotifications(),
         child: (context, data) {
           if (data == null) {
@@ -736,15 +652,14 @@ class NyNotification {
   static Widget renderListNotifications(
       Widget Function(NotificationItem notificationItems) child,
       {Widget? loading}) {
-    return NyFutureBuilder(
+    return FutureWidget(
         future: allNotifications(),
         child: (context, data) {
           if (data == null) {
             return SizedBox.shrink();
           }
-          return NyListView(child: (context, item) {
-            item as NotificationItem;
-            return child(item);
+          return CollectionView<NotificationItem>(builder: (context, item) {
+            return child(item.data);
           }, data: () async {
             return data.reversed.toList();
           });
@@ -756,16 +671,15 @@ class NyNotification {
   static Widget renderListNotificationsWithSeparator(
       Widget Function(NotificationItem notificationItems) child,
       {Widget? loading}) {
-    return NyFutureBuilder(
+    return FutureWidget(
         future: allNotifications(),
         child: (context, data) {
           if (data == null) {
             return SizedBox.shrink();
           }
-          return NyListView.separated(
-            child: (context, item) {
-              item as NotificationItem;
-              return child(item);
+          return CollectionView<NotificationItem>.separated(
+            builder: (context, item) {
+              return child(item.data);
             },
             data: () async {
               return data.reversed.toList();

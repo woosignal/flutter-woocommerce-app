@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -10,7 +10,7 @@
 
 import 'package:flutter/material.dart';
 import '/app/events/logout_event.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_delete_response.dart';
@@ -56,12 +56,10 @@ class _AccountDeletePageState extends NyPage<AccountDeletePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              PrimaryButton(
-                title: trans("Yes, delete my account"),
-                isLoading: isLocked('delete_account'),
-                action: _deleteAccount,
-              ),
-              LinkButton(title: trans("Back"), action: pop)
+              Button.primary(
+                text: trans("Yes, delete my account"),
+                onPressed: _deleteAccount),
+              Button.textOnly(text: trans("Back"), onPressed: pop)
             ],
           )
         ],
@@ -69,7 +67,7 @@ class _AccountDeletePageState extends NyPage<AccountDeletePage> {
     );
   }
 
-  _deleteAccount() async {
+  Future<void> _deleteAccount() async {
     await lockRelease('delete_account', perform: () async {
       WPUserDeleteResponse? wpUserDeleteResponse;
       try {
@@ -80,7 +78,7 @@ class _AccountDeletePageState extends NyPage<AccountDeletePage> {
         showToast(
           title: trans("Oops!"),
           description: trans("Something went wrong"),
-          style: ToastNotificationStyleType.danger,
+          id: 'danger',
         );
       }
 

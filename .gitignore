@@ -1,0 +1,4 @@
+# IDE
+#  The app's own .gitignore only covers paths relative to LabelStoreMax/,
+#  so the IDE folder at the repository root needs its own entry.
+.idea/

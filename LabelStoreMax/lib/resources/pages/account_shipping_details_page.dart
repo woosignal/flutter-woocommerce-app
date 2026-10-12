@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -16,11 +16,12 @@ import '/app/models/customer_country.dart';
 import '/app/models/default_shipping.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/customer_address_input.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/switch_address_tab.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_updated_response.dart';
@@ -88,7 +89,7 @@ class _AccountShippingDetailsPageState
         await _fetchUserDetails();
       };
 
-  _setFieldsFromCustomerAddress(CustomerAddress? customerAddress,
+  void _setFieldsFromCustomerAddress(CustomerAddress? customerAddress,
       {required String type}) {
     assert(type != "");
     if (customerAddress == null) {
@@ -107,7 +108,7 @@ class _AccountShippingDetailsPageState
     );
   }
 
-  _setFields(
+  void _setFields(
       {required String? firstName,
       required String? lastName,
       required String? addressLine,
@@ -201,8 +202,7 @@ class _AccountShippingDetailsPageState
                           Expanded(
                             child: Container(
                                 decoration: BoxDecoration(
-                                  color: ThemeColor.get(context)
-                                      .backgroundContainer,
+                                  color: context.color.container.background,
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: (Theme.of(context).brightness ==
                                           Brightness.light)
@@ -222,11 +222,9 @@ class _AccountShippingDetailsPageState
                       height: 160,
                       child: Column(
                         children: <Widget>[
-                          PrimaryButton(
-                            title: trans("USE DETAILS"),
-                            action: _useDetailsTapped,
-                            isLoading: isLocked('update_details'),
-                          ),
+                          Button.primary(
+                            text: trans("USE DETAILS"),
+                            onPressed: _useDetailsTapped),
                         ],
                       ),
                     ),
@@ -237,7 +235,7 @@ class _AccountShippingDetailsPageState
     );
   }
 
-  _useDetailsTapped() async {
+  Future<void> _useDetailsTapped() async {
     lockRelease('update_details', perform: () async {
       // Billing email is required for Stripe
       String billingEmail = _txtBillingEmailAddress.text;
@@ -245,7 +243,7 @@ class _AccountShippingDetailsPageState
         showToast(
           title: trans("Oops"),
           description: trans("Please enter a valid shipping email"),
-          style: ToastNotificationStyleType.warning,
+          id: 'warning',
         );
         return;
       }
@@ -277,11 +275,12 @@ class _AccountShippingDetailsPageState
             ...userShippingAddress.toUserMetaDataItem('shipping'),
           ]),
         );
-      } on Exception catch (_) {
+      } on Exception catch (e) {
+        printError(e.toString());
         showToast(
             title: trans("Oops!"),
             description: trans("Something went wrong"),
-            style: ToastNotificationStyleType.danger);
+            id: 'danger');
       }
 
       if (wpUserInfoUpdatedResponse != null &&
@@ -289,7 +288,7 @@ class _AccountShippingDetailsPageState
         showToast(
             title: trans("Success"),
             description: trans("Account updated"),
-            style: ToastNotificationStyleType.success);
+            id: 'success');
         pop();
       }
     });
@@ -318,7 +317,7 @@ class _AccountShippingDetailsPageState
     return customerShippingAddress;
   }
 
-  _navigateToSelectCountry({required String type}) {
+  void _navigateToSelectCountry({required String type}) {
     routeTo(CustomerCountriesPage.path, onPop: (value) {
       if (value == null) {
         return;
@@ -337,7 +336,7 @@ class _AccountShippingDetailsPageState
     });
   }
 
-  _fetchUserDetails() async {
+  Future<void> _fetchUserDetails() async {
     WPUserInfoResponse? wpUserInfoResponse;
     try {
       wpUserInfoResponse =
@@ -347,7 +346,7 @@ class _AccountShippingDetailsPageState
       showToast(
         title: trans("Oops!"),
         description: trans("Something went wrong"),
-        style: ToastNotificationStyleType.danger,
+        id: 'danger',
       );
       pop();
     }

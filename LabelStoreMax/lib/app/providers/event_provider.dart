@@ -1,15 +1,16 @@
-import '/config/events.dart';
+import '/bootstrap/events.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class EventProvider implements NyProvider {
   @override
-  boot(Nylo nylo) async {
+  setup(Nylo nylo) async {
     nylo.addEvents(events);
-    nylo.addEventBus();
 
     return nylo;
   }
 
   @override
-  afterBoot(Nylo nylo) async {}
+  boot(Nylo nylo) async {
+    nylo.addEventBus();
+  }
 }

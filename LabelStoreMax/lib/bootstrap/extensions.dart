@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '/bootstrap/helpers.dart';
-import '/resources/themes/styles/color_styles.dart';
+import '/resources/themes/color_styles.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 extension NyText on Text {
@@ -10,7 +9,8 @@ extension NyText on Text {
       {String? themeId}) {
     return copyWith(
         style: TextStyle(
-            color: newColor(ThemeColor.get(context, themeId: themeId))));
+            color: newColor(
+                nyColorStyle<ColorStyles>(context, themeId: themeId))));
   }
 }
 
@@ -19,7 +19,7 @@ extension DateTimeExtension on DateTime? {
   bool? isAfterOrEqualTo(DateTime dateTime) {
     final date = this;
     if (date != null) {
-      final isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
+      final bool isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
       return isAtSameMomentAs | date.isAfter(dateTime);
     }
     return null;
@@ -28,7 +28,7 @@ extension DateTimeExtension on DateTime? {
   bool? isBeforeOrEqualTo(DateTime dateTime) {
     final date = this;
     if (date != null) {
-      final isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
+      final bool isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
       return isAtSameMomentAs | date.isBefore(dateTime);
     }
     return null;
@@ -40,8 +40,8 @@ extension DateTimeExtension on DateTime? {
   ) {
     final date = this;
     if (date != null) {
-      final isAfter = date.isAfterOrEqualTo(fromDateTime) ?? false;
-      final isBefore = date.isBeforeOrEqualTo(toDateTime) ?? false;
+      final bool isAfter = date.isAfterOrEqualTo(fromDateTime) ?? false;
+      final bool isBefore = date.isBeforeOrEqualTo(toDateTime) ?? false;
       return isAfter && isBefore;
     }
     return null;
@@ -49,7 +49,10 @@ extension DateTimeExtension on DateTime? {
 }
 
 /// [BuildContext] Extensions
-extension NyApp on BuildContext {
+///
+/// NOTE: named [NyColorStyles], not `NyApp` - an extension called `NyApp`
+/// shadows Nylo v7's `NyApp` class and breaks `NyApp.materialApp`.
+extension NyColorStyles on BuildContext {
   /// Get the current theme color
-  ColorStyles get color => ThemeColor.get(this);
+  ColorStyles get color => nyColorStyle<ColorStyles>(this);
 }

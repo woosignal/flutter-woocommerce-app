@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -14,10 +14,10 @@ import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/store_logo_widget.dart';
 import '/app/events/login_event.dart';
 import '/resources/pages/account_register_page.dart';
+import '/routes/guards/auth_route_guard.dart';
 import '/bootstrap/app_helper.dart';
-import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/exceptions/incorrect_password_exception.dart';
 import 'package:wp_json_api/exceptions/invalid_email_exception.dart';
@@ -34,8 +34,6 @@ class AccountLoginPage extends NyStatefulWidget {
 }
 
 class _AccountLoginPageState extends NyPage<AccountLoginPage> {
-  LoginForm form = LoginForm();
-
   @override
   Widget view(BuildContext context) {
     return Scaffold(
@@ -77,20 +75,19 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context).backgroundContainer,
+                      color: context.color.container.background,
                     ),
                     padding: EdgeInsets.only(
                         top: 20, bottom: 15, left: 16, right: 16),
                     margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: NyForm(
-                        form: form,
+                    child: LoginForm(
                         crossAxisSpacing: 15,
                         footer: Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: Button.primary(
                               text: trans("Login"),
                               submitForm: (
-                                form,
+                                "login",
                                 (data) async {
                                   await _loginUser(
                                       data['email'], data['password']);
@@ -121,15 +118,16 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
                   )
                 ],
               ),
-              onPressed: () => routeTo(AccountRegistrationPage.path),
+              onPressed: () =>
+                  routeTo(AccountRegistrationPage.path, data: widget.data()),
             ),
-            LinkButton(
-                title: trans("Forgot Password"),
-                action: () {
+            Button.textOnly(
+                text: trans("Forgot Password"),
+                onPressed: () {
                   String? forgotPasswordUrl =
                       AppHelper.instance.appConfig!.wpLoginForgotPasswordUrl;
                   if (forgotPasswordUrl != null) {
-                    openBrowserTab(url: forgotPasswordUrl);
+                    openUrl(forgotPasswordUrl);
                   } else {
                     NyLogger.info(
                         "No URL found for \"forgot password\".\nAdd your forgot password URL here https://woosignal.com/dashboard/apps");
@@ -139,10 +137,9 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
                 ? Column(
                     children: [
                       Divider(),
-                      LinkButton(
-                        title: trans("Back"),
-                        action: () => Navigator.pop(context),
-                      ),
+                      Button.textOnly(
+                        text: trans("Back"),
+                        onPressed: () => Navigator.pop(context)),
                     ],
                   )
                 : Padding(
@@ -154,7 +151,7 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
     );
   }
 
-  _loginUser(String email, String password) async {
+  Future<void> _loginUser(String email, String password) async {
     if (email.isNotEmpty) {
       email = email.trim();
     }
@@ -164,33 +161,37 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
       try {
         wpUserLoginResponse = await WPJsonAPI.instance.api(
             (request) => request.wpLogin(email: email, password: password));
-      } on InvalidNonceException catch (_) {
+      } on InvalidNonceException catch (e) {
+        printError(e.toString());
         showToast(
             title: trans("Invalid details"),
             description:
                 trans("Something went wrong, please contact our store"),
-            style: ToastNotificationStyleType.danger);
-      } on InvalidEmailException catch (_) {
+            id: 'danger');
+      } on InvalidEmailException catch (e) {
+        printError(e.toString());
         showToast(
             title: trans("Invalid details"),
             description: trans("That email does not match our records"),
-            style: ToastNotificationStyleType.danger);
-      } on InvalidUsernameException catch (_) {
+            id: 'danger');
+      } on InvalidUsernameException catch (e) {
+        printError(e.toString());
         showToast(
             title: trans("Invalid details"),
             description: trans("That username does not match our records"),
-            style: ToastNotificationStyleType.danger);
-      } on IncorrectPasswordException catch (_) {
+            id: 'danger');
+      } on IncorrectPasswordException catch (e) {
+        printError(e.toString());
         showToast(
             title: trans("Invalid details"),
             description: trans("That password does not match our records"),
-            style: ToastNotificationStyleType.danger);
-      } on Exception catch (_) {
+            id: 'danger');
+      } on Exception catch (e) {
+        printError(e.toString());
         showToast(
             title: trans("Oops!"),
             description: trans("Invalid login credentials"),
-            style: ToastNotificationStyleType.danger,
-            icon: Icons.account_circle);
+            id: 'danger');
       }
 
       if (wpUserLoginResponse == null) {
@@ -206,11 +207,9 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
       showToast(
           title: trans("Hello"),
           description: trans("Welcome back"),
-          style: ToastNotificationStyleType.success,
-          icon: Icons.account_circle);
+          id: 'success');
       if (!mounted) return;
-      navigatorPush(context,
-          routeName: UserAuth.instance.redirect, forgetLast: 1);
+      await routeToIntended(widget.data());
     });
   }
 }

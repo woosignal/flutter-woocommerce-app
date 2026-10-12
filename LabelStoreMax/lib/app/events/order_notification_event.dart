@@ -12,8 +12,8 @@ class OrderNotificationEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
-    RemoteMessage message = event['RemoteMessage'];
+  handle(dynamic data) async {
+    RemoteMessage message = data['RemoteMessage'];
 
     if (!message.data.containsKey('order_id')) {
       return;

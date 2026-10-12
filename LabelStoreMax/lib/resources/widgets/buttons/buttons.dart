@@ -8,6 +8,21 @@ import '/resources/widgets/buttons/partials/outlined_button_widget.dart' as app;
 import '/resources/widgets/buttons/partials/icon_button_widget.dart' as app;
 import 'package:flutter/material.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+export 'package:nylo_framework/nylo_framework.dart'
+    show ButtonAnimationStyle, ButtonSplashStyle, ButtonSplashType;
+
+/* Buttons
+|--------------------------------------------------------------------------
+| Button.primary / Button.secondary / Button.textOnly reproduce the store's
+| original PrimaryButton / SecondaryButton / LinkButton. They size themselves
+| from the screen width, so no `height` is passed by default.
+| An async `onPressed` (or a `submitForm` tuple) locks the button and shows the
+| AppLoaderWidget inside it until the future completes.
+| https://nylo.dev/docs/7.x/button
+|-------------------------------------------------------------------------- */
+
+/// Default button height for the boilerplate button styles
+final double _buttonHeight = 52.0;
 
 class Button {
   /// Primary button
@@ -18,26 +33,23 @@ class Button {
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     Color? color,
-    Widget? loading,
+    Color? textColor,
+    LoadingStyle? loadingStyle,
     double? width,
-    double height = 50,
-    bool skeletonizerLoading = true,
+    double? height,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        skeletonizerLoading: skeletonizerLoading,
-        loading: loading,
-        child: (pressed) {
-          return PrimaryButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            width: width,
-            height: height,
-          );
-        });
+    return PrimaryButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: loadingStyle,
+      backgroundColor: color,
+      contentColor: textColor,
+      width: width,
+      height: height,
+    );
   }
 
   /// Secondary button
@@ -48,26 +60,50 @@ class Button {
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     Color? color,
-    Widget? loading,
+    Color? textColor,
+    LoadingStyle? loadingStyle,
     double? width,
-    double height = 50,
-    bool skeletonizerLoading = true,
+    double? height,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        skeletonizerLoading: skeletonizerLoading,
-        loading: loading,
-        child: (pressed) {
-          return SecondaryButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            width: width,
-            height: height,
-          );
-        });
+    return SecondaryButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: loadingStyle,
+      backgroundColor: color,
+      contentColor: textColor,
+      width: width,
+      height: height,
+    );
+  }
+
+  /// Text only button - the store's "link" button
+  static Widget textOnly({
+    required String text,
+    VoidCallback? onPressed,
+    (dynamic, Function(dynamic data))? submitForm,
+    Function(dynamic error)? onFailure,
+    bool showToastError = true,
+    Color? textColor,
+    bool? selected,
+    LoadingStyle? loadingStyle,
+    double? width,
+    double? height,
+  }) {
+    return TextOnlyButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: loadingStyle,
+      contentColor: textColor,
+      selected: selected,
+      width: width,
+      height: height,
+    );
   }
 
   /// Outlined button
@@ -80,57 +116,21 @@ class Button {
     Color? borderColor,
     Color? textColor,
     double? width,
-    double height = 50,
-    bool skeletonizerLoading = true,
-    Widget? loading,
   }) {
-    return ButtonState(
-      onSubmit: (onPressed, submitForm),
+    return app.OutlinedButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
       onFailure: onFailure,
       showToastError: showToastError,
-      skeletonizerLoading: skeletonizerLoading,
-      child: (pressed) {
-        return app.OutlinedButton(
-          text: text,
-          onPressed: pressed,
-          borderColor: borderColor,
-          textColor: textColor,
-          width: width,
-          height: height,
-        );
-      },
-      loading: loading,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      borderColor: borderColor,
+      textColor: textColor,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight(),
     );
-  }
-
-  /// Text only button
-  static Widget textOnly({
-    required String text,
-    VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
-    Function(dynamic error)? onFailure,
-    bool showToastError = true,
-    Color? textColor,
-    double? width,
-    double height = 50,
-    Widget? loading,
-    bool skeletonizerLoading = true,
-  }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        skeletonizerLoading: skeletonizerLoading,
-        child: (pressed) {
-          return TextOnlyButton(
-            text: text,
-            onPressed: pressed,
-            textColor: textColor,
-            width: width,
-            height: height,
-          );
-        },
-        loading: loading);
   }
 
   /// Icon button
@@ -143,26 +143,20 @@ class Button {
     required Widget icon,
     Color? color,
     double? width,
-    double height = 50,
-    Widget? loading,
-    bool skeletonizerLoading = true,
   }) {
-    return ButtonState(
-      onSubmit: (onPressed, submitForm),
+    return app.IconButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
       onFailure: onFailure,
       showToastError: showToastError,
-      skeletonizerLoading: skeletonizerLoading,
-      child: (pressed) {
-        return app.IconButton(
-          text: text,
-          onPressed: pressed,
-          icon: icon,
-          color: color,
-          width: width,
-          height: height,
-        );
-      },
-      loading: loading,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      icon: icon,
+      backgroundColor: color,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight(),
     );
   }
 
@@ -170,30 +164,25 @@ class Button {
   static Widget gradient({
     required String text,
     VoidCallback? onPressed,
+    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
-    (dynamic, Function(dynamic data))? submitForm,
-    List<Color> gradientColors = const [Colors.blue, Colors.purple],
+    List<Color>? gradientColors,
     double? width,
-    double height = 50,
-    Widget? loading,
-    bool skeletonizerLoading = true,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        skeletonizerLoading: skeletonizerLoading,
-        child: (pressed) {
-          return GradientButton(
-            text: text,
-            onPressed: pressed,
-            gradientColors: gradientColors,
-            width: width,
-            height: height,
-          );
-        },
-        loading: loading);
+    return GradientButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      gradientColors: gradientColors,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight(),
+    );
   }
 
   /// Rounded button
@@ -203,29 +192,24 @@ class Button {
     (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
-    Color? color,
+    Color? backgroundColor,
     BorderRadius? borderRadius,
     double? width,
-    double height = 50,
-    Widget? loading,
-    bool skeletonizerLoading = true,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        skeletonizerLoading: skeletonizerLoading,
-        child: (pressed) {
-          return RoundedButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            borderRadius: borderRadius,
-            width: width,
-            height: height,
-          );
-        },
-        loading: loading);
+    return RoundedButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      backgroundColor: backgroundColor,
+      borderRadius: borderRadius,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight(),
+    );
   }
 
   /// Transparency button
@@ -236,26 +220,20 @@ class Button {
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     Color? color,
-    BorderRadius? borderRadius,
     double? width,
-    double height = 30,
-    Widget? loading,
-    bool skeletonizerLoading = true,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        skeletonizerLoading: skeletonizerLoading,
-        child: (pressed) {
-          return TransparencyButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            width: width,
-            height: height,
-          );
-        },
-        loading: loading);
+    return TransparencyButton(
+      text: text,
+      onPressed: onPressed,
+      submitForm: submitForm,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      contentColor: color,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight(),
+    );
   }
 }

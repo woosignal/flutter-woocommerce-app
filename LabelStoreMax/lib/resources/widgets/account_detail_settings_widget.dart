@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -36,8 +36,7 @@ class _AccountDetailSettingsWidgetState
               title: Text(trans("Update details")),
               onTap: () =>
                   routeTo(AccountProfileUpdatePage.path, onPop: (value) {
-                    StateAction.refreshPage(
-                        AccountDetailPage.path.nyPageName());
+                    StateAction.refreshPage(AccountDetailPage.path);
                   })),
         ),
         Card(

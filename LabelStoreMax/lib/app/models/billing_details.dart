@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -61,7 +61,7 @@ class BillingDetails {
         "country": (shippingAddress?.customerCountry?.name ?? "")
       };
 
-  fromWpMeta(Map<String, String> data) async {
+  Future<void> fromWpMeta(Map<String, String> data) async {
     final Map<String, String> shippingDetailsWpMeta = <String, String>{},
         billingDetailsWpMeta = <String, String>{};
 

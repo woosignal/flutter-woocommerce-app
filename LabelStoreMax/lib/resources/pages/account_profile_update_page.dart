@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -9,7 +9,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import 'package:flutter/material.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/models/responses/wp_user_info_response.dart';
@@ -33,7 +33,7 @@ class _AccountProfileUpdatePageState extends NyPage<AccountProfileUpdatePage> {
         await _fetchUserDetails();
       };
 
-  _fetchUserDetails() async {
+  Future<void> _fetchUserDetails() async {
     WPUserInfoResponse wpUserInfoResponse =
         await WPJsonAPI.instance.api((request) async {
       return request.wpGetUserInfo();
@@ -93,11 +93,9 @@ class _AccountProfileUpdatePageState extends NyPage<AccountProfileUpdatePage> {
                       Padding(
                         padding: EdgeInsets.only(top: 10),
                       ),
-                      PrimaryButton(
-                        title: trans("Update Details"),
-                        isLoading: isLocked('update_account'),
-                        action: _updateDetails,
-                      )
+                      Button.primary(
+                        text: trans("Update Details"),
+                        onPressed: _updateDetails)
                     ],
                   ),
                 ),
@@ -107,36 +105,38 @@ class _AccountProfileUpdatePageState extends NyPage<AccountProfileUpdatePage> {
         ));
   }
 
-  _updateDetails() async {
+  Future<void> _updateDetails() async {
     String firstName = _tfFirstName.text;
     String lastName = _tfLastName.text;
 
-    validate(
-        rules: {
-          "first_name": [firstName, "not_empty"],
-          "last_name": [lastName, "not_empty"]
-        },
-        onSuccess: () async {
-          WPUserInfoUpdatedResponse? wpUserInfoUpdatedResponse;
-          try {
-            wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api(
-                (request) => request.wpUpdateUserInfo(
-                    firstName: firstName, lastName: lastName));
-          } on Exception catch (_) {
-            showToast(
-                title: trans("Invalid details"),
-                description: trans("Please check your email and password"),
-                style: ToastNotificationStyleType.danger);
-          }
+    check((validators) {
+      validators.add(FormValidator.notEmpty().that(firstName, "First name"));
+      validators.add(FormValidator.notEmpty().that(lastName, "Last name"));
+    }, onValidationError: (_) {
+      showToastWarning(description: trans("Please check your details"));
+    }, onSuccess: () async {
+      await lockRelease("update_account", perform: () async {
+        WPUserInfoUpdatedResponse? wpUserInfoUpdatedResponse;
+        try {
+          wpUserInfoUpdatedResponse = await WPJsonAPI.instance.api((request) =>
+              request.wpUpdateUserInfo(
+                  firstName: firstName, lastName: lastName));
+        } on Exception catch (e) {
+          printError(e.toString());
+          showToast(
+              title: trans("Invalid details"),
+              description: trans("Please check your email and password"),
+              id: 'danger');
+        }
 
-          if (wpUserInfoUpdatedResponse?.status == 200) {
-            showToast(
-                title: trans("Success"),
-                description: trans("Account updated"),
-                style: ToastNotificationStyleType.success);
-            pop();
-          }
-        },
-        lockRelease: "update_account");
+        if (wpUserInfoUpdatedResponse?.status == 200) {
+          showToast(
+              title: trans("Success"),
+              description: trans("Account updated"),
+              id: 'success');
+          pop();
+        }
+      });
+    });
   }
 }

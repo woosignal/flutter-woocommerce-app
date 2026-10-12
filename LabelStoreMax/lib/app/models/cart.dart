@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -16,7 +16,7 @@ import '/app/models/checkout_session.dart';
 import '/app/models/shipping_type.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/shared_key.dart';
+import '/config/storage_keys.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -27,7 +27,7 @@ class Cart {
 
   Future<List<CartLineItem>> getCart() async {
     List<CartLineItem> cartLineItems = [];
-    String? currentCartArrJSON = await (NyStorage.read(SharedKey.cart));
+    String? currentCartArrJSON = await (NyStorage.read(StorageKeysConfig.cart));
 
     if (currentCartArrJSON != null) {
       cartLineItems = (jsonDecode(currentCartArrJSON) as List<dynamic>)
@@ -104,7 +104,7 @@ class Cart {
     return subtotal.toStringAsFixed(2);
   }
 
-  updateQuantity(
+  Future<void> updateQuantity(
       {required CartLineItem cartLineItem,
       required int incrementQuantity}) async {
     List<CartLineItem> cartLineItems = await getCart();
@@ -130,7 +130,7 @@ class Cart {
         .join(",");
   }
 
-  removeCartItemForIndex({required int index}) async {
+  Future<void> removeCartItemForIndex({required int index}) async {
     List<CartLineItem> cartLineItems = await getCart();
     cartLineItems.removeAt(index);
     await saveCartToPref(cartLineItems: cartLineItems);
@@ -146,11 +146,12 @@ class Cart {
     return true;
   }
 
-  clear() async => await NyStorage.delete(SharedKey.cart);
+  Future<void> clear() async => await NyStorage.delete(StorageKeysConfig.cart);
 
-  saveCartToPref({required List<CartLineItem> cartLineItems}) async {
+  Future<void> saveCartToPref(
+      {required List<CartLineItem> cartLineItems}) async {
     String json = jsonEncode(cartLineItems.map((i) => i.toJson()).toList());
-    await NyStorage.save(SharedKey.cart, json);
+    await NyStorage.save(StorageKeysConfig.cart, json);
   }
 
   Future<String> taxAmount(TaxRate? taxRate) async {
@@ -228,7 +229,7 @@ class Cart {
       bool canContinue = true;
 
       if (checkoutSession.coupon!.excludedProductCategories!.isNotEmpty) {
-        for (var excludedProductCategory
+        for (int excludedProductCategory
             in checkoutSession.coupon!.excludedProductCategories!) {
           if (cartItem.categories!
               .map((category) => category.id)
@@ -240,7 +241,7 @@ class Cart {
       }
 
       if (checkoutSession.coupon!.productCategories!.isNotEmpty) {
-        for (var productCategories
+        for (int productCategories
             in checkoutSession.coupon!.productCategories!) {
           if (cartItem.categories!
                   .map((category) => category.id)

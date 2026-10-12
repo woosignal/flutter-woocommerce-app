@@ -1,33 +1,34 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '/resources/widgets/store_logo_widget.dart';
-import '/config/toast_notification.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/toast_notification_widget.dart';
-import 'package:nylo_framework/nylo_framework.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /* Design
 |--------------------------------------------------------------------------
-| Contains widgets used in the Nylo framework.
+| Application configuration settings.
+| Learn more: https://nylo.dev/docs/7.x/configuration
+| -------------------------------------------------------------------------
+| You can access these config values throughout your app using:
+| `DesignConfig.appFont`, `DesignConfig.logo`, etc.
 |
-| Learn more: https://nylo.dev/docs/6.x/themes
+| Toast notification styles are defined in config/toast_notification.dart
+| and registered with Nylo via configure(toastNotifications: ...).
 |-------------------------------------------------------------------------- */
 
-Widget logo = StoreLogo();
-// resources/widgets/woosignal_ui.dart
+final class DesignConfig {
+  // App Font - Google Fonts
+  //
+  // Deliberately NOT `final`: resources/themes/{light,dark} replace this at
+  // runtime with the font configured for the store on WooSignal
+  // (AppHelper.instance.appConfig!.themeFont), falling back to Poppins.
+  // e.g. updating the font from "poppins" to "lato" - GoogleFonts.lato()
+  // Custom font in pubspec.yaml? https://flutter.dev/docs/cookbook/design/fonts
+  // e.g. TextStyle(fontFamily: "ZenTokyoZoo")
+  static TextStyle appFont = GoogleFonts.poppins();
 
-Widget loader = AppLoaderWidget();
-// resources/widgets/app_loader_widget.dart
+  // App Logo - resources/widgets/store_logo_widget.dart
+  static final Widget logo = StoreLogo();
 
-Widget getToastNotificationWidget(
-    {required ToastNotificationStyleType style,
-    Function(ToastNotificationStyleMetaHelper helper)?
-        toastNotificationStyleMeta,
-    Function? onDismiss}) {
-  if (toastNotificationStyleMeta == null) return SizedBox.shrink();
-
-  ToastMeta toastMeta =
-      toastNotificationStyleMeta(NyToastNotificationStyleMetaHelper(style));
-
-  return ToastNotification(toastMeta, onDismiss: onDismiss);
-  // resources/widgets/toast_notification.dart
+  // App Loader - resources/widgets/app_loader_widget.dart
+  static final Widget loader = AppLoaderWidget();
 }

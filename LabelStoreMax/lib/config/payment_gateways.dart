@@ -1,7 +1,7 @@
 import '/app/models/payment_type.dart';
 import '/app/providers/payments/cash_on_delivery.dart';
 import '/app/providers/payments/paypal_pay.dart';
-import '/app/providers/payments/razorpay_pay.dart';
+// import '/app/providers/payments/razorpay_pay.dart'; // Disabled: see razorpay_flutter in pubspec.yaml
 import '/app/providers/payments/stripe_pay.dart';
 import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -12,7 +12,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 | Docs here: https://woosignal.com/docs/app/label-storemax
 |-------------------------------------------------------------------------- */
 
-const appPaymentGateways = [];
+const List<String> appPaymentGateways = [];
 // Available: "Stripe", "CashOnDelivery", "PayPal", "RazorPay"
 // e.g. appPaymentGateways = ["Stripe", "CashOnDelivery"]; will only use Stripe and Cash on Delivery.
 
@@ -55,7 +55,7 @@ List<PaymentType> paymentTypeList = [
   //   id: 6,
   //   name: "MyNewPaymentMethod",
   //   description: "Debit or Credit Card",
-  //   assetImage: "add icon image to public/images/myimage.png",
+  //   assetImage: "add icon image to assets/images/myimage.png",
   //   pay: "myCustomPaymentFunction",
   // ),
 ];

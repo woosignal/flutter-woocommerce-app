@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,7 +13,7 @@ import '/resources/widgets/store_logo_widget.dart';
 import '/app/models/cart.dart';
 import '/app/models/checkout_session.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/order.dart' as ws_order;
 import '../widgets/woosignal_ui.dart';
@@ -24,7 +24,7 @@ class CheckoutStatusPage extends NyStatefulWidget {
   CheckoutStatusPage({super.key}) : super(child: () => _CheckoutStatusState());
 }
 
-class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
+class _CheckoutStatusState extends NyPage<CheckoutStatusPage> {
   ws_order.Order? _order;
 
   @override
@@ -171,12 +171,11 @@ class _CheckoutStatusState extends NyState<CheckoutStatusPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: LinkButton(
-                  title: trans("Back to Home"),
-                  action: () {
+                child: Button.textOnly(
+                  text: trans("Back to Home"),
+                  onPressed: () {
                     routeToInitial();
-                  },
-                ),
+                  }),
               ),
             ],
           ),

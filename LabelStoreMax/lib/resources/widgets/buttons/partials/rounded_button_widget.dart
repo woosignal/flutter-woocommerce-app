@@ -1,36 +1,70 @@
 import 'package:flutter/material.dart';
-import '/bootstrap/extensions.dart';
 import '/resources/widgets/buttons/abstract/app_button.dart';
 
-class RoundedButton extends AppButton {
-  final Color? color;
+class RoundedButton extends StatefulAppButton {
+  final Color? contentColor;
+  final Color? backgroundColor;
   final BorderRadius? borderRadius;
 
-  const RoundedButton({
+  RoundedButton({
     super.key,
     required super.text,
     super.onPressed,
-    this.color,
+    super.submitForm,
+    super.onFailure,
+    super.showToastError = true,
+    super.loadingStyle,
+    super.animationStyle,
+    super.splashStyle,
+    this.contentColor,
+    this.backgroundColor,
     this.borderRadius,
     super.width,
     super.height,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? context.color.buttonBackground,
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(height / 2),
+  Widget buildButton(BuildContext context, VoidCallback? pressed) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    final Color bgColor = backgroundColor ?? theme.colorScheme.primaryContainer;
+    final Color fgColor = contentColor ?? theme.colorScheme.onPrimaryContainer;
+    final BorderRadius radius =
+        borderRadius ?? BorderRadius.circular((height ?? 50) / 2);
+
+    return tappable(
+      pressed,
+      child: Container(
+        width: width ?? double.infinity,
+        height: height,
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: radius,
+          boxShadow: isDark
+              ? null
+              : <BoxShadow>[
+                  BoxShadow(
+                    color: bgColor.withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
         ),
-      ),
-      child: buildButtonChild(
-        context,
-        textColor: context.color.buttonContent,
-        backgroundColor: Colors.transparent,
-        borderRadius: BorderRadius.circular(height / 2),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: fgColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

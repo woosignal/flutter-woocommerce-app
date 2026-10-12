@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -24,7 +24,41 @@ import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-payPalPay(context, {TaxRate? taxRate}) async {
+/// Digs the capture reference out of a PayPal execute payment response. The
+/// sale id is the one PayPal shows against the transaction, so prefer it and
+/// fall back to the payment id when the response isn't shaped as expected.
+String? _payPalTransactionId(Map params) {
+  dynamic data = params['data'];
+  if (data is! Map) {
+    return null;
+  }
+
+  dynamic transactions = data['transactions'];
+  if (transactions is List) {
+    for (Object? transaction in transactions) {
+      if (transaction is! Map) {
+        continue;
+      }
+      dynamic relatedResources = transaction['related_resources'];
+      if (relatedResources is! List) {
+        continue;
+      }
+      for (Object? relatedResource in relatedResources) {
+        if (relatedResource is! Map) {
+          continue;
+        }
+        dynamic sale = relatedResource['sale'];
+        if (sale is Map && sale['id'] != null) {
+          return sale['id'].toString();
+        }
+      }
+    }
+  }
+
+  return data['id']?.toString();
+}
+
+Future<void> payPalPay(BuildContext context, {TaxRate? taxRate}) async {
   await checkout(taxRate, (total, billingDetails, cart) async {
     WooSignalApp? wooSignalApp = AppHelper.instance.appConfig;
 
@@ -36,9 +70,11 @@ payPalPay(context, {TaxRate? taxRate}) async {
 
     String shippingTotal =
         CheckoutSession.getInstance.shippingType?.getTotal() ?? "0";
-    String description =
-        "(${cartLineItems.length}) items from ${getEnv('APP_NAME')}"
-            .tr(arguments: {"appName": getEnv('APP_NAME')});
+    String description = "({{itemCount}}) items from {{appName}}".tr(
+        arguments: {
+          "itemCount": cartLineItems.length.toString(),
+          "appName": getEnv('APP_NAME')
+        });
 
     if (taxTotal == "") {
       taxTotal = "0";
@@ -47,6 +83,10 @@ payPalPay(context, {TaxRate? taxRate}) async {
     if (shippingTotal == "") {
       shippingTotal = "0";
     }
+
+    // Nothing has been charged yet, so if the checkout page closed while the
+    // totals were being worked out, stop before opening PayPal.
+    if (!context.mounted) return;
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -94,19 +134,19 @@ payPalPay(context, {TaxRate? taxRate}) async {
             }
           ],
           onSuccess: (Map params) async {
-            OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
+            OrderWC orderWC = await buildOrderWC(
+                taxRate: taxRate, transactionId: _payPalTransactionId(params));
             Order? order =
                 await (appWooSignal((api) => api.createOrder(orderWC)));
 
             if (order == null) {
-              updateState(CheckoutConfirmationPage.path.nyPageName(), data: {
-                "reloadState": false,
-                "toast": {
-                  "title": trans("Error"),
-                  "description":
-                      trans("Something went wrong, please contact our store")
-                }
-              });
+              stateAction("payment_failed",
+                  state: CheckoutConfirmationPage.path,
+                  data: {
+                    "title": trans("Error"),
+                    "description":
+                        trans("Something went wrong, please contact our store")
+                  });
               return;
             }
 
@@ -120,8 +160,8 @@ payPalPay(context, {TaxRate? taxRate}) async {
               description:
                   trans("Something went wrong, please contact our store"),
             );
-            updateState(CheckoutConfirmationPage.path.nyPageName(),
-                data: {"reloadState": false});
+            stateAction("payment_finished",
+                state: CheckoutConfirmationPage.path);
           },
           onCancel: () {
             showToastNotification(
@@ -129,8 +169,8 @@ payPalPay(context, {TaxRate? taxRate}) async {
               title: trans("Payment Cancelled"),
               description: trans("The payment has been cancelled"),
             );
-            updateState(CheckoutConfirmationPage.path.nyPageName(),
-                data: {"reloadState": false});
+            stateAction("payment_finished",
+                state: CheckoutConfirmationPage.path);
           },
         ),
       ),

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -32,7 +32,7 @@ class StatusAlertBaseWidget extends StatefulWidget {
   final double? maxWidth;
 
   const StatusAlertBaseWidget(
-      {Key? key,
+      {super.key,
       required this.margin,
       required this.padding,
       required this.alignment,
@@ -46,11 +46,10 @@ class StatusAlertBaseWidget extends StatefulWidget {
       this.titleOptions,
       this.configuration,
       this.subtitleOptions,
-      this.maxWidth})
-      : super(key: key);
+      this.maxWidth});
 
   @override
-  __TDBaseWidgetState createState() => __TDBaseWidgetState();
+  State<StatusAlertBaseWidget> createState() => __TDBaseWidgetState();
 }
 
 class __TDBaseWidgetState extends State<StatusAlertBaseWidget>
@@ -173,7 +172,9 @@ class __TDBaseWidgetState extends State<StatusAlertBaseWidget>
             textDirection: widget.titleOptions!.textDirection,
             textWidthBasis: widget.titleOptions!.textWidthBasis,
             semanticsLabel: widget.titleOptions!.semanticsLabel,
-            textScaleFactor: widget.titleOptions!.textScaleFactor,
+            textScaler: widget.titleOptions!.textScaleFactor == null
+                ? null
+                : TextScaler.linear(widget.titleOptions!.textScaleFactor!),
           ),
         ));
       }
@@ -197,7 +198,9 @@ class __TDBaseWidgetState extends State<StatusAlertBaseWidget>
             textDirection: widget.subtitleOptions!.textDirection,
             textWidthBasis: widget.subtitleOptions!.textWidthBasis,
             semanticsLabel: widget.subtitleOptions!.semanticsLabel,
-            textScaleFactor: widget.subtitleOptions!.textScaleFactor,
+            textScaler: widget.subtitleOptions!.textScaleFactor == null
+                ? null
+                : TextScaler.linear(widget.subtitleOptions!.textScaleFactor!),
           ),
         ));
       }
@@ -207,7 +210,7 @@ class __TDBaseWidgetState extends State<StatusAlertBaseWidget>
         sigmaX: 2.0,
         sigmaY: 2.0,
       ),
-      child: Container(
+      child: SizedBox(
         width: screenWidth * 0.72,
         child: AspectRatio(
           aspectRatio: 1.0,

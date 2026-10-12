@@ -243,5 +243,43 @@
   "Save Note": "Save Note",
   "Enter order note": "Enter order note",
   "Order note must be less than 100 characters": "Order note must be less than 100 characters",
-  "Select your language": "Select your language"
+  "Select your language": "Select your language",
+  "Close": "Close",
+  "{{ratingCount}} Reviews": "{{ratingCount}} Reviews",
+  "{{averageRating}} Stars": "{{averageRating}} Stars",
+  "New": "New",
+  "nylo": {
+    "form_picker": {
+      "clear": "Clear",
+      "select": "Select"
+    },
+    "journey": {
+      "of": "of",
+      "step": "Step",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish"
+    },
+    "language_switcher": {
+      "title": "Select your language"
+    },
+    "collection_view": {
+      "no_results": "No results found",
+      "pull_up": "Pull up load",
+      "failed": "Failed to load more results",
+      "release": "Release to load more"
+    },
+    "confirm_action": {
+      "cancel": "Cancel",
+      "confirm": "Yes"
+    },
+    "page_not_found": {
+      "title": "Page Not Found",
+      "message": "Sorry, the page you have requested is not available.",
+      "go_back": "Go back"
+    },
+    "offline_banner": {
+      "message": "No internet connection"
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/app/models/checkout_session.dart';
 import '/resources/pages/checkout_confirmation_page.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutCustomerNote extends StatelessWidget {
@@ -49,7 +49,7 @@ class CheckoutCustomerNote extends StatelessWidget {
     );
   }
 
-  _actionCustomerNote(BuildContext context) {
+  void _actionCustomerNote(BuildContext context) {
     // open modal to add customer note
     showModalBottomSheet<void>(
       isScrollControlled: true,
@@ -81,26 +81,24 @@ class CheckoutCustomerNote extends StatelessWidget {
                   },
                 ),
                 Padding(padding: EdgeInsets.only(top: 16)),
-                PrimaryButton(
-                    title: "Save Note".tr(),
-                    action: () {
+                Button.primary(
+                    text: "Save Note".tr(),
+                    onPressed: () {
                       if (CheckoutSession.getInstance.customerNote == "") {
                         CheckoutSession.getInstance.customerNote = null;
                       }
-                      bool isSuccessful = NyValidator.isSuccessful(rules: {
-                        "Order Note".tr(): [
-                          CheckoutSession.getInstance.customerNote ?? "",
-                          "max:100"
-                        ]
-                      });
+                      bool isSuccessful = FormValidator.maxLength(100)
+                          .that(CheckoutSession.getInstance.customerNote ?? "",
+                              "Order Note".tr())
+                          .check()
+                          .isValid;
                       if (isSuccessful == false) {
                         showToastNotification(context,
                             title: "Error".tr(),
                             description:
                                 "Order note must be less than 100 characters"
                                     .tr(),
-                            style: ToastNotificationStyleType.danger,
-                            icon: Icons.error);
+                            id: 'danger');
                         return;
                       }
                       StateAction.refreshPage(CheckoutConfirmationPage.path,
@@ -115,7 +113,7 @@ class CheckoutCustomerNote extends StatelessWidget {
     );
   }
 
-  _removeCustomerNote() {
+  void _removeCustomerNote() {
     CheckoutSession.getInstance.customerNote = null;
     StateAction.refreshPage(CheckoutConfirmationPage.path, setState: () {});
   }

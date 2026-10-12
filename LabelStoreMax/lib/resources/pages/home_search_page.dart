@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import '/resources/widgets/store_logo_widget.dart';
 import '/resources/pages/browse_search_page.dart';
 import '/bootstrap/app_helper.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
@@ -25,7 +25,7 @@ class HomeSearchPage extends NyStatefulWidget {
 class _HomeSearchPageState extends NyPage<HomeSearchPage> {
   final TextEditingController _txtSearchController = TextEditingController();
 
-  _actionSearch() {
+  void _actionSearch() {
     routeTo(BrowseSearchPage.path, data: _txtSearchController.text,
         onPop: (value) {
       if (["notic", "compo"].contains(AppHelper.instance.appConfig!.theme) ==
@@ -47,7 +47,7 @@ class _HomeSearchPageState extends NyPage<HomeSearchPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            NyTextField.compact(
+            InputField(
               decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
               controller: _txtSearchController,
               style: Theme.of(context).textTheme.displaySmall,
@@ -56,10 +56,9 @@ class _HomeSearchPageState extends NyPage<HomeSearchPage> {
               autoFocus: true,
               textCapitalization: TextCapitalization.sentences,
             ),
-            PrimaryButton(
-              title: trans("Search"),
-              action: _actionSearch,
-            )
+            Button.primary(
+              text: trans("Search"),
+              onPressed: _actionSearch)
           ],
         ).withGap(20),
       ),

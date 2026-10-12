@@ -11,7 +11,7 @@ class LogoutEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
+  handle(dynamic data) async {
     await WPJsonAPI.wpLogout();
     await Cart.getInstance.clear();
     WooSignal.instance.setWpUserId("");

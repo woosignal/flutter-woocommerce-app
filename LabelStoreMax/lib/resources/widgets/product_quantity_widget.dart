@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -28,14 +28,14 @@ class _ProductQuantityState extends NyState<ProductQuantity> {
   }
 
   @override
-  stateUpdated(dynamic data) async {
-    setState(() {
-      quantity = data['quantity'];
-    });
-  }
+  Map<String, Function> get stateActions => {
+        "set_quantity": (quantity) {
+          this.quantity = quantity;
+        },
+      };
 
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     return Text(
       quantity.toString(),
       style: Theme.of(context).textTheme.bodyLarge,

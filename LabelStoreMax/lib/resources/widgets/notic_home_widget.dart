@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -46,7 +46,7 @@ class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
         await _fetchCategories();
       };
 
-  _fetchCategories() async {
+  Future<void> _fetchCategories() async {
     if ((widget.wooSignalApp?.productCategoryCollections ?? []).isNotEmpty) {
       List<int> productCategoryId = widget
               .wooSignalApp?.productCategoryCollections
@@ -83,7 +83,7 @@ class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
     }
   }
 
-  _modalBottomSheetMenu() {
+  void _modalBottomSheetMenu() {
     wsModalBottom(
       context,
       title: trans("Categories"),
@@ -102,7 +102,10 @@ class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  LoadingStyle loadingStyle = LoadingStyle.none();
+
+  @override
+  Widget view(BuildContext context) {
     return Scaffold(
       drawer: HomeDrawerWidget(wooSignalApp: widget.wooSignalApp),
       appBar: AppBar(
@@ -176,10 +179,10 @@ class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
                     SizedBox(
                         height: 300,
                         width: double.infinity,
-                        child: NyPullToRefresh(
+                        child: CollectionView<ws_product.Product>.pullable(
                           scrollDirection: Axis.horizontal,
-                          child: (context, product) {
-                            product as ws_product.Product;
+                          builder: (context, item) {
+                            ws_product.Product product = item.data;
                             return SizedBox(
                               height: 300,
                               width: 300,
@@ -208,6 +211,6 @@ class _NoticHomeWidgetState extends NyState<NoticHomeWidget> {
     );
   }
 
-  _showProduct(ws_product.Product product) =>
+  Future<void> _showProduct(ws_product.Product product) =>
       routeTo(ProductDetailPage.path, data: product);
 }

@@ -2,10 +2,10 @@ import 'package:flutter/services.dart';
 import '/config/storage_keys.dart';
 import '/bootstrap/app_helper.dart';
 import '/bootstrap/helpers.dart';
-import '/config/decoders.dart';
+import '/bootstrap/decoders.dart';
 import '/config/design.dart';
-import '/config/theme.dart';
-import '/config/validation_rules.dart';
+import '/bootstrap/theme.dart';
+import '/config/toast_notification.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '/config/localization.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
@@ -14,13 +14,13 @@ import 'package:wp_json_api/wp_json_api.dart';
 
 class AppProvider implements NyProvider {
   @override
-  boot(Nylo nylo) async {
+  setup(Nylo nylo) async {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
 
     await WooSignal.instance.init(
-      appKey: getEnv('APP_KEY'),
+      appKey: getEnv('WOOSIGNAL_APP_KEY'),
       debugMode: getEnv('APP_DEBUG'),
       encryptKey: getEnv('ENCRYPT_KEY', defaultValue: null),
       encryptSecret: getEnv('ENCRYPT_SECRET', defaultValue: null),
@@ -83,31 +83,34 @@ class AppProvider implements NyProvider {
       }
     }
 
-    /// NyLocalization
-    await NyLocalization.instance.init(
-      localeType: localeType,
-      languageCode: locale.languageCode,
-      assetsDirectory: assetsDirectory,
+    // NOTE: `initialThemeId` is deliberately NOT passed. Supplying it turns off
+    // NyThemeManager's followSystemTheme, which would pin nyColorStyle (i.e.
+    // every context.color call) to the light palette while MaterialApp still
+    // swaps to darkTheme under ThemeMode.system - dark ThemeData with light
+    // colours. Omitting it makes registerThemes pick the theme from system
+    // brightness, matching the v6 ThemeMode.system behaviour. A theme the user
+    // picks in the drawer is still saved and restored by NyThemeManager.init().
+    await nylo.configure(
+      loader: DesignConfig.loader,
+      logo: DesignConfig.logo,
+      themes: appThemes,
+      toastNotifications: ToastNotificationConfig.styles,
+      modelDecoders: modelDecoders,
+      controllers: controllers,
+      apiDecoders: apiDecoders,
+      authKey: nylo.getAuthKey() == null ? StorageKeysConfig.auth : null,
+      syncKeys: StorageKeysConfig.syncedOnBoot,
+      useErrorStack: true,
+      localization: NyLocalizationConfig(
+        localeType: LocalizationConfig.localeType,
+        languageCode: locale.languageCode,
+        assetsDirectory: LocalizationConfig.assetsDirectory,
+      ),
     );
-
-    nylo.addLoader(loader);
-    nylo.addLogo(logo);
-    nylo.addThemes(appThemes);
-    nylo.addToastNotification(getToastNotificationWidget);
-    nylo.addValidationRules(validationRules);
-    nylo.addModelDecoders(modelDecoders);
-    nylo.addControllers(controllers);
-    nylo.addApiDecoders(apiDecoders);
-    nylo.useErrorStack();
-
-    if (nylo.getAuthKey() == null) {
-      nylo.addAuthKey(Keys.auth);
-    }
-    await nylo.syncKeys(Keys.syncedOnBoot);
 
     return nylo;
   }
 
   @override
-  afterBoot(Nylo nylo) async {}
+  boot(Nylo nylo) async {}
 }

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -14,7 +14,7 @@ import '/resources/widgets/product_item_container_widget.dart';
 import '/resources/pages/product_detail_page.dart';
 import '/bootstrap/enums/sort_enums.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -23,6 +23,9 @@ import 'package:woosignal/models/response/product.dart' as ws_product;
 
 class BrowseCategoryPage extends NyStatefulWidget {
   static RouteView path = ("/browse-category", (_) => BrowseCategoryPage());
+
+  /// State name for the category's pull-to-refresh CollectionView.
+  static const String productListState = 'browse_category_pull_to_refresh';
 
   BrowseCategoryPage({super.key})
       : super(child: () => _BrowseCategoryPageState());
@@ -61,7 +64,7 @@ class _BrowseCategoryPageState extends NyPage<BrowseCategoryPage> {
         ],
       ),
       body: SafeAreaWidget(
-          child: NyPullToRefresh.grid(
+          child: CollectionView<ws_product.Product>.pullableGrid(
         data: (page) async {
           List<ws_product.Product> products =
               await appWooSignal((api) => api.getProducts(
@@ -73,7 +76,8 @@ class _BrowseCategoryPageState extends NyPage<BrowseCategoryPage> {
                   ));
           return products;
         },
-        child: (context, product) {
+        builder: (context, item) {
+          ws_product.Product product = item.data;
           return SizedBox(
             height: 300,
             child: ProductItemContainer(
@@ -82,7 +86,7 @@ class _BrowseCategoryPageState extends NyPage<BrowseCategoryPage> {
             ),
           );
         },
-        stateName: 'browse_category_pull_to_refresh',
+        stateName: BrowseCategoryPage.productListState,
         sort: (products) {
           return _sortProducts(products,
               by: _sortByType ?? SortByType.dateDesc);
@@ -91,7 +95,8 @@ class _BrowseCategoryPageState extends NyPage<BrowseCategoryPage> {
     );
   }
 
-  _sortProducts(List<ws_product.Product> products, {required SortByType by}) {
+  List<ws_product.Product> _sortProducts(List<ws_product.Product> products,
+      {required SortByType by}) {
     switch (by) {
       case SortByType.lowToHigh:
         products.sort(
@@ -132,97 +137,91 @@ class _BrowseCategoryPageState extends NyPage<BrowseCategoryPage> {
     return products;
   }
 
-  _modalSheetTune() {
+  void _modalSheetTune() {
     wsModalBottom(
       context,
       title: trans("Sort results"),
       bodyWidget: ListView(
         children: [
-          LinkButton(
-            title: trans("Sort: Low to high"),
+          Button.textOnly(
+            text: trans("Sort: Low to high"),
             selected: _sortByType == SortByType.lowToHigh,
-            action: () {
+            onPressed: () {
               _sortByType = SortByType.lowToHigh;
-              StateAction.refreshPage('browse_category_pull_to_refresh',
+              StateAction.refreshPage(BrowseCategoryPage.productListState,
                   setState: () {});
               pop();
-            },
-          ),
+            }),
           Divider(
             height: 0,
           ),
-          LinkButton(
-            title: trans("Sort: High to low"),
+          Button.textOnly(
+            text: trans("Sort: High to low"),
             selected: _sortByType == SortByType.highToLow,
-            action: () {
+            onPressed: () {
               _sortByType = SortByType.highToLow;
-              StateAction.refreshPage('browse_category_pull_to_refresh',
+              StateAction.refreshPage(BrowseCategoryPage.productListState,
                   setState: () {});
               pop();
-            },
-          ),
+            }),
           Divider(
             height: 0,
           ),
-          LinkButton(
-            title: trans("Sort: Name A-Z"),
+          Button.textOnly(
+            text: trans("Sort: Name A-Z"),
             selected: _sortByType == SortByType.nameAZ,
-            action: () {
+            onPressed: () {
               _sortByType = SortByType.nameAZ;
-              StateAction.refreshPage('browse_category_pull_to_refresh',
+              StateAction.refreshPage(BrowseCategoryPage.productListState,
                   setState: () {});
               pop();
-            },
-          ),
+            }),
           Divider(
             height: 0,
           ),
-          LinkButton(
-            title: trans("Sort: Name Z-A"),
+          Button.textOnly(
+            text: trans("Sort: Name Z-A"),
             selected: _sortByType == SortByType.nameZA,
-            action: () {
+            onPressed: () {
               _sortByType = SortByType.nameZA;
-              StateAction.refreshPage('browse_category_pull_to_refresh',
+              StateAction.refreshPage(BrowseCategoryPage.productListState,
                   setState: () {});
               pop();
-            },
-          ),
+            }),
           Divider(
             height: 0,
           ),
-          LinkButton(
-            title: trans("Sort: Date New to Old"),
+          Button.textOnly(
+            text: trans("Sort: Date New to Old"),
             selected: _sortByType == SortByType.dateDesc,
-            action: () {
+            onPressed: () {
               _sortByType = SortByType.dateDesc;
-              StateAction.refreshPage('browse_category_pull_to_refresh',
+              StateAction.refreshPage(BrowseCategoryPage.productListState,
                   setState: () {});
               pop();
-            },
-          ),
+            }),
           Divider(
             height: 0,
           ),
-          LinkButton(
-            title: trans("Sort: Date Old to New"),
+          Button.textOnly(
+            text: trans("Sort: Date Old to New"),
             selected: _sortByType == SortByType.dateAsc,
-            action: () {
+            onPressed: () {
               _sortByType = SortByType.dateAsc;
-              StateAction.refreshPage('browse_category_pull_to_refresh',
+              StateAction.refreshPage(BrowseCategoryPage.productListState,
                   setState: () {});
               pop();
-            },
-          ),
+            }),
           Divider(
             height: 0,
           ),
-          LinkButton(title: trans("Cancel"), action: pop)
+          Button.textOnly(text: trans("Cancel"), onPressed: pop)
         ],
       ),
     );
   }
 
-  _showProduct(ws_product.Product product) {
+  void _showProduct(ws_product.Product product) {
     routeTo(ProductDetailPage.path, data: product);
   }
 }

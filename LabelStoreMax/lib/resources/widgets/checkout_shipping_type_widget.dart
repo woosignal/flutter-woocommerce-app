@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -20,13 +20,11 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 class CheckoutShippingTypeWidget extends StatelessWidget {
   const CheckoutShippingTypeWidget(
       {super.key,
-      required this.context,
       required this.wooSignalApp,
       required this.checkoutSession,
       this.resetState});
 
   final CheckoutSession checkoutSession;
-  final BuildContext context;
   final Function? resetState;
   final WooSignalApp? wooSignalApp;
 
@@ -44,12 +42,12 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
       leadTitle: hasSelectedShippingType
           ? checkoutSession.shippingType!.getTitle()
           : trans("Select a shipping option"),
-      action: _actionSelectShipping,
+      action: () => _actionSelectShipping(context),
       showBorderBottom: true,
     );
   }
 
-  _actionSelectShipping() {
+  void _actionSelectShipping(BuildContext context) {
     CustomerAddress? shippingAddress =
         checkoutSession.billingDetails?.shippingAddress;
     if (shippingAddress == null || shippingAddress.customerCountry == null) {
@@ -57,7 +55,6 @@ class CheckoutShippingTypeWidget extends StatelessWidget {
         context,
         title: trans("Oops"),
         description: trans("Add your shipping details first"),
-        icon: Icons.local_shipping,
       );
       return;
     }

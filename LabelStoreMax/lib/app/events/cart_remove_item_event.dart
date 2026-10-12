@@ -15,18 +15,18 @@ class CartRemoveItemEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
-    CartLineItem cartLineItem = event["cartLineItem"];
+  handle(dynamic data) async {
+    CartLineItem cartLineItem = data["cartLineItem"];
     bool complete = (await Cart.getInstance.removeCartItem(cartLineItem));
     if (complete != true) {
       return;
     }
 
     // update states
-    updateState(CartPage.path, data: {"action": "showToastCartItemRemoved"});
+    stateAction("item_removed", state: CartPage.path);
 
-    updateState(ShoppingCartTotal.state);
-    NyListView.stateReset("shopping_cart_items_list_view");
-    updateState(CartQuantity.state);
+    stateAction("refresh", state: ShoppingCartTotal.state);
+    CollectionView.stateActions(CartPage.cartListState).reset();
+    stateAction("refresh", state: CartQuantity.state);
   }
 }

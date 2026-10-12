@@ -1,7 +1,7 @@
 // //  Label StoreMax
 // //
 // //  Created by Anthony Gordon.
-// //  2025, WooSignal Ltd. All rights reserved.
+// //  2026, WooSignal Ltd. All rights reserved.
 // //
 //
 // //  Unless required by applicable law or agreed to in writing, software
@@ -34,8 +34,8 @@
 //         title: "Error".tr(),
 //         description: trans("Something went wrong, please contact our store"),
 //       );
-//       updateState(CheckoutConfirmationPage.path.nyPageName(),
-//           data: {"reloadState": false});
+//       stateAction("payment_finished",
+//           state: CheckoutConfirmationPage.path);
 //       return;
 //     }
 //     Cart.getInstance.clear();
@@ -47,8 +47,8 @@
 //         title: trans("Error"),
 //         description: response.message ?? "",
 //         style: ToastNotificationStyleType.warning);
-//     updateState(CheckoutConfirmationPage.path.nyPageName(),
-//         data: {"reloadState": false});
+//     stateAction("payment_finished",
+//         state: CheckoutConfirmationPage.path);
 //   });
 //
 //   razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -70,8 +70,8 @@
 //       }
 //     };
 //
-//     updateState(CheckoutConfirmationPage.path.nyPageName(),
-//         data: {"reloadState": true});
+//     stateAction("payment_started",
+//         state: CheckoutConfirmationPage.path);
 //
 //     razorpay.open(options);
 //   });

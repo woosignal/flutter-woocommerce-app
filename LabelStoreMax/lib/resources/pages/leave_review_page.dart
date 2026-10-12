@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,7 +11,7 @@
 import 'package:flutter/material.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -27,13 +27,12 @@ class LeaveReviewPage extends NyStatefulWidget {
   LeaveReviewPage({super.key}) : super(child: () => _LeaveReviewPageState());
 }
 
-class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
+class _LeaveReviewPageState extends NyPage<LeaveReviewPage> {
   LineItems? _lineItem;
   Order? _order;
 
   TextEditingController? _textEditingController;
   int? _rating;
-  bool _isLoading = false;
 
   @override
   get init => () {
@@ -51,9 +50,9 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
         centerTitle: true,
       ),
       body: SafeAreaWidget(
-          child: _isLoading
-              ? AppLoaderWidget()
-              : Column(
+          child: afterNotLocked('leave_review',
+              loading: AppLoaderWidget(),
+              child: () => Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -95,75 +94,60 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 16),
                     ),
-                    PrimaryButton(title: trans("Submit"), action: _leaveReview),
+                    Button.primary(
+                        text: trans("Submit"), onPressed: _leaveReview),
                   ],
-                )),
+                ))),
     );
   }
 
-  _leaveReview() async {
-    if (_isLoading == true) {
-      return;
-    }
-    setState(() {
-      _isLoading = true;
-    });
-    String review = _textEditingController!.text;
-    wc_customer_info.Data? wcCustomerInfo = await _fetchWpUserData();
-    if (wcCustomerInfo == null) {
+  Future<void> _leaveReview() async {
+    await lockRelease('leave_review', perform: () async {
+      String review = _textEditingController!.text;
+      wc_customer_info.Data? wcCustomerInfo = await _fetchWpUserData();
+      if (wcCustomerInfo == null) {
+        showToast(
+            title: trans("Oops!"),
+            description: trans("Something went wrong"),
+            id: 'danger');
+        return;
+      }
+
+      bool isValid = check((validators) {
+        validators.add(FormValidator.minLength(5).that(review, "Review"));
+      }, onValidationError: (_) {
+        showToastWarning(description: trans("Please check your details"));
+      }).isValid;
+
+      if (isValid == false) {
+        return;
+      }
+
+      ProductReview? productReview =
+          await (appWooSignal((api) => api.createProductReview(
+                productId: _lineItem!.productId,
+                verified: true,
+                review: review,
+                status: "approved",
+                reviewer: [
+                  _order!.billing!.firstName,
+                  _order!.billing!.lastName
+                ].join(" "),
+                rating: _rating,
+                reviewerEmail: _order!.billing!.email,
+              )));
+
+      if (productReview == null) {
+        showToastOops(
+            title: trans("Oops"), description: trans("Something went wrong"));
+        return;
+      }
       showToast(
-          title: trans("Oops!"),
-          description: trans("Something went wrong"),
-          icon: Icons.info_outline,
-          style: ToastNotificationStyleType.danger);
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    }
-
-    validate(
-        rules: {"review": "min:5"},
-        data: {"review": review},
-        onSuccess: () async {
-          ProductReview? productReview =
-              await (appWooSignal((api) => api.createProductReview(
-                    productId: _lineItem!.productId,
-                    verified: true,
-                    review: review,
-                    status: "approved",
-                    reviewer: [
-                      _order!.billing!.firstName,
-                      _order!.billing!.lastName
-                    ].join(" "),
-                    rating: _rating,
-                    reviewerEmail: _order!.billing!.email,
-                  )));
-
-          if (productReview == null) {
-            showToastOops(
-                title: trans("Oops"),
-                description: trans("Something went wrong"));
-            setState(() {
-              _isLoading = false;
-            });
-            return;
-          }
-          showToast(
-              title: trans("Success"),
-              description: trans("Your review has been submitted"),
-              icon: Icons.check,
-              style: ToastNotificationStyleType.success);
-          pop(result: _lineItem);
-          setState(() {
-            _isLoading = false;
-          });
-        },
-        onFailure: (errors) {
-          setState(() {
-            _isLoading = false;
-          });
-        });
+          title: trans("Success"),
+          description: trans("Your review has been submitted"),
+          id: 'success');
+      pop(result: _lineItem);
+    });
   }
 
   Future<wc_customer_info.Data?> _fetchWpUserData() async {
@@ -179,7 +163,8 @@ class _LeaveReviewPageState extends NyState<LeaveReviewPage> {
         return null;
       }
       return wcCustomerInfoResponse.data;
-    } on Exception catch (_) {
+    } on Exception catch (e) {
+      printError(e.toString());
       return null;
     }
   }

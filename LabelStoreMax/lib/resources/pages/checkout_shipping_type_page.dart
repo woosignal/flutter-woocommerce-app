@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -18,9 +18,10 @@ import '/app/models/customer_country.dart';
 import '/app/models/shipping_type.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/shipping_method.dart';
 
@@ -33,16 +34,21 @@ class CheckoutShippingTypePage extends NyStatefulWidget {
 }
 
 class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
-  bool _isShippingSupported = true, _isLoading = true;
+  bool _isShippingSupported = true;
   final List<Map<String, dynamic>> _wsShippingOptions = [];
   WSShipping? _shipping;
 
+  /// The page keeps its own chrome while `init` runs and shows the loader
+  /// inside the shipping card, so the framework must not swap the whole view.
   @override
-  get init => () {
-        _getShippingMethods();
+  LoadingStyle loadingStyle = LoadingStyle.none();
+
+  @override
+  get init => () async {
+        await _getShippingMethods();
       };
 
-  _getShippingMethods() async {
+  Future<void> _getShippingMethods() async {
     List<WSShipping> wsShipping =
         await (appWooSignal((api) => api.getShippingMethods()));
 
@@ -52,9 +58,6 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
     CustomerCountry? customerCountry = customerAddress.customerCountry;
 
     if (customerCountry == null) {
-      setState(() {
-        _isLoading = false;
-      });
       return;
     }
 
@@ -105,9 +108,10 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
       _isShippingSupported = false;
     }
 
-    setState(() {
-      _isLoading = false;
-    });
+    // Work the prices out once, here, rather than from inside `itemBuilder`.
+    for (int i = 0; i < _wsShippingOptions.length; i++) {
+      _wsShippingOptions[i]['price'] = await _getShippingPrice(i);
+    }
   }
 
   Future<String> _getShippingPrice(int index) async {
@@ -158,7 +162,7 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
     return (total).toString();
   }
 
-  _handleShippingZones(WSShipping? shipping) async {
+  Future<void> _handleShippingZones(WSShipping? shipping) async {
     if (shipping != null && shipping.methods != null) {
       if (shipping.methods!.flatRate != null) {
         shipping.methods!.flatRate!.toList().forEach((flatRate) {
@@ -223,7 +227,7 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -254,7 +258,7 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: ThemeColor.get(context).backgroundContainer,
+                    color: context.color.container.background,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow:
                         (Theme.of(context).brightness == Brightness.light)
@@ -266,7 +270,7 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      (_isLoading
+                      (isLoading()
                           ? Expanded(child: AppLoaderWidget())
                           : (_isShippingSupported
                               ? Expanded(
@@ -293,9 +297,8 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
                                               ),
                                         ),
                                         selected: true,
-                                        subtitle: NyFutureBuilder<String>(
-                                          future: _getShippingPrice(index),
-                                          child: (BuildContext context, data) {
+                                        subtitle: Builder(
+                                          builder: (BuildContext context) {
                                             Map<String, dynamic>
                                                 shippingOption =
                                                 _wsShippingOptions[index];
@@ -314,7 +317,7 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
                                                         )
                                                       : TextSpan(
                                                           text:
-                                                              "${trans("Price")}: ${formatStringCurrency(total: data)}",
+                                                              "${trans("Price")}: ${formatStringCurrency(total: shippingOption["price"])}",
                                                         )),
                                                   if (shippingOption[
                                                           "min_amount"] !=
@@ -353,10 +356,9 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
                                   style: Theme.of(context).textTheme.titleLarge,
                                   textAlign: TextAlign.center,
                                 ))),
-                      LinkButton(
-                        title: trans("CANCEL"),
-                        action: () => Navigator.pop(context),
-                      ),
+                      Button.textOnly(
+                        text: trans("CANCEL"),
+                        onPressed: () => Navigator.pop(context)),
                     ],
                   ),
                 ),
@@ -368,12 +370,12 @@ class _CheckoutShippingTypePageState extends NyPage<CheckoutShippingTypePage> {
     );
   }
 
-  _handleCheckoutTapped(int index) async {
+  Future<void> _handleCheckoutTapped(int index) async {
     Map<String, dynamic> shippingOptions = _wsShippingOptions[index];
     ShippingType shippingType = ShippingType(
         methodId: shippingOptions['method_id'],
         object: shippingOptions['object'],
-        cost: (await _getShippingPrice(index)),
+        cost: shippingOptions['price'],
         minimumValue: null);
 
     if (_wsShippingOptions[index]['min_amount'] != null) {

@@ -1,31 +1,70 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import '/bootstrap/extensions.dart';
 import '/resources/widgets/buttons/abstract/app_button.dart';
 
-class TransparencyButton extends AppButton {
-  final Color? color;
+class TransparencyButton extends StatefulAppButton {
+  final Color? contentColor;
+  final double blurAmount;
 
-  const TransparencyButton({
+  TransparencyButton({
     super.key,
     required super.text,
     super.onPressed,
-    this.color,
+    super.submitForm,
+    super.onFailure,
+    super.showToastError = true,
+    super.loadingStyle,
+    super.animationStyle,
+    super.splashStyle,
+    this.contentColor,
+    this.blurAmount = 10,
     super.width,
     super.height,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      color: Colors.white.withOpacity(0.3),
-      elevation: 0,
-      onPressed: onPressed,
-      child: buildButtonChild(
-        context,
-        textColor: color ?? context.color.buttonContent,
-        backgroundColor: Colors.transparent,
+  Widget buildButton(BuildContext context, VoidCallback? pressed) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    final Color fgColor = contentColor ??
+        (isDark ? Colors.white : theme.colorScheme.onSurface);
+    final Color bgColor = isDark
+        ? Colors.white.withValues(alpha: 0.12)
+        : Colors.black.withValues(alpha: 0.05);
+    final BorderRadius radius = BorderRadius.circular(12);
+
+    return tappable(
+      pressed,
+      child: ClipRRect(
+        borderRadius: radius,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: blurAmount, sigmaY: blurAmount),
+          child: Container(
+            width: width ?? double.infinity,
+            height: height,
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: radius,
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.05),
+                width: 1,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: TextStyle(
+                color: fgColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.1,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

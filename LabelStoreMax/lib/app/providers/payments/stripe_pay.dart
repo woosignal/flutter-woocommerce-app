@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -21,7 +21,7 @@ import 'package:woosignal/models/response/order.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
-stripePay(context, {TaxRate? taxRate}) async {
+Future<void> stripePay(BuildContext context, {TaxRate? taxRate}) async {
   WooSignalApp? wooSignalApp = AppHelper.instance.appConfig;
 
   bool liveMode = getEnv('STRIPE_LIVE_MODE') == null
@@ -59,15 +59,19 @@ stripePay(context, {TaxRate? taxRate}) async {
     });
 
     if (rsp == null) {
-      showToastNotification(context,
-          title: trans("Oops!"),
-          description: trans("Something went wrong, please try again."),
-          icon: Icons.payment,
-          style: ToastNotificationStyleType.warning);
-      updateState(CheckoutConfirmationPage.path.nyPageName(),
-          data: {"reloadState": false});
+      if (context.mounted) {
+        showToastNotification(context,
+            title: trans("Oops!"),
+            description: trans("Something went wrong, please try again."),
+            id: 'warning');
+      }
+      stateAction("payment_finished", state: CheckoutConfirmationPage.path);
       return;
     }
+
+    // Nothing has been charged yet, so if the checkout page closed while the
+    // payment intent was being created, stop before showing the payment sheet.
+    if (!context.mounted) return;
 
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
@@ -87,13 +91,13 @@ stripePay(context, {TaxRate? taxRate}) async {
     PaymentIntent paymentIntent =
         await Stripe.instance.retrievePaymentIntent(rsp!['client_secret']);
 
-    if (paymentIntent.status == PaymentIntentsStatus.Unknown) {
+    if (paymentIntent.status == PaymentIntentsStatus.Unknown &&
+        context.mounted) {
       showToastNotification(
         context,
         title: trans("Oops!"),
         description: trans("Something went wrong, please try again."),
-        icon: Icons.payment,
-        style: ToastNotificationStyleType.warning,
+        id: 'warning',
       );
     }
 
@@ -101,20 +105,23 @@ stripePay(context, {TaxRate? taxRate}) async {
       return;
     }
 
-    updateState(CheckoutConfirmationPage.path.nyPageName(),
-        data: {"reloadState": true});
+    stateAction("payment_started", state: CheckoutConfirmationPage.path);
 
-    OrderWC orderWC = await buildOrderWC(taxRate: taxRate);
+    // The PaymentIntent id is what ties the WooCommerce order back to the
+    // charge in Stripe.
+    OrderWC orderWC =
+        await buildOrderWC(taxRate: taxRate, transactionId: paymentIntent.id);
     Order? order = await (appWooSignal((api) => api.createOrder(orderWC)));
 
     if (order == null) {
-      showToastNotification(
-        context,
-        title: trans("Error"),
-        description: trans("Something went wrong, please contact our store"),
-      );
-      updateState(CheckoutConfirmationPage.path.nyPageName(),
-          data: {"reloadState": false});
+      if (context.mounted) {
+        showToastNotification(
+          context,
+          title: trans("Error"),
+          description: trans("Something went wrong, please contact our store"),
+        );
+      }
+      stateAction("payment_finished", state: CheckoutConfirmationPage.path);
       return;
     }
 
@@ -124,27 +131,27 @@ stripePay(context, {TaxRate? taxRate}) async {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
       NyLogger.error(e.error.message!);
     }
-    showToastNotification(
-      context,
-      title: trans("Oops!"),
-      description: e.error.localizedMessage!,
-      icon: Icons.payment,
-      style: ToastNotificationStyleType.warning,
-    );
-    updateState(CheckoutConfirmationPage.path.nyPageName(),
-        data: {"reloadState": false});
+    if (context.mounted) {
+      showToastNotification(
+        context,
+        title: trans("Oops!"),
+        description: e.error.localizedMessage!,
+        id: 'warning',
+      );
+    }
+    stateAction("payment_finished", state: CheckoutConfirmationPage.path);
   } catch (ex) {
     if (getEnv('APP_DEBUG', defaultValue: true)) {
       NyLogger.error(ex.toString());
     }
-    showToastNotification(
-      context,
-      title: trans("Oops!"),
-      description: trans("Something went wrong, please try again."),
-      icon: Icons.payment,
-      style: ToastNotificationStyleType.warning,
-    );
-    updateState(CheckoutConfirmationPage.path.nyPageName(),
-        data: {"reloadState": false});
+    if (context.mounted) {
+      showToastNotification(
+        context,
+        title: trans("Oops!"),
+        description: trans("Something went wrong, please try again."),
+        id: 'warning',
+      );
+    }
+    stateAction("payment_finished", state: CheckoutConfirmationPage.path);
   }
 }

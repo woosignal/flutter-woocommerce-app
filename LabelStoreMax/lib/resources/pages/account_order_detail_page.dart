@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -228,7 +228,7 @@ class _AccountOrderDetailPageState extends NyPage<AccountOrderDetailPage> {
     );
   }
 
-  _fetchOrder() async {
+  Future<void> _fetchOrder() async {
     _order = await (appWooSignal((api) => api.retrieveOrder(_orderId!)));
   }
 }

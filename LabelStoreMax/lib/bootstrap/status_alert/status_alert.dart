@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -74,5 +74,5 @@ class StatusAlert {
 
   static void hide() => StatusAlertManager.dismiss();
 
-  static get isVisible => StatusAlertManager.isVisible;
+  static bool get isVisible => StatusAlertManager.isVisible;
 }

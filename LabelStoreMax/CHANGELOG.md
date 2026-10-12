@@ -1,3 +1,115 @@
+## Unreleased
+
+Label StoreMax now runs on **Nylo 7**. This release contains breaking changes -
+read the steps below before upgrading an existing project.
+
+### Breaking - you must do this
+
+* **Your WooSignal app key moved to `WOOSIGNAL_APP_KEY`.** Nylo 7 reserves
+  `APP_KEY` for environment encryption, so `.env` now holds your WooSignal key
+  under `WOOSIGNAL_APP_KEY`.
+* **New build step: `dart run nylo_framework:main make:env`.** The `.env` file is
+  compiled into `lib/bootstrap/env.g.dart` (git-ignored). Run it once after
+  adding your key, and again after **every** change to `.env`.
+* **`public/` was renamed to `assets/`.** Move any images or JSON you added, and
+  update `ASSET_PATH` if you changed it.
+* **The `PrimaryButton`, `SecondaryButton`, `LinkButton` and `WooSignalButton`
+  widgets are gone.** Use `Button.primary(...)`, `Button.secondary(...)` and
+  `Button.textOnly(...)` from `resources/widgets/buttons/buttons.dart`. They take
+  `text:`/`onPressed:` instead of `title:`/`action:`, and manage their own
+  loading state, so `isLoading:` is no longer needed.
+* `openBrowserTab(url: ...)` was replaced by Nylo's `openUrl(...)`.
+* `UserAuth` and `navigatorPush()` were removed. The account pages are protected
+  by `AuthRouteGuard` (`lib/routes/guards/auth_route_guard.dart`), which sends
+  signed-out customers to the login page and returns them to where they were
+  going once they sign in.
+* The `BuildContext context` constructor field was removed from
+  `CheckoutUserDetailsWidget`, `CheckoutPaymentTypeWidget`,
+  `CheckoutShippingTypeWidget` and `CheckoutSelectCouponWidget`.
+* `WishListPageWidget` is now `WishlistPage`
+  (`lib/resources/pages/wishlist_page.dart`). Its `/wishlist` route is unchanged.
+* Registration is now a Nylo form (`lib/app/forms/register_form.dart`). New
+  passwords must be at least 8 characters with an uppercase letter and a digit,
+  matching the login form.
+
+### Fixed
+
+* Category push notifications from the WooSignal dashboard now open the right
+  category. They were dropped before, because the handler required an `order_id`
+  that a category push never carries.
+* `ENCRYPT_SECRET` is read from the environment instead of `ENCRYPT_KEY` being
+  read twice, so encrypted app config works again.
+* The home screen no longer waits 4 seconds before its first frame.
+* Firebase failing to initialize (a store with no `firebase_options.dart` set up)
+  no longer takes the whole app down - push notifications are simply disabled
+  for that session.
+* Push notification listeners moved from `HomePage` to `FirebaseProvider`, so
+  they are registered once instead of once per visit to the home screen. An
+  order push used to fire its event once for every time home had been opened.
+* A mistyped deep link now lands on a not-found page instead of falling through
+  to the framework default.
+* Placing an order no longer fails when no shipping method has been chosen.
+  Whenever the store had shipping enabled, the order builder required a
+  shipping method and crashed without one - which a customer could hit if the
+  shipping methods could not be loaded, if no method matched their address, or
+  if shipping was switched on in the dashboard mid-session. The order is now
+  placed with no shipping line, as it already was for stores with shipping
+  disabled.
+* An order note typed at checkout is no longer kept after the order is placed.
+  It was left on the checkout session, so it was pre-filled into the next
+  checkout and sent to WooCommerce with the next order.
+* A product with no creation date no longer takes down the product grid.
+* A product or category whose name is empty no longer throws when its title is
+  rendered.
+* Chinese: the checkout button read 查看 ("view") instead of 结账.
+
+### Changed
+
+* Upgraded to `nylo_framework: ^7.1.28`; dropped `flutter_dotenv`,
+  `pretty_dio_logger` and the direct `url_launcher` dependency.
+* Framework files moved to the Nylo 7 layout: `lib/bootstrap/` holds
+  `boot`, `decoders`, `events`, `providers` and `theme`; `lib/config/` holds
+  `app`, `design`, `localization`, `storage_keys` and `toast_notification`;
+  themes live under `resources/themes/{light,dark}/`.
+* `MaterialApp` now advertises all 12 shipped locales, and every `lang/*.json`
+  carries the framework's own `nylo` translations.
+* `test/` now has a working suite - `flutter test` runs a router smoke test that
+  proves every registered route still resolves to a page.
+* `flutter analyze` is clean: all deprecated API use has been updated.
+
+#### Orders created in WooCommerce look different
+
+The order payload the app sends to WooCommerce was corrected to match the REST
+API's order schema. Nothing needs to change on your side, but orders placed by
+the app will look different in WooCommerce admin from this release on:
+
+* **`payment_method` is now a real gateway id** - `stripe`, `cod`, `paypal` or
+  `razorpay` - instead of a label like `Stripe - Android App`. WooCommerce can
+  now match the order to the gateway, so gateway-specific refunds and any
+  plugin that branches on the payment method work on app orders. Custom
+  gateways fall back to their lowercased `name`, so name yours after its
+  WooCommerce gateway id.
+* **`payment_method_title` is now the readable label plus the platform** -
+  e.g. `Stripe (Android App)` - instead of the lowercased gateway name. This
+  is the text shown on the order screen and on customer emails and invoices.
+* **Cash on Delivery orders are created as `processing` instead of `pending`.**
+  This matches what WooCommerce's own COD gateway does at web checkout: stock
+  is reduced, the new-order and processing emails go out, and the order is
+  ready to fulfil (a `pending` order sends no email, reduces no stock and is
+  auto-cancelled by "Hold stock (minutes)"). Prefer to confirm COD orders by
+  hand first? Change the status in `lib/bootstrap/data/order_wc.dart` to
+  `on-hold`. Paid orders are unchanged: still created as `pending` with
+  `set_paid`, which WooCommerce moves on to processing/completed itself.
+* **Billing and shipping now send ISO codes, not display names** - `US`/`AL`
+  rather than `United States`/`Alabama`. WooCommerce expects codes here, so
+  shipping zones, tax rates and address formatting now match app orders the
+  same way they match orders placed on the website.
+* **The gateway's transaction reference is recorded.** Stripe sends its
+  PaymentIntent id and PayPal its sale id in the order's `transaction_id`, and
+  a copy is kept in order meta under `_woosignal_payment_ref`. (That key starts
+  with an underscore, so it is hidden meta - you will not see it on the order
+  screen, but it is readable via the REST API and by plugins.)
+
 ## [8.2.7] - 2026-05-23
 
 * Update copyright year

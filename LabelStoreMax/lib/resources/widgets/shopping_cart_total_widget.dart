@@ -19,6 +19,9 @@ class _ShoppingCartTotalState extends NyState<ShoppingCartTotal> {
   }
 
   @override
+  LoadingStyle loadingStyle = LoadingStyle.none();
+
+  @override
   get init => () async {
         if (stateData != null && stateData is String) {
           total = stateData;
@@ -28,12 +31,14 @@ class _ShoppingCartTotalState extends NyState<ShoppingCartTotal> {
       };
 
   @override
-  stateUpdated(dynamic data) async {
-    total = await Cart.getInstance.getTotal(withFormat: true);
-  }
+  Map<String, Function> get stateActions => {
+        "refresh": () async {
+          total = await Cart.getInstance.getTotal(withFormat: true);
+        },
+      };
 
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     return Text(
       total,
       style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),

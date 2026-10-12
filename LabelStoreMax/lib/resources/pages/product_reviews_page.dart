@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -29,7 +29,7 @@ class _ProductReviewsPageState extends NyPage<ProductReviewsPage> {
 
   @override
   get init => () async {
-        _product = widget.data() as Product?;
+        _product = widget.controller.data() as Product?;
       };
 
   @override
@@ -59,7 +59,9 @@ class _ProductReviewsPageState extends NyPage<ProductReviewsPage> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 8),
                     child: Text(
-                      "${_product?.ratingCount} Reviews",
+                      trans("{{ratingCount}} Reviews", arguments: {
+                        "ratingCount": "${_product?.ratingCount}"
+                      }),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
@@ -68,7 +70,9 @@ class _ProductReviewsPageState extends NyPage<ProductReviewsPage> {
                       Container(
                         margin: EdgeInsets.only(right: 8),
                         child: Text(
-                          "${_product?.averageRating!} Stars",
+                          trans("{{averageRating}} Stars", arguments: {
+                            "averageRating": "${_product?.averageRating!}"
+                          }),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
@@ -88,7 +92,7 @@ class _ProductReviewsPageState extends NyPage<ProductReviewsPage> {
               ),
             ),
             Expanded(
-                child: NyPullToRefresh(
+                child: CollectionView<ProductReview>.pullable(
               data: (page) async {
                 if (_product == null) {
                   return null;
@@ -100,8 +104,8 @@ class _ProductReviewsPageState extends NyPage<ProductReviewsPage> {
                       status: "approved",
                     ));
               },
-              child: (context, review) {
-                review as ProductReview;
+              builder: (context, item) {
+                ProductReview review = item.data;
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   margin: EdgeInsets.only(bottom: 8),

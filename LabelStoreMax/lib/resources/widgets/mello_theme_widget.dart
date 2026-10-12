@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -46,7 +46,7 @@ class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {
         await _fetchCategories();
       };
 
-  _fetchCategories() async {
+  Future<void> _fetchCategories() async {
     if ((widget.wooSignalApp?.productCategoryCollections ?? []).isNotEmpty) {
       List<int> productCategoryId = widget
               .wooSignalApp?.productCategoryCollections
@@ -83,7 +83,7 @@ class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {
     }
   }
 
-  _modalBottomSheetMenu() {
+  void _modalBottomSheetMenu() {
     wsModalBottom(
       context,
       title: trans("Categories"),
@@ -128,7 +128,7 @@ class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {
         ],
       ),
       body: SafeAreaWidget(
-        child: NyPullToRefresh.grid(
+        child: CollectionView<ws_product.Product>.pullableGrid(
           header: Column(
             children: [
               if (bannerImages!.isNotEmpty)
@@ -149,8 +149,8 @@ class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {
               TopNavWidget(onPressBrowseCategories: _modalBottomSheetMenu),
             ],
           ),
-          child: (context, product) {
-            product as ws_product.Product;
+          builder: (context, item) {
+            ws_product.Product product = item.data;
             return SizedBox(
               height: 300,
               child: ProductItemContainer(
@@ -172,7 +172,7 @@ class _MelloThemeWidgetState extends NyState<MelloThemeWidget> {
     );
   }
 
-  _showProduct(ws_product.Product product) {
+  void _showProduct(ws_product.Product product) {
     routeTo(ProductDetailPage.path, data: product);
   }
 }

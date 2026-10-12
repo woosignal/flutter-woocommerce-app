@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,8 +11,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/product_quantity_widget.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/product.dart';
 
@@ -38,7 +39,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
       height: 140,
       padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: ThemeColor.get(context).background,
+        color: context.color.general.background,
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
@@ -105,16 +106,14 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
               )),
               product?.type == "external"
                   ? Flexible(
-                      child: PrimaryButton(
-                        title: trans("Buy Product"),
-                        action: onViewExternalProduct,
-                      ),
+                      child: Button.primary(
+                        text: trans("Buy Product"),
+                        onPressed: () => onViewExternalProduct()),
                     )
                   : Flexible(
-                      child: PrimaryButton(
-                        title: trans("Add to cart"),
-                        action: onAddToCart,
-                      ),
+                      child: Button.primary(
+                        text: trans("Add to cart"),
+                        onPressed: () => onAddToCart()),
                     ),
             ],
           ),

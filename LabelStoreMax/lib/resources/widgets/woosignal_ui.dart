@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '/app/models/cart.dart';
 import '/app/models/checkout_session.dart';
 import '/bootstrap/helpers.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
@@ -129,7 +130,7 @@ class TextEditingRow extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
-                        .copyWith(color: ThemeColor.get(context).content),
+                        .copyWith(color: context.color.general.content),
                   ),
                 ),
               ),
@@ -191,7 +192,7 @@ List<BoxShadow> wsBoxShadow({double? blurRadius}) => [
       )
     ];
 
-wsModalBottom(BuildContext context,
+void wsModalBottom(BuildContext context,
     {String? title, Widget? bodyWidget, Widget? extraWidget}) {
   showModalBottomSheet(
     context: context,
@@ -205,7 +206,7 @@ wsModalBottom(BuildContext context,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: ThemeColor.get(context).background,
+              color: context.color.general.background,
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(10.0),
                 topRight: const Radius.circular(10.0),
@@ -230,13 +231,13 @@ wsModalBottom(BuildContext context,
                           (Theme.of(context).brightness == Brightness.light)
                               ? wsBoxShadow()
                               : null,
-                      color: ThemeColor.get(context).background,
+                      color: context.color.general.background,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: bodyWidget,
                   ),
                 ),
-                if (extraWidget != null) extraWidget
+                ?extraWidget
               ],
             ),
           ),
@@ -253,7 +254,7 @@ class CheckoutTotal extends StatelessWidget {
   final TaxRate? taxRate;
 
   @override
-  Widget build(BuildContext context) => NyFutureBuilder<String>(
+  Widget build(BuildContext context) => FutureWidget<String>(
         future: CheckoutSession.getInstance
             .total(withFormat: true, taxRate: taxRate),
         child: (BuildContext context, data) => Padding(
@@ -270,7 +271,7 @@ class CheckoutTaxTotal extends StatelessWidget {
   final TaxRate? taxRate;
 
   @override
-  Widget build(BuildContext context) => NyFutureBuilder<String>(
+  Widget build(BuildContext context) => FutureWidget<String>(
         future: Cart.getInstance.taxAmount(taxRate),
         child: (BuildContext context, data) => (data == "0"
             ? Container()
@@ -290,7 +291,7 @@ class CheckoutSubtotal extends StatelessWidget {
   final String? title;
 
   @override
-  Widget build(BuildContext context) => NyFutureBuilder<String>(
+  Widget build(BuildContext context) => FutureWidget<String>(
         future: Cart.getInstance.getSubtotal(withFormat: true),
         child: (BuildContext context, data) => Padding(
           padding: EdgeInsets.only(bottom: 0, top: 0),

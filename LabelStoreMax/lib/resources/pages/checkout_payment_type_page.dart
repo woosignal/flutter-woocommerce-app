@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,9 +12,10 @@ import 'package:flutter/material.dart';
 import '/app/models/checkout_session.dart';
 import '/app/models/payment_type.dart';
 import '/bootstrap/helpers.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CheckoutPaymentTypePage extends NyStatefulWidget {
@@ -30,8 +31,6 @@ class _CheckoutPaymentTypePageState extends NyPage<CheckoutPaymentTypePage> {
 
   @override
   get init => () async {
-        super.init();
-
         _paymentTypes = await getPaymentTypes();
 
         if (_paymentTypes.isEmpty &&
@@ -77,7 +76,7 @@ class _CheckoutPaymentTypePageState extends NyPage<CheckoutPaymentTypePage> {
                   height: (constraints.maxHeight - constraints.minHeight) * 0.5,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: ThemeColor.get(context).backgroundContainer,
+                      color: context.color.container.background,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow:
                           (Theme.of(context).brightness == Brightness.light)
@@ -146,10 +145,9 @@ class _CheckoutPaymentTypePageState extends NyPage<CheckoutPaymentTypePage> {
                                   ),
                                 ),
                         ),
-                        LinkButton(
-                          title: trans("CANCEL"),
-                          action: () => Navigator.pop(context),
-                        ),
+                        Button.textOnly(
+                          text: trans("CANCEL"),
+                          onPressed: () => Navigator.pop(context)),
                       ],
                     ),
                   ),

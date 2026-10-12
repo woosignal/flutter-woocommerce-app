@@ -71,8 +71,8 @@ class PaypalCheckoutViewState extends State<PaypalCheckoutView> {
 
         if (getToken['token'] != null) {
           accessToken = getToken['token'];
-          final body = getOrderParams();
-          final res = await services.createPaypalPayment(body, accessToken);
+          final Map body = getOrderParams();
+          final Map res = await services.createPaypalPayment(body, accessToken);
 
           if (res["approvalUrl"] != null) {
             setState(() {
@@ -107,7 +107,7 @@ class PaypalCheckoutViewState extends State<PaypalCheckoutView> {
           children: <Widget>[
             InAppWebView(
               shouldOverrideUrlLoading: (controller, navigationAction) async {
-                final url = navigationAction.request.url;
+                final WebUri? url = navigationAction.request.url;
 
                 if (url.toString().contains(returnURL)) {
                   exceutePayment(url, context);
@@ -171,7 +171,7 @@ class PaypalCheckoutViewState extends State<PaypalCheckoutView> {
   }
 
   void exceutePayment(Uri? url, BuildContext context) {
-    final payerID = url!.queryParameters['PayerID'];
+    final String? payerID = url!.queryParameters['PayerID'];
     if (payerID != null) {
       services.executePayment(executeUrl, payerID, accessToken).then(
         (id) {

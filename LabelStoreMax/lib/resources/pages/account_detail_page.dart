@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,11 +11,11 @@
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import '/app/events/logout_event.dart';
-import '/bootstrap/helpers.dart';
 import '/resources/widgets/account_detail_orders_widget.dart';
 import '/resources/widgets/account_detail_settings_widget.dart';
 import '/resources/widgets/safearea_widget.dart';
 import '/resources/widgets/woosignal_ui.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/exceptions/invalid_user_token_exception.dart';
 import 'package:wp_json_api/models/responses/wc_customer_info_response.dart';
@@ -41,23 +41,25 @@ class _AccountDetailPageState extends NyPage<AccountDetailPage>
         await _fetchWpUserData();
       };
 
-  _fetchWpUserData() async {
+  Future<void> _fetchWpUserData() async {
     WCCustomerInfoResponse? wcCustomerInfoResponse;
     try {
       wcCustomerInfoResponse =
           await WPJsonAPI.instance.api((request) => request.wcCustomerInfo());
-    } on InvalidUserTokenException catch (_) {
+    } on InvalidUserTokenException catch (e) {
+      printError(e.toString());
       showToast(
         title: trans("Oops!"),
         description: trans("Something went wrong"),
-        style: ToastNotificationStyleType.danger,
+        id: 'danger',
       );
       await event<LogoutEvent>();
-    } on Exception catch (_) {
+    } on Exception catch (e) {
+      printError(e.toString());
       showToast(
         title: trans("Oops!"),
         description: trans("Something went wrong"),
-        style: ToastNotificationStyleType.danger,
+        id: 'danger',
       );
     }
 
@@ -95,7 +97,7 @@ class _AccountDetailPageState extends NyPage<AccountDetailPage>
               boxShadow: (Theme.of(context).brightness == Brightness.light)
                   ? wsBoxShadow()
                   : null,
-              color: ThemeColor.get(context).backgroundContainer,
+              color: context.color.container.background,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,7 +171,7 @@ class _AccountDetailPageState extends NyPage<AccountDetailPage>
     super.dispose();
   }
 
-  _tabsTapped(int i) {
+  void _tabsTapped(int i) {
     setState(() {
       _currentTabIndex = i;
     });

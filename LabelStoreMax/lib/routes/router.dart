@@ -1,3 +1,4 @@
+import '/resources/pages/not_found_page.dart';
 import '/resources/pages/notifications_page.dart';
 import '/resources/pages/account_delete_page.dart';
 import '/resources/pages/account_detail_page.dart';
@@ -23,13 +24,14 @@ import '/resources/pages/no_connection_page.dart';
 import '/resources/pages/product_detail_page.dart';
 import '/resources/pages/product_image_viewer_page.dart';
 import '/resources/pages/product_reviews_page.dart';
-import '/resources/pages/wishlist_page_widget.dart';
+import '/resources/pages/wishlist_page.dart';
+import '/routes/guards/auth_route_guard.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /* App Router
 |-------------------------------------------------------------------------- */
 
-appRouter() => nyRoutes((router) {
+NyRouter appRouter() => nyRoutes((router) {
       router.add(HomePage.path).initialRoute();
 
       router.add(CartPage.path);
@@ -50,7 +52,7 @@ appRouter() => nyRoutes((router) {
       router.add(ProductImageViewerPage.path,
           transitionType: TransitionType.fade());
 
-      router.add(WishListPageWidget.path);
+      router.add(WishlistPage.path);
 
       router.add(AccountOrderDetailPage.path);
 
@@ -82,13 +84,21 @@ appRouter() => nyRoutes((router) {
 
       router.add(AccountRegistrationPage.path);
 
-      router.add(AccountDetailPage.path);
+      router.add(AccountDetailPage.path, routeGuards: [AuthRouteGuard()]);
 
-      router.add(AccountProfileUpdatePage.path);
+      router.add(AccountProfileUpdatePage.path,
+          routeGuards: [AuthRouteGuard()]);
 
-      router.add(AccountDeletePage.path);
+      router.add(AccountDeletePage.path, routeGuards: [AuthRouteGuard()]);
 
-      router.add(AccountShippingDetailsPage.path);
+      router.add(AccountShippingDetailsPage.path,
+          routeGuards: [AuthRouteGuard()]);
 
       router.add(NotificationsPage.path);
+
+      // NOTE: must be `unknownRoute: true` and not the fluent
+      // `.unknownRoute()`. Only the named argument puts the route into the
+      // router's unknown-route map, which is the map `onUnknownRoute` and the
+      // deep-link handler actually read.
+      router.add(NotFoundPage.path, unknownRoute: true);
     });

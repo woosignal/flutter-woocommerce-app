@@ -11,7 +11,7 @@ class LoginEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
+  handle(dynamic data) async {
     String? userId = await WPJsonAPI.wpUserId();
     if (userId != null) {
       WooSignal.instance.setWpUserId(userId);

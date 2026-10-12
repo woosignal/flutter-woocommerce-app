@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -19,7 +19,7 @@ import '/resources/pages/product_detail_page.dart';
 import 'package:woosignal/models/response/product_category_collection.dart';
 import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_loader_widget.dart';
-import '/resources/widgets/buttons.dart';
+import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/cached_image_widget.dart';
 import '/resources/widgets/home_drawer_widget.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
@@ -43,7 +43,7 @@ class _CompoHomeWidgetState extends NyState<CompoHomeWidget> {
         await _loadHome();
       };
 
-  _loadHome() async {
+  Future<void> _loadHome() async {
     if ((widget.wooSignalApp?.productCategoryCollections ?? []).isNotEmpty) {
       List<int> productCategoryId = widget
               .wooSignalApp?.productCategoryCollections
@@ -79,7 +79,7 @@ class _CompoHomeWidgetState extends NyState<CompoHomeWidget> {
           category1.menuOrder!.compareTo(category2.menuOrder!));
     }
 
-    for (var category in categories) {
+    for (ProductCategory category in categories) {
       List<Product> products = await (appWooSignal(
         (api) => api.getProducts(
           perPage: 10,
@@ -117,9 +117,9 @@ class _CompoHomeWidgetState extends NyState<CompoHomeWidget> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: categoryAndProducts.isEmpty
-            ? AppLoaderWidget()
-            : ListView(
+        child: afterLoad(
+            loading: AppLoaderWidget(),
+            child: () => ListView(
                 shrinkWrap: true,
                 children: [
                   if (bannerImages.isNotEmpty)
@@ -188,11 +188,10 @@ class _CompoHomeWidgetState extends NyState<CompoHomeWidget> {
                                   Flexible(
                                     child: SizedBox(
                                       width: size.width / 4,
-                                      child: LinkButton(
-                                        title: trans("View All"),
-                                        action: () =>
-                                            _showCategory(catProds.key),
-                                      ),
+                                      child: Button.textOnly(
+                                        text: trans("View All"),
+                                        onPressed: () =>
+                                            _showCategory(catProds.key)),
                                     ),
                                   ),
                                 ],
@@ -225,15 +224,15 @@ class _CompoHomeWidgetState extends NyState<CompoHomeWidget> {
                     );
                   }),
                 ],
-              ),
+              )),
       ),
     );
   }
 
-  _showCategory(ProductCategory productCategory) {
+  void _showCategory(ProductCategory productCategory) {
     routeTo(BrowseCategoryPage.path, data: productCategory);
   }
 
-  _showProduct(Product product) =>
+  Future<void> _showProduct(Product product) =>
       routeTo(ProductDetailPage.path, data: product);
 }

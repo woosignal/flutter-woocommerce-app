@@ -2,26 +2,35 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 /* Login Form
 |--------------------------------------------------------------------------
-| Usage: https://nylo.dev/docs/6.x/forms#how-it-works
-| Casts: https://nylo.dev/docs/6.x/forms#form-casts
-| Validation Rules: https://nylo.dev/docs/6.x/validation#validation-rules
+| Usage: https://nylo.dev/docs/7.x/forms#how-it-works
+| Casts: https://nylo.dev/docs/7.x/forms#form-casts
+| Validation Rules: https://nylo.dev/docs/7.x/validation#validation-rules
 |-------------------------------------------------------------------------- */
 
-class LoginForm extends NyFormData {
-  LoginForm({String? name}) : super(name ?? "login");
+class LoginForm extends NyFormWidget {
+  LoginForm({
+    super.key,
+    super.header,
+    super.footer,
+    super.submitButton,
+    super.crossAxisSpacing,
+    super.onSubmit,
+    super.onFailure,
+    String? name,
+  }) : super(name: name ?? "login");
 
   @override
   fields() => [
         Field.email(
           "Email",
-          style: "compact",
-          validate: FormValidator.email(),
+          validator: FormValidator.email(),
         ),
         Field.password(
           "Password",
-          style: "compact",
           viewable: true,
-          validate: FormValidator.password(),
+          validator: FormValidator.password(strength: 1),
         ),
       ];
+
+  static NyFormActions get actions => const NyFormActions("login");
 }

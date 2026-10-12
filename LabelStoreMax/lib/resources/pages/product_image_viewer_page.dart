@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -21,7 +21,7 @@ class ProductImageViewerPage extends NyStatefulWidget {
       : super(child: () => _ProductImageViewerPageState());
 }
 
-class _ProductImageViewerPageState extends NyState<ProductImageViewerPage> {
+class _ProductImageViewerPageState extends NyPage<ProductImageViewerPage> {
   int? _initialIndex;
   List<String?> _arrImageSrc = [];
 

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -11,21 +11,18 @@
 import 'package:flutter/material.dart';
 import '/resources/widgets/store_logo_widget.dart';
 import '/resources/pages/account_detail_page.dart';
-import '/resources/pages/account_login_page.dart';
 import '/resources/pages/cart_page.dart';
-import '/resources/pages/wishlist_page_widget.dart';
-import 'package:wp_json_api/wp_json_api.dart';
+import '/resources/pages/wishlist_page.dart';
 import '/resources/pages/browse_category_page.dart';
 import 'package:woosignal/models/response/product_category.dart';
 import '/bootstrap/app_helper.dart';
-import '/bootstrap/helpers.dart';
 import '/resources/widgets/app_version_widget.dart';
 import '/resources/widgets/cached_image_widget.dart';
 import 'package:nylo_framework/theme/helper/ny_theme.dart';
+import '/bootstrap/extensions.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/menu_link.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawerWidget extends StatefulWidget {
   const HomeDrawerWidget(
@@ -40,29 +37,28 @@ class HomeDrawerWidget extends StatefulWidget {
   createState() => _HomeDrawerWidgetState();
 }
 
-class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
+class _HomeDrawerWidgetState extends NyState<HomeDrawerWidget> {
   List<MenuLink> _menuLinks = [];
   String? _themeType;
 
   @override
-  void initState() {
-    super.initState();
-    _menuLinks = AppHelper.instance.appConfig?.menuLinks ?? [];
-    _themeType = AppHelper.instance.appConfig!.theme;
-  }
+  get init => () {
+        _menuLinks = AppHelper.instance.appConfig?.menuLinks ?? [];
+        _themeType = AppHelper.instance.appConfig!.theme;
+      };
 
   @override
-  Widget build(BuildContext context) {
+  Widget view(BuildContext context) {
     bool isDark = (Theme.of(context).brightness == Brightness.dark);
     return Drawer(
       child: Container(
-        color: ThemeColor.get(context).background,
+        color: context.color.general.background,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: ThemeColor.get(context).background,
+                color: context.color.general.background,
               ),
               child: Center(child: StoreLogo()),
             ),
@@ -194,12 +190,8 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                       .copyWith(fontSize: 16)),
               leading: Icon(Icons.brightness_4_rounded),
               onTap: () {
-                setState(() {
-                  NyTheme.set(context,
-                      id: isDark
-                          ? "default_light_theme"
-                          : "default_dark_theme");
-                });
+                NyTheme.set(context,
+                    id: isDark ? "default_light_theme" : "default_dark_theme");
               },
             ),
             if (_menuLinks.isNotEmpty)
@@ -226,13 +218,14 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
                         ),
                       ),
                       onTap: () async =>
-                          await launchUrl(Uri.parse(menuLink.linkUrl)),
+                          await openUrl(menuLink.linkUrl,
+                          mode: UrlLaunchModeType.platformDefault),
                     )),
             ListTile(
               title: Text("Change language".tr()),
               leading: Icon(Icons.language),
               onTap: () {
-                NyLanguageSwitcher.showBottomModal(context);
+                LanguageSwitcher.showBottomModal(context);
               },
             ),
             ListTile(
@@ -244,29 +237,26 @@ class _HomeDrawerWidgetState extends State<HomeDrawerWidget> {
     );
   }
 
-  _actionTerms() => openBrowserTab(url: widget.wooSignalApp!.appTermsLink!);
+  Future<bool> _actionTerms() => openUrl(widget.wooSignalApp!.appTermsLink!);
 
-  _actionPrivacy() => openBrowserTab(url: widget.wooSignalApp!.appPrivacyLink!);
+  Future<bool> _actionPrivacy() =>
+      openUrl(widget.wooSignalApp!.appPrivacyLink!);
 
-  _actionProfile() async {
+  void _actionProfile() {
     Navigator.pop(context);
-    if (widget.wooSignalApp!.wpLoginEnabled == 1 &&
-        !(await WPJsonAPI.wpUserLoggedIn())) {
-      UserAuth.instance.redirect = AccountDetailPage.path.name;
-      routeTo(AccountLoginPage.path);
-      return;
-    }
+    // AuthRouteGuard sends the customer to the login page when they are not
+    // signed in, and brings them back here once they are.
     routeTo(AccountDetailPage.path);
   }
 
   /// Wishlist action
-  _actionWishlist() async {
+  Future<void> _actionWishlist() async {
     Navigator.pop(context);
-    routeTo(WishListPageWidget.path);
+    routeTo(WishlistPage.path);
   }
 
   /// Cart action
-  _actionCart() {
+  void _actionCart() {
     Navigator.pop(context);
     routeTo(CartPage.path);
   }

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -25,7 +25,7 @@ class CheckoutCouponAmountWidget extends StatelessWidget {
     if (checkoutSession.coupon == null) {
       return SizedBox.shrink();
     }
-    return NyFutureBuilder<String>(
+    return FutureWidget<String>(
       future: Cart.getInstance.couponDiscountAmount(),
       child: (BuildContext context, data) => Padding(
         padding: EdgeInsets.only(bottom: 0, top: 0),

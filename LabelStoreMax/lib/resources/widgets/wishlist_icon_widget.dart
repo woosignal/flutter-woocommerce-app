@@ -33,10 +33,11 @@ class _WishlistIconState extends NyState<WishlistIcon> {
       };
 
   @override
-  stateUpdated(dynamic data) async {
-    _isInFavourites = await hasAddedWishlistProduct(widget.product?.id);
-    // updateState(WishlistIcon.state, data: "example payload");
-  }
+  Map<String, Function> get stateActions => {
+        "refresh": () async {
+          _isInFavourites = await hasAddedWishlistProduct(widget.product?.id);
+        },
+      };
 
   @override
   LoadingStyle get loadingStyle => LoadingStyle.none();
@@ -49,24 +50,19 @@ class _WishlistIconState extends NyState<WishlistIcon> {
 
     if (_isInFavourites!) {
       return IconButton(
-          onPressed: () => toggleWishList(
-              onSuccess: () => setState(() {}),
-              wishlistAction: WishlistAction.remove),
+          onPressed: () =>
+              toggleWishList(wishlistAction: WishlistAction.remove),
           icon: Icon(Icons.favorite, color: Colors.red));
     }
 
     return IconButton(
-        onPressed: () => toggleWishList(
-            onSuccess: () => setState(() {}),
-            wishlistAction: WishlistAction.add),
+        onPressed: () => toggleWishList(wishlistAction: WishlistAction.add),
         icon: Icon(
           Icons.favorite_border,
         ));
   }
 
-  toggleWishList(
-      {required Function onSuccess,
-      required WishlistAction wishlistAction}) async {
+  Future<void> toggleWishList({required WishlistAction wishlistAction}) async {
     String subtitleMsg;
     if (wishlistAction == WishlistAction.remove) {
       await removeWishlistProduct(product: widget.product);
@@ -78,10 +74,10 @@ class _WishlistIconState extends NyState<WishlistIcon> {
     _showToast(subtitleMsg);
     _isInFavourites = await hasAddedWishlistProduct(widget.product?.id);
 
-    onSuccess();
+    setState(() {});
   }
 
-  _showToast(String message) {
+  void _showToast(String message) {
     showStatusAlert(
       context,
       title: trans("Success"),

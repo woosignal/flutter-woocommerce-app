@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import '/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:woosignal/models/response/product.dart';
 
 class ProductDetailDescriptionWidget extends StatelessWidget {
@@ -72,7 +71,7 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
                   ? product?.shortDescription ?? ""
                   : product?.description ?? "",
               renderMode: RenderMode.column, onTapUrl: (String url) async {
-            await launchUrl(Uri.parse(url));
+            await openUrl(url, mode: UrlLaunchModeType.platformDefault);
             return true;
           }, textStyle: Theme.of(context).textTheme.bodyMedium),
         ),
@@ -80,7 +79,7 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
     );
   }
 
-  _modalBottomSheetMenu(BuildContext context) {
+  void _modalBottomSheetMenu(BuildContext context) {
     wsModalBottom(
       context,
       title: trans("Description"),

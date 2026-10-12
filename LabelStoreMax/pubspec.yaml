@@ -7,7 +7,7 @@
 # Documentation: https://woosignal.com/docs/app/label-storemax
 
 ### Change App Icon
-# 1 Replace: public/icon/appicon.png (1024px1024px icon size)
+# 1 Replace: assets/app_icon/appicon.png (1024px1024px icon size)
 # 2 Run this command from the terminal: "dart run flutter_launcher_icons:main"
 
 ### Uploading the IOS/Android app
@@ -22,38 +22,37 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.0 <4.0.0'
-  flutter: ">=3.24.0 <4.0.0"
+  sdk: '>=3.12.0 <4.0.0'
+  flutter: ">=3.44.0 <4.0.0"
 
 dependencies:
-  google_fonts: ^8.1.0
-  analyzer: ^13.0.0
-  intl: ^0.20.2
-  nylo_framework: ^6.9.2
+  google_fonts: ^8.2.1
+  intl: ^0.20.3
+  nylo_framework: ^7.1.30
   woosignal: ^4.2.3
-  wp_json_api: ^4.3.6
-  cached_network_image: ^3.4.1
-  package_info_plus: ^9.0.1
+  # 4.3.7 is the first (and only) wp_json_api release that pins nylo_support ^7.0.0.
+  # 4.3.6 pins ^6.38.1 and hard-blocks the nylo_framework v7 upgrade at `pub get`.
+  wp_json_api: ^4.3.7
+  cached_network_image: ^4.0.0
+  package_info_plus: ^10.2.1
   flutter_inappwebview: ^6.1.5
   pull_to_refresh_flutter3: 2.0.2
-  url_launcher: ^6.3.2
   bubble_tab_indicator: ^0.1.6
-  math_expressions: ^3.1.0
+  math_expressions: ^3.2.0
   validated: ^2.0.0
   flutter_spinkit: ^5.2.2
   auto_size_text: ^3.0.0
-  html: ^0.15.6
-  flutter_widget_from_html_core: ^0.17.2
+  html: ^0.15.7
+  flutter_widget_from_html_core: ^0.17.4
   flutter_rating_bar: ^4.0.1
   flutter_staggered_grid_view: ^0.7.0
   flutter_swiper_view: ^1.1.8
-  firebase_messaging: ^16.2.2
-  firebase_core: ^4.9.0
+  firebase_messaging: ^16.6.0
+  firebase_core: ^4.14.0
   collection: ^1.19.1
-  flutter_stripe: ^12.6.0
+  flutter_stripe: ^14.0.0
 #  razorpay_flutter: ^1.4.0 # Disabled due to issues with latest Flutter versions
-  pretty_dio_logger: ^1.4.0
-  animate_do: ^4.2.0
+  animate_do: ^5.1.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -62,17 +61,31 @@ dependencies:
   cupertino_icons: ^1.0.9
 
 dev_dependencies:
+  vibe_check: ^1.0.1
   flutter_launcher_icons: ^0.14.4
-  lints: ^6.1.0
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+
+# TEMPORARY - remove once woosignal >= 4.3.x is published on pub.dev.
+#
+# woosignal 4.2.3 (currently the latest release) depends on device_meta ^2.1.10,
+# which in turn pins nylo_support ^6.38.1. That transitively blocks
+# nylo_framework ^7.x at `pub get`, even though woosignal itself declares no
+# Nylo dependency.
+#
+# device_meta 3.x dropped nylo_support entirely (it persists the device UUID via
+# flutter_secure_storage instead) and its public API - init/fromJson/toJson/
+# getData/getMetaData and every field - is unchanged from 2.1.10, so
+# woosignal 4.2.3 compiles and runs against it untouched.
+dependency_overrides:
+  device_meta: ^3.0.4
 
 # APP ICON
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "public/app_icon/appicon.png"
+  image_path: "assets/app_icon/appicon.png"
   remove_alpha_ios: true
 
 flutter:
@@ -81,9 +94,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - public/fonts/
-    - public/
-    - public/json/
-    - public/images/
+    - assets/fonts/
+    - assets/
+    - assets/json/
+    - assets/images/
     - lang/
-    - .env

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -15,7 +15,7 @@ import '/bootstrap/app_helper.dart';
 import '/resources/pages/account_detail_page.dart';
 import '/resources/pages/account_login_page.dart';
 import '/resources/pages/cart_page.dart';
-import '/resources/pages/wishlist_page_widget.dart';
+import '/resources/pages/wishlist_page.dart';
 import '/resources/pages/home_search_page.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/compo_home_widget.dart';
@@ -30,33 +30,31 @@ class CompoThemeWidget extends StatefulWidget {
   CompoThemeWidgetState createState() => CompoThemeWidgetState();
 }
 
-class CompoThemeWidgetState extends State<CompoThemeWidget> {
+class CompoThemeWidgetState extends NyState<CompoThemeWidget> {
   Widget? activeWidget;
 
   int _currentIndex = 0;
   List<BottomNavItem> allNavWidgets = [];
 
+  /// The tab bar loads on its own, the rest of the scaffold renders straight
+  /// away, so the framework must not swap the whole view out.
   @override
-  void initState() {
-    super.initState();
-
-    activeWidget = CompoHomeWidget(wooSignalApp: widget.wooSignalApp);
-    _loadTabs();
-  }
-
-  _loadTabs() async {
-    allNavWidgets = await bottomNavWidgets();
-    setState(() {});
-  }
+  LoadingStyle loadingStyle = LoadingStyle.none();
 
   @override
-  Widget build(BuildContext context) {
+  get init => () async {
+        activeWidget = CompoHomeWidget(wooSignalApp: widget.wooSignalApp);
+        allNavWidgets = await bottomNavWidgets();
+      };
+
+  @override
+  Widget view(BuildContext context) {
     return Scaffold(
       body: activeWidget,
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar: allNavWidgets.isEmpty
-          ? AppLoaderWidget()
-          : BottomNavigationBar(
+      bottomNavigationBar: afterLoad(
+        loading: AppLoaderWidget(),
+        child: () => BottomNavigationBar(
               onTap: (currentIndex) =>
                   _changeMainWidget(currentIndex, allNavWidgets),
               currentIndex: _currentIndex,
@@ -72,6 +70,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
               items:
                   allNavWidgets.map((e) => e.bottomNavigationBarItem).toList(),
             ),
+      ),
     );
   }
 
@@ -104,7 +103,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
           icon: Icon(Icons.favorite_border),
           label: 'Wishlist'.tr(),
         ),
-        tabWidget: WishListPageWidget(),
+        tabWidget: WishlistPage(),
       ));
     }
 
@@ -130,7 +129,7 @@ class CompoThemeWidgetState extends State<CompoThemeWidget> {
     return items;
   }
 
-  _changeMainWidget(
+  Future<void> _changeMainWidget(
       int currentIndex, List<BottomNavItem> bottomNavWidgets) async {
     _currentIndex = currentIndex;
     activeWidget = bottomNavWidgets[_currentIndex].tabWidget;

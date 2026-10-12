@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -15,7 +15,7 @@ import '/app/models/customer_address.dart';
 import '/app/models/payment_type.dart';
 import '/app/models/shipping_type.dart';
 import '/bootstrap/helpers.dart';
-import '/bootstrap/shared_pref/shared_key.dart';
+import '/config/storage_keys.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/coupon.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
@@ -43,9 +43,13 @@ class CheckoutSession {
     shippingType = null;
     paymentType = null;
     coupon = null;
+    // The session is a singleton and clear() runs once the order is placed, so
+    // a note left here is pre-filled into the next checkout and posted with the
+    // next order.
+    customerNote = null;
   }
 
-  saveBillingAddress() async {
+  Future<void> saveBillingAddress() async {
     CustomerAddress? customerAddress =
         CheckoutSession.getInstance.billingDetails!.billingAddress;
 
@@ -54,12 +58,12 @@ class CheckoutSession {
     }
 
     String billingAddress = jsonEncode(customerAddress.toJson());
-    await NyStorage.save(SharedKey.customerBillingDetails, billingAddress);
+    await NyStorage.save(StorageKeysConfig.customerBillingDetails, billingAddress);
   }
 
   Future<CustomerAddress?> getBillingAddress() async {
     String? strCheckoutDetails =
-        await (NyStorage.read(SharedKey.customerBillingDetails));
+        await (NyStorage.read(StorageKeysConfig.customerBillingDetails));
 
     if (strCheckoutDetails != null && strCheckoutDetails != "") {
       return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
@@ -67,30 +71,30 @@ class CheckoutSession {
     return null;
   }
 
-  clearBillingAddress() async =>
-      await NyStorage.delete(SharedKey.customerBillingDetails);
+  Future<void> clearBillingAddress() async =>
+      await NyStorage.delete(StorageKeysConfig.customerBillingDetails);
 
-  saveShippingAddress() async {
+  Future<void> saveShippingAddress() async {
     CustomerAddress? customerAddress =
         CheckoutSession.getInstance.billingDetails!.shippingAddress;
     if (customerAddress == null) {
       return;
     }
     String shippingAddress = jsonEncode(customerAddress.toJson());
-    await NyStorage.save(SharedKey.customerShippingDetails, shippingAddress);
+    await NyStorage.save(StorageKeysConfig.customerShippingDetails, shippingAddress);
   }
 
   Future<CustomerAddress?> getShippingAddress() async {
     String? strCheckoutDetails =
-        await (NyStorage.read(SharedKey.customerShippingDetails));
+        await (NyStorage.read(StorageKeysConfig.customerShippingDetails));
     if (strCheckoutDetails != null && strCheckoutDetails != "") {
       return CustomerAddress.fromJson(jsonDecode(strCheckoutDetails));
     }
     return null;
   }
 
-  clearShippingAddress() async =>
-      await NyStorage.delete(SharedKey.customerShippingDetails);
+  Future<void> clearShippingAddress() async =>
+      await NyStorage.delete(StorageKeysConfig.customerShippingDetails);
 
   Future<String> total({bool withFormat = false, TaxRate? taxRate}) async {
     double totalCart = parseWcPrice(await Cart.getInstance.getTotal());

@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -15,7 +15,7 @@ import '/bootstrap/app_helper.dart';
 import '/resources/pages/account_detail_page.dart';
 import '/resources/pages/account_login_page.dart';
 import '/resources/pages/cart_page.dart';
-import '/resources/pages/wishlist_page_widget.dart';
+import '/resources/pages/wishlist_page.dart';
 import '/resources/pages/home_search_page.dart';
 import '/resources/widgets/app_loader_widget.dart';
 import '/resources/widgets/notic_home_widget.dart';
@@ -96,7 +96,7 @@ class _NoticThemeWidgetState extends NyState<NoticThemeWidget> {
           icon: Icon(Icons.favorite_border),
           label: 'Wishlist'.tr(),
         ),
-        tabWidget: WishListPageWidget(),
+        tabWidget: WishlistPage(),
       ));
     }
 
@@ -126,7 +126,7 @@ class _NoticThemeWidgetState extends NyState<NoticThemeWidget> {
     return items;
   }
 
-  _changeMainWidget(
+  Future<void> _changeMainWidget(
       int currentIndex, List<BottomNavItem> bottomNavWidgets) async {
     _currentIndex = currentIndex;
     activeWidget = bottomNavWidgets[_currentIndex].tabWidget;

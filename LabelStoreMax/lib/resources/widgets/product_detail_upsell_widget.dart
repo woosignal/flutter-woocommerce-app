@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -13,6 +13,7 @@ import '/resources/pages/product_detail_page.dart';
 import '/resources/widgets/product_item_container_widget.dart';
 import '/bootstrap/helpers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:woosignal/models/response/product.dart';
 import 'package:woosignal/models/response/woosignal_app.dart';
 
 class ProductDetailUpsellWidget extends StatefulWidget {
@@ -58,16 +59,16 @@ class _ProductDetailUpsellWidgetState
         ),
         SizedBox(
             height: 300,
-            child: NyListView(
+            child: CollectionView<Product>(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                child: (context, product) {
+                builder: (context, product) {
                   return SizedBox(
                     width: MediaQuery.of(context).size.width / 2.2,
                     child: ProductItemContainer(
-                      product: product,
+                      product: product.data,
                       onTap: () {
-                        routeTo(ProductDetailPage.path, data: product);
+                        routeTo(ProductDetailPage.path, data: product.data);
                       },
                     ),
                   );

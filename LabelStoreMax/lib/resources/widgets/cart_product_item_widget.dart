@@ -11,32 +11,22 @@ import '../../app/models/cart_line_item.dart';
 import '../../bootstrap/helpers.dart';
 import 'cached_image_widget.dart';
 
-class CartProductItem extends StatefulWidget {
-  const CartProductItem(this.cartLineItem, {super.key});
+class CartProductItem extends NyStateManaged {
+  /// Every line in the cart listens on its own state, composed by the
+  /// framework as `cart_product_item_<productId>_<variationId>`.
+  CartProductItem(this.cartLineItem, {super.key})
+      : super(
+          baseState: state,
+          id: "${cartLineItem.productId}_${cartLineItem.variationId}",
+          child: () => _CartProductItemState(),
+        );
 
   static String state = "cart_product_item";
 
   final CartLineItem cartLineItem;
-
-  static String stateName(CartLineItem cartLineItem) =>
-      "${CartProductItem.state}_${cartLineItem.productId}_${cartLineItem.variationId}";
-
-  @override
-  // ignore: no_logic_in_create_state
-  createState() => _CartProductItemState(cartLineItem);
 }
 
 class _CartProductItemState extends NyState<CartProductItem> {
-  _CartProductItemState(CartLineItem cartLineItem) {
-    stateName = CartProductItem.stateName(cartLineItem);
-  }
-
-  @override
-  get init => () {};
-
-  @override
-  stateUpdated(dynamic data) async {}
-
   @override
   Widget view(BuildContext context) {
     return Container(
@@ -160,23 +150,21 @@ class _CartProductItemState extends NyState<CartProductItem> {
     });
   }
 
-  actionIncrementQuantity() async {
+  Future<void> actionIncrementQuantity() async {
     if (widget.cartLineItem.isManagedStock! &&
         widget.cartLineItem.quantity + 1 > widget.cartLineItem.stockQuantity!) {
-      updateState(CartPage.path, data: {
-        "action": "showToastMaximumStockReached",
-      });
+      stateAction("max_stock", state: CartPage.path);
       return;
     }
     await Cart.getInstance.updateQuantity(
         cartLineItem: widget.cartLineItem, incrementQuantity: 1);
     widget.cartLineItem.quantity += 1;
-    updateState(ShoppingCartTotal.state);
-    updateState(CartQuantity.state);
+    stateAction("refresh", state: ShoppingCartTotal.state);
+    stateAction("refresh", state: CartQuantity.state);
     setState(() {});
   }
 
-  actionDecrementQuantity() async {
+  Future<void> actionDecrementQuantity() async {
     if (widget.cartLineItem.quantity - 1 <= 0) {
       return;
     }
@@ -184,12 +172,12 @@ class _CartProductItemState extends NyState<CartProductItem> {
         cartLineItem: widget.cartLineItem, incrementQuantity: -1);
     widget.cartLineItem.quantity -= 1;
 
-    updateState(ShoppingCartTotal.state);
-    updateState(CartQuantity.state);
+    stateAction("refresh", state: ShoppingCartTotal.state);
+    stateAction("refresh", state: CartQuantity.state);
     setState(() {});
   }
 
-  actionRemoveItem() async {
+  Future<void> actionRemoveItem() async {
     event<CartRemoveItemEvent>(data: {"cartLineItem": widget.cartLineItem});
   }
 }

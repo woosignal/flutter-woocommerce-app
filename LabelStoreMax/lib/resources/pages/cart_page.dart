@@ -1,7 +1,7 @@
 //  Label StoreMax
 //
 //  Created by Anthony Gordon.
-//  2025, WooSignal Ltd. All rights reserved.
+//  2026, WooSignal Ltd. All rights reserved.
 //
 
 //  Unless required by applicable law or agreed to in writing, software
@@ -14,6 +14,7 @@ import '/resources/widgets/buttons/buttons.dart';
 import '/resources/widgets/cart_product_item_widget.dart';
 import '/resources/widgets/shopping_cart_total_widget.dart';
 import '/resources/pages/account_login_page.dart';
+import '/routes/guards/auth_route_guard.dart';
 import '/resources/pages/checkout_confirmation_page.dart';
 import 'package:wp_json_api/wp_json_api.dart';
 import '/app/models/cart.dart';
@@ -27,6 +28,9 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class CartPage extends NyStatefulWidget {
   static RouteView path = ("/cart", (_) => CartPage());
+
+  /// State name for the cart's CollectionView.
+  static const String cartListState = "shopping_cart_items_list_view";
 
   CartPage({super.key}) : super(child: () => _CartPageState());
 }
@@ -46,7 +50,7 @@ class _CartPageState extends NyPage<CartPage> {
         CheckoutSession.getInstance.coupon = null;
       };
 
-  _cartCheck() async {
+  Future<void> _cartCheck() async {
     List<CartLineItem> cart = await Cart.getInstance.getCart();
     if (cart.isEmpty) {
       return;
@@ -67,18 +71,17 @@ class _CartPageState extends NyPage<CartPage> {
   }
 
   void _actionProceedToCheckout() async {
-    List<CartLineItem> cartLineItems = await Cart.getInstance.getCart();
+    await lockRelease('proceed_to_checkout', perform: _proceedToCheckout);
+  }
 
-    if (isLoading()) {
-      return;
-    }
+  Future<void> _proceedToCheckout() async {
+    List<CartLineItem> cartLineItems = await Cart.getInstance.getCart();
 
     if (cartLineItems.isEmpty) {
       showToast(
         title: trans("Cart"),
         description: trans("You need items in your cart to checkout"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.shopping_cart,
+        id: 'warning',
       );
       return;
     }
@@ -88,8 +91,7 @@ class _CartPageState extends NyPage<CartPage> {
       showToast(
         title: trans("Cart"),
         description: trans("There is an item out of stock"),
-        style: ToastNotificationStyleType.warning,
-        icon: Icons.shopping_cart,
+        id: 'warning',
       );
       return;
     }
@@ -126,9 +128,9 @@ class _CartPageState extends NyPage<CartPage> {
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      UserAuth.instance.redirect =
-                          CheckoutConfirmationPage.path.name;
-                      routeTo(AccountLoginPage.path);
+                      routeTo(AccountLoginPage.path, data: {
+                        intendedRouteKey: CheckoutConfirmationPage.path.name
+                      });
                     },
                     child: Text("Login / Create an account".tr()),
                   ),
@@ -144,47 +146,35 @@ class _CartPageState extends NyPage<CartPage> {
     routeTo(CheckoutConfirmationPage.path);
   }
 
-  _showToastCartCleared() {
+  void _showToastCartCleared() {
     showToast(
         title: trans("Success"),
         description: trans("Cart cleared"),
-        style: ToastNotificationStyleType.success,
-        icon: Icons.delete_outline);
+        id: 'success');
   }
 
-  _showToastMaximumStockReached() {
+  void _showToastMaximumStockReached() {
     showToast(
       title: trans("Cart"),
       description: trans("Maximum stock reached"),
-      style: ToastNotificationStyleType.warning,
-      icon: Icons.shopping_cart,
+      id: 'warning',
     );
   }
 
-  _showToastCartItemRemoved() {
+  void _showToastCartItemRemoved() {
     showToast(
       title: trans("Updated"),
       description: trans("Item removed"),
-      style: ToastNotificationStyleType.warning,
-      icon: Icons.remove_shopping_cart,
+      id: 'warning',
     );
   }
 
   @override
-  stateUpdated(data) async {
-    if (data["action"] == "showToastMaximumStockReached") {
-      _showToastMaximumStockReached();
-      return;
-    }
-    if (data["action"] == "showToastCartItemRemoved") {
-      _showToastCartItemRemoved();
-      return;
-    }
-    if (data["action"] == "showToastCartCleared") {
-      _showToastCartCleared();
-      return;
-    }
-  }
+  Map<String, Function> get stateActions => {
+        "cart_cleared": _showToastCartCleared,
+        "item_removed": _showToastCartItemRemoved,
+        "max_stock": _showToastMaximumStockReached,
+      };
 
   @override
   Widget view(BuildContext context) {
@@ -217,9 +207,9 @@ class _CartPageState extends NyPage<CartPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: NyListView(
-                child: (context, cartLineItem) {
-                  return CartProductItem(cartLineItem);
+              child: CollectionView<CartLineItem>(
+                builder: (context, cartLineItem) {
+                  return CartProductItem(cartLineItem.data);
                 },
                 data: () async {
                   if (hasInitComplete) {
@@ -227,7 +217,7 @@ class _CartPageState extends NyPage<CartPage> {
                   }
                   return _cartLines;
                 },
-                stateName: "shopping_cart_items_list_view",
+                stateName: CartPage.cartListState,
                 loadingStyle: LoadingStyle.none(),
                 empty: FractionallySizedBox(
                   heightFactor: 0.5,

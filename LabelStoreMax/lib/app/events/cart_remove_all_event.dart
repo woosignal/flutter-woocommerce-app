@@ -13,12 +13,12 @@ class CartRemoveAllEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   @override
-  handle(dynamic event) async {
+  handle(dynamic data) async {
     await Cart.getInstance.clear();
 
     // update states
-    updateState(ShoppingCartTotal.state);
-    NyListView.stateReset("shopping_cart_items_list_view");
-    updateState(CartPage.path, data: {"action": "showToastCartCleared"});
+    stateAction("refresh", state: ShoppingCartTotal.state);
+    CollectionView.stateActions(CartPage.cartListState).reset();
+    stateAction("cart_cleared", state: CartPage.path);
   }
 }
