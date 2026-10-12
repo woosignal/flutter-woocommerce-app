@@ -1526,10 +1526,10 @@ packages:
     dependency: "direct main"
     description:
       name: woosignal
-      sha256: "9ed709619084ba19feaa9e1c233932afdb1402d770451717521a4256be9a34b1"
+      sha256: "6f5dc69badff2c932006cd1ef47a02fe4f73f8ff3a83353adb78f00370200920"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.0"
+    version: "4.6.0"
   wp_json_api:
     dependency: "direct main"
     description:

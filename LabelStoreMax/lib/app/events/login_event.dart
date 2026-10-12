@@ -1,6 +1,5 @@
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:woosignal/woosignal.dart';
-import 'package:wp_json_api/wp_json_api.dart';
+import '/bootstrap/helpers.dart';
 
 class LoginEvent implements NyEvent {
   @override
@@ -12,9 +11,8 @@ class LoginEvent implements NyEvent {
 class DefaultListener extends NyListener {
   @override
   handle(dynamic data) async {
-    String? userId = await WPJsonAPI.wpUserId();
-    if (userId != null) {
-      WooSignal.instance.setWpUserId(userId);
-    }
+    // Send the customer's id and token with WooSignal requests (order
+    // history, personal notifications).
+    await syncWooSignalCustomer();
   }
 }

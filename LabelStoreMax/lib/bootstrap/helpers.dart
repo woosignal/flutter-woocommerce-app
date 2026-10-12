@@ -47,6 +47,24 @@ Future appWooSignal(Function(WooSignal api) api) async {
   return await api(WooSignal.instance);
 }
 
+/// Clears both when no customer is logged in (or their token has expired).
+Future<void> syncWooSignalCustomer() async {
+  if (!(await WPJsonAPI.wpUserLoggedIn())) {
+    clearWooSignalCustomer();
+    return;
+  }
+  String? userId = await WPJsonAPI.wpUserId();
+  WooSignal.instance.setWpUserToken(await WPJsonAPI.wpUserToken());
+  WooSignal.instance.setWpUserId(userId ?? "");
+}
+
+/// Stops sending the customer's WordPress user id and token to WooSignal,
+/// e.g. when they log out or their session expires.
+void clearWooSignalCustomer() {
+  WooSignal.instance.setWpUserToken(null);
+  WooSignal.instance.setWpUserId("");
+}
+
 /// helper to set colors on TextStyle
 extension ColorsHelper on TextStyle {
   TextStyle setColor(

@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:woosignal/woosignal.dart';
-
 import '/app/models/cart.dart';
 import '/bootstrap/app_helper.dart';
+import '/bootstrap/helpers.dart';
 import '/resources/pages/account_login_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wp_json_api/wp_json_api.dart';
@@ -27,7 +26,7 @@ class DefaultListener extends NyListener {
     if (sessionExpired) {
       // The token is no longer valid on the store, only clear this device.
       await WPJsonAPI.wpLogout();
-      WooSignal.instance.setWpUserId("");
+      clearWooSignalCustomer();
       // routeToInitial() only completes once the home page is popped, so
       // don't wait on it: rebuild home, then put the login page on top.
       unawaited(routeToInitial());
@@ -37,8 +36,8 @@ class DefaultListener extends NyListener {
     }
 
     await _revokeTokenAndLogout();
+    clearWooSignalCustomer();
     await Cart.getInstance.clear();
-    WooSignal.instance.setWpUserId("");
     await routeToInitial();
   }
 

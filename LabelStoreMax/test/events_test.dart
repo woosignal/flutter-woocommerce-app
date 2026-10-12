@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -18,6 +20,9 @@ import 'package:flutter_app/resources/pages/browse_category_page.dart';
 import 'package:flutter_app/resources/pages/home_page.dart';
 import 'package:flutter_app/resources/pages/home_search_page.dart';
 import 'package:flutter_app/resources/pages/product_detail_page.dart';
+import 'package:flutter_app/app/providers/app_provider.dart';
+import 'package:woosignal/networking/api_provider.dart';
+import 'package:woosignal/woosignal.dart' show WooSignal;
 import 'package:wp_json_api/wp_json_api.dart';
 import 'support/boot_test_app.dart';
 import 'support/fixtures.dart';
@@ -29,6 +34,17 @@ import 'support/fixtures.dart';
 /// The push events in particular are worth pinning: each has to act on its own
 /// payload key and leave the others alone, or one notification triggers three
 /// different screens.
+/// The customer's wp_json_api token WooSignal requests are carrying, if any.
+String? wooSignalUserToken() => WooSignal.instance.apiProvider.dio.options
+    .headers[ApiProvider.wpUserTokenHeader] as String?;
+
+/// The WordPress user id WooSignal requests are carrying in the device meta.
+dynamic wooSignalWpUserId() => (jsonDecode(WooSignal.instance.apiProvider.dio
+    .options.headers["X-DMETA"] as String) as Map)['wp_user_id'];
+
+const String customerToken =
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+
 void main() {
   NyTest.init();
 
@@ -42,6 +58,7 @@ void main() {
     await clearCart();
     await clearWpUser();
     await NyNotification.clearAllNotifications();
+    WooSignal.instance.setWpUserToken(null);
   });
 
   nyGroup('registration', () {
@@ -79,12 +96,60 @@ void main() {
       expect(await WPJsonAPI.wpUserId(), "42");
     });
 
+    nyTest('sends the customer\'s login to WooSignal', () async {
+      // WooSignal checks the token with the store before it returns the
+      // customer's orders or links this device to them.
+      await seedWpUser(id: 42, token: customerToken);
+
+      await event<LoginEvent>();
+
+      expect(wooSignalUserToken(), customerToken);
+      expect(wooSignalWpUserId(), "42");
+    });
+
+    nyTest('sends no login when the session has expired', () async {
+      WooSignal.instance.setWpUserToken("stale-token");
+      await seedWpUser(
+          token: customerToken,
+          expiresAt: DateTime.now()
+                  .subtract(const Duration(days: 1))
+                  .millisecondsSinceEpoch ~/
+              1000);
+
+      await event<LoginEvent>();
+
+      expect(wooSignalUserToken(), isNull);
+      expect(wooSignalWpUserId(), "");
+    });
+
     nyTest('does nothing when there is no session to read', () async {
       await clearWpUser();
 
       await event<LoginEvent>();
 
       expect(await WPJsonAPI.wpUserId(), isNull);
+    });
+  });
+
+  nyGroup('app start', () {
+    nyTest('a saved session sends the customer\'s login to WooSignal',
+        () async {
+      await seedWpUser(id: 7, token: customerToken);
+
+      await AppProvider().boot(Nylo());
+
+      expect(wooSignalUserToken(), customerToken);
+      expect(wooSignalWpUserId(), "7");
+    });
+
+    nyTest('an expired saved session sends no login', () async {
+      WooSignal.instance.setWpUserToken("stale-token");
+      await seedWpUser(token: customerToken, legacySession: true);
+
+      await AppProvider().boot(Nylo());
+
+      expect(wooSignalUserToken(), isNull);
+      expect(await WPJsonAPI.wpUser(), isNull);
     });
   });
 
@@ -102,6 +167,33 @@ void main() {
       expect(await WPJsonAPI.wpUserLoggedIn(), isFalse);
       expect(await WPJsonAPI.wpUser(), isNull);
       expect(await Cart.getInstance.getCart(), isEmpty);
+    });
+
+    nyWidgetTest('stops sending the customer\'s login to WooSignal',
+        (tester) async {
+      await seedWpUser(token: customerToken);
+      await event<LoginEvent>();
+      expect(wooSignalUserToken(), customerToken);
+
+      await pumpAppRouter(tester);
+      await fireAndSettle(tester, () => event<LogoutEvent>());
+
+      expect(wooSignalUserToken(), isNull);
+      expect(wooSignalWpUserId(), "");
+    });
+
+    nyWidgetTest(
+        'an expired session stops sending the customer\'s login to WooSignal',
+        (tester) async {
+      await seedWpUser(token: customerToken);
+      await event<LoginEvent>();
+
+      await pumpAppRouter(tester);
+      await fireAndSettle(
+          tester, () => event<LogoutEvent>(data: {"session_expired": true}));
+
+      expect(wooSignalUserToken(), isNull);
+      expect(wooSignalWpUserId(), "");
     });
 
     nyWidgetTest('sends the customer back to the home page', (tester) async {

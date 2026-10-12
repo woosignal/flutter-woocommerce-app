@@ -140,7 +140,9 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
         return;
       }
 
-      event<LoginEvent>();
+      // Wait for it, so WooSignal has the customer's token before the next
+      // page loads their orders.
+      await event<LoginEvent>();
 
       showToast(
           title: "${trans("Hello")} $firstName",

@@ -117,6 +117,9 @@ class AppProvider implements NyProvider {
       // Sessions saved before WP JSON API 5.0 (or with an expired token) can't
       // be used any more, so the customer starts logged out.
       await clearExpiredWpSession();
+      // A customer who is still logged in: send their id and token with
+      // WooSignal requests (order history, personal notifications).
+      await syncWooSignalCustomer();
     }
   }
 }

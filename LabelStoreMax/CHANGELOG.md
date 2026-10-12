@@ -1,3 +1,16 @@
+## [9.1.0] - 2026-10-12
+
+* Order history and personal notifications now send the logged in customer's
+  login (their WP JSON API token, as the `X-WS-User-Token` header) with
+  WooSignal requests. WooSignal needs it for strict API access: it checks the
+  token with your store before it returns a customer's orders or links their
+  device to them for personal push notifications. The token is set when the
+  customer logs in or registers and when the app starts with a saved session,
+  and cleared when they log out or their session expires.
+* Requires `woosignal` 4.6.0.
+* The order details page shows a message when the order can't be loaded,
+  instead of failing.
+
 ## [9.0.0] - 2026-10-12
 
 Label StoreMax now runs on **Nylo 7** and requires the **WP JSON API WordPress

@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:wp_json_api/models/wp_user.dart';
-import 'package:wp_json_api/wp_json_api.dart';
 import '/app/events/category_notification_event.dart';
 import '/app/events/firebase_on_message_order_event.dart';
 import '/app/events/order_notification_event.dart';
@@ -59,9 +57,10 @@ class FirebaseProvider implements NyProvider {
       return;
     }
 
-    WpUser? wpUser = await WPJsonAPI.wpUser();
-    if (wpUser != null && wpUser.id != null) {
-      WooSignal.instance.setWpUserId(wpUser.id.toString());
+    // Link this device to the logged in customer; WooSignal only does that
+    // once it has checked their token with the store.
+    if (AppHelper.instance.appConfig?.wpLoginEnabled == 1) {
+      await syncWooSignalCustomer();
     }
 
     try {

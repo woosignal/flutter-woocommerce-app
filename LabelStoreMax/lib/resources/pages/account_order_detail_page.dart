@@ -54,7 +54,10 @@ class _AccountOrderDetailPageState extends NyPage<AccountOrderDetailPage> {
       resizeToAvoidBottomInset: false,
       body: SafeAreaWidget(
         child: afterLoad(
-          child: () => Column(
+          // The order couldn't be loaded, or isn't this customer's
+          child: () => _order == null
+              ? Center(child: Text(trans("Sorry, something went wrong")))
+              : Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
